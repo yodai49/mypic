@@ -28,7 +28,7 @@ function init() {
     const height = 540;
 
     //2Dの処理
-    ctx2d=document.getElementById("myCanvas2").getContext("2d");
+    ctx2d=document.getElementById("myCanvas").getContext("2d");
     ctx2d.width = width;
     ctx2d.height = height;
 

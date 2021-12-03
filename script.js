@@ -23,7 +23,7 @@ window.addEventListener('DOMContentLoaded', function(){ ///キー入力イベン
 
 function init() {
     //2Dの処理
-    ctx2d=document.getElementById("myCanvas").getContext("2d");
+    ctx2d=document.getElementById("mainCanvas").getContext("2d");
     ctx2d.width = width;
     ctx2d.height = height;
 

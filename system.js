@@ -1,6 +1,0 @@
-function systemMain() {
-    /*
-    @param 
-    @return 
-    */
-}

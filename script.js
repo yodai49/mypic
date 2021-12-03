@@ -5,8 +5,8 @@ var messageWindow=0;//メッセージウィンドウの表示非表示
 var myPicWindow=0;//マイピク描画画面の表示非表示
 var menuWindow=0;//メニューウィンドウの表示非表示
 var shopWindow=0;//ショップウィンドウの表示非表示
-const width = 960;
-const height = 540;
+const width = 960, height = 540; //ウィンドウのサイズ
+var ctx2d; //メインキャンバス
 
 function keypress(mykey,mykeycode){ //キー入力イベント
     if(mykey=="z"){
@@ -32,6 +32,12 @@ function init() {
     function tick() { //メイン関数
         //2次元のリセット処理
         ctx2d.clearRect(0,0,width,height);
+
+        //各モジュールのMain関数を呼び出し
+        battleMain();
+        fieldMain();
+        mypicMain();
+        messageMain();
 
         ctx2d.fillStyle="rgba(255,255,0,1.0)";
         ctx2d.fillRect(30,30,30,30);

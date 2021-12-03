@@ -1,6 +1,0 @@
-function databaseMain() {
-    /*
-    @param 
-    @return 
-    */
-}

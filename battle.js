@@ -1,0 +1,6 @@
+function battleMain() {
+    /*
+    @param 
+    @return 
+    */
+}

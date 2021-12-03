@@ -1,0 +1,6 @@
+function mypicMain() {
+    /*
+    @param 
+    @return 
+    */
+}

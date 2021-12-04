@@ -19,7 +19,7 @@ function initiate_field(){
     charaimg2.onload=function(){characanvasctx.drawImage(charaimg2,pre_charasize,0,pre_charasize,pre_charasize)}
 
     fieldcanvas=document.createElement("canvas");
-    fieldcanvas.width=fieldwidth*fieldnum, characanvas.height=fieldheight;
+    fieldcanvas.width=fieldwidth*fieldnum, fieldcanvas.height=fieldheight;
     var fieldcanvasctx=fieldcanvas.getContext("2d"); //フィールドは横並びに描画　幅はfieldwidth
     for(let i = 0;i <fieldnum;i++){
         for(let j = 0; j < fielddata[i].length;j++){
@@ -36,8 +36,6 @@ function fieldMain() {
     */
     var fieldcanvasctx=fieldcanvas.getContext("2d");
     walkanimation=(walkanimation+1)%30; //歩く処理
-    fieldcanvasctx.fillStyle="rgba(255,0,0,1)";
-    fieldcanvasctx.fillRect(0,0,100,100);
-    ctx2d.drawImage(fieldcanvas,0,0); //背景の描画
+    ctx2d.drawImage(fieldcanvas,0,0,width,height,0,0,width,height); //背景の描画
     ctx2d.drawImage(characanvas,60*Math.floor(walkanimation/15),0,60,60,(width-charasize)/2,(height-charasize)/2,60,60); //キャラクターの描画
 }

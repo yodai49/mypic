@@ -1,4 +1,4 @@
-var walkanimation=0; //歩くアニメーション
+var walkanimation=0,walkdir=3; //歩くアニメーション,方向
 const charasize=60; //キャラクターのサイズ
 const pre_charasize=60; //プリレンダリング用のキャラクターのサイズ
 const fieldwidth=4000;//フィールドの幅の最大値
@@ -10,15 +10,16 @@ function initiate_field(){
     @param なし
     @return なし
     */
-    var charaimg1=new Image(),charaimg2=new Image(); //キャラクターのプリレンダリングの処理
-    charaimg1.src="./imgs/character_field1.png";
-    charaimg2.src="./imgs/character_field2.png";
     characanvas=document.createElement("canvas");
-    characanvas.width=pre_charasize*2, characanvas.height=pre_charasize;
+    characanvas.width=pre_charasize*2, characanvas.height=pre_charasize*4;
     var characanvasctx=characanvas.getContext("2d"); //charaimg1は0,0、charaimg2はその右側に描画
-    charaimg1.onload=function(){characanvasctx.drawImage(charaimg1,0,0,pre_charasize,pre_charasize)}
-    charaimg2.onload=function(){characanvasctx.drawImage(charaimg2,pre_charasize,0,pre_charasize,pre_charasize)}
-
+    for(let i = 0;i<4;i++){
+        for(let j = 0;j<2;j++){
+            const charaimg=new Image();
+            charaimg.src="./imgs/character_field"+i+"_"+j+".png";
+            charaimg.onload=function(){characanvasctx.drawImage(charaimg,j*pre_charasize,i*pre_charasize,pre_charasize,pre_charasize)}
+        }
+    }
     fieldcanvas=document.createElement("canvas");
     fieldcanvas.width=fieldwidth*fieldnum, fieldcanvas.height=fieldheight;
     var fieldcanvasctx=fieldcanvas.getContext("2d"); //フィールドは横並びに描画　幅はfieldwidth
@@ -80,9 +81,13 @@ function fieldMain() {
     @return なし
     */
     ctx2d.drawImage(fieldcanvas,myposx-(width-charasize)/2,myposy-(height-charasize)/2,width,height,0,0,width,height); //背景の描画
-    ctx2d.drawImage(characanvas,charasize*Math.floor(walkanimation/15),0,charasize,charasize,(width-charasize)/2,(height-charasize)/2,charasize,charasize); //キャラクターの描画
+    ctx2d.drawImage(characanvas,charasize*Math.floor(walkanimation/15),charasize*walkdir,charasize,charasize,(width-charasize)/2,(height-charasize)/2,charasize,charasize); //キャラクターの描画
 
     //移動処理
+    if (leftkey) walkdir=0;
+    if (rightkey) walkdir=1;
+    if (upkey) walkdir=2;
+    if (downkey) walkdir=3;
     if (leftkey && !checkConflict(0)) myposx-=walkspeed,walkeve();
     if (rightkey && !checkConflict(1)) myposx+=walkspeed,walkeve();
     if (upkey && !checkConflict(2)) myposy-=walkspeed,walkeve();

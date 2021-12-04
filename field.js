@@ -6,7 +6,7 @@ const fieldheight=4000;//フィールドの高さの最大値
 var walkspeed=3;//歩くスピード
 
 function initiate_field(){
-    /*　フィールド・キャラクターの初期化処理
+    /*　フィールド・キャラクターの初期化処理/////////////////////////////////////////
     @param なし
     @return なし
     */
@@ -34,7 +34,7 @@ function initiate_field(){
         }
     }
 
-    myposx=500,myposy=500,myposworld=0;//ポジションのセッティング
+    myposx=800,myposy=800,myposworld=0;//ポジションのセッティング
 }
 function myposmodify(){
     /*　自分の位置がはみ出さないようにする関数
@@ -73,6 +73,7 @@ function checkConflict(dir){
     }
     return 1;
 }
+
 function fieldMain() {
     /*
     @param なし

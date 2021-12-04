@@ -16,7 +16,7 @@ const width = 960, height = 540; //ウィンドウのサイズ
 var ctx2d; //メインキャンバス
 var spacekey=false;
 var leftkey=false, upkey=false, rightkey=false, downkey=false;
-var characanvas,fieldcanvas; //プリレンダリング用のキャンバス
+var characanvas,fieldcanvas,fieldbackcanvas; //プリレンダリング用のキャンバス fieldcanvasは前景、fieldbackcanvasは背景（当たり判定なし）
 
 function keypress(mykey,mykeycode){ //キー入力イベント
     if(mykey=="z") window.alert("z");

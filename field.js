@@ -65,7 +65,8 @@ function checkConflict(dir){
     for(let i = 0;i < walkCol[myposworld].length;i++){
         tempColision = 0;
         for(let j = 0;j < 10;j++){
-            var checkimgdata=fieldcanvas.getContext("2d").getImageData(myposx+checkConflictPosx,myposy+checkConflictPosy,1,1);
+//            var checkimgdata=fieldcanvas.getContext("2d").getImageData(myposx+checkConflictPosx,myposy+checkConflictPosy,1,1);
+            var checkimgdata=ctx2d.getImageData((width-charasize)/2+checkConflictPosx,(height-charasize)/2+checkConflictPosy,1,1);
             if (dir==2 || dir == 3) checkConflictPosx+=(charasize/10);
             if (dir==0 || dir == 1) checkConflictPosy+=(charasize/10);
             if (checkimgdata.data[0] != walkCol[myposworld][i][0] || checkimgdata.data[1] != walkCol[myposworld][i][1] ||  checkimgdata.data[2] != walkCol[myposworld][i][2]) tempColision=1;

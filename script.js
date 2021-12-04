@@ -7,6 +7,8 @@ var menuWindow=0;//メニューウィンドウの表示非表示
 var shopWindow=0;//ショップウィンドウの表示非表示
 const width = 960, height = 540; //ウィンドウのサイズ
 var ctx2d; //メインキャンバス
+var spacekey=false;
+var leftkey=false, upkey=false, rightkey=false, downkey=false;
 
 function keypress(mykey,mykeycode){ //キー入力イベント
     if(mykey=="z"){
@@ -26,6 +28,9 @@ function keypress(mykey,mykeycode){ //キー入力イベント
     }
     else if(mykeycode==40){
         downkey=true;
+    }
+    else if(mykey=="b"){
+        onBattle=true;
     }
 }
 

@@ -3,11 +3,7 @@ const battleMess = ["野生のモンスターAが現れた！", "勝負だ! キ�
 const talkMess = ["こんにちは","あなたの名前を入力してください。","設定が完了しました。","ゲームをお楽しみください!!"]
 const Message=[questionMess, battleMess, talkMess];
 
-var spacekey=false;
-var leftkey=false;
-var upkey=false;
-var rightkey=false;
-var downkey=false;
+var onMessage=true;
 
 var lstnum=0;//Messageリスト内の扱うリストを指定
 var in_lstnum=0;//各リスト内の出力位置を管理
@@ -16,11 +12,11 @@ var messCheck=false;
 var Choicenum=0;
 
 function messageMain(){
+    if(onMessage){
     ctx2d.fillStyle=black;
     ctx2d.font="20px san-serif";
     //textの表示
     if(messCheck){
-        console.log("aaa");
         ctx2d.fillText(Message[lstnum][in_lstnum][Choicenum], 300,300);
     }
     else{ctx2d.fillText(Message[lstnum][in_lstnum], 300,300);}
@@ -28,7 +24,6 @@ function messageMain(){
 
     //選択肢シーン
     if(Message[lstnum][in_lstnum][0]=="Q"){
-        console.log("question");
         if(messChoice==0){
             make_shape(550,290,520,265,520,315);}
         else if(messChoice==1){
@@ -59,9 +54,14 @@ function messageMain(){
     //////
 
     if(in_lstnum == Message[lstnum].length){//一連のメッセージ終了時イベント
-        console.log("end");
         lstnum++;
         in_lstnum=0;
+    }
+
+    if(lstnum == Message.length){//全てのメッセージ終了
+        onMessage=false;
+    }
+
     }
 }
 

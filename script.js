@@ -14,6 +14,8 @@ const fieldnum=5;//フィールドの数
 //描画系
 const width = 960, height = 540; //ウィンドウのサイズ
 var ctx2d; //メインキャンバス
+var spacekey=false;
+var leftkey=false, upkey=false, rightkey=false, downkey=false;
 var characanvas,fieldcanvas; //プリレンダリング用のキャンバス
 
 function keypress(mykey,mykeycode){ //キー入力イベント
@@ -34,6 +36,9 @@ function keypress(mykey,mykeycode){ //キー入力イベント
     }
     else if(mykeycode==40){
         downkey=true;
+    }
+    else if(mykey=="b"){
+        onBattle=true;
     }
 }
 

@@ -14,12 +14,27 @@ function keypress(mykey,mykeycode){ //キー入力イベント
     if(mykey=="z"){
         window.alert("z");
     }
+    else if(mykey==" "){
+        spacekey=true;
+    }
+    else if(mykeycode==37){
+        leftkey=true;
+    }
+    else if(mykeycode==38){
+        upkey=true;
+    }
+    else if(mykeycode==39){
+        rightkey=true;
+    }
+    else if(mykeycode==40){
+        downkey=true;
+    }
 }
 
 window.addEventListener('load', init); //ロードイベント登録
 window.addEventListener('DOMContentLoaded', function(){ ///キー入力イベント登録
     window.addEventListener("keydown", function(e){
-      keypress(e.key,e.keyCode);
+        keypress(e.key,e.keyCode);
     });
 });
 

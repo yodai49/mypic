@@ -1,3 +1,4 @@
+//システム系
 var mode = 0; //mode 0タイトル画面　1探索画面　2戦闘画面
 var nextMode=0; //次に遷移するモード
 var modeAnimation = 1; //nextmodeにうつるタイミング
@@ -5,46 +6,49 @@ var messageWindow=0;//メッセージウィンドウの表示非表示
 var myPicWindow=0;//マイピク描画画面の表示非表示
 var menuWindow=0;//メニューウィンドウの表示非表示
 var shopWindow=0;//ショップウィンドウの表示非表示
-var myposx,myposy, myposworld;//キャラクターの位置　x：横　y:縦　world:ワールド番号
+
+//フィールド系
+var myposx=0,myposy=0, myposworld=0;//キャラクターの位置　x：横　y:縦　world:ワールド番号
+const fieldnum=5;//フィールドの数
+
+//描画系
 const width = 960, height = 540; //ウィンドウのサイズ
 var ctx2d; //メインキャンバス
 var spacekey=false;
 var leftkey=false, upkey=false, rightkey=false, downkey=false;
-var characanvas,fieldcanvas; //プリレンダリング用のキャンバス
+var characanvas,fieldcanvas,fieldbackcanvas; //プリレンダリング用のキャンバス fieldcanvasは前景、fieldbackcanvasは背景（当たり判定なし）
 
 function keypress(mykey,mykeycode){ //キー入力イベント
-    if(mykey=="z"){
-        window.alert("z");
-    }
-    else if(mykey==" "){
-        spacekey=true;
-    }
-    else if(mykeycode==37){
-        leftkey=true;
-    }
-    else if(mykeycode==38){
-        upkey=true;
-    }
-    else if(mykeycode==39){
-        rightkey=true;
-    }
-    else if(mykeycode==40){
-        downkey=true;
-    }
-    else if(mykey=="b"){
-        onBattle=true;
-    }
+    if(mykey=="z") window.alert("z");
+    if(mykey==" ") spacekey=true;
+    if(mykeycode==37) leftkey=true;
+    if(mykeycode==38) upkey=true;
+    if(mykeycode==39) rightkey=true;
+    if(mykeycode==40) downkey=true;
+    if(mykey=="b") onBattle=true;
+}
+function keyup(mykey,mykeycode){ //キー離したときのイベント
+    if(mykey==" ") spacekey=false;
+    if(mykeycode==37) leftkey=false;
+    if(mykeycode==38) upkey=false;
+    if(mykeycode==39) rightkey=false;
+    if(mykeycode==40) downkey=false;
 }
 
 window.addEventListener('load', init); //ロードイベント登録
 window.addEventListener('DOMContentLoaded', function(){ ///キー入力イベント登録
     window.addEventListener("keydown", function(e){
         keypress(e.key,e.keyCode);
+        if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+            e.preventDefault();
+        }    
+    });
+    window.addEventListener("keyup", function(e){
+        keyup(e.key,e.keyCode);
     });
 });
 
 //起動時の処理//
-myposx=20,myposy=10,myposworld=0;//ポジションのセッティング
 initiate_field();
 
 function init() {
@@ -64,9 +68,6 @@ function init() {
         fieldMain();
         mypicMain();
         messageMain();
-
-        ctx2d.fillStyle="rgba(255,255,0,1.0)";
-        ctx2d.fillRect(30,30,30,30);
 
         requestAnimationFrame(tick); //次のフレーム呼び出し（再帰）
     }

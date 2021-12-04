@@ -1,6 +1,6 @@
 function mypicMain() {
     /*
-    @param 
+    @param なし
     @return 
     */
 }

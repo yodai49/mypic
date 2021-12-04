@@ -86,4 +86,5 @@ function make_shape(a,b,c,d,e,f){ //図形作成
         ctx2d.fillStyle=pastle_green1;
         ctx2d.fill();
     }
+
 }

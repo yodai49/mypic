@@ -1,9 +1,10 @@
 var walkanimation=0,walkdir=3; //歩くアニメーション,方向
-const charasize=60; //キャラクターのサイズ
+const charasize=30; //キャラクターのサイズ
 const pre_charasize=60; //プリレンダリング用のキャラクターのサイズ
-const fieldwidth=4000;//フィールドの幅の最大値
-const fieldheight=4000;//フィールドの高さの最大値
+const fieldwidth=2000;//フィールドの幅の最大値
+const fieldheight=2000;//フィールドの高さの最大値
 var walkspeed=3;//歩くスピード
+var menuSelectNum=0,menuSelectFlg=0;
 
 function initiate_field(){
     /*　フィールド・キャラクターの初期化処理/////////////////////////////////////////
@@ -36,6 +37,7 @@ function initiate_field(){
     }
 
     myposx=800,myposy=800,myposworld=0;//ポジションのセッティング
+    menuSelectNum=0,menuSelectFlg=0; //選択中のメニュー
 }
 function myposmodify(){
     /*　自分の位置がはみ出さないようにする関数
@@ -76,20 +78,54 @@ function checkConflict(dir){
 }
 
 function fieldMain() {
+    var menuWindowTrans;
+    const menuWindowAniSpeed=15;
+    const menuWindowTxt =["マイピク","もちもの","マップ","セーブ","タイトル"];
     /*
     @param なし
     @return なし
     */
     ctx2d.drawImage(fieldcanvas,myposx-(width-charasize)/2,myposy-(height-charasize)/2,width,height,0,0,width,height); //背景の描画
-    ctx2d.drawImage(characanvas,charasize*Math.floor(walkanimation/15),charasize*walkdir,charasize,charasize,(width-charasize)/2,(height-charasize)/2,charasize,charasize); //キャラクターの描画
+    ctx2d.drawImage(characanvas,pre_charasize*Math.floor(walkanimation/15),pre_charasize*walkdir,pre_charasize,pre_charasize,(width-charasize)/2,(height-charasize)/2,charasize,charasize); //キャラクターの描画
 
     //移動処理
-    if (leftkey) walkdir=0;
-    if (rightkey) walkdir=1;
-    if (upkey) walkdir=2;
-    if (downkey) walkdir=3;
-    if (leftkey && !checkConflict(0)) myposx-=walkspeed,walkeve();
-    if (rightkey && !checkConflict(1)) myposx+=walkspeed,walkeve();
-    if (upkey && !checkConflict(2)) myposy-=walkspeed,walkeve();
-    if (downkey && !checkConflict(3)) myposy+=walkspeed,walkeve();
+    if(!menuWindow){
+        if (leftkey) walkdir=0;
+        if (rightkey) walkdir=1;
+        if (upkey) walkdir=2;
+        if (downkey) walkdir=3;
+        if (leftkey && !checkConflict(0)) myposx-=walkspeed,walkeve();
+        if (rightkey && !checkConflict(1)) myposx+=walkspeed,walkeve();
+        if (upkey && !checkConflict(2)) myposy-=walkspeed,walkeve();
+        if (downkey && !checkConflict(3)) myposy+=walkspeed,walkeve();
+    } else {
+        if (upkey && !menuSelectFlg) menuSelectNum--,menuSelectFlg=1;
+        if (downkey && !menuSelectFlg) menuSelectNum++,menuSelectFlg=1;
+        if (!upkey && !downkey) menuSelectFlg=0;
+        if (menuSelectNum<0) menuSelectNum=0;
+        if (menuSelectNum >= menuWindowTxt.length) menuSelectNum=menuWindowTxt.length-1;
+    }
+    //メニューの表示処理
+    menuWindowTrans=(1-Math.abs(menuWindow-menuWindowAniSpeed)/menuWindowAniSpeed);
+    if(menuWindow && menuWindow!=menuWindowAniSpeed) menuWindow++;
+    if(menuWindow == menuWindowAniSpeed*2) menuWindow=0;
+    if(zkey && !menuWindow) menuWindow++;
+    if(zkey && !(menuWindow-menuWindowAniSpeed)) menuWindow++;
+    if(menuWindow){    //メニューの描画
+        ctx2d.fillStyle="rgba(0,0,0," + menuWindowTrans*0.8+")";
+        ctx2d.fillRect(-400+menuWindowTrans*400,0,400,height);
+        ctx2d.fillStyle="rgba(255,255,255," + menuWindowTrans+")";
+        ctx2d.font="50px "+mainfontName;
+        ctx2d.fillText("メニュー",30,70);
+        ctx2d.font="30px "+mainfontName;
+        for(let i = 0; i < menuWindowTxt.length;i++){
+            if (menuSelectNum==i){
+                ctx2d.fillStyle="rgba(255,255,255," + menuWindowTrans+")";
+            } else{
+                ctx2d.fillStyle="rgba(100,100,100," + menuWindowTrans+")";                
+            }
+            ctx2d.fillText(menuWindowTxt[i],60,130+i*45);
+        }
+    }
+
 }

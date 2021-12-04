@@ -17,17 +17,17 @@ function messageMain(){
     ctx2d.font="20px san-serif";
     //textの表示
     if(messCheck){
-        ctx2d.fillText(Message[lstnum][in_lstnum][Choicenum], 300,300);
+        ctx2d.fillText(Message[lstnum][in_lstnum][Choicenum], 300,500);
     }
-    else{ctx2d.fillText(Message[lstnum][in_lstnum], 300,300);}
+    else{ctx2d.fillText(Message[lstnum][in_lstnum], 300,500);}
     //////
 
     //選択肢シーン
     if(Message[lstnum][in_lstnum][0]=="Q"){
         if(messChoice==0){
-            make_shape(550,290,520,265,520,315);}
+            make_shape(550,490,520,465,520,515);}
         else if(messChoice==1){
-            make_shape(650,290,620,265,620,315);}
+            make_shape(650,490,620,465,620,515);}
         //選択肢が２つの場合のみ想定
         if(rightkey && messChoice<1){
             messChoice+=1;
@@ -71,7 +71,6 @@ function make_shape(a,b,c,d,e,f){ //図形作成
     if (canvas.getContext) {
         ctx2d.strokeStyle=black;
         var context = canvas.getContext('2d');
-        //ここに具体的な描画内容を指定する
         //新しいパスを開始する
         context.beginPath();
         //パスの開始座標を指定する

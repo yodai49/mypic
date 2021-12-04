@@ -8,7 +8,7 @@ var menuWindow=0;//メニューウィンドウの表示非表示
 var shopWindow=0;//ショップウィンドウの表示非表示
 
 //フィールド系
-var myposx,myposy, myposworld;//キャラクターの位置　x：横　y:縦　world:ワールド番号
+var myposx=0,myposy=0, myposworld=0;//キャラクターの位置　x：横　y:縦　world:ワールド番号
 const fieldnum=5;//フィールドの数
 
 //描画系
@@ -19,38 +19,36 @@ var leftkey=false, upkey=false, rightkey=false, downkey=false;
 var characanvas,fieldcanvas; //プリレンダリング用のキャンバス
 
 function keypress(mykey,mykeycode){ //キー入力イベント
-    if(mykey=="z"){
-        window.alert("z");
-    }
-    else if(mykey==" "){
-        spacekey=true;
-    }
-    else if(mykeycode==37){
-        leftkey=true;
-    }
-    else if(mykeycode==38){
-        upkey=true;
-    }
-    else if(mykeycode==39){
-        rightkey=true;
-    }
-    else if(mykeycode==40){
-        downkey=true;
-    }
-    else if(mykey=="b"){
-        onBattle=true;
-    }
+    if(mykey=="z") window.alert("z");
+    if(mykey==" ") spacekey=true;
+    if(mykeycode==37) leftkey=true;
+    if(mykeycode==38) upkey=true;
+    if(mykeycode==39) rightkey=true;
+    if(mykeycode==40) downkey=true;
+    if(mykey=="b") onBattle=true;
+}
+function keyup(mykey,mykeycode){ //キー離したときのイベント
+    if(mykey==" ") spacekey=false;
+    if(mykeycode==37) leftkey=false;
+    if(mykeycode==38) upkey=false;
+    if(mykeycode==39) rightkey=false;
+    if(mykeycode==40) downkey=false;
 }
 
 window.addEventListener('load', init); //ロードイベント登録
 window.addEventListener('DOMContentLoaded', function(){ ///キー入力イベント登録
     window.addEventListener("keydown", function(e){
         keypress(e.key,e.keyCode);
+        if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+            e.preventDefault();
+        }    
+    });
+    window.addEventListener("keyup", function(e){
+        keyup(e.key,e.keyCode);
     });
 });
 
 //起動時の処理//
-myposx=20,myposy=10,myposworld=0;//ポジションのセッティング
 initiate_field();
 
 function init() {

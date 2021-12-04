@@ -5,8 +5,10 @@ var messageWindow=0;//メッセージウィンドウの表示非表示
 var myPicWindow=0;//マイピク描画画面の表示非表示
 var menuWindow=0;//メニューウィンドウの表示非表示
 var shopWindow=0;//ショップウィンドウの表示非表示
+var myposx,myposy, myposworld;//キャラクターの位置　x：横　y:縦　world:ワールド番号
 const width = 960, height = 540; //ウィンドウのサイズ
 var ctx2d; //メインキャンバス
+var characanvas,fieldcanvas; //プリレンダリング用のキャンバス
 
 function keypress(mykey,mykeycode){ //キー入力イベント
     if(mykey=="z"){
@@ -35,6 +37,10 @@ window.addEventListener('DOMContentLoaded', function(){ ///キー入力イベン
         keypress(e.key,e.keyCode);
     });
 });
+
+//起動時の処理//
+myposx=20,myposy=10,myposworld=0;//ポジションのセッティング
+initiate_field();
 
 function init() {
     //2Dの処理

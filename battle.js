@@ -1,6 +1,7 @@
 function battleMain() {
     /*
-    @param 
+    @param なし
     @return 
     */
+
 }

@@ -13,13 +13,14 @@ const fieldnum=5;//フィールドの数
 
 //描画系
 const width = 960, height = 540; //ウィンドウのサイズ
+const mainfontName="Reggae One";
 var ctx2d; //メインキャンバス
-var spacekey=false;
-var leftkey=false, upkey=false, rightkey=false, downkey=false;
+var spacekey=false, leftkey=false, upkey=false, rightkey=false, downkey=false;
+var zkey;
 var characanvas,fieldcanvas,fieldbackcanvas; //プリレンダリング用のキャンバス fieldcanvasは前景、fieldbackcanvasは背景（当たり判定なし）
 
 function keypress(mykey,mykeycode){ //キー入力イベント
-    if(mykey=="z") window.alert("z");
+    if(mykey=="z") zkey=true;
     if(mykey==" ") spacekey=true;
     if(mykeycode==37) leftkey=true;
     if(mykeycode==38) upkey=true;
@@ -28,6 +29,7 @@ function keypress(mykey,mykeycode){ //キー入力イベント
     if(mykey=="b") onBattle=true;
 }
 function keyup(mykey,mykeycode){ //キー離したときのイベント
+    if(mykey=="z") zkey=false;
     if(mykey==" ") spacekey=false;
     if(mykeycode==37) leftkey=false;
     if(mykeycode==38) upkey=false;

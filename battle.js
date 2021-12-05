@@ -17,7 +17,6 @@ function battleMain() {
     ctx2d.fillRect(600,200,50,50);
     
 }
-
 var attackorder;//攻撃の順番
 
 function hitorder(){//先攻後攻決め: floor(素早さ*(乱数0.95-1.05))

@@ -181,7 +181,24 @@ function fieldMain() {
             ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
             ctx2d.fillRect(300,height*0.05,2,height*0.7);
             if (menuSelectNum==0){ ////マイピク
-
+                let mypicOffsetX=0,mypicOffsetY=0;
+                for(var i = 0; i < Math.min(6,mypic.length);i++){
+                    if (!(i % 2)) mypicOffsetX=320;
+                    if (i % 2) mypicOffsetX=560;
+                    mypicOffsetY=height*0.1;
+                    if (i >= 2) mypicOffsetY+=height*0.7/3;
+                    if (i >= 4) mypicOffsetY+=height*0.7/3;
+                    ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
+                    ctx2d.font="20px "+mainfontName;
+                    ctx2d.fillText(mypic[i][1],mypicOffsetX,mypicOffsetY);
+                    ctx2d.font="12px "+mainfontName;
+                    ctx2d.fillText("HP: " + mypic[i][3]+ " / " + mypic[i][4],mypicOffsetX,mypicOffsetY+20);
+                    ctx2d.fillText("DP: "+ mypic[i][5]+ " / " + mypic[i][6],mypicOffsetX,mypicOffsetY+37);
+                    ctx2d.fillText("こうげき: "+ mypic[i][7],mypicOffsetX,mypicOffsetY+54);
+                    ctx2d.fillText("ぼうぎょ: "+ mypic[i][8],mypicOffsetX,mypicOffsetY+71);
+                    ctx2d.fillStyle="rgba(0,0,0," + menuWindowTransChild*0.8+")";
+                    ctx2d.fillRect(mypicOffsetX+100,mypicOffsetY-20,120,120);
+                }
             } else if(menuSelectNum==1){ ////もちもの
                 ctx2d.fillStyle="rgba(105,105,105," + menuWindowTransChild+")";
                 ctx2d.font="20px "+mainfontName;

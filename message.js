@@ -25,6 +25,7 @@ var Choicenum=0;
 function messageMain(){
     if(onMessage){
         if(mode==1){
+        /*
         ctx2d.fillStyle=white;
         ctx2d.font="28px san-serif";
         //textの表示
@@ -37,9 +38,9 @@ function messageMain(){
         //選択肢シーン
         if(Message[lstnum][in_lstnum][0]=="Q"){
             if(messChoice==0){
-                make_shape(550,490,520,465,520,515);}
+                make_pointer(550,490,520,465,520,515);}
             else if(messChoice==1){
-                make_shape(650,490,620,465,620,515);}
+                make_pointer(650,490,620,465,620,515);}
             //選択肢が２つの場合のみ想定
             if(rightkey && messChoice<1){
                 messChoice+=1;
@@ -73,7 +74,7 @@ function messageMain(){
         if(lstnum == Message.length){//全てのメッセージ終了
             onMessage=false;
         }
-
+        */
         }
         if(mode==2){
             battlemessMain();
@@ -96,7 +97,7 @@ function battleloop(){
         ctx2d.fillText("逃げる", width*15/100,height*94/100);
 
         if(loopmode==0){
-            make_shape(width*12/100,height*(71+7*loopselect)/100,width*10/100,height*(69+7*loopselect)/100,width*10/100,height*(73+7*loopselect)/100);
+            make_pointer(width*12/100,height*(71+7*loopselect)/100,width*10/100,height*(69+7*loopselect)/100,width*10/100,height*(73+7*loopselect)/100);
         }
 
         if(loopmode==1){
@@ -104,7 +105,7 @@ function battleloop(){
             ctx2d.fillText("叩きつける", width*45/100,height*80/100);
             ctx2d.fillText("火炎放射", width*45/100,height*87/100);
             ctx2d.fillText("爆炎竜", width*45/100,height*94/100);
-            make_shape(width*42/100,height*(71+7*loopselect)/100,width*40/100,height*(69+7*loopselect)/100,width*40/100,height*(73+7*loopselect)/100);}
+            make_pointer(width*42/100,height*(71+7*loopselect)/100,width*40/100,height*(69+7*loopselect)/100,width*40/100,height*(73+7*loopselect)/100);}
             
         else if(loopmode==2){
             //バッグの表示

@@ -13,15 +13,15 @@ var fieldReDrawFlg=0,warpFlg=0,nowWarpObj,eventflgs=[];
 var menuMypicDetailposX=200,menuMypicDetailposY=100,menuzflg=0,happenedEvent=0;
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans){
-    for(var i = 0;i < mypic[drawMypicNum][2].length;i++){
+    for(var i = 0;i < mypicstock[drawMypicNum][1].length;i++){
         ctx2d.strokeStyle="rgba(255,255,255,"+trans+")";
         ctx2d.strokeWidth=1;
         ctx2d.beginPath();
-        if (mypic[drawMypicNum][2][i][0] == 0){ //線
-            ctx2d.moveTo(dx+dw*mypic[drawMypicNum][2][i][1]/100,dy+dh*mypic[drawMypicNum][2][i][2]/100);
-            ctx2d.lineTo(dx+dw*mypic[drawMypicNum][2][i][3]/100,dy+dh*mypic[drawMypicNum][2][i][4]/100);    
-        } else if(mypic[drawMypicNum][2][i][0] == 1){ //円
-            ctx2d.arc(dx+dw*mypic[drawMypicNum][2][i][1]/100,dy+dh*mypic[drawMypicNum][2][i][2]/100,dw*mypic[drawMypicNum][2][i][3]/100,0,Math.PI*2);
+        if (mypicstock[drawMypicNum][1][i][0] == 0){ //線
+            ctx2d.moveTo(dx+dw*mypicstock[drawMypicNum][1][i][1]/100,dy+dh*mypicstock[drawMypicNum][1][i][2]/100);
+            ctx2d.lineTo(dx+dw*mypicstock[drawMypicNum][1][i][3]/100,dy+dh*mypicstock[drawMypicNum][1][i][4]/100);    
+        } else if(mypicstock[drawMypicNum][1][i][0] == 1){ //円
+            ctx2d.arc(dx+dw*mypicstock[drawMypicNum][1][i][1]/100,dy+dh*mypicstock[drawMypicNum][1][i][2]/100,dw*mypicstock[drawMypicNum][1][i][3]/100,0,Math.PI*2);
         }
         ctx2d.stroke();
     }
@@ -264,15 +264,15 @@ function fieldMain() {
                     if (i >= 4) mypicOffsetY+=height*0.7/3;
                     ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
                     ctx2d.font="20px "+mainfontName;
-                    ctx2d.fillText(mypic[i][1],mypicOffsetX,mypicOffsetY);
+                    ctx2d.fillText(mypicstock[mypic[i]][0],mypicOffsetX,mypicOffsetY);
                     ctx2d.font="12px "+mainfontName;
-                    ctx2d.fillText("HP: " + mypic[i][3]+ " / " + mypic[i][4],mypicOffsetX,mypicOffsetY+20);
-                    ctx2d.fillText("DP: "+ mypic[i][5]+ " / " + mypic[i][6],mypicOffsetX,mypicOffsetY+37);
-                    ctx2d.fillText("こうげき: "+ mypic[i][7],mypicOffsetX,mypicOffsetY+54);
-                    ctx2d.fillText("ぼうぎょ: "+ mypic[i][8],mypicOffsetX,mypicOffsetY+71);
+                    ctx2d.fillText("HP: " + mypicstock[mypic[i]][2]+ " / " + mypicstock[mypic[i]][3],mypicOffsetX,mypicOffsetY+20);
+                    ctx2d.fillText("DP: "+ mypicstock[mypic[i]][4]+ " / " + mypicstock[mypic[i]][5],mypicOffsetX,mypicOffsetY+37);
+                    ctx2d.fillText("レベル: "+ mypicstock[mypic[i]][12],mypicOffsetX,mypicOffsetY+57);
+                    ctx2d.fillText("けいけん: "+ mypicstock[mypic[i]][13],mypicOffsetX,mypicOffsetY+74);
                     ctx2d.fillStyle="rgba(0,0,0," + menuWindowTransChild*0.8+")";
                     ctx2d.fillRect(mypicOffsetX+100,mypicOffsetY-20,120,120);
-                    drawMypic(i,mypicOffsetX+100,mypicOffsetY-20,120,120,menuWindowTransChild);
+                    drawMypic(mypic[i],mypicOffsetX+100,mypicOffsetY-20,120,120,menuWindowTransChild);
                     if (i == menuSelectChildNum){
                         ctx2d.strokeStyle="rgba(255,255,255,"+(Math.sin(globalTime/8)*0.3+0.7)+")";
                         ctx2d.strokeWidth=3;
@@ -289,16 +289,19 @@ function fieldMain() {
                     ctx2d.fillRect(menuMypicDetailposX,menuMypicDetailposY,400,250);
                     ctx2d.fillStyle="rgba(255,255,255," + (1-Math.abs(menuMypicDetailAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.9+")";
                     ctx2d.font="25px "+mainfontName;
-                    ctx2d.fillText(mypic[menuSelectChildNum][1],menuMypicDetailposX+20,menuMypicDetailposY+40);
+                    ctx2d.fillText(mypicstock[mypic[menuSelectChildNum]][0],menuMypicDetailposX+20,menuMypicDetailposY+40);
+                    ctx2d.font="18px "+mainfontName;
+                    ctx2d.fillText("Lv."+mypicstock[mypic[menuSelectChildNum]][12],menuMypicDetailposX+330,menuMypicDetailposY+35);
                     ctx2d.font="16px "+mainfontName;
-                    ctx2d.fillText("HP: " + mypic[menuSelectChildNum][3]+ " / " + mypic[menuSelectChildNum][4],menuMypicDetailposX+30,menuMypicDetailposY+70);
-                    ctx2d.fillText("DP: "+ mypic[menuSelectChildNum][5]+ " / " + mypic[menuSelectChildNum][6],menuMypicDetailposX+30,menuMypicDetailposY+90);
-                    ctx2d.fillText("こうげき: "+ mypic[menuSelectChildNum][7],menuMypicDetailposX+30,menuMypicDetailposY+110);
-                    ctx2d.fillText("ぼうぎょ: "+ mypic[menuSelectChildNum][8],menuMypicDetailposX+30,menuMypicDetailposY+130);
-                    ctx2d.fillText("めいちゅう: "+ mypic[menuSelectChildNum][9],menuMypicDetailposX+30,menuMypicDetailposY+150);
-                    ctx2d.fillText("うん: "+ mypic[menuSelectChildNum][10],menuMypicDetailposX+30,menuMypicDetailposY+170);
-                    ctx2d.fillText("すばやさ: "+ mypic[menuSelectChildNum][11],menuMypicDetailposX+30,menuMypicDetailposY+190);
-                    ctx2d.fillText("とくせい: "+ mypic[menuSelectChildNum][12],menuMypicDetailposX+30,menuMypicDetailposY+210);
+                    ctx2d.fillText("HP: " + mypicstock[mypic[menuSelectChildNum]][2]+ " / " + mypicstock[mypic[menuSelectChildNum]][3],menuMypicDetailposX+30,menuMypicDetailposY+70);
+                    ctx2d.fillText("DP: "+ mypicstock[mypic[menuSelectChildNum]][4]+ " / " + mypicstock[mypic[menuSelectChildNum]][5],menuMypicDetailposX+30,menuMypicDetailposY+90);
+                    ctx2d.fillText("こうげき: "+ mypicstock[mypic[menuSelectChildNum]][6],menuMypicDetailposX+30,menuMypicDetailposY+110);
+                    ctx2d.fillText("ぼうぎょ: "+ mypicstock[mypic[menuSelectChildNum]][7],menuMypicDetailposX+30,menuMypicDetailposY+130);
+                    ctx2d.fillText("めいちゅう: "+ mypicstock[mypic[menuSelectChildNum]][8],menuMypicDetailposX+30,menuMypicDetailposY+150);
+                    ctx2d.fillText("うん: "+ mypicstock[mypic[menuSelectChildNum]][9],menuMypicDetailposX+30,menuMypicDetailposY+170);
+                    ctx2d.fillText("すばやさ: "+ mypicstock[mypic[menuSelectChildNum]][10],menuMypicDetailposX+30,menuMypicDetailposY+190);
+                    ctx2d.fillText("とくせい: "+ specialAvilityText[mypicstock[mypic[menuSelectChildNum]][11]],menuMypicDetailposX+30,menuMypicDetailposY+210);
+                    ctx2d.fillText("けいけんち: "+ mypicstock[mypic[menuSelectChildNum]][13],menuMypicDetailposX+30,menuMypicDetailposY+230);
                     ctx2d.fillStyle="rgba(0,0,0," + (1-Math.abs(menuMypicDetailAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.9+")";
                     ctx2d.fillRect(menuMypicDetailposX+197,menuMypicDetailposY+45,180,180);
                     drawMypic(menuSelectChildNum,menuMypicDetailposX+197,menuMypicDetailposY+45,180,180,(1-Math.abs(menuMypicDetailAni-menuWindowAniSpeed)/menuWindowAniSpeed));

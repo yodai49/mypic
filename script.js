@@ -18,7 +18,7 @@ const mainfontName="Reggae One";
 var ctx2d; //メインキャンバス
 var field2d;//フィールドキャンバスのコンテキスト
 var spacekey=false, leftkey=false, upkey=false, rightkey=false, downkey=false;
-var zkey=0,xkey=0,ckey=0,vkey=0;
+var zkey=0,xkey=0,ckey=0,vkey=0, bkey=0;
 var characanvas,fieldcanvas,fieldbackcanvas; //プリレンダリング用のキャンバス fieldcanvasは前景、fieldbackcanvasは背景（当たり判定なし）
 var items=[[0,39],[1,39],[2,3],[3,39],[4,3],[5,39],[6,3],[7,39],[8,3],[9,3],[10,39],[11,3]];
 var mypic=[
@@ -41,7 +41,7 @@ function keypress(mykey,mykeycode){ //キー入力イベント
     if(mykeycode==38) upkey=true;
     if(mykeycode==39) rightkey=true;
     if(mykeycode==40) downkey=true;
-    if(mykey=="b") onBattle=true;
+    if(mykey=="b") bkey=true;
 }
 function keyup(mykey,mykeycode){ //キー離したときのイベント
     if(mykey=="z") zkey=false;
@@ -53,6 +53,7 @@ function keyup(mykey,mykeycode){ //キー離したときのイベント
     if(mykeycode==38) upkey=false;
     if(mykeycode==39) rightkey=false;
     if(mykeycode==40) downkey=false;
+    if(mykey=="b") bkey=false;
 }
 
 window.addEventListener('load', init); //ロードイベント登録
@@ -83,6 +84,8 @@ function init() {
     function tick() { //メイン関数
         //2次元のリセット処理
         ctx2d.clearRect(0,0,width,height);
+
+        if(bkey) mode=2;
 
         //各モジュールのMain関数を呼び出し
         if (mode == 0){ //タイトル

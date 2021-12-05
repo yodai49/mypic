@@ -12,12 +12,9 @@ function battleMain() {
     ctx2d.fillStyle=blue;
     ctx2d.fillRect(200,200,50,50);
 
-
     //enemy
     ctx2d.fillStyle=red;
     ctx2d.fillRect(600,200,50,50);
     
-
-
 
 }

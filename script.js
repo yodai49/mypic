@@ -20,7 +20,7 @@ var field2d;//フィールドキャンバスのコンテキスト
 var spacekey=false, leftkey=false, upkey=false, rightkey=false, downkey=false;
 var zkey=0,xkey=0,ckey=0,vkey=0, bkey=0;
 var characanvas,fieldcanvas,fieldbackcanvas; //プリレンダリング用のキャンバス fieldcanvasは前景、fieldbackcanvasは背景（当たり判定なし）
-var items=[[0,39],[1,39],[2,3],[3,39],[4,3],[5,39],[6,3],[7,39],[8,3],[9,3],[10,39],[11,3]];
+var items=[[0,39],[1,39],[2,3],[3,4],[4,2],[5,1],[6,30],[7,50],[8,5],[9,33],[10,2],[11,7]];
 var mypic=[0,1,2,3,4,5]//ストックでの管理番号
 var mypicstock=[
     ["椅子",[[0,10,30,25,15],[0,25,15,40,30],[0,60,30,75,15],[0,75,15,90,30],[0,30,70,50,90],[0,50,90,70,70]],300,300,50,50,100,100,[0,1,2,3],5,100,3,2,120,1],

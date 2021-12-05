@@ -426,14 +426,16 @@ function fieldMain() {
                 ctx2d.font="20px "+mainfontName;
                 for(var i = 0;i < Math.min(10,items.length-itemsScroll);i++){
                     if (i != menuSelectChildNum-itemsScroll){
-                        ctx2d.fillText(itemdata[items[i+itemsScroll][0]][0],360,60+36*i);
-                        ctx2d.fillText("× " + items[i+itemsScroll][1],700,60+36*i);    
+                        ctx2d.fillText(itemdata[items[i+itemsScroll][0]][0],360,60+32*i);
+                        ctx2d.fillText("× " + items[i+itemsScroll][1],700,60+32*i);    
                     }
                 }
                 ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
                 ctx2d.font="20px "+mainfontName;
-                ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][0],360,60+36*(menuSelectChildNum-itemsScroll));
-                ctx2d.fillText("× " + items[menuSelectChildNum][1],700,60+36*(menuSelectChildNum-itemsScroll));
+                ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][0],360,60+32*(menuSelectChildNum-itemsScroll));
+                ctx2d.fillText("× " + items[menuSelectChildNum][1],700,60+32*(menuSelectChildNum-itemsScroll));
+                ctx2d.fillRect(360,60+32*9.5,300,1);
+                ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3],360,60+32*10.5);
             } else if(menuSelectNum==2){//////マップ
 
             }

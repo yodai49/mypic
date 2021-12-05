@@ -73,8 +73,7 @@ function messageMain(){
 
         if(lstnum == Message.length){//全てのメッセージ終了
             onMessage=false;
-        }
-        */
+        }*/
         }
         if(mode==2){
             battlemessMain();

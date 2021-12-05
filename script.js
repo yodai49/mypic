@@ -1,5 +1,5 @@
 //システム系
-var mode = 0; //mode 0タイトル画面　1探索画面　2戦闘画面
+var mode = 1; //mode 0タイトル画面　1探索画面　2戦闘画面
 var nextMode=0; //次に遷移するモード
 var modeAnimation = 1; //nextmodeにうつるタイミング
 var messageWindow=0;//メッセージウィンドウの表示非表示
@@ -68,8 +68,13 @@ function init() {
         ctx2d.clearRect(0,0,width,height);
 
         //各モジュールのMain関数を呼び出し
-        battleMain();
-        fieldMain();
+        if (mode == 0){ //タイトル
+
+        } else if(mode == 1) { //フィールド
+            fieldMain();
+        } else if(mode == 2){　//バトル
+            battleMain();
+        }
         mypicMain();
         messageMain();
 

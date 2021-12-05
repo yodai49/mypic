@@ -172,7 +172,7 @@ function battlemessMain(){
     if(in_lstnum == BattleMessage[lstnum].length && lstnum==0){
         BMloop=true, in_lstnum=0;}//BMloop
     else if(in_lstnum == BattleMessage[lstnum].length && (lstnum==1 || lstnum==2)){
-        onMessage=false, mode=1;}//最終メッセージを完了したらmode変更
+        onMessage=false, lstnum=0, in_lstnum=0, loopnum=0, loopselect=0, mode=1;}//最終メッセージを完了したらmode変更
     }
     //////
 }

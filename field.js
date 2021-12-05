@@ -7,9 +7,10 @@ const debugMode=0; //デバッグモード　1ならワープ位置を赤で表�
 var walkspeed=3;//歩くスピード
 var menuSelectNum=0,menuSelectFlg=0;
 var menuSelectChildNum=0,menuWindowChildAni=0,itemsScroll=0;
-var menuMypicDetailAni=0;
+var menuMypicDetailAni=0,menuSortMypicNum=-1;
 var imgCnt=0,loadedimgCnt=0,warpAni=0;
 var fieldReDrawFlg=0,warpFlg=0,nowWarpObj;
+var menuMypicDetailposX=200,menuMypicDetailposY=100;
 
 function createField(){
     fieldcanvas=document.createElement("canvas");
@@ -176,8 +177,9 @@ function fieldMain() {
         } else { //メニューを開く時
             menuWindowChildAni++;
             menuSelectChildNum=0, itemsScroll=0;
+            menuSortMypicNum=-1;
         }
-    } else if(zkey && menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni){ //マイピクの詳細画面を見る時
+    } else if(zkey && menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed)){ //マイピクの詳細画面を見る時
         menuMypicDetailAni++;
     }
     if(xkey && !(menuWindowChildAni-menuWindowAniSpeed) && menuWindowChildAni && !menuMypicDetailAni) menuWindowChildAni++;
@@ -218,7 +220,7 @@ function fieldMain() {
                     ctx2d.fillText("DP: "+ mypic[i][5]+ " / " + mypic[i][6],mypicOffsetX,mypicOffsetY+37);
                     ctx2d.fillText("こうげき: "+ mypic[i][7],mypicOffsetX,mypicOffsetY+54);
                     ctx2d.fillText("ぼうぎょ: "+ mypic[i][8],mypicOffsetX,mypicOffsetY+71);
-                    ctx2d.fillStyle="rgba(0,0,0," + menuWindowTransChild*0.8+")";
+                    ctx2d.fillStyle="rgba(255,0,0," + menuWindowTransChild*0.8+")";
                     ctx2d.fillRect(mypicOffsetX+100,mypicOffsetY-20,120,120);
                     if (i == menuSelectChildNum){
                         ctx2d.strokeStyle="rgba(255,255,255,"+(Math.sin(globalTime/8)*0.3+0.7)+")";
@@ -228,7 +230,22 @@ function fieldMain() {
                 }
                 if (menuMypicDetailAni){
                     ctx2d.fillStyle="rgba(0,0,0," + (1-Math.abs(menuMypicDetailAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.9+")";
-                    ctx2d.fillRect(width/2-300,height/2-200,600,400);
+                    ctx2d.fillRect(menuMypicDetailposX,menuMypicDetailposY,400,250);
+                    ctx2d.fillStyle="rgba(255,255,255," + (1-Math.abs(menuMypicDetailAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.9+")";
+                    ctx2d.font="25px "+mainfontName;
+                    ctx2d.fillText(mypic[menuSelectChildNum][1],menuMypicDetailposX+20,menuMypicDetailposY+40);
+                    ctx2d.font="16px "+mainfontName;
+                    ctx2d.fillText("HP: " + mypic[menuSelectChildNum][3]+ " / " + mypic[menuSelectChildNum][4],menuMypicDetailposX+30,menuMypicDetailposY+70);
+                    ctx2d.fillText("DP: "+ mypic[menuSelectChildNum][5]+ " / " + mypic[menuSelectChildNum][6],menuMypicDetailposX+30,menuMypicDetailposY+90);
+                    ctx2d.fillText("こうげき: "+ mypic[menuSelectChildNum][7],menuMypicDetailposX+30,menuMypicDetailposY+110);
+                    ctx2d.fillText("ぼうぎょ: "+ mypic[menuSelectChildNum][8],menuMypicDetailposX+30,menuMypicDetailposY+130);
+                    ctx2d.fillText("めいちゅう: "+ mypic[menuSelectChildNum][9],menuMypicDetailposX+30,menuMypicDetailposY+150);
+                    ctx2d.fillText("うん: "+ mypic[menuSelectChildNum][10],menuMypicDetailposX+30,menuMypicDetailposY+170);
+                    ctx2d.fillText("すばやさ: "+ mypic[menuSelectChildNum][11],menuMypicDetailposX+30,menuMypicDetailposY+190);
+                    ctx2d.fillText("とくせい: "+ mypic[menuSelectChildNum][12],menuMypicDetailposX+30,menuMypicDetailposY+210);
+                    ctx2d.fillStyle="rgba(255,0,0," + (1-Math.abs(menuMypicDetailAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8+")";
+                    ctx2d.fillRect(menuMypicDetailposX+197,menuMypicDetailposY+45,180,180);
+
                 }
             } else if(menuSelectNum==1){ ////もちもの
                 ctx2d.fillStyle="rgba(105,105,105," + menuWindowTransChild+")";

@@ -18,7 +18,7 @@ const mainfontName="Reggae One";
 var ctx2d; //メインキャンバス
 var field2d;//フィールドキャンバスのコンテキスト
 var spacekey=false, leftkey=false, upkey=false, rightkey=false, downkey=false;
-var zkey=0,xkey=0,ckey=0;
+var zkey=0,xkey=0,ckey=0,vkey=0;
 var characanvas,fieldcanvas,fieldbackcanvas; //プリレンダリング用のキャンバス fieldcanvasは前景、fieldbackcanvasは背景（当たり判定なし）
 var items=[[0,39],[1,39],[2,3],[3,39],[4,3],[5,39],[6,3],[7,39],[8,3],[9,3],[10,39],[11,3]];
 var mypic=[
@@ -34,6 +34,7 @@ function keypress(mykey,mykeycode){ //キー入力イベント
     if(mykey=="z") zkey=true;
     if(mykey=="x") xkey=true;
     if(mykey=="c") ckey=true;
+    if(mykey=="v") vkey=true;
     if(mykey==" ") spacekey=true;
     if(mykeycode==37) leftkey=true;
     if(mykeycode==38) upkey=true;
@@ -45,6 +46,7 @@ function keyup(mykey,mykeycode){ //キー離したときのイベント
     if(mykey=="z") zkey=false;
     if(mykey=="x") xkey=false;
     if(mykey=="c") ckey=false;
+    if(mykey=="v") vkey=false;
     if(mykey==" ") spacekey=false;
     if(mykeycode==37) leftkey=false;
     if(mykeycode==38) upkey=false;

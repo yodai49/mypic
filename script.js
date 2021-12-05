@@ -15,6 +15,7 @@ const fieldnum=5;//フィールドの数
 const width = 960, height = 540; //ウィンドウのサイズ
 const mainfontName="Reggae One";
 var ctx2d; //メインキャンバス
+var field2d;//フィールドキャンバスのコンテキスト
 var spacekey=false, leftkey=false, upkey=false, rightkey=false, downkey=false;
 var zkey;
 var characanvas,fieldcanvas,fieldbackcanvas; //プリレンダリング用のキャンバス fieldcanvasは前景、fieldbackcanvasは背景（当たり判定なし）
@@ -56,8 +57,9 @@ initiate_field();
 function init() {
     //2Dの処理
     ctx2d=document.getElementById("mainCanvas").getContext("2d");
-    ctx2d.width = width;
-    ctx2d.height = height;
+    field2d=document.getElementById("fieldCanvas").getContext("2d");
+    ctx2d.width = width,ctx2d.height = height;
+    field2d.width=width,field2d.height=height;
 
     tick();
 

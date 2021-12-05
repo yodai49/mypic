@@ -156,29 +156,34 @@ function fieldMain() {
         if (eventWindowKind==1){ //整理イベント
             ctx2d.fillStyle="rgba(0,0,0,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8+")";
             ctx2d.fillRect(width/2-250,height/2-200,500,400);
+            ctx2d.font="20pt " + mainfontName;
+            ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8+")";
+            ctx2d.fillText("マイピクいれかえ",width/2-230,height/2-160);    
             var stockMypicOffsetX,stockMypicOffsetY;
             for(var i = 0;i < 6;i++){
-                ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8+")";
                 if (mypicstock.length > i+stockMypicScroll){ ////ストックマイピクを描画
                     ctx2d.font="16pt " + mainfontName;
-                    stockMypicOffsetY=height/2-200+50;
+                    stockMypicOffsetY=height/2-200+83;
                     stockMypicOffsetX=width/2-250;
                     if (!(i % 2)) stockMypicOffsetX+=20;
                     if (i%2) stockMypicOffsetX+=260;
                     if (i>1) stockMypicOffsetY+=110;
                     if (i>3) stockMypicOffsetY+=110;
+                    ctx2d.fillStyle="rgba(0,0,0,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8+")";
+                    ctx2d.fillRect(stockMypicOffsetX+105,stockMypicOffsetY-15,100,100);
+                    if (mypic.includes(i+stockMypicScroll)){ //スタメンなら枠で囲う
+                        ctx2d.strokeStyle="rgba(170,0,0,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*1+")";
+                        ctx2d.strokeRect(stockMypicOffsetX+105,stockMypicOffsetY-15,100,100);    
+                        ctx2d.fillStyle="rgba(105,105,105,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8+")";
+                    } else{
+                        ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8+")";
+                    }
                     ctx2d.fillText(mypicstock[i+stockMypicScroll][0],stockMypicOffsetX,stockMypicOffsetY);    
                     ctx2d.font="10pt " + mainfontName;
                     ctx2d.fillText("Lv. "+ mypicstock[i+stockMypicScroll][12],stockMypicOffsetX+10,stockMypicOffsetY+20);    
                     ctx2d.fillText("Exp. "+ mypicstock[i+stockMypicScroll][13],stockMypicOffsetX+10,stockMypicOffsetY+36);    
                     ctx2d.fillText("HP "+ mypicstock[i+stockMypicScroll][3],stockMypicOffsetX+10,stockMypicOffsetY+56);    
                     ctx2d.fillText("DP "+ mypicstock[i+stockMypicScroll][5],stockMypicOffsetX+10,stockMypicOffsetY+72);    
-                    ctx2d.fillStyle="rgba(0,0,0,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8+")";
-                    ctx2d.fillRect(stockMypicOffsetX+105,stockMypicOffsetY-15,100,100);
-                    if (mypic.includes(i+stockMypicScroll)){ //スタメンなら枠で囲う
-                        ctx2d.strokeStyle="rgba(170,0,0,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*1+")";
-                        ctx2d.strokeRect(stockMypicOffsetX+105,stockMypicOffsetY-15,100,100);    
-                    }
                     drawMypic(i+stockMypicScroll,stockMypicOffsetX+105,stockMypicOffsetY-15,100,100,(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed));
                 }
                 if(i == stockMypicSelectNum-stockMypicScroll){

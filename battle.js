@@ -36,8 +36,8 @@ function hitodds(){//命中確率: (技の命中率*((100-敵の運)/100))
     return (hitrate*((100-enemyLucky)/100))
 }
 
-function calcDamage(){//ダメージ計算
-    return Math.floor(Math.floor(Math.floor(level*2/4+2)* power * attack/enemydefend+2) * typeMatch * (0.9*(1.1-0.9)*Math.random()));
+function calcDamage(){//ダメージ計算: (((レベル∗2/4+2)∗技の威力∗自分の攻撃力/敵の防御力+2)∗タイプ相性∗(乱数0.9−1.1))∗
+    return Math.floor(Math.floor(Math.floor(level*2/4+2)* power * mypicstock[mypic[0]][10]/enemydefend+2) * typeMatch * (0.9*(1.1-0.9)*Math.random()));
 }
 
 function needEx(level){//(レベル)^2.5

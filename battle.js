@@ -17,18 +17,24 @@ function battleMain() {
     ctx2d.fillRect(600,200,50,50);
     
 }
+var encount=false;//敵出現ポインタ
 var attackorder;//攻撃の順番
 
+function encount_check(){//敵との遭遇率encount=6*((200−運)/200)
+    var encountRate = Math.floor(6*((200 - mypicstock[mypic[0]][9])/200));
+    if(encountRate>=Math.floor(100*Math.random())) encount=true;
+}
+
 function hitorder(){//先攻後攻決め: floor(素早さ*(乱数0.95-1.05))
-    var A_speed = Math.floor(mySpeed*(0.95*(1.05-0.95)*Math.random()));
+    var A_speed = Math.floor(mypicstock[mypic[0]][10]*(0.95*(1.05-0.95)*Math.random()));
     var B_speed = Math.floor(enemySpeed*(0.95*(1.05-0.95)*Math.random()));
     if(A_speed>=B_speed) attackorder=true;//味方の方が速い
     else attackorder=false;
 }
 
 function hitcount(){//攻撃回数: Hitcount=((自分の素早さ)/(敵の素早さ)*16/10)
-    if(attackorder) return Math.floor(mySpeed/enemySpeed*16/10);
-    else return Math.floor(enemySpeed/mySpeed*16/10);
+    if(attackorder) return Math.floor(mypicstock[mypic[0]][10]/enemySpeed*16/10);
+    else return Math.floor(enemySpeed/mypicstock[mypic[0]][10]*16/10);
 }
 
 function hitodds(){//命中確率: (技の命中率*((100-敵の運)/100))
@@ -36,7 +42,7 @@ function hitodds(){//命中確率: (技の命中率*((100-敵の運)/100))
 }
 
 function calcDamage(){//ダメージ計算: (((レベル∗2/4+2)∗技の威力∗自分の攻撃力/敵の防御力+2)∗タイプ相性∗(乱数0.9−1.1))∗
-    return Math.floor(Math.floor(Math.floor(level*2/4+2)* power * mypicstock[mypic[0]][10]/enemydefend+2) * typeMatch * (0.9*(1.1-0.9)*Math.random()));
+    return Math.floor(Math.floor(Math.floor(level*2/4+2)* power * mypicstock[mypic[0]][6]/enemydefend+2) * typeMatch * (0.9*(1.1-0.9)*Math.random()));
 }
 
 function needEx(level){//(レベル)^2.5

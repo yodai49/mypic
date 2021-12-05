@@ -24,6 +24,10 @@ var fieldwarpobj=[
     [[940,0,20,540,1,40,30]],//フィールドのワープ場所のデータ　[x,y,width,height,jmpWorld,jmpx,jmpy]
     [[0,0,20,540,0,920,30]]
 ]
+var eventobj=[
+    [[30,30,50,50,1]],//フィールドのイベント場所のデータ　[x,y,width,height,eventnum]
+    []
+]
 
 ////////////////////
 /* 　敵データ　     */

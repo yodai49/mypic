@@ -3,13 +3,13 @@ const charasize=30; //キャラクターのサイズ
 const pre_charasize=60; //プリレンダリング用のキャラクターのサイズ
 const fieldwidth=960;//フィールドの幅の最大値
 const fieldheight=540;//フィールドの高さの最大値
-const debugMode=0; //デバッグモード　1ならワープ位置を赤で表示
+const debugMode=3; //デバッグモード　1ならワープ位置を赤で表示
 var walkspeed=3;//歩くスピード
 var menuSelectNum=0,menuSelectFlg=0;
 var menuSelectChildNum=0,menuWindowChildAni=0,itemsScroll=0;
 var menuMypicDetailAni=0,menuSortMypicNum=-1;
 var imgCnt=0,loadedimgCnt=0,warpAni=0;
-var fieldReDrawFlg=0,warpFlg=0,nowWarpObj;
+var fieldReDrawFlg=0,warpFlg=0,nowWarpObj,eventflgs=[];
 var menuMypicDetailposX=200,menuMypicDetailposY=100,menuzflg=0;
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans){
@@ -26,6 +26,49 @@ function drawMypic(drawMypicNum,dx,dy,dw,dh,trans){
         ctx2d.stroke();
     }
 }
+function checkConflict(dir){
+    /* 当たり判定
+    @param dir--移動しようとする方向　0-3で、左右上下の順番
+    @return 0-衝突なし　1-衝突あり
+    */
+    var checkConflictPosx=0,checkConflictPosy=0;
+    if (dir==0) checkConflictPosx= -walkspeed-1,checkConflictPosy=0;
+    if (dir==1) checkConflictPosx= charasize+walkspeed+1,checkConflictPosy=0;
+    if (dir==2) checkConflictPosx= 0,checkConflictPosy=-walkspeed-1;
+    if (dir==3) checkConflictPosx= 0,checkConflictPosy=charasize+walkspeed+1;
+    if (!warpAni){
+        for(let i = 0;i < fieldwarpobj[myposworld].length;i++){
+            if (fieldwarpobj[myposworld][i][0] < myposx+charasize && fieldwarpobj[myposworld][i][0] + fieldwarpobj[myposworld][i][2] > myposx){
+                if (fieldwarpobj[myposworld][i][1] < myposy+charasize && fieldwarpobj[myposworld][i][1] + fieldwarpobj[myposworld][i][3] > myposy){
+                    nowWarpObj=fieldwarpobj[myposworld][i];
+                    warpFlg=1;
+                    warpAni=1;
+                    return 0;
+                }
+            }
+        }
+    }
+    for(let i = 0;i < eventobj[myposworld].length;i++){
+        eventflgs[i]=0;
+        if (eventobj[myposworld][i][0] < myposx+charasize && eventobj[myposworld][i][0] + eventobj[myposworld][i][2] > myposx){
+            if (eventobj[myposworld][i][1] < myposy+charasize && eventobj[myposworld][i][1] + eventobj[myposworld][i][3] > myposy){
+                eventflgs[i]=1;
+            }
+        }
+    }
+    var tempColision = 0;
+    for(let j = 0;j < 10;j++){
+        tempColision = 1;
+        var checkimgdata=fieldcanvas.getContext("2d").getImageData(myposx+checkConflictPosx,myposy+checkConflictPosy,1,1);
+        for(let i = 0;i < walkCol.length;i++){
+            if (checkimgdata.data[0] == walkCol[i][0] && checkimgdata.data[1] == walkCol[i][1] && checkimgdata.data[2] == walkCol[i][2]) tempColision=0;
+        }
+        if (dir==2 || dir == 3) checkConflictPosx+=(charasize/10);
+        if (dir==0 || dir == 1) checkConflictPosy+=(charasize/10);
+        if (tempColision) return 1;
+    }
+    return 0;
+}
 function createField(){
     fieldcanvas=document.createElement("canvas");
     fieldcanvas.width=fieldwidth, fieldcanvas.height=fieldheight;
@@ -40,6 +83,8 @@ function createField(){
         fieldimg.src="./imgs/fieldobjects/fieldobj" + myposworld + "_" + j + ".png";
         fieldimg.onload=function(){fieldcanvasctx.drawImage(fieldimg,fielddata[myposworld][j][0],fielddata[myposworld][j][1]);loadedimgCnt++;}
     }
+    eventflgs=[];
+    checkConflict();
 }
 function initiate_field(){
     /*　フィールド・キャラクターの初期化処理/////////////////////////////////////////
@@ -75,41 +120,6 @@ function myposmodify(){
 function walkeve(){ //歩くときに発生する処理
     myposmodify();
     walkanimation=(walkanimation+1)%30; //歩く処理
-}
-function checkConflict(dir){
-    /* 当たり判定
-    @param dir--移動しようとする方向　0-3で、左右上下の順番
-    @return 0-衝突なし　1-衝突あり
-    */
-    var checkConflictPosx=0,checkConflictPosy=0;
-    if (dir==0) checkConflictPosx= -walkspeed-1,checkConflictPosy=0;
-    if (dir==1) checkConflictPosx= charasize+walkspeed+1,checkConflictPosy=0;
-    if (dir==2) checkConflictPosx= 0,checkConflictPosy=-walkspeed-1;
-    if (dir==3) checkConflictPosx= 0,checkConflictPosy=charasize+walkspeed+1;
-    if (!warpAni){
-        for(let i = 0;i < fieldwarpobj[myposworld].length;i++){
-            if (fieldwarpobj[myposworld][i][0] < myposx+charasize && fieldwarpobj[myposworld][i][0] + fieldwarpobj[myposworld][i][2] > myposx){
-                if (fieldwarpobj[myposworld][i][1] < myposy+charasize && fieldwarpobj[myposworld][i][1] + fieldwarpobj[myposworld][i][3] > myposy){
-                    nowWarpObj=fieldwarpobj[myposworld][i];
-                    warpFlg=1;
-                    warpAni=1;
-                    return 0;
-                }
-            }
-        }
-    }
-    var tempColision = 0;
-    for(let j = 0;j < 10;j++){
-        tempColision = 1;
-        var checkimgdata=fieldcanvas.getContext("2d").getImageData(myposx+checkConflictPosx,myposy+checkConflictPosy,1,1);
-        for(let i = 0;i < walkCol.length;i++){
-            if (checkimgdata.data[0] == walkCol[i][0] && checkimgdata.data[1] == walkCol[i][1] && checkimgdata.data[2] == walkCol[i][2]) tempColision=0;
-        }
-        if (dir==2 || dir == 3) checkConflictPosx+=(charasize/10);
-        if (dir==0 || dir == 1) checkConflictPosy+=(charasize/10);
-        if (tempColision) return 1;
-    }
-    return 0;
 }
 
 function fieldMain() {
@@ -311,10 +321,16 @@ function fieldMain() {
     }
 
     ////////////////////////////////////////////////////////////////デバッグモード
-    if(debugMode%2==1){ //デバッグモード 1が立っていたらワープを表示
+    if(debugMode%2){ //デバッグモード 1が立っていたらワープを表示
         for(let i = 0;i < fieldwarpobj[myposworld].length;i++){
-            ctx2d.fillStyle="rgba(255,0,0,1)";
+            ctx2d.fillStyle="rgba(255,0,0,0.3)";
             ctx2d.fillRect(fieldwarpobj[myposworld][i][0],fieldwarpobj[myposworld][i][1],fieldwarpobj[myposworld][i][2],fieldwarpobj[myposworld][i][3]);
+        }    
+    }
+    if (Math.floor(debugMode/2)%2){
+        for(let i = 0;i < eventobj[myposworld].length;i++){
+            ctx2d.fillStyle="rgba(0,255,0,0.3)";
+            ctx2d.fillRect(eventobj[myposworld][i][0],eventobj[myposworld][i][1],eventobj[myposworld][i][2],eventobj[myposworld][i][3]);
         }    
     }
 }

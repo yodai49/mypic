@@ -11,6 +11,7 @@ var menuMypicDetailAni=0,menuSortMypicNum=-1;
 var imgCnt=0,loadedimgCnt=0,warpAni=0;
 var fieldReDrawFlg=0,warpFlg=0,nowWarpObj,eventflgs=[];
 var menuMypicDetailposX=200,menuMypicDetailposY=100,menuzflg=0,happenedEvent=0;
+var eventWindowAni=0,eventWindowKind=0;
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans){
     for(var i = 0;i < mypicstock[drawMypicNum][1].length;i++){
@@ -122,12 +123,16 @@ function walkeve(){ //歩くときに発生する処理
     walkanimation=(walkanimation+1)%30; //歩く処理
 }
 function trigEvent(trigEventnum){
-    if (trigEventnum==1){ //孵化イベント
-        
+    if (trigEventnum==1){ //マイピク整理のイベント
+        eventWindowAni++;
+        eventWindowKind=1;
+        happenedEvent=1;
+    }　else if (trigEventnum==2){ //マイピク孵化のイベント
+        eventWindowAni++;
+        eventWindowKind=2;
         happenedEvent=1;
     }
 }
-
 function fieldMain() {
     var menuWindowTrans,menuWindowTransChild;
     const menuWindowAniSpeed=15;
@@ -138,15 +143,26 @@ function fieldMain() {
     */
     if (fieldReDrawFlg && loadedimgCnt==imgCnt) field2d.drawImage(fieldcanvas,0,0,width,height,0,0,width,height),fieldReDrawFlg=0; //背景の描画
     ctx2d.drawImage(characanvas,pre_charasize*Math.floor(walkanimation/15),pre_charasize*walkdir,pre_charasize,pre_charasize,myposx,myposy,charasize,charasize); //キャラクターの描画
-
-    //////////////////////////////////////////キー入力処理
     if (happenedEvent){
         for(var i = 0;i < eventobj[myposworld].length;i++){
             happenedEvent*=(1-eventflgs[i]);
         }
         happenedEvent=1-happenedEvent;
     }
-    if(!menuWindow){ /////移動処理・アクション処理
+    ////////////////////////////////////////////////////////キー入力等処理
+    if (eventWindowAni){ //イベントウィンドウが表示されている時
+        if (eventWindowKind==1){ //整理イベント
+            ctx2d.fillStyle="rgba(0,0,0,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8+")";
+            ctx2d.fillRect(width/2-250,height/2-200,500,400);    
+        } else if(eventWindowKind==2){ //孵化イベント
+            ctx2d.fillStyle="rgba(0,0,0,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8+")";
+            ctx2d.fillRect(width/2-250,height/2-200,500,400);    
+        }
+        if (eventWindowAni && (eventWindowAni-menuWindowAniSpeed)) eventWindowAni++;
+        if (eventWindowAni == 2*menuWindowAniSpeed) eventWindowAni=0,happenedEvent=0; 
+        if (xkey && !(eventWindowAni-menuWindowAniSpeed)) eventWindowAni++;
+    } else if(!menuWindow){ /////メニューウィンドウが表示されていない時
+        if(ckey) menuWindow++;
         if (leftkey) walkdir=0;
         if (rightkey) walkdir=1;
         if (upkey) walkdir=2;
@@ -160,7 +176,28 @@ function fieldMain() {
                 if (eventflgs[i] && !happenedEvent) trigEvent(eventobj[myposworld][i][4]);
             }
         }
-    } else {
+    } else { /////メニューウィンドウが表示されている時
+        if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni) menuWindow++;
+        if(zkey && menuWindow && !menuWindowChildAni){
+            if (menuSelectNum==3){ //セーブ
+    
+            } else if(menuSelectNum==4){ //タイトル
+    
+            } else { //メニューを開く時
+                menuWindowChildAni++;
+                menuSelectChildNum=0, itemsScroll=0;
+                menuSortMypicNum=-1;
+            }
+        } else if(zkey && !menuzflg&& menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum==-1){ //マイピクの詳細画面を見る時
+            menuMypicDetailAni++;
+        } else if(zkey && menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum!=-1){ //マイピクの詳細画面を見る時
+            //入れ替え処理
+            var menuTmpSort=mypic[menuSortMypicNum];
+            mypic[menuSortMypicNum]=mypic[menuSelectChildNum];
+            mypic[menuSelectChildNum]=menuTmpSort;
+            menuSortMypicNum=-1;
+            menuzflg=1;
+        }    
         if (upkey && !menuSelectFlg && !menuWindowChildAni) menuSelectNum--,menuSelectFlg=1;
         if (downkey && !menuSelectFlg && !menuWindowChildAni) menuSelectNum++,menuSelectFlg=1;
         if (upkey && !menuSelectFlg && menuWindowChildAni) {  //上キー
@@ -208,28 +245,6 @@ function fieldMain() {
     if (menuWindowChildAni == menuWindowAniSpeed*2) menuWindowChildAni=0;
     if (menuMypicDetailAni && menuMypicDetailAni!=menuWindowAniSpeed) menuMypicDetailAni++;
     if (menuMypicDetailAni == menuWindowAniSpeed*2) menuMypicDetailAni=0;
-    if(ckey && !menuWindow) menuWindow++;
-    if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni) menuWindow++;
-    if(zkey && menuWindow && !menuWindowChildAni){
-        if (menuSelectNum==3){ //セーブ
-
-        } else if(menuSelectNum==4){ //タイトル
-
-        } else { //メニューを開く時
-            menuWindowChildAni++;
-            menuSelectChildNum=0, itemsScroll=0;
-            menuSortMypicNum=-1;
-        }
-    } else if(zkey && !menuzflg&& menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum==-1){ //マイピクの詳細画面を見る時
-        menuMypicDetailAni++;
-    } else if(zkey && menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum!=-1){ //マイピクの詳細画面を見る時
-        //入れ替え処理
-        var menuTmpSort=mypic[menuSortMypicNum];
-        mypic[menuSortMypicNum]=mypic[menuSelectChildNum];
-        mypic[menuSelectChildNum]=menuTmpSort;
-        menuSortMypicNum=-1;
-        menuzflg=1;
-    }
     if (!zkey) menuzflg=0;
     if(xkey && !(menuWindowChildAni-menuWindowAniSpeed) && menuWindowChildAni && !menuMypicDetailAni) menuWindowChildAni++;
     if(xkey && !(menuWindowChildAni-menuWindowAniSpeed) && menuWindowChildAni && !(menuMypicDetailAni-menuWindowAniSpeed)) menuMypicDetailAni++;

@@ -3,9 +3,10 @@ const charasize=30; //キャラクターのサイズ
 const pre_charasize=60; //プリレンダリング用のキャラクターのサイズ
 const fieldwidth=960;//フィールドの幅の最大値
 const fieldheight=540;//フィールドの高さの最大値
+const debugMode=0; //デバッグモード　1ならワープ位置を赤で表示
 var walkspeed=3;//歩くスピード
 var menuSelectNum=0,menuSelectFlg=0;
-var imgCnt=0,loadedimgCnt=0;
+var imgCnt=0,loadedimgCnt=0,warpAni=0;
 var fieldReDrawFlg=0,warpFlg=0,nowWarpObj;
 
 function createField(){
@@ -68,13 +69,16 @@ function checkConflict(dir){
     if (dir==1) checkConflictPosx= charasize+walkspeed+1,checkConflictPosy=0;
     if (dir==2) checkConflictPosx= 0,checkConflictPosy=-walkspeed-1;
     if (dir==3) checkConflictPosx= 0,checkConflictPosy=charasize+walkspeed+1;
-    for(let i = 0;i < fieldwarpobj[myposworld].length;i++){
-        if (fieldwarpobj[myposworld][i][0] < myposx+charasize && fieldwarpobj[myposworld][i][0] + fieldwarpobj[myposworld][i][2] > myposx){
-            if (fieldwarpobj[myposworld][i][1] < myposy+charasize && fieldwarpobj[myposworld][i][1] + fieldwarpobj[myposworld][i][3] > myposy){
-                nowWarpObj=fieldwarpobj[myposworld][i];
-                warpFlg=1;
-                return 0;
-            }    
+    if (!warpAni){
+        for(let i = 0;i < fieldwarpobj[myposworld].length;i++){
+            if (fieldwarpobj[myposworld][i][0] < myposx+charasize && fieldwarpobj[myposworld][i][0] + fieldwarpobj[myposworld][i][2] > myposx){
+                if (fieldwarpobj[myposworld][i][1] < myposy+charasize && fieldwarpobj[myposworld][i][1] + fieldwarpobj[myposworld][i][3] > myposy){
+                    nowWarpObj=fieldwarpobj[myposworld][i];
+                    warpFlg=1;
+                    warpAni=1;
+                    return 0;
+                }    
+            }
         }
     }
     var tempColision = 0;
@@ -141,19 +145,25 @@ function fieldMain() {
             ctx2d.fillText(menuWindowTxt[i],60,130+i*45);
         }
     }
-
-    for(let i = 0;i < fieldwarpobj[myposworld].length;i++){
-        ctx2d.fillStyle="rgba(255,0,0,1)";
-        ctx2d.fillRect(fieldwarpobj[myposworld][i][0],fieldwarpobj[myposworld][i][1],fieldwarpobj[myposworld][i][2],fieldwarpobj[myposworld][i][3]);
+    if(debugMode%2==1){
+        for(let i = 0;i < fieldwarpobj[myposworld].length;i++){
+            ctx2d.fillStyle="rgba(255,0,0,1)";
+            ctx2d.fillRect(fieldwarpobj[myposworld][i][0],fieldwarpobj[myposworld][i][1],fieldwarpobj[myposworld][i][2],fieldwarpobj[myposworld][i][3]);
+        }    
     }
-//    console.log(loadedimgCnt + "/" + imgCnt);
-
-    if (warpFlg){ //ワープの処理
+    if (warpAni) {
+        warpAni++;
+        ctx2d.fillStyle="rgba(0,0,0," + (1-Math.abs(warpAni-10)/10)  +")";
+        ctx2d.fillRect(0,0,width,height);
+    }
+    if (warpAni==10 && warpFlg){
         myposworld=nowWarpObj[4];
         myposx=nowWarpObj[5];
         myposy=nowWarpObj[6];
         createField();
         fieldReDrawFlg=1;
         warpFlg=0;
+    } else if(warpAni==20){
+        warpAni=0;
     }
 }

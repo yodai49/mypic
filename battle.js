@@ -47,5 +47,3 @@ function needEx(level){//(レベル)^2.5
 function getEx(){//戦闘後獲得する経験値
     return Math.floor(Math.floor(50*enemylevel*(0.9*(1.1-0.9)*Math.random()))*itemBonus*BossBonus)
 }
-
-function prob

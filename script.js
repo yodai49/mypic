@@ -6,6 +6,7 @@ var messageWindow=0;//メッセージウィンドウの表示非表示
 var myPicWindow=0;//マイピク描画画面の表示非表示
 var menuWindow=0;//メニューウィンドウの表示非表示
 var shopWindow=0;//ショップウィンドウの表示非表示
+var globalTime=0;//タイム　1ループで1増える
 
 //フィールド系
 var myposx=0,myposy=0, myposworld=0;//キャラクターの位置　x：横　y:縦　world:ワールド番号
@@ -17,11 +18,22 @@ const mainfontName="Reggae One";
 var ctx2d; //メインキャンバス
 var field2d;//フィールドキャンバスのコンテキスト
 var spacekey=false, leftkey=false, upkey=false, rightkey=false, downkey=false;
-var zkey;
+var zkey=0,xkey=0,ckey=0;
 var characanvas,fieldcanvas,fieldbackcanvas; //プリレンダリング用のキャンバス fieldcanvasは前景、fieldbackcanvasは背景（当たり判定なし）
+var items=[[0,39],[1,39],[2,3],[3,39],[4,3],[5,39],[6,3],[7,39],[8,3],[9,3],[10,39],[11,3]];
+var mypic=[
+    [0,"椅子",[0,0,10,10],300,300,50,50,100,100,98,5,100,3],
+    [0,"机",[0,0,10,10],300,300,50,50,100,100,98,5,100,3],
+    [0,"たらこ",[0,0,10,10],300,300,50,50,100,100,98,5,100,3],
+    [0,"きのみ",[0,0,10,10],300,300,50,50,100,100,98,5,100,3],
+    [0,"タバコ",[0,0,10,10],300,300,50,50,100,100,98,5,100,3],
+    [0,"酒",[0,0,10,10],300,300,50,50,100,100,98,5,100,3]
+]//管理番号、名前、形、今のHP、maxHP、今のMP、maxMP、攻撃、防御、命中、運、素早さ、特性
 
 function keypress(mykey,mykeycode){ //キー入力イベント
     if(mykey=="z") zkey=true;
+    if(mykey=="x") xkey=true;
+    if(mykey=="c") ckey=true;
     if(mykey==" ") spacekey=true;
     if(mykeycode==37) leftkey=true;
     if(mykeycode==38) upkey=true;
@@ -31,6 +43,8 @@ function keypress(mykey,mykeycode){ //キー入力イベント
 }
 function keyup(mykey,mykeycode){ //キー離したときのイベント
     if(mykey=="z") zkey=false;
+    if(mykey=="x") xkey=false;
+    if(mykey=="c") ckey=false;
     if(mykey==" ") spacekey=false;
     if(mykeycode==37) leftkey=false;
     if(mykeycode==38) upkey=false;
@@ -78,6 +92,7 @@ function init() {
         mypicMain();
         messageMain();
 
+        globalTime++;
         requestAnimationFrame(tick); //次のフレーム呼び出し（再帰）
     }
 }

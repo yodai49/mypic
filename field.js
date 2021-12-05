@@ -6,6 +6,8 @@ const fieldheight=540;//フィールドの高さの最大値
 const debugMode=0; //デバッグモード　1ならワープ位置を赤で表示
 var walkspeed=3;//歩くスピード
 var menuSelectNum=0,menuSelectFlg=0;
+var menuSelectChildNum=0,menuWindowChildAni=0,itemsScroll=0;
+var menuMypicDetailAni=0;
 var imgCnt=0,loadedimgCnt=0,warpAni=0;
 var fieldReDrawFlg=0,warpFlg=0,nowWarpObj;
 
@@ -77,7 +79,7 @@ function checkConflict(dir){
                     warpFlg=1;
                     warpAni=1;
                     return 0;
-                }    
+                }
             }
         }
     }
@@ -96,7 +98,7 @@ function checkConflict(dir){
 }
 
 function fieldMain() {
-    var menuWindowTrans;
+    var menuWindowTrans,menuWindowTransChild;
     const menuWindowAniSpeed=15;
     const menuWindowTxt =["マイピク","もちもの","マップ","セーブ","タイトル"];
     /*
@@ -106,8 +108,8 @@ function fieldMain() {
     if (fieldReDrawFlg && loadedimgCnt==imgCnt) field2d.drawImage(fieldcanvas,0,0,width,height,0,0,width,height),fieldReDrawFlg=0; //背景の描画
     ctx2d.drawImage(characanvas,pre_charasize*Math.floor(walkanimation/15),pre_charasize*walkdir,pre_charasize,pre_charasize,myposx,myposy,charasize,charasize); //キャラクターの描画
 
-    //移動処理
-    if(!menuWindow){
+    //////////////////////////////////////////キー入力処理
+    if(!menuWindow){ /////移動処理
         if (leftkey) walkdir=0;
         if (rightkey) walkdir=1;
         if (upkey) walkdir=2;
@@ -117,21 +119,72 @@ function fieldMain() {
         if (upkey && !checkConflict(2)) myposy-=walkspeed,walkeve();
         if (downkey && !checkConflict(3)) myposy+=walkspeed,walkeve();
     } else {
-        if (upkey && !menuSelectFlg) menuSelectNum--,menuSelectFlg=1;
-        if (downkey && !menuSelectFlg) menuSelectNum++,menuSelectFlg=1;
-        if (!upkey && !downkey) menuSelectFlg=0;
+        if (upkey && !menuSelectFlg && !menuWindowChildAni) menuSelectNum--,menuSelectFlg=1;
+        if (downkey && !menuSelectFlg && !menuWindowChildAni) menuSelectNum++,menuSelectFlg=1;
+        if (upkey && !menuSelectFlg && menuWindowChildAni) {  //上キー
+            if (menuSelectNum==0 && menuSelectChildNum>=2 && !menuMypicDetailAni){//マイピク
+                menuSelectChildNum-=2,menuSelectFlg=1;
+            } else if (menuSelectNum==1 && menuSelectChildNum&& !menuMypicDetailAni){
+                menuSelectChildNum--,menuSelectFlg=1;
+                if (menuSelectChildNum < itemsScroll && itemsScroll) itemsScroll--;    
+            }
+        }
+        if (downkey && !menuSelectFlg && menuWindowChildAni) {//下キー
+            if (menuSelectNum==0 && menuSelectChildNum<=3 && !menuMypicDetailAni){//マイピク
+                menuSelectChildNum+=2,menuSelectFlg=1;
+            } else if (menuSelectNum==1 && (menuSelectChildNum!=(items.length-1)) && !menuMypicDetailAni){
+                menuSelectChildNum++,menuSelectFlg=1;
+                if (menuSelectChildNum>=10 && menuSelectChildNum-itemsScroll == 10) itemsScroll++;
+            }
+        }
+        if (leftkey && !menuSelectFlg && menuWindowChildAni) { //左キー
+            if (menuSelectNum==0 && (menuSelectChildNum%2)&& !menuMypicDetailAni){//マイピク
+                menuSelectChildNum--,menuSelectFlg=1;
+            } else if (menuSelectNum==1 && menuSelectChildNum&& !menuMypicDetailAni){
+                menuSelectChildNum--,menuSelectFlg=0;
+                if (menuSelectChildNum < itemsScroll && itemsScroll) itemsScroll--;
+            }
+        }
+        if (rightkey && !menuSelectFlg && menuWindowChildAni) {//右キー
+            if (menuSelectNum==0 && !(menuSelectChildNum%2)&& !menuMypicDetailAni){//マイピク
+                menuSelectChildNum++,menuSelectFlg=1;
+            } else if (menuSelectNum==1 && (menuSelectChildNum!=(items.length-1))&& !menuMypicDetailAni){
+                menuSelectChildNum++,menuSelectFlg=0;
+                if (menuSelectChildNum>=10 && menuSelectChildNum-itemsScroll == 10) itemsScroll++;
+            }
+        }
+        if (!upkey && !downkey && !leftkey && !rightkey) menuSelectFlg=0;
         if (menuSelectNum<0) menuSelectNum=0;
         if (menuSelectNum >= menuWindowTxt.length) menuSelectNum=menuWindowTxt.length-1;
     }
     //メニューの表示処理
     menuWindowTrans=(1-Math.abs(menuWindow-menuWindowAniSpeed)/menuWindowAniSpeed);
+    menuWindowTransChild=(1-Math.abs(menuWindowChildAni-menuWindowAniSpeed)/menuWindowAniSpeed);
     if(menuWindow && menuWindow!=menuWindowAniSpeed) menuWindow++;
     if(menuWindow == menuWindowAniSpeed*2) menuWindow=0;
-    if(zkey && !menuWindow) menuWindow++;
-    if(zkey && !(menuWindow-menuWindowAniSpeed)) menuWindow++;
+    if (menuWindowChildAni && menuWindowChildAni!=menuWindowAniSpeed) menuWindowChildAni++;
+    if (menuWindowChildAni == menuWindowAniSpeed*2) menuWindowChildAni=0;
+    if (menuMypicDetailAni && menuMypicDetailAni!=menuWindowAniSpeed) menuMypicDetailAni++;
+    if (menuMypicDetailAni == menuWindowAniSpeed*2) menuMypicDetailAni=0;
+    if(ckey && !menuWindow) menuWindow++;
+    if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni) menuWindow++;
+    if(zkey && menuWindow && !menuWindowChildAni){
+        if (menuSelectNum==3){ //セーブ
+
+        } else if(menuSelectNum==4){ //タイトル
+
+        } else { //メニューを開く時
+            menuWindowChildAni++;
+            menuSelectChildNum=0, itemsScroll=0;
+        }
+    } else if(zkey && menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni){ //マイピクの詳細画面を見る時
+        menuMypicDetailAni++;
+    }
+    if(xkey && !(menuWindowChildAni-menuWindowAniSpeed) && menuWindowChildAni && !menuMypicDetailAni) menuWindowChildAni++;
+    if(xkey && !(menuWindowChildAni-menuWindowAniSpeed) && menuWindowChildAni && !(menuMypicDetailAni-menuWindowAniSpeed)) menuMypicDetailAni++;
     if(menuWindow){    //メニューの描画
         ctx2d.fillStyle="rgba(0,0,0," + menuWindowTrans*0.8+")";
-        ctx2d.fillRect(-400+menuWindowTrans*400,0,400,height);
+        ctx2d.fillRect(-300+menuWindowTrans*300,0,300,height*0.8);
         ctx2d.fillStyle="rgba(255,255,255," + menuWindowTrans+")";
         ctx2d.font="50px "+mainfontName;
         ctx2d.fillText("メニュー",30,70);
@@ -140,30 +193,82 @@ function fieldMain() {
             if (menuSelectNum==i){
                 ctx2d.fillStyle="rgba(255,255,255," + menuWindowTrans+")";
             } else{
-                ctx2d.fillStyle="rgba(100,100,100," + menuWindowTrans+")";                
+                ctx2d.fillStyle="rgba(100,100,100," + menuWindowTrans+")"; 
             }
             ctx2d.fillText(menuWindowTxt[i],60,130+i*45);
         }
+        if (menuWindowChildAni){ //子メニューの描画
+            ctx2d.fillStyle="rgba(0,0,0," + menuWindowTransChild*0.8+")";
+            ctx2d.fillRect(300,0,500*menuWindowTransChild,height*0.8);
+            ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
+            ctx2d.fillRect(300,height*0.05,2,height*0.7);
+            if (menuSelectNum==0){ ////マイピク
+                let mypicOffsetX=0,mypicOffsetY=0;
+                for(var i = 0; i < Math.min(6,mypic.length);i++){
+                    if (!(i % 2)) mypicOffsetX=320;
+                    if (i % 2) mypicOffsetX=560;
+                    mypicOffsetY=height*0.1;
+                    if (i >= 2) mypicOffsetY+=height*0.7/3;
+                    if (i >= 4) mypicOffsetY+=height*0.7/3;
+                    ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
+                    ctx2d.font="20px "+mainfontName;
+                    ctx2d.fillText(mypic[i][1],mypicOffsetX,mypicOffsetY);
+                    ctx2d.font="12px "+mainfontName;
+                    ctx2d.fillText("HP: " + mypic[i][3]+ " / " + mypic[i][4],mypicOffsetX,mypicOffsetY+20);
+                    ctx2d.fillText("DP: "+ mypic[i][5]+ " / " + mypic[i][6],mypicOffsetX,mypicOffsetY+37);
+                    ctx2d.fillText("こうげき: "+ mypic[i][7],mypicOffsetX,mypicOffsetY+54);
+                    ctx2d.fillText("ぼうぎょ: "+ mypic[i][8],mypicOffsetX,mypicOffsetY+71);
+                    ctx2d.fillStyle="rgba(0,0,0," + menuWindowTransChild*0.8+")";
+                    ctx2d.fillRect(mypicOffsetX+100,mypicOffsetY-20,120,120);
+                    if (i == menuSelectChildNum){
+                        ctx2d.strokeStyle="rgba(255,255,255,"+(Math.sin(globalTime/8)*0.3+0.7)+")";
+                        ctx2d.strokeWidth=3;
+                        ctx2d.strokeRect(mypicOffsetX-5,mypicOffsetY-25,230,height*0.7/3+2);
+                    }
+                }
+                if (menuMypicDetailAni){
+                    ctx2d.fillStyle="rgba(0,0,0," + (1-Math.abs(menuMypicDetailAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.9+")";
+                    ctx2d.fillRect(width/2-300,height/2-200,600,400);
+                }
+            } else if(menuSelectNum==1){ ////もちもの
+                ctx2d.fillStyle="rgba(105,105,105," + menuWindowTransChild+")";
+                ctx2d.font="20px "+mainfontName;
+                for(var i = 0;i < Math.min(10,items.length-itemsScroll);i++){
+                    if (i != menuSelectChildNum-itemsScroll){
+                        ctx2d.fillText(itemdata[items[i+itemsScroll][0]][0],360,60+36*i);
+                        ctx2d.fillText("× " + items[i+itemsScroll][1],700,60+36*i);    
+                    }
+                }
+                ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
+                ctx2d.font="20px "+mainfontName;
+                ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][0],360,60+36*(menuSelectChildNum-itemsScroll));
+                ctx2d.fillText("× " + items[menuSelectChildNum][1],700,60+36*(menuSelectChildNum-itemsScroll));
+            } else if(menuSelectNum==2){
+
+            }
+        }
     }
-    if(debugMode%2==1){
-        for(let i = 0;i < fieldwarpobj[myposworld].length;i++){
-            ctx2d.fillStyle="rgba(255,0,0,1)";
-            ctx2d.fillRect(fieldwarpobj[myposworld][i][0],fieldwarpobj[myposworld][i][1],fieldwarpobj[myposworld][i][2],fieldwarpobj[myposworld][i][3]);
-        }    
-    }
-    if (warpAni) {
+    if (warpAni) { //ワープの処理 
         warpAni++;
         ctx2d.fillStyle="rgba(0,0,0," + (1-Math.abs(warpAni-10)/10)  +")";
         ctx2d.fillRect(0,0,width,height);
     }
-    if (warpAni==10 && warpFlg){
+    if (warpAni==10 && warpFlg){ //ワープする瞬間
         myposworld=nowWarpObj[4];
         myposx=nowWarpObj[5];
         myposy=nowWarpObj[6];
         createField();
         fieldReDrawFlg=1;
         warpFlg=0;
-    } else if(warpAni==20){
+    } else if(warpAni==20){ //ワープアニメーション終了時
         warpAni=0;
+    }
+
+    ////////////////////////////////////////////////////////////////デバッグモード
+    if(debugMode%2==1){ //デバッグモード 1が立っていたらワープを表示
+        for(let i = 0;i < fieldwarpobj[myposworld].length;i++){
+            ctx2d.fillStyle="rgba(255,0,0,1)";
+            ctx2d.fillRect(fieldwarpobj[myposworld][i][0],fieldwarpobj[myposworld][i][1],fieldwarpobj[myposworld][i][2],fieldwarpobj[myposworld][i][3]);
+        }    
     }
 }

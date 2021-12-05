@@ -24,7 +24,7 @@ var Choicenum=0;
 
 function messageMain(){
     if(onMessage){
-        if(Messagenum==0){
+        if(mode==1){
         ctx2d.fillStyle=white;
         ctx2d.font="28px san-serif";
         //textの表示
@@ -75,7 +75,7 @@ function messageMain(){
         }
 
         }
-        if(Messagenum==1){
+        if(mode==2){
             battlemessMain();
         }
     }

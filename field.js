@@ -17,8 +17,12 @@ function drawMypic(drawMypicNum,dx,dy,dw,dh,trans){
         ctx2d.strokeStyle="rgba(255,255,255,"+trans+")";
         ctx2d.strokeWidth=1;
         ctx2d.beginPath();
-        ctx2d.moveTo(dx+dw*mypic[drawMypicNum][2][i][0]/100,dy+dh*mypic[drawMypicNum][2][i][0]/100);
-        ctx2d.lineTo(dx+dw*mypic[drawMypicNum][2][i][2]/100,dy+dh*mypic[drawMypicNum][2][i][3]/100);
+        if (mypic[drawMypicNum][2][i][0] == 0){ //線
+            ctx2d.moveTo(dx+dw*mypic[drawMypicNum][2][i][1]/100,dy+dh*mypic[drawMypicNum][2][i][2]/100);
+            ctx2d.lineTo(dx+dw*mypic[drawMypicNum][2][i][3]/100,dy+dh*mypic[drawMypicNum][2][i][4]/100);    
+        } else if(mypic[drawMypicNum][2][i][0] == 1){ //円
+            ctx2d.arc(dx+dw*mypic[drawMypicNum][2][i][1]/100,dy+dh*mypic[drawMypicNum][2][i][2]/100,dw*mypic[drawMypicNum][2][i][3]/100,0,Math.PI*2);
+        }
         ctx2d.stroke();
     }
 }

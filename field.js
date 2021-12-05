@@ -182,7 +182,7 @@ function fieldMain() {
                     ctx2d.font="10pt " + mainfontName;
                     ctx2d.fillText("Lv. "+ mypicstock[i+stockMypicScroll][12],stockMypicOffsetX+10,stockMypicOffsetY+20);    
                     ctx2d.fillText("Exp. "+ mypicstock[i+stockMypicScroll][13],stockMypicOffsetX+10,stockMypicOffsetY+36);    
-                    ctx2d.fillText("HP "+ mypicstock[i+stockMypicScroll][3],stockMypicOffsetX+10,stockMypicOffsetY+56);    
+                    ctx2d.fillText("HP "+ mypicstock[i+stockMypicScroll][3],stockMypicOffsetX+10,stockMypicOffsetY+56);
                     ctx2d.fillText("DP "+ mypicstock[i+stockMypicScroll][5],stockMypicOffsetX+10,stockMypicOffsetY+72);    
                     drawMypic(i+stockMypicScroll,stockMypicOffsetX+105,stockMypicOffsetY-15,100,100,(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed));
                 }
@@ -435,7 +435,9 @@ function fieldMain() {
                 ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][0],360,60+32*(menuSelectChildNum-itemsScroll));
                 ctx2d.fillText("× " + items[menuSelectChildNum][1],700,60+32*(menuSelectChildNum-itemsScroll));
                 ctx2d.fillRect(360,60+32*9.5,300,1);
-                ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3],360,60+32*10.5);
+                ctx2d.font="16px "+mainfontName;
+                ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(0,25),360,60+32*10.3);
+                ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(25,25),360,60+32*11);
             } else if(menuSelectNum==2){//////マップ
 
             }

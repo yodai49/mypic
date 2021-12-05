@@ -10,7 +10,7 @@ var menuSelectChildNum=0,menuWindowChildAni=0,itemsScroll=0;
 var menuMypicDetailAni=0,menuSortMypicNum=-1;
 var imgCnt=0,loadedimgCnt=0,warpAni=0;
 var fieldReDrawFlg=0,warpFlg=0,nowWarpObj,eventflgs=[];
-var menuMypicDetailposX=200,menuMypicDetailposY=100,menuzflg=0;
+var menuMypicDetailposX=200,menuMypicDetailposY=100,menuzflg=0,happenedEvent=0;
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans){
     for(var i = 0;i < mypic[drawMypicNum][2].length;i++){
@@ -121,6 +121,12 @@ function walkeve(){ //歩くときに発生する処理
     myposmodify();
     walkanimation=(walkanimation+1)%30; //歩く処理
 }
+function trigEvent(trigEventnum){
+    if (trigEventnum==1){ //孵化イベント
+        
+        happenedEvent=1;
+    }
+}
 
 function fieldMain() {
     var menuWindowTrans,menuWindowTransChild;
@@ -134,7 +140,13 @@ function fieldMain() {
     ctx2d.drawImage(characanvas,pre_charasize*Math.floor(walkanimation/15),pre_charasize*walkdir,pre_charasize,pre_charasize,myposx,myposy,charasize,charasize); //キャラクターの描画
 
     //////////////////////////////////////////キー入力処理
-    if(!menuWindow){ /////移動処理
+    if (happenedEvent){
+        for(var i = 0;i < eventobj[myposworld].length;i++){
+            happenedEvent*=(1-eventflgs[i]);
+        }
+        happenedEvent=1-happenedEvent;
+    }
+    if(!menuWindow){ /////移動処理・アクション処理
         if (leftkey) walkdir=0;
         if (rightkey) walkdir=1;
         if (upkey) walkdir=2;
@@ -143,6 +155,11 @@ function fieldMain() {
         if (rightkey && !checkConflict(1)) myposx+=walkspeed,walkeve();
         if (upkey && !checkConflict(2)) myposy-=walkspeed,walkeve();
         if (downkey && !checkConflict(3)) myposy+=walkspeed,walkeve();
+        if (zkey){ //アクションキー
+            for(var i = 0; i < eventobj[myposworld].length;i++){
+                if (eventflgs[i] && !happenedEvent) trigEvent(eventobj[myposworld][i][4]);
+            }
+        }
     } else {
         if (upkey && !menuSelectFlg && !menuWindowChildAni) menuSelectNum--,menuSelectFlg=1;
         if (downkey && !menuSelectFlg && !menuWindowChildAni) menuSelectNum++,menuSelectFlg=1;

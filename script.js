@@ -1,5 +1,5 @@
 //システム系
-var mode = 1; //mode 0タイトル画面　1探索画面　2戦闘画面
+var mode = 2; //mode 0タイトル画面　1探索画面　2戦闘画面
 var nextMode=0; //次に遷移するモード
 var modeAnimation = 1; //nextmodeにうつるタイミング
 var messageWindow=0;//メッセージウィンドウの表示非表示

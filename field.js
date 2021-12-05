@@ -309,6 +309,7 @@ function fieldMain() {
     } else if(warpAni==20){ //ワープアニメーション終了時
         warpAni=0;
     }
+
     ////////////////////////////////////////////////////////////////デバッグモード
     if(debugMode%2==1){ //デバッグモード 1が立っていたらワープを表示
         for(let i = 0;i < fieldwarpobj[myposworld].length;i++){

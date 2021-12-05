@@ -3,28 +3,72 @@ const charasize=30; //キャラクターのサイズ
 const pre_charasize=60; //プリレンダリング用のキャラクターのサイズ
 const fieldwidth=960;//フィールドの幅の最大値
 const fieldheight=540;//フィールドの高さの最大値
-const debugMode=0; //デバッグモード　1ならワープ位置を赤で表示
+const debugMode=3; //デバッグモード　1ならワープ位置を赤で表示
 var walkspeed=3;//歩くスピード
 var menuSelectNum=0,menuSelectFlg=0;
 var menuSelectChildNum=0,menuWindowChildAni=0,itemsScroll=0;
 var menuMypicDetailAni=0,menuSortMypicNum=-1;
 var imgCnt=0,loadedimgCnt=0,warpAni=0;
-var fieldReDrawFlg=0,warpFlg=0,nowWarpObj;
-var menuMypicDetailposX=200,menuMypicDetailposY=100,menuzflg=0;
+var fieldReDrawFlg=0,warpFlg=0,nowWarpObj,eventflgs=[];
+var menuMypicDetailposX=200,menuMypicDetailposY=100,menuzflg=0,happenedEvent=0;
+var eventWindowAni=0,eventWindowKind=0;
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans){
-    for(var i = 0;i < mypic[drawMypicNum][2].length;i++){
+    for(var i = 0;i < mypicstock[drawMypicNum][1].length;i++){
         ctx2d.strokeStyle="rgba(255,255,255,"+trans+")";
         ctx2d.strokeWidth=1;
         ctx2d.beginPath();
-        if (mypic[drawMypicNum][2][i][0] == 0){ //線
-            ctx2d.moveTo(dx+dw*mypic[drawMypicNum][2][i][1]/100,dy+dh*mypic[drawMypicNum][2][i][2]/100);
-            ctx2d.lineTo(dx+dw*mypic[drawMypicNum][2][i][3]/100,dy+dh*mypic[drawMypicNum][2][i][4]/100);    
-        } else if(mypic[drawMypicNum][2][i][0] == 1){ //円
-            ctx2d.arc(dx+dw*mypic[drawMypicNum][2][i][1]/100,dy+dh*mypic[drawMypicNum][2][i][2]/100,dw*mypic[drawMypicNum][2][i][3]/100,0,Math.PI*2);
+        if (mypicstock[drawMypicNum][1][i][0] == 0){ //線
+            ctx2d.moveTo(dx+dw*mypicstock[drawMypicNum][1][i][1]/100,dy+dh*mypicstock[drawMypicNum][1][i][2]/100);
+            ctx2d.lineTo(dx+dw*mypicstock[drawMypicNum][1][i][3]/100,dy+dh*mypicstock[drawMypicNum][1][i][4]/100);    
+        } else if(mypicstock[drawMypicNum][1][i][0] == 1){ //円
+            ctx2d.arc(dx+dw*mypicstock[drawMypicNum][1][i][1]/100,dy+dh*mypicstock[drawMypicNum][1][i][2]/100,dw*mypicstock[drawMypicNum][1][i][3]/100,0,Math.PI*2);
         }
         ctx2d.stroke();
     }
+}
+function checkConflict(dir){
+    /* 当たり判定
+    @param dir--移動しようとする方向　0-3で、左右上下の順番
+    @return 0-衝突なし　1-衝突あり
+    */
+    var checkConflictPosx=0,checkConflictPosy=0;
+    if (dir==0) checkConflictPosx= -walkspeed-1,checkConflictPosy=0;
+    if (dir==1) checkConflictPosx= charasize+walkspeed+1,checkConflictPosy=0;
+    if (dir==2) checkConflictPosx= 0,checkConflictPosy=-walkspeed-1;
+    if (dir==3) checkConflictPosx= 0,checkConflictPosy=charasize+walkspeed+1;
+    if (!warpAni){
+        for(let i = 0;i < fieldwarpobj[myposworld].length;i++){
+            if (fieldwarpobj[myposworld][i][0] < myposx+charasize && fieldwarpobj[myposworld][i][0] + fieldwarpobj[myposworld][i][2] > myposx){
+                if (fieldwarpobj[myposworld][i][1] < myposy+charasize && fieldwarpobj[myposworld][i][1] + fieldwarpobj[myposworld][i][3] > myposy){
+                    nowWarpObj=fieldwarpobj[myposworld][i];
+                    warpFlg=1;
+                    warpAni=1;
+                    return 0;
+                }
+            }
+        }
+    }
+    for(let i = 0;i < eventobj[myposworld].length;i++){
+        eventflgs[i]=0;
+        if (eventobj[myposworld][i][0] < myposx+charasize && eventobj[myposworld][i][0] + eventobj[myposworld][i][2] > myposx){
+            if (eventobj[myposworld][i][1] < myposy+charasize && eventobj[myposworld][i][1] + eventobj[myposworld][i][3] > myposy){
+                eventflgs[i]=1;
+            }
+        }
+    }
+    var tempColision = 0;
+    for(let j = 0;j < 10;j++){
+        tempColision = 1;
+        var checkimgdata=fieldcanvas.getContext("2d").getImageData(myposx+checkConflictPosx,myposy+checkConflictPosy,1,1);
+        for(let i = 0;i < walkCol.length;i++){
+            if (checkimgdata.data[0] == walkCol[i][0] && checkimgdata.data[1] == walkCol[i][1] && checkimgdata.data[2] == walkCol[i][2]) tempColision=0;
+        }
+        if (dir==2 || dir == 3) checkConflictPosx+=(charasize/10);
+        if (dir==0 || dir == 1) checkConflictPosy+=(charasize/10);
+        if (tempColision) return 1;
+    }
+    return 0;
 }
 function createField(){
     fieldcanvas=document.createElement("canvas");
@@ -40,6 +84,8 @@ function createField(){
         fieldimg.src="./imgs/fieldobjects/fieldobj" + myposworld + "_" + j + ".png";
         fieldimg.onload=function(){fieldcanvasctx.drawImage(fieldimg,fielddata[myposworld][j][0],fielddata[myposworld][j][1]);loadedimgCnt++;}
     }
+    eventflgs=[];
+    checkConflict();
 }
 function initiate_field(){
     /*　フィールド・キャラクターの初期化処理/////////////////////////////////////////
@@ -76,42 +122,17 @@ function walkeve(){ //歩くときに発生する処理
     myposmodify();
     walkanimation=(walkanimation+1)%30; //歩く処理
 }
-function checkConflict(dir){
-    /* 当たり判定
-    @param dir--移動しようとする方向　0-3で、左右上下の順番
-    @return 0-衝突なし　1-衝突あり
-    */
-    var checkConflictPosx=0,checkConflictPosy=0;
-    if (dir==0) checkConflictPosx= -walkspeed-1,checkConflictPosy=0;
-    if (dir==1) checkConflictPosx= charasize+walkspeed+1,checkConflictPosy=0;
-    if (dir==2) checkConflictPosx= 0,checkConflictPosy=-walkspeed-1;
-    if (dir==3) checkConflictPosx= 0,checkConflictPosy=charasize+walkspeed+1;
-    if (!warpAni){
-        for(let i = 0;i < fieldwarpobj[myposworld].length;i++){
-            if (fieldwarpobj[myposworld][i][0] < myposx+charasize && fieldwarpobj[myposworld][i][0] + fieldwarpobj[myposworld][i][2] > myposx){
-                if (fieldwarpobj[myposworld][i][1] < myposy+charasize && fieldwarpobj[myposworld][i][1] + fieldwarpobj[myposworld][i][3] > myposy){
-                    nowWarpObj=fieldwarpobj[myposworld][i];
-                    warpFlg=1;
-                    warpAni=1;
-                    return 0;
-                }
-            }
-        }
+function trigEvent(trigEventnum){
+    if (trigEventnum==1){ //マイピク整理のイベント
+        eventWindowAni++;
+        eventWindowKind=1;
+        happenedEvent=1;
+    }　else if (trigEventnum==2){ //マイピク孵化のイベント
+        eventWindowAni++;
+        eventWindowKind=2;
+        happenedEvent=1;
     }
-    var tempColision = 0;
-    for(let j = 0;j < 10;j++){
-        tempColision = 1;
-        var checkimgdata=fieldcanvas.getContext("2d").getImageData(myposx+checkConflictPosx,myposy+checkConflictPosy,1,1);
-        for(let i = 0;i < walkCol.length;i++){
-            if (checkimgdata.data[0] == walkCol[i][0] && checkimgdata.data[1] == walkCol[i][1] && checkimgdata.data[2] == walkCol[i][2]) tempColision=0;
-        }
-        if (dir==2 || dir == 3) checkConflictPosx+=(charasize/10);
-        if (dir==0 || dir == 1) checkConflictPosy+=(charasize/10);
-        if (tempColision) return 1;
-    }
-    return 0;
 }
-
 function fieldMain() {
     var menuWindowTrans,menuWindowTransChild;
     const menuWindowAniSpeed=15;
@@ -122,9 +143,26 @@ function fieldMain() {
     */
     if (fieldReDrawFlg && loadedimgCnt==imgCnt) field2d.drawImage(fieldcanvas,0,0,width,height,0,0,width,height),fieldReDrawFlg=0; //背景の描画
     ctx2d.drawImage(characanvas,pre_charasize*Math.floor(walkanimation/15),pre_charasize*walkdir,pre_charasize,pre_charasize,myposx,myposy,charasize,charasize); //キャラクターの描画
-
-    //////////////////////////////////////////キー入力処理
-    if(!menuWindow){ /////移動処理
+    if (happenedEvent){
+        for(var i = 0;i < eventobj[myposworld].length;i++){
+            happenedEvent*=(1-eventflgs[i]);
+        }
+        happenedEvent=1-happenedEvent;
+    }
+    ////////////////////////////////////////////////////////キー入力等処理
+    if (eventWindowAni){ //イベントウィンドウが表示されている時
+        if (eventWindowKind==1){ //整理イベント
+            ctx2d.fillStyle="rgba(0,0,0,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8+")";
+            ctx2d.fillRect(width/2-250,height/2-200,500,400);    
+        } else if(eventWindowKind==2){ //孵化イベント
+            ctx2d.fillStyle="rgba(0,0,0,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8+")";
+            ctx2d.fillRect(width/2-250,height/2-200,500,400);    
+        }
+        if (eventWindowAni && (eventWindowAni-menuWindowAniSpeed)) eventWindowAni++;
+        if (eventWindowAni == 2*menuWindowAniSpeed) eventWindowAni=0,happenedEvent=0; 
+        if (xkey && !(eventWindowAni-menuWindowAniSpeed)) eventWindowAni++;
+    } else if(!menuWindow){ /////メニューウィンドウが表示されていない時
+        if(ckey) menuWindow++;
         if (leftkey) walkdir=0;
         if (rightkey) walkdir=1;
         if (upkey) walkdir=2;
@@ -133,7 +171,33 @@ function fieldMain() {
         if (rightkey && !checkConflict(1)) myposx+=walkspeed,walkeve();
         if (upkey && !checkConflict(2)) myposy-=walkspeed,walkeve();
         if (downkey && !checkConflict(3)) myposy+=walkspeed,walkeve();
-    } else {
+        if (zkey){ //アクションキー
+            for(var i = 0; i < eventobj[myposworld].length;i++){
+                if (eventflgs[i] && !happenedEvent) trigEvent(eventobj[myposworld][i][4]);
+            }
+        }
+    } else { /////メニューウィンドウが表示されている時
+        if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni) menuWindow++;
+        if(zkey && menuWindow && !menuWindowChildAni){
+            if (menuSelectNum==3){ //セーブ
+    
+            } else if(menuSelectNum==4){ //タイトル
+    
+            } else { //メニューを開く時
+                menuWindowChildAni++;
+                menuSelectChildNum=0, itemsScroll=0;
+                menuSortMypicNum=-1;
+            }
+        } else if(zkey && !menuzflg&& menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum==-1){ //マイピクの詳細画面を見る時
+            menuMypicDetailAni++;
+        } else if(zkey && menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum!=-1){ //マイピクの詳細画面を見る時
+            //入れ替え処理
+            var menuTmpSort=mypic[menuSortMypicNum];
+            mypic[menuSortMypicNum]=mypic[menuSelectChildNum];
+            mypic[menuSelectChildNum]=menuTmpSort;
+            menuSortMypicNum=-1;
+            menuzflg=1;
+        }    
         if (upkey && !menuSelectFlg && !menuWindowChildAni) menuSelectNum--,menuSelectFlg=1;
         if (downkey && !menuSelectFlg && !menuWindowChildAni) menuSelectNum++,menuSelectFlg=1;
         if (upkey && !menuSelectFlg && menuWindowChildAni) {  //上キー
@@ -181,28 +245,6 @@ function fieldMain() {
     if (menuWindowChildAni == menuWindowAniSpeed*2) menuWindowChildAni=0;
     if (menuMypicDetailAni && menuMypicDetailAni!=menuWindowAniSpeed) menuMypicDetailAni++;
     if (menuMypicDetailAni == menuWindowAniSpeed*2) menuMypicDetailAni=0;
-    if(ckey && !menuWindow) menuWindow++;
-    if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni) menuWindow++;
-    if(zkey && menuWindow && !menuWindowChildAni){
-        if (menuSelectNum==3){ //セーブ
-
-        } else if(menuSelectNum==4){ //タイトル
-
-        } else { //メニューを開く時
-            menuWindowChildAni++;
-            menuSelectChildNum=0, itemsScroll=0;
-            menuSortMypicNum=-1;
-        }
-    } else if(zkey && !menuzflg&& menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum==-1){ //マイピクの詳細画面を見る時
-        menuMypicDetailAni++;
-    } else if(zkey && menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum!=-1){ //マイピクの詳細画面を見る時
-        //入れ替え処理
-        var menuTmpSort=mypic[menuSortMypicNum];
-        mypic[menuSortMypicNum]=mypic[menuSelectChildNum];
-        mypic[menuSelectChildNum]=menuTmpSort;
-        menuSortMypicNum=-1;
-        menuzflg=1;
-    }
     if (!zkey) menuzflg=0;
     if(xkey && !(menuWindowChildAni-menuWindowAniSpeed) && menuWindowChildAni && !menuMypicDetailAni) menuWindowChildAni++;
     if(xkey && !(menuWindowChildAni-menuWindowAniSpeed) && menuWindowChildAni && !(menuMypicDetailAni-menuWindowAniSpeed)) menuMypicDetailAni++;
@@ -237,15 +279,15 @@ function fieldMain() {
                     if (i >= 4) mypicOffsetY+=height*0.7/3;
                     ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
                     ctx2d.font="20px "+mainfontName;
-                    ctx2d.fillText(mypic[i][1],mypicOffsetX,mypicOffsetY);
+                    ctx2d.fillText(mypicstock[mypic[i]][0],mypicOffsetX,mypicOffsetY);
                     ctx2d.font="12px "+mainfontName;
-                    ctx2d.fillText("HP: " + mypic[i][3]+ " / " + mypic[i][4],mypicOffsetX,mypicOffsetY+20);
-                    ctx2d.fillText("DP: "+ mypic[i][5]+ " / " + mypic[i][6],mypicOffsetX,mypicOffsetY+37);
-                    ctx2d.fillText("こうげき: "+ mypic[i][7],mypicOffsetX,mypicOffsetY+54);
-                    ctx2d.fillText("ぼうぎょ: "+ mypic[i][8],mypicOffsetX,mypicOffsetY+71);
+                    ctx2d.fillText("HP: " + mypicstock[mypic[i]][2]+ " / " + mypicstock[mypic[i]][3],mypicOffsetX,mypicOffsetY+20);
+                    ctx2d.fillText("DP: "+ mypicstock[mypic[i]][4]+ " / " + mypicstock[mypic[i]][5],mypicOffsetX,mypicOffsetY+37);
+                    ctx2d.fillText("レベル: "+ mypicstock[mypic[i]][12],mypicOffsetX,mypicOffsetY+57);
+                    ctx2d.fillText("けいけん: "+ mypicstock[mypic[i]][13],mypicOffsetX,mypicOffsetY+74);
                     ctx2d.fillStyle="rgba(0,0,0," + menuWindowTransChild*0.8+")";
                     ctx2d.fillRect(mypicOffsetX+100,mypicOffsetY-20,120,120);
-                    drawMypic(i,mypicOffsetX+100,mypicOffsetY-20,120,120,menuWindowTransChild);
+                    drawMypic(mypic[i],mypicOffsetX+100,mypicOffsetY-20,120,120,menuWindowTransChild);
                     if (i == menuSelectChildNum){
                         ctx2d.strokeStyle="rgba(255,255,255,"+(Math.sin(globalTime/8)*0.3+0.7)+")";
                         ctx2d.strokeWidth=3;
@@ -262,16 +304,19 @@ function fieldMain() {
                     ctx2d.fillRect(menuMypicDetailposX,menuMypicDetailposY,400,250);
                     ctx2d.fillStyle="rgba(255,255,255," + (1-Math.abs(menuMypicDetailAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.9+")";
                     ctx2d.font="25px "+mainfontName;
-                    ctx2d.fillText(mypic[menuSelectChildNum][1],menuMypicDetailposX+20,menuMypicDetailposY+40);
+                    ctx2d.fillText(mypicstock[mypic[menuSelectChildNum]][0],menuMypicDetailposX+20,menuMypicDetailposY+40);
+                    ctx2d.font="18px "+mainfontName;
+                    ctx2d.fillText("Lv."+mypicstock[mypic[menuSelectChildNum]][12],menuMypicDetailposX+330,menuMypicDetailposY+35);
                     ctx2d.font="16px "+mainfontName;
-                    ctx2d.fillText("HP: " + mypic[menuSelectChildNum][3]+ " / " + mypic[menuSelectChildNum][4],menuMypicDetailposX+30,menuMypicDetailposY+70);
-                    ctx2d.fillText("DP: "+ mypic[menuSelectChildNum][5]+ " / " + mypic[menuSelectChildNum][6],menuMypicDetailposX+30,menuMypicDetailposY+90);
-                    ctx2d.fillText("こうげき: "+ mypic[menuSelectChildNum][7],menuMypicDetailposX+30,menuMypicDetailposY+110);
-                    ctx2d.fillText("ぼうぎょ: "+ mypic[menuSelectChildNum][8],menuMypicDetailposX+30,menuMypicDetailposY+130);
-                    ctx2d.fillText("めいちゅう: "+ mypic[menuSelectChildNum][9],menuMypicDetailposX+30,menuMypicDetailposY+150);
-                    ctx2d.fillText("うん: "+ mypic[menuSelectChildNum][10],menuMypicDetailposX+30,menuMypicDetailposY+170);
-                    ctx2d.fillText("すばやさ: "+ mypic[menuSelectChildNum][11],menuMypicDetailposX+30,menuMypicDetailposY+190);
-                    ctx2d.fillText("とくせい: "+ mypic[menuSelectChildNum][12],menuMypicDetailposX+30,menuMypicDetailposY+210);
+                    ctx2d.fillText("HP: " + mypicstock[mypic[menuSelectChildNum]][2]+ " / " + mypicstock[mypic[menuSelectChildNum]][3],menuMypicDetailposX+30,menuMypicDetailposY+70);
+                    ctx2d.fillText("DP: "+ mypicstock[mypic[menuSelectChildNum]][4]+ " / " + mypicstock[mypic[menuSelectChildNum]][5],menuMypicDetailposX+30,menuMypicDetailposY+90);
+                    ctx2d.fillText("こうげき: "+ mypicstock[mypic[menuSelectChildNum]][6],menuMypicDetailposX+30,menuMypicDetailposY+110);
+                    ctx2d.fillText("ぼうぎょ: "+ mypicstock[mypic[menuSelectChildNum]][7],menuMypicDetailposX+30,menuMypicDetailposY+130);
+                    ctx2d.fillText("めいちゅう: "+ mypicstock[mypic[menuSelectChildNum]][8],menuMypicDetailposX+30,menuMypicDetailposY+150);
+                    ctx2d.fillText("うん: "+ mypicstock[mypic[menuSelectChildNum]][9],menuMypicDetailposX+30,menuMypicDetailposY+170);
+                    ctx2d.fillText("すばやさ: "+ mypicstock[mypic[menuSelectChildNum]][10],menuMypicDetailposX+30,menuMypicDetailposY+190);
+                    ctx2d.fillText("とくせい: "+ specialAvilityText[mypicstock[mypic[menuSelectChildNum]][11]],menuMypicDetailposX+30,menuMypicDetailposY+210);
+                    ctx2d.fillText("けいけんち: "+ mypicstock[mypic[menuSelectChildNum]][13],menuMypicDetailposX+30,menuMypicDetailposY+230);
                     ctx2d.fillStyle="rgba(0,0,0," + (1-Math.abs(menuMypicDetailAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.9+")";
                     ctx2d.fillRect(menuMypicDetailposX+197,menuMypicDetailposY+45,180,180);
                     drawMypic(menuSelectChildNum,menuMypicDetailposX+197,menuMypicDetailposY+45,180,180,(1-Math.abs(menuMypicDetailAni-menuWindowAniSpeed)/menuWindowAniSpeed));
@@ -311,10 +356,16 @@ function fieldMain() {
     }
 
     ////////////////////////////////////////////////////////////////デバッグモード
-    if(debugMode%2==1){ //デバッグモード 1が立っていたらワープを表示
+    if(debugMode%2){ //デバッグモード 1が立っていたらワープを表示
         for(let i = 0;i < fieldwarpobj[myposworld].length;i++){
-            ctx2d.fillStyle="rgba(255,0,0,1)";
+            ctx2d.fillStyle="rgba(255,0,0,0.3)";
             ctx2d.fillRect(fieldwarpobj[myposworld][i][0],fieldwarpobj[myposworld][i][1],fieldwarpobj[myposworld][i][2],fieldwarpobj[myposworld][i][3]);
+        }    
+    }
+    if (Math.floor(debugMode/2)%2){
+        for(let i = 0;i < eventobj[myposworld].length;i++){
+            ctx2d.fillStyle="rgba(0,255,0,0.3)";
+            ctx2d.fillRect(eventobj[myposworld][i][0],eventobj[myposworld][i][1],eventobj[myposworld][i][2],eventobj[myposworld][i][3]);
         }    
     }
 }

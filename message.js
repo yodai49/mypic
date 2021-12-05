@@ -1,20 +1,28 @@
 const questionMess = ["おはよう", "Q: 今日は冒険する？　　　はい　　　いいえ", ["冒険に出かけるぞ"], ["今日は家でゆっくりしよう", "おやすみなさい"], "一日が終了した。"];
-const battleMess = ["野生のモンスターAが現れた！", "勝負だ! キャラクターB!", "行動を選択してください。","Bの物理攻撃!","Aは倒れた。"];
 const talkMess = ["こんにちは","あなたの名前を入力してください。","設定が完了しました。","ゲームをお楽しみください!!"]
-const Message=[questionMess, battleMess, talkMess];
+const Message=[questionMess, talkMess];
+var topmypic = "ディアルガ";
+const introMess = ["野生のモンスターAが現れた！", "勝負だ! マイピクX!"];
+const endMess = [[topmypic+"は勝負に勝った",topmypic+"は経験値500と1000マイルを獲得した。"], topmypic+"は逃げた",];
+const BattleMessage = [introMess, endMess];
 
 var onMessage=true;
-
+var Messagenum=1;//0:field, 1:battle
+var BMloop=false;//battlemessage
+var loopmode=0;//0:No選択,1:戦闘,2:アイテム,3:マイピク
+var loopselect=0;
 var lstnum=0;//Messageリスト内の扱うリストを指定
 var in_lstnum=0;//各リスト内の出力位置を管理
+
 var messChoice=0;//選択肢シーンでの分岐判定
 var messCheck=false;
 var Choicenum=0;
 
 function messageMain(){
     if(onMessage){
-    ctx2d.fillStyle=black;
-    ctx2d.font="20px san-serif";
+    if(Messagenum==0){
+    ctx2d.fillStyle=white;
+    ctx2d.font="28px san-serif";
     //textの表示
     if(messCheck){
         ctx2d.fillText(Message[lstnum][in_lstnum][Choicenum], 300,500);
@@ -38,8 +46,8 @@ function messageMain(){
     }
     //////
 
-    //spacekey入力時に次のメッセージに進む
-    if(spacekey){
+    //zkey入力時に次のメッセージに進む
+    if(zkey){
         if(messCheck){
             if(Choicenum+1==Message[lstnum][in_lstnum].length){
                 messCheck=false;
@@ -49,7 +57,7 @@ function messageMain(){
         }//選択後の文章処理
         else{in_lstnum += 1 + messChoice;}//選択肢がなければ自動的に+1になる。
         if(Message[lstnum][in_lstnum-(1+messChoice)][0]=="Q"){messCheck=true;}
-        spacekey=false;
+        zkey=false;
     }
     //////
 
@@ -62,29 +70,81 @@ function messageMain(){
         onMessage=false;
     }
 
+    }}
+    if(Messagenum==1){
+        battlemessMain();
     }
 }
 
-function make_shape(a,b,c,d,e,f){ //図形作成
-    //描画コンテキストの取得
-    var canvas = document.getElementById('mainCanvas');
-    if (canvas.getContext) {
-        ctx2d.strokeStyle=black;
-        var context = canvas.getContext('2d');
-        //新しいパスを開始する
-        context.beginPath();
-        //パスの開始座標を指定する
-        context.moveTo(a,b);
-        //座標を指定してラインを引いていく
-        context.lineTo(c,d);
-        context.lineTo(e,f);
-        //パスを閉じる（最後の座標から開始座標に向けてラインを引く）
-        context.closePath();
-        //現在のパスを輪郭表示する
-        context.stroke();
-        var pastle_green1="rgba(173,255,173,1.0)";
-        ctx2d.fillStyle=pastle_green1;
-        ctx2d.fill();
+function battleloop(){
+    if(downkey) {
+        loopselect=Math.min(3,loopselect+1),downkey=false;}
+    else if(upkey) loopselect=Math.max(0,loopselect-1), upkey=false;
+    else if(rightkey && loopmode==1)loopselect=4;
+    else if(leftkey && loopmode==1)loopselect=3;
+
+
+    ctx2d.fillStyle=white;
+    ctx2d.font="28px san-serif";
+    if(in_lstnum==0){
+        ctx2d.fillText("戦闘", width*15/100,height*73/100);
+        ctx2d.fillText("アイテム", width*15/100,height*80/100);
+        ctx2d.fillText("マイピク", width*15/100,height*87/100);
+        ctx2d.fillText("逃げる", width*15/100,height*94/100);
+
+        if(loopmode==0){
+            make_shape(width*12/100,height*(71+7*loopselect)/100,width*10/100,height*(69+7*loopselect)/100,width*10/100,height*(73+7*loopselect)/100);
+        }
+
+        if(loopmode==1){
+            ctx2d.fillText("体当たり", width*45/100,height*73/100);
+            ctx2d.fillText("叩きつける", width*45/100,height*80/100);
+            ctx2d.fillText("火炎放射", width*45/100,height*87/100);
+            ctx2d.fillText("爆炎竜", width*45/100,height*94/100);
+            ctx2d.fillText("戻る", width*75/100,height*94/100);
+            make_shape(width*42/100,height*(71+7*loopselect)/100,width*40/100,height*(69+7*loopselect)/100,width*40/100,height*(73+7*loopselect)/100);}
+            
+        else if(loopmode==2){
+            //バッグの表示
+        }
+        else if(loopmode==3){
+            //マイピク情報
+        }
+
+    }
+    
+}
+
+function battlemessMain(){
+    if(!BMloop){//intro,end
+        ctx2d.fillStyle=white;
+        ctx2d.font="28px san-serif";
+        ctx2d.fillText(BattleMessage[lstnum][in_lstnum], 100,500);}
+    else{
+        battleloop();
     }
 
+    //zkey入力時に次のメッセージに進む
+    if(zkey){
+        if(BMloop){
+            if(loopmode==0) loopmode=loopselect+1, loopselect=0;
+            else if(loopmode==1) {
+            }
+        }
+        else in_lstnum += 1;
+        zkey=false;
+    }
+    //////
+
+    //xkey入力
+    if(xkey){
+        if(BMloop && loopmode==1) loopmode=0, loopselect=0;
+    }
+
+    //一連のメッセージ終了時イベント
+    if(in_lstnum == BattleMessage[lstnum].length && lstnum==0){
+        BMloop=true, in_lstnum=0;}//BMloop
+    else if(in_lstnum == BattleMessage[lstnum].length && lstnum==1){
+        onMessage=false, mode=1;}//最終メッセージを完了したらmode変更
+    //////
 }

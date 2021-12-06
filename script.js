@@ -1,12 +1,13 @@
 //システム系
-var mode = 1; //mode 0タイトル画面　1探索画面　2戦闘画面
+var mode = 0; //mode 0タイトル画面　1探索画面　2戦闘画面
 var nextMode=0; //次に遷移するモード
-var modeAnimation = 1; //nextmodeにうつるタイミング
+var modeAnimation = 0; //nextmodeにうつるタイミング
 var messageWindow=0;//メッセージウィンドウの表示非表示
 var myPicWindow=0;//マイピク描画画面の表示非表示
 var menuWindow=0;//メニューウィンドウの表示非表示
 var shopWindow=0;//ショップウィンドウの表示非表示
 var globalTime=0;//タイム　1ループで1増える
+const modeChangeAniSpeed=30;
 
 //フィールド系
 var myposx=0,myposy=0, myposworld=0;//キャラクターの位置　x：横　y:縦　world:ワールド番号
@@ -108,6 +109,12 @@ function init() {
             battleMain();
         }
         messageMain();
+        ctx2d.fillStyle="rgba(0,0,0," +(1-Math.abs(modeAnimation-modeChangeAniSpeed)/modeChangeAniSpeed)+")";
+        ctx2d.fillRect(0,0,width,height);
+
+        if (modeAnimation && (modeAnimation-2*modeChangeAniSpeed)) modeAnimation++;
+        if(!(modeAnimation-modeChangeAniSpeed)) mode=nextMode;
+        if (!(modeAnimation-2*modeChangeAniSpeed)) modeAnimation=0;
 
         globalTime++;
         requestAnimationFrame(tick); //次のフレーム呼び出し（再帰）

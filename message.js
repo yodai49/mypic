@@ -90,13 +90,30 @@ function battleloop(){
     ctx2d.fillStyle=white;
     ctx2d.font="28px san-serif";
     if(loopnum==0){
-        ctx2d.fillText("戦闘", width*15/100,height*73/100);
-        ctx2d.fillText("アイテム", width*15/100,height*80/100);
-        ctx2d.fillText("マイピク", width*15/100,height*87/100);
-        ctx2d.fillText("逃げる", width*15/100,height*94/100);
+        //味方ステータス表示
+        ctx2d.fillRect(width*7/100,height*67/100,35,35);
+        ctx2d.font="20px san-serif";
+        ctx2d.fillText(mypicstock[mypic[0]][0], width*14/100,height*69/100);
+        ctx2d.fillText("Lv."+mypicstock[mypic[0]][12], width*14/100,height*73/100);
+        ctx2d.font="18px san-serif";
+        ctx2d.fillText("HP: "+mypicstock[mypic[0]][2]+"/"+mypicstock[mypic[0]][3], width*7/100,height*78/100);
+        ctx2d.fillText("DP: "+mypicstock[mypic[0]][4]+"/"+mypicstock[mypic[0]][5], width*7/100,height*82/100);
+        ctx2d.fillText("こうげき: "+mypicstock[mypic[0]][6], width*7/100,height*86/100);
+        ctx2d.fillText("ぼうぎょ: "+mypicstock[mypic[0]][7], width*7/100,height*90/100);
+        ctx2d.fillText("すばやさ: "+mypicstock[mypic[0]][10], width*7/100,height*94/100);
+        /////////////////
+
+        const messageImg=new Image();
+        messageImg.src="./imgs/messageWindow.png";
+        ctx2d.drawImage(messageImg,0,0,800,200,width*20/100,height*62/100,width*60/100,height*37/100);
+        ctx2d.font="28px san-serif";
+        ctx2d.fillText("戦闘", width*30/100,height*73/100);
+        ctx2d.fillText("アイテム", width*30/100,height*80/100);
+        ctx2d.fillText("マイピク", width*30/100,height*87/100);
+        ctx2d.fillText("逃げる", width*30/100,height*94/100);
 
         if(loopmode==0){
-            make_pointer(width*12/100,height*(71+7*loopselect)/100,width*10/100,height*(69+7*loopselect)/100,width*10/100,height*(73+7*loopselect)/100);
+            make_pointer(width*27/100,height*(71+7*loopselect)/100,width*25/100,height*(69+7*loopselect)/100,width*25/100,height*(73+7*loopselect)/100);
         }
 
         if(loopmode==1){

@@ -385,6 +385,7 @@ function fieldMain() {
                 ctx2d.fillText("ステップ　" +(1+ eventProcreateStep) + " / 3",width/2+75,height/2-160);
             } else{
                 ctx2d.fillText("かんせい！",width/2+125,height/2-160);
+
             }
             ctx2d.font="20pt " + mainfontName;
             ctx2d.fillText("たまごをかえす",width/2-230,height/2-160);    
@@ -458,6 +459,8 @@ function fieldMain() {
                 }
                 drawMypic(0,width/2-135,height/2-110,270,270,1,1);
             } else if(eventProcreateStep==2){ //ネーミング
+                ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*Math.min(1,eventEggAni/20)*Math.sin(globalTime/5)+")";
+                ctx2d.fillText("　".repeat(drawMypicTempName.length) + "_",width/2-215,height/2-60);
                 ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*Math.min(1,eventEggAni/20)+")";
                 ctx2d.font="16pt " + mainfontName;
                 ctx2d.fillText("この子になまえをつけよう！".substr(0,eventEggAni/2),width/2-230,height/2-120);

@@ -535,11 +535,12 @@ function fieldMain() {
         if (rightkey && !checkConflict(1)) myposx+=walkspeed,walkeve();
         if (upkey && !checkConflict(2)) myposy-=walkspeed,walkeve();
         if (downkey && !checkConflict(3)) myposy+=walkspeed,walkeve();
-        if (zkey){ //アクションキー
+        if (zkey && !selectTitleFlg){ //アクションキー
             for(var i = 0; i < eventobj[myposworld].length;i++){
                 if (eventflgs[i] && !happenedEvent) trigEvent(eventobj[myposworld][i][4]);
             }
         }
+        if (!zkey) selectTitleFlg=0;
     } else { /////メニューウィンドウが表示されている時
         if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni) menuWindow++;
         if(zkey && menuWindow && !menuWindowChildAni){

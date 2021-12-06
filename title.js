@@ -27,5 +27,6 @@ function titleMain() {
    if (!upkey &&  !downkey && !zkey) selectTitleFlg=0;
    if (zkey && !selectTitleFlg) {
        mode=1;
+       selectTitleFlg=1;
    }
 }

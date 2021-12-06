@@ -18,7 +18,7 @@ var inDrawField=0,drawFieldX=0,drawFieldY=0,inFieldX=0,inFieldY=0;
 var drawMypicStatus=0; //0なら何も描いていない　1なら始点を描いた
 var drawMypicTempPos=[0,0];//描いた始点を保持
 var drawMypicTempObj=[];//描き途中のマイピクの形状を保持
-var drawMypicRadius=0,drawMypicTempName="";
+var drawMypicRadius=0,drawMypicTempName="",selectEggItemNum=0;
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
     if (mode==1){
@@ -49,7 +49,11 @@ function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
         }    
     }
 }
-
+function procreateProcess(){
+    mypicstock.push(
+        [drawMypicTempName,drawMypicTempObj,999,999,99,99,100,100,[0,1,2,3],5,100,3,2,120,1,0,0]
+    );
+}
 function clickEveDraw(x,y){ //クリックイベント
     if (mode==1 && eventWindowKind==2 && eventWindowAni && eventProcreateStep==1){ //マイピクドロー中のみ反応
         if (inDrawField && drawMypicTempObj.length <15){ //ドローフィールドの中なら
@@ -237,6 +241,7 @@ function trigEvent(trigEventnum){
         for(var i = 0;i < items.length;i++){
             if(itemdata[items[i][0]][4]!=-1){
                 tempEggList.push(items[i]);
+                tempEggList[tempEggList.length-1][2]=i;
             }
         }
     }
@@ -360,9 +365,12 @@ function fieldMain() {
             if (zkey && !menuSelectFlg){
                 if (eventProcreateStep == 0){
                     eventProcreateStep++,menuSelectFlg=1,eventEggAni=0;
+                    selectEggItemNum=tempEggList[eventEggSelectNum][2];
                 } else if(eventProcreateStep==1 && drawMypicTempObj.length){
                     eventProcreateStep++,menuSelectFlg=1,eventEggAni=0;
-                } else if(eventProcreateStep==2){
+                } else if(eventProcreateStep==2 && drawMypicTempName.length){ //生まれる時の処理
+                    procreateProcess();
+                    consumeItem(selectEggItemNum);
                     eventProcreateStep++,menuSelectFlg=1,eventEggAni=0;
                 } else if(eventProcreateStep==3){
                     eventWindowAni++,menuSelectFlg=1;
@@ -371,7 +379,7 @@ function fieldMain() {
             if(xkey && !menuSelectFlg){
                 if (!eventProcreateStep){
                     eventWindowAni++;
-                } else{
+                } else if(eventProcreateStep!=3){
                     eventProcreateStep--;
                     eventEggAni=0;
                 }
@@ -385,7 +393,6 @@ function fieldMain() {
                 ctx2d.fillText("ステップ　" +(1+ eventProcreateStep) + " / 3",width/2+75,height/2-160);
             } else{
                 ctx2d.fillText("かんせい！",width/2+125,height/2-160);
-
             }
             ctx2d.font="20pt " + mainfontName;
             ctx2d.fillText("たまごをかえす",width/2-230,height/2-160);    
@@ -474,6 +481,13 @@ function fieldMain() {
                 ctx2d.fillStyle="rgba(0,0,0,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*Math.min(1,eventEggAni/20)*0.8+")";
                 ctx2d.fillRect(width/2+100,height/2-140,130,130);
                 drawMypic(0,width/2+100,height/2-140,130,130,1,1);
+            } else if(eventProcreateStep==3){ //生まれた！
+                ctx2d.font="16pt " + mainfontName;
+                ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*Math.min(1,eventEggAni/20)*(Math.sin(globalTime/10)*0.3+0.7)+")";
+                ctx2d.fillText((drawMypicTempName + "がうまれた！").substr(0,eventEggAni/3),width/2-230,height/2-120);
+                ctx2d.fillStyle="rgba(0,0,0,"+0.8*(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8*Math.min(1,eventEggAni/20)+")";
+                ctx2d.fillRect(width/2-100,height/2-110,200,200);
+                drawMypic(0,width/2-100,height/2-110,200,200,1,1);
             }
             eventEggAni++;
         }

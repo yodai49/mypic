@@ -27,3 +27,11 @@ function make_pointer(a,b,c,d,e,f){ //図形作成
     }
 
 }
+
+function consumeItem(consumeNum){
+    ////////アイテムを消費する関数　consumeNumに消費するアイテムの番号を指定(itemsでの番号)
+    items[consumeNum][1]--;
+    if(!items[consumeNum][1]){
+        items.splice(consumeNum,1);
+    }
+}

@@ -107,7 +107,6 @@ function init() {
         } else if(mode == 2){　//バトル
             battleMain();
         }
-        mypicMain();
         messageMain();
 
         globalTime++;

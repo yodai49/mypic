@@ -14,10 +14,10 @@ function titleMain() {
    if (!selectTitleNum){
     ctx2d.fillStyle="rgba(255,255,255,"+(Math.sin(globalTime/6)*0.3+0.7)+")";
     ctx2d.fillText("はじめから",(width-ctx2d.measureText("はじめから").width)/2,height/2+100);
-    ctx2d.fillStyle="rgba(255,255,255,1)";
+    ctx2d.fillStyle="rgba(105,105,105,1)";
     ctx2d.fillText("つづきから",(width-ctx2d.measureText("つづきから").width)/2,height/2+140);
 } else{
-    ctx2d.fillStyle="rgba(255,255,255,1)";
+    ctx2d.fillStyle="rgba(105,105,105,1)";
     ctx2d.fillText("はじめから",(width-ctx2d.measureText("はじめから").width)/2,height/2+100);
     ctx2d.fillStyle="rgba(255,255,255,"+(Math.sin(globalTime/6)*0.3+0.7)+")";
     ctx2d.fillText("つづきから",(width-ctx2d.measureText("つづきから").width)/2,height/2+140);
@@ -26,7 +26,8 @@ function titleMain() {
    if(downkey && !selectTitleFlg) selectTitleNum=1,selectTitleFlg=1;
    if (!upkey &&  !downkey && !zkey) selectTitleFlg=0;
    if (zkey && !selectTitleFlg) {
-       mode=1;
+       nextMode=1;
+       modeAnimation=1;
        selectTitleFlg=1;
    }
 }

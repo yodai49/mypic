@@ -18,7 +18,7 @@ var inDrawField=0,drawFieldX=0,drawFieldY=0,inFieldX=0,inFieldY=0;
 var drawMypicStatus=0; //0なら何も描いていない　1なら始点を描いた
 var drawMypicTempPos=[0,0];//描いた始点を保持
 var drawMypicTempObj=[];//描き途中のマイピクの形状を保持
-var drawMypicRadius=0,drawMypicTempName="",selectEggItemNum=0;
+var drawMypicRadius=0,drawMypicTempName="",selectEggItemNum=0,selectEggKind=0;
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
     if (mode==1){
@@ -52,9 +52,10 @@ function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
 function procreateProcess(){
     mypicstock.push(
         [drawMypicTempName,drawMypicTempObj,
-            999,999,99,99,
-            100,100,[0,1,2,3],
-            5,100,3,2,120,1,0,0]
+            eggData[selectEggKind][2],eggData[selectEggKind][2],eggData[selectEggKind][3],eggData[selectEggKind][3],
+            eggData[selectEggKind][4],eggData[selectEggKind][5],eggData[selectEggKind][6],
+            eggData[selectEggKind][7],eggData[selectEggKind][8],eggData[selectEggKind][9],1,0,
+            0,eggData[selectEggKind][10],eggData[selectEggKind][11]]
     );
 }
 function clickEveDraw(x,y){ //クリックイベント
@@ -369,6 +370,7 @@ function fieldMain() {
                 if (eventProcreateStep == 0){
                     eventProcreateStep++,menuSelectFlg=1,eventEggAni=0;
                     selectEggItemNum=tempEggList[eventEggSelectNum][2];
+                    selectEggKind=itemdata[items[selectEggItemNum][0]][4];
                 } else if(eventProcreateStep==1 && drawMypicTempObj.length){
                     eventProcreateStep++,menuSelectFlg=1,eventEggAni=0;
                 } else if(eventProcreateStep==2 && drawMypicTempName.length){ //生まれる時の処理

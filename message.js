@@ -14,7 +14,7 @@ var Messagenum=1;//0:field, 1:battle
 var BMloop=false;//battlemessage
 var loopnum=0;//battleloopの状態遷移大
 var loopmode=0;//battleloopの状態遷移中　0:No選択,1:戦闘,2:アイテム,3:マイピク
-var loopselect=0;
+var loopselect=0;//loop内での現在選択値
 var lstnum=0;//Messageリスト内の扱うリストを指定
 var in_lstnum=0;//各リスト内の出力位置を管理
 

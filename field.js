@@ -11,22 +11,95 @@ var menuMypicDetailAni=0,menuSortMypicNum=-1;
 var imgCnt=0,loadedimgCnt=0,warpAni=0;
 var fieldReDrawFlg=0,warpFlg=0,nowWarpObj,eventflgs=[];
 var menuMypicDetailposX=200,menuMypicDetailposY=100,menuzflg=0,happenedEvent=0;
-var eventWindowAni=0,eventWindowKind=0,stockMypicScroll=0,stockMypicSelectNum=0,stockMypicChgWindow=0,stockMypicChgNum=0;
+var eventWindowAni=0,eventWindowKind=0,stockMypicScroll=0,stockMypicSelectNum=0,stockMypicChgWindow=0,stockMypicChgNum=0,eventProcreateStep=0;
+var tempEggList=[],eventEggScroll=0,eventEggAni=0,procdrawMypicMode=0;
+var eventEggSelectNum=0;  //孵化させる卵の番号（tempEggList内での番号）
+var inDrawField=0,drawFieldX=0,drawFieldY=0,inFieldX=0,inFieldY=0;
+var drawMypicStatus=0; //0なら何も描いていない　1なら始点を描いた
+var drawMypicTempPos=[0,0];//描いた始点を保持
+var drawMypicTempObj=[];//描き途中のマイピクの形状を保持
+var drawMypicRadius=0;
 
-function drawMypic(drawMypicNum,dx,dy,dw,dh,trans){
-    for(var i = 0;i < mypicstock[drawMypicNum][1].length;i++){
-        ctx2d.strokeStyle="rgba(255,255,255,"+trans+")";
-        ctx2d.strokeWidth=1;
-        ctx2d.beginPath();
-        if (mypicstock[drawMypicNum][1][i][0] == 0){ //線
-            ctx2d.moveTo(dx+dw*mypicstock[drawMypicNum][1][i][1]/100,dy+dh*mypicstock[drawMypicNum][1][i][2]/100);
-            ctx2d.lineTo(dx+dw*mypicstock[drawMypicNum][1][i][3]/100,dy+dh*mypicstock[drawMypicNum][1][i][4]/100);    
-        } else if(mypicstock[drawMypicNum][1][i][0] == 1){ //円
-            ctx2d.arc(dx+dw*mypicstock[drawMypicNum][1][i][1]/100,dy+dh*mypicstock[drawMypicNum][1][i][2]/100,dw*mypicstock[drawMypicNum][1][i][3]/100,0,Math.PI*2);
-        }
-        ctx2d.stroke();
+function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
+    if (mode==1){
+        for(var i = 0;i < drawMypicTempObj.length;i++){
+            ctx2d.strokeStyle="rgba(255,255,255,"+trans+")";
+            ctx2d.strokeWidth=1;
+            ctx2d.beginPath();
+            if (drawMypicTempObj[i][0] == 0){ //線
+                ctx2d.moveTo(dx+dw*drawMypicTempObj[i][1]/100,dy+dh*drawMypicTempObj[i][2]/100);
+                ctx2d.lineTo(dx+dw*drawMypicTempObj[i][3]/100,dy+dh*drawMypicTempObj[i][4]/100);    
+            } else if(drawMypicTempObj[i][0] == 1){ //円
+                ctx2d.arc(dx+dw*drawMypicTempObj[i][1]/100,dy+dh*drawMypicTempObj[i][2]/100,dw*drawMypicTempObj[i][3]/100,0,Math.PI*2);
+            }
+            ctx2d.stroke();
+        }    
+    } else{
+        for(var i = 0;i < mypicstock[drawMypicNum][1].length;i++){
+            ctx2d.strokeStyle="rgba(255,255,255,"+trans+")";
+            ctx2d.strokeWidth=1;
+            ctx2d.beginPath();
+            if (mypicstock[drawMypicNum][1][i][0] == 0){ //線
+                ctx2d.moveTo(dx+dw*mypicstock[drawMypicNum][1][i][1]/100,dy+dh*mypicstock[drawMypicNum][1][i][2]/100);
+                ctx2d.lineTo(dx+dw*mypicstock[drawMypicNum][1][i][3]/100,dy+dh*mypicstock[drawMypicNum][1][i][4]/100);    
+            } else if(mypicstock[drawMypicNum][1][i][0] == 1){ //円
+                ctx2d.arc(dx+dw*mypicstock[drawMypicNum][1][i][1]/100,dy+dh*mypicstock[drawMypicNum][1][i][2]/100,dw*mypicstock[drawMypicNum][1][i][3]/100,0,Math.PI*2);
+            }
+            ctx2d.stroke();
+        }    
     }
 }
+
+function clickEveDraw(x,y){ //クリックイベント
+    if (mode==1 && eventWindowKind==2 && eventWindowAni && eventProcreateStep==1){ //マイピクドロー中のみ反応
+        if (inDrawField && drawMypicTempObj.length <15){ //ドローフィールドの中なら
+            if (!drawMypicStatus){
+                drawMypicStatus=1;
+                drawMypicTempPos[0] = x;
+                drawMypicTempPos[1]  = y;
+            } else {
+                if (!procdrawMypicMode){
+                    drawMypicTempObj.push([0,(drawMypicTempPos[0]-(width/2-135))/270*100,(drawMypicTempPos[1]-(height/2-110))/270*100,drawFieldX,drawFieldY]);
+                } else{
+                    drawMypicTempObj.push([1,(drawMypicTempPos[0]-(width/2-135))/270*100,(drawMypicTempPos[1]-(height/2-110))/270*100,drawMypicRadius/270*100]);
+                }
+                drawMypicStatus=0;
+            }
+        }
+    }
+    if (635 <= x && x <= 715){
+        if (330 <= y && y <= 350){
+            drawMypicStatus=0;
+            procdrawMypicMode=0;
+        } else if (350 <= y && y <= 370){
+            drawMypicStatus=0;
+            procdrawMypicMode=1;
+        } else if(387<= y && y <= 407){
+            drawMypicTempObj.pop();
+        }
+    }
+}
+function moveEveDraw(x,y){ //マウスのムーブイベント
+    if (mode==1 && eventWindowKind==2 && eventWindowAni && eventProcreateStep==1){ //マイピクドロー中のみ反応
+        drawFieldX = (x-(width/2-135))/270*100;
+        drawFieldY=(y-(height/2-110))/270*100;
+        if (procdrawMypicMode==0){
+            inDrawField=(0<=drawFieldX && drawFieldX <= 100 && 0 <= drawFieldY && drawFieldY <= 100);
+        } else{
+            if (!drawMypicStatus){
+                inDrawField=(0<=drawFieldX && drawFieldX <= 100 && 0 <= drawFieldY && drawFieldY <= 100);
+            } else{
+                var tempCirPosX= (drawMypicTempPos[0]-(width/2-135))/270*100;
+                var tempCirPosY=(drawMypicTempPos[1]-(height/2-110))/270*100;
+                inDrawField=(0<=tempCirPosX-drawMypicRadius/270*100 && tempCirPosX+drawMypicRadius/270*100 <= 100 && 0 <= tempCirPosY-drawMypicRadius/270*100 && tempCirPosY+drawMypicRadius/270*100 <= 100);    
+            }
+        }
+    }
+    inFieldX=x,inFieldY=y;
+    drawMypicRadius = (x-drawMypicTempPos[0])* (x-drawMypicTempPos[0])+ (y-drawMypicTempPos[1])*(y-drawMypicTempPos[1])
+    drawMypicRadius=Math.sqrt(drawMypicRadius);
+}
+
 function checkConflict(dir){
     /* 当たり判定
     @param dir--移動しようとする方向　0-3で、左右上下の順番
@@ -132,8 +205,20 @@ function trigEvent(trigEventnum){
     }　else if (trigEventnum==2){ //マイピク孵化のイベント
         eventWindowAni++;
         eventWindowKind=2;
+        eventProcreateStep=0;
         happenedEvent=1;
+        eventEggScroll=0,eventEggSelectNum=0;
+        procdrawMypicMode=0;
+        drawMypicTempObj=[];
+        //持っている卵のリストを作成
+        tempEggList=[];
+        for(var i = 0;i < items.length;i++){
+            if(itemdata[items[i][0]][4]!=-1){
+                tempEggList.push(items[i]);
+            }
+        }
     }
+    menuSelectFlg=1;
 }
 function fieldMain() {
     var menuWindowTrans,menuWindowTransChild;
@@ -243,16 +328,133 @@ function fieldMain() {
                     ctx2d.fillText("Exp. "+mypicstock[mypic[i]][13],width/2+35,height/2-45+23*i);
                 }
             }
-            if (!upkey && !downkey && !zkey && !leftkey && !rightkey && !xkey) menuSelectFlg=0;
+            if (xkey && !(eventWindowAni-menuWindowAniSpeed) && !menuSelectFlg) {
+                eventWindowAni++;
+                menuSelectFlg=1;
+            }    
             if (stockMypicChgWindow && (stockMypicChgWindow-menuWindowAniSpeed)) stockMypicChgWindow++;
             if (stockMypicChgWindow==2*menuWindowAniSpeed) stockMypicChgWindow=0;
         } else if(eventWindowKind==2){ //孵化イベント
+            if (zkey && !menuSelectFlg){
+                if (eventProcreateStep == 0){
+                    eventProcreateStep++,menuSelectFlg=1,eventEggAni=0;
+                } else if(eventProcreateStep==1 && drawMypicTempObj.length){
+                    eventProcreateStep++,menuSelectFlg=1,eventEggAni=0;
+                } else if(eventProcreateStep==2){
+                    eventProcreateStep++,menuSelectFlg=1,eventEggAni=0;
+                } else if(eventProcreateStep==3){
+                    eventWindowAni++,menuSelectFlg=1;
+                }
+            } 
+            if(xkey && !menuSelectFlg){
+                if (!eventProcreateStep){
+                    eventWindowAni++;
+                } else{
+                    eventProcreateStep--;
+                    eventEggAni=0;
+                }
+                menuSelectFlg++;
+            }
             ctx2d.fillStyle="rgba(0,0,0,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8+")";
-            ctx2d.fillRect(width/2-250,height/2-200,500,400);    
+            ctx2d.fillRect(width/2-250,height/2-200,500,400);
+            ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+            ctx2d.font="16pt "+mainfontName; 
+            if (eventProcreateStep<3){
+                ctx2d.fillText("ステップ　" +(1+ eventProcreateStep) + " / 3",width/2+75,height/2-160);
+            } else{
+                ctx2d.fillText("かんせい！",width/2+125,height/2-160);
+            }
+            ctx2d.font="20pt " + mainfontName;
+            ctx2d.fillText("たまごをかえす",width/2-230,height/2-160);    
+            if (eventProcreateStep==0){ //卵の選択
+                ctx2d.font="16pt " + mainfontName;
+                ctx2d.fillText("どのたまごをふかさせる？".substr(0,eventEggAni/2),width/2-230,height/2-120);    
+                if (upkey && !menuSelectFlg && eventEggSelectNum){
+                    eventEggSelectNum--,menuSelectFlg=1;
+                    if (eventEggSelectNum<eventEggScroll) eventEggScroll=eventEggSelectNum;
+                } 
+                if (downkey && !menuSelectFlg && (eventEggSelectNum-tempEggList.length+1)){
+                    eventEggSelectNum++,menuSelectFlg=1;
+                    if (eventEggSelectNum-eventEggScroll>=10) eventEggScroll++;
+                } 
+                if(spacekey && !zkey && !xkey) menuSelectFlg=0; 
+                ctx2d.font="14pt " + mainfontName;
+                ctx2d.fillStyle="rgba(105,105,105,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                for(var i = 0;i < Math.min(10,tempEggList.length);i++){
+                    if (i != eventEggSelectNum-eventEggScroll){
+                        ctx2d.fillText(itemdata[tempEggList[i+eventEggScroll][0]][0],width/2-230,height/2-80+23*i);  
+                        ctx2d.fillText("× "+tempEggList[i+eventEggScroll][1],width/2+180,height/2-80+23*i);     
+                    }
+                }
+                ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                ctx2d.fillText(itemdata[tempEggList[eventEggSelectNum][0]][0],width/2-230,height/2-80+23*(eventEggSelectNum-eventEggScroll));  
+                ctx2d.fillText("× "+tempEggList[eventEggSelectNum][1],width/2+180,height/2-80+23*(eventEggSelectNum-eventEggScroll)); 
+                ctx2d.font="12pt " + mainfontName;
+                ctx2d.fillText(itemdata[tempEggList[eventEggSelectNum][0]][3].substr(0,28),width/2-230,height/2-80+23*10.5);
+                ctx2d.fillText(itemdata[tempEggList[eventEggSelectNum][0]][3].substr(28,28),width/2-230,height/2-80+23*11.2);
+            } else if(eventProcreateStep==1){ //お絵かき
+                ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*Math.min(1,eventEggAni/20)+")";
+                ctx2d.font="16pt " + mainfontName;
+                ctx2d.fillText("マイピクをマウスでドローしよう！".substr(0,eventEggAni/2),width/2-230,height/2-120);
+                ctx2d.font="12pt " + mainfontName;
+                ctx2d.fillText("えらんだたまご：" + itemdata[tempEggList[eventEggSelectNum][0]][0],width/2-ctx2d.measureText("えらんだたまご：" + itemdata[tempEggList[eventEggSelectNum][0]][0]).width/2,height/2+183);    
+                ctx2d.font="10pt " + mainfontName;
+                if (!procdrawMypicMode){
+                    ctx2d.fillStyle="rgba(105,105,105,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*Math.min(1,eventEggAni/20)+")";
+                    ctx2d.fillText("えん",width/2+158,height/2+98);        
+                    ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*Math.min(1,eventEggAni/20)+")";
+                    ctx2d.fillText("ちょくせん",width/2+158,height/2+78);    
+                } else{
+                    ctx2d.fillStyle="rgba(105,105,105,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*Math.min(1,eventEggAni/20)+")";
+                    ctx2d.fillText("ちょくせん",width/2+158,height/2+78);    
+                    ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*Math.min(1,eventEggAni/20)+")";
+                    ctx2d.fillText("えん",width/2+158,height/2+98);        
+                }
+                ctx2d.fillText("けす",width/2+158,height/2+133);    
+                if (drawMypicTempObj.length==15){
+                    ctx2d.fillStyle="rgba(200,0,0,"+0.8*(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8*Math.min(1,eventEggAni/20)+")";
+                }
+                ctx2d.fillText("のこり："+(15-drawMypicTempObj.length),width/2+158,height/2+160);    
+                ctx2d.fillStyle="rgba(0,0,0,"+0.8*(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8*Math.min(1,eventEggAni/20)+")";
+                ctx2d.fillRect(width/2-135,height/2-110,270,270);
+                //一時的なマイピクの描画
+                if (drawMypicStatus && inDrawField){ //始点を描いていたら
+                    if (!procdrawMypicMode){ //線
+                        ctx2d.beginPath();
+                        ctx2d.strokeStyle="rgba(255,255,255,1)";
+                        ctx2d.strokeWidth=1;
+                        ctx2d.moveTo(drawMypicTempPos[0],drawMypicTempPos[1]);
+                        ctx2d.lineTo(inFieldX,inFieldY);
+                        ctx2d.stroke();    
+                    } else { //円
+                        ctx2d.beginPath();
+                        ctx2d.strokeStyle="rgba(255,255,255,1)";
+                        ctx2d.strokeWidth=1;
+                        ctx2d.arc(drawMypicTempPos[0],drawMypicTempPos[1],drawMypicRadius,0,Math.PI*2);
+                        ctx2d.stroke();    
+                    }
+                }
+                drawMypic(0,width/2-135,height/2-110,270,270,1,1);
+            } else if(eventProcreateStep==2){ //ネーミング
+                ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*Math.min(1,eventEggAni/20)+")";
+                ctx2d.font="16pt " + mainfontName;
+                ctx2d.fillText("この子になまえをつけよう！".substr(0,eventEggAni/2),width/2-230,height/2-120);
+                ctx2d.font="20pt " + mainfontName;
+                ctx2d.fillText("ああああああ",width/2-215,height/2-60);
+                for(var i = 0;i < keyboarddata.length;i++){
+                    for(var j = 0;j < keyboarddata[i].length;j++){
+                        ctx2d.fillText(keyboarddata[i][j],width/2+200-i*35,height/2+20+j*26);
+                    }
+                }
+                ctx2d.fillStyle="rgba(0,0,0,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*Math.min(1,eventEggAni/20)*0.8+")";
+                ctx2d.fillRect(width/2+100,height/2-140,130,130);
+                drawMypic(0,width/2+100,height/2-140,130,130,1,1);
+            }
+            eventEggAni++;
         }
+        if (!upkey && !downkey && !zkey && !leftkey && !rightkey && !xkey) menuSelectFlg=0;
         if (eventWindowAni && (eventWindowAni-menuWindowAniSpeed)) eventWindowAni++;
         if (eventWindowAni == 2*menuWindowAniSpeed) eventWindowAni=0,happenedEvent=0; 
-        if (xkey && !(eventWindowAni-menuWindowAniSpeed) && !menuSelectFlg) eventWindowAni++;
     } else if(!menuWindow){ /////メニューウィンドウが表示されていない時
         if(ckey) menuWindow++;
         if (leftkey) walkdir=0;
@@ -289,8 +491,7 @@ function fieldMain() {
             mypic[menuSelectChildNum]=menuTmpSort;
             menuSortMypicNum=-1;
             menuzflg=1;
-            console.log(mypic);
-        }    
+        }
         if (upkey && !menuSelectFlg && !menuWindowChildAni) menuSelectNum--,menuSelectFlg=1;
         if (downkey && !menuSelectFlg && !menuWindowChildAni) menuSelectNum++,menuSelectFlg=1;
         if (upkey && !menuSelectFlg && menuWindowChildAni) {  //上キー

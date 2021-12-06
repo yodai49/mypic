@@ -83,18 +83,18 @@ function clickEveDraw(x,y){ //クリックイベント
             if (262 <= y && y <= 449){
                 var procCharaX= Math.floor(13-(x-254)/(711-254)*13);
                 var procCharaY=Math.floor((y-262)/(449-262)*7);
-                if (drawMypicTempName.length<6){
-                    if (keyboarddata[procCharaX][procCharaY] == "←"){
-                        drawMypicTempName=drawMypicTempName.substr(0,drawMypicTempName.length-1);
-                    } else if(keyboarddata[procCharaX][procCharaY] == "゛"){
-
-                    } else if(keyboarddata[procCharaX][procCharaY] == "゜"){
-
-                    } else if(keyboarddata[procCharaX][procCharaY] == "ア"){
-
-                    } else{
-                        drawMypicTempName+=keyboarddata[procCharaX][procCharaY];
-                    }
+                if (keyboarddata[procCharaX][procCharaY] == "←"){
+                    drawMypicTempName=drawMypicTempName.substr(0,drawMypicTempName.length-1);
+                } else if(keyboarddata[procCharaX][procCharaY] == "゛"){
+                        drawMypicTempName=drawMypicTempName.substr(0,drawMypicTempName.length-1)+chgChara(drawMypicTempName.substr(drawMypicTempName.length-1,1),0);
+                } else if(keyboarddata[procCharaX][procCharaY] == "゜"){
+                    drawMypicTempName=drawMypicTempName.substr(0,drawMypicTempName.length-1)+chgChara(drawMypicTempName.substr(drawMypicTempName.length-1,1),1);
+                } else if(keyboarddata[procCharaX][procCharaY] == "小"){
+                    drawMypicTempName=drawMypicTempName.substr(0,drawMypicTempName.length-1)+chgChara(drawMypicTempName.substr(drawMypicTempName.length-1,1),2);
+                } else if(keyboarddata[procCharaX][procCharaY] == "ア"){
+                    drawMypicTempName=drawMypicTempName.substr(0,drawMypicTempName.length-1)+chgChara(drawMypicTempName.substr(drawMypicTempName.length-1,1),3);
+                } else if (drawMypicTempName.length<6){
+                    drawMypicTempName+=keyboarddata[procCharaX][procCharaY];
                 }
             }
         }    

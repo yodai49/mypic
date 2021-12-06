@@ -29,5 +29,6 @@ function titleMain() {
        nextMode=1;
        modeAnimation=1;
        selectTitleFlg=1;
+       menuWindow=0;
    }
 }

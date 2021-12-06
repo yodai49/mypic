@@ -19,6 +19,7 @@ var drawMypicStatus=0; //0なら何も描いていない　1なら始点を描�
 var drawMypicTempPos=[0,0];//描いた始点を保持
 var drawMypicTempObj=[];//描き途中のマイピクの形状を保持
 var drawMypicRadius=0,drawMypicTempName="",selectEggItemNum=0,selectEggKind=0;
+var titleConfirmWindow=0,titleConfirmSelect=1;
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
     if (mode==1){
@@ -542,18 +543,31 @@ function fieldMain() {
         }
         if (!zkey) selectTitleFlg=0;
     } else { /////メニューウィンドウが表示されている時
-        if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni) menuWindow++;
-        if(zkey && menuWindow && !menuWindowChildAni){
+        if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni && !titleConfirmWindow) menuWindow++;
+        if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni && titleConfirmWindow) titleConfirmWindow++;
+        if(zkey && menuWindow && !menuWindowChildAni && !titleConfirmWindow && !menuSelectFlg){
             if (menuSelectNum==3){ //セーブ
                 
             } else if(menuSelectNum==4){ //タイトル
-    
+                titleConfirmWindow=1;
+                menuSelectFlg=1;
             } else { //メニューを開く時
                 menuWindowChildAni++;
                 menuSelectChildNum=0, itemsScroll=0;
                 menuSortMypicNum=-1;
             }
-        } else if(zkey && !menuzflg&& menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum==-1){ //マイピクの詳細画面を見る時
+        }else if(zkey && menuWindow  && titleConfirmWindow && !menuSelectFlg){
+            if (menuSelectNum==3){ //セーブ
+                
+            } else if(menuSelectNum==4){ //タイトル
+                titleConfirmWindow++;
+                menuSelectFlg=1;
+                if (!titleConfirmSelect) {
+                    nextMode=0;
+                    modeAnimation=1;
+                }
+            }
+        }  else if(zkey && !menuzflg&& menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum==-1){ //マイピクの詳細画面を見る時
             menuMypicDetailAni++;
         } else if(zkey && menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum!=-1){ //マイピクの詳細画面を見る時
             //入れ替え処理
@@ -593,9 +607,32 @@ function fieldMain() {
                 menuSelectChildNum++,menuSelectFlg=1;
             } 
         }
-        if (!upkey && !downkey && !leftkey && !rightkey) menuSelectFlg=0;
+        if (!upkey && !downkey && !leftkey && !rightkey && !zkey) menuSelectFlg=0;
         if (menuSelectNum<0) menuSelectNum=0;
         if (menuSelectNum >= menuWindowTxt.length) menuSelectNum=menuWindowTxt.length-1;
+        if (titleConfirmWindow && (titleConfirmWindow-menuWindowAniSpeed)) titleConfirmWindow++;
+        if (titleConfirmWindow && (titleConfirmWindow-2*menuWindowAniSpeed)>=0) titleConfirmWindow=0;
+        if (titleConfirmWindow){
+            ctx2d.fillStyle="rgba(0,0,0,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+            ctx2d.fillRect(width/2-200,height/2-60,400,120);
+            ctx2d.font="14pt "+ mainfontName;
+            ctx2d.fillStyle="rgba(255,255,255,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+            ctx2d.fillText("ほんとうにタイトルにもどりますか？",width/2-180,height/2-20);
+            ctx2d.fillText("セーブしていないデータは失われます",width/2-180,height/2);
+            if (!titleConfirmSelect){
+                ctx2d.fillStyle="rgba(255,255,255,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)*(0.7+Math.sin(globalTime/6)*0.3)+")";
+                ctx2d.fillText("はい",(width-ctx2d.measureText("はい").width)/2-80,height/2+35);
+                ctx2d.fillStyle="rgba(105,105,105,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                ctx2d.fillText("いいえ",(width-ctx2d.measureText("いいえ").width)/2+80,height/2+35);    
+            } else{
+                ctx2d.fillStyle="rgba(105,105,105,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                ctx2d.fillText("はい",(width-ctx2d.measureText("はい").width)/2-80,height/2+35);
+                ctx2d.fillStyle="rgba(255,255,255,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)*(0.7+Math.sin(globalTime/6)*0.3)+")";
+                ctx2d.fillText("いいえ",(width-ctx2d.measureText("いいえ").width)/2+80,height/2+35);    
+            }
+            if (leftkey && !menuSelectFlg) titleConfirmSelect=0,menuSelectFlg=1;
+            if (rightkey && !menuSelectFlg) titleConfirmSelect=1,menuSelectFlg=1;
+        }
     }
     //メニューの表示処理
     menuWindowTrans=(1-Math.abs(menuWindow-menuWindowAniSpeed)/menuWindowAniSpeed);

@@ -517,6 +517,8 @@ function fieldMain() {
                 ctx2d.fillStyle="rgba(0,0,0,"+0.8*(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
                 ctx2d.fillRect(width/2-100,height/2-110,200,200);
                 drawMypic(0,width/2-100,height/2-110,200,200,1,1);
+                ctx2d.fillStyle="rgba(0,0,0,"+(1-Math.pow(Math.min(1,eventEggAni/100),2))+")";
+                ctx2d.fillRect(width/2-250,height/2-200,500,400);
             }
             eventEggAni++;
         }

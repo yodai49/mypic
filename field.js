@@ -18,7 +18,7 @@ var inDrawField=0,drawFieldX=0,drawFieldY=0,inFieldX=0,inFieldY=0;
 var drawMypicStatus=0; //0なら何も描いていない　1なら始点を描いた
 var drawMypicTempPos=[0,0];//描いた始点を保持
 var drawMypicTempObj=[];//描き途中のマイピクの形状を保持
-var drawMypicRadius=0;
+var drawMypicRadius=0,drawMypicTempName="";
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
     if (mode==1){
@@ -66,17 +66,38 @@ function clickEveDraw(x,y){ //クリックイベント
                 drawMypicStatus=0;
             }
         }
-    }
-    if (635 <= x && x <= 715){
-        if (330 <= y && y <= 350){
-            drawMypicStatus=0;
-            procdrawMypicMode=0;
-        } else if (350 <= y && y <= 370){
-            drawMypicStatus=0;
-            procdrawMypicMode=1;
-        } else if(387<= y && y <= 407){
-            drawMypicTempObj.pop();
+        if (635 <= x && x <= 715){
+            if (330 <= y && y <= 350){
+                drawMypicStatus=0;
+                procdrawMypicMode=0;
+            } else if (350 <= y && y <= 370){
+                drawMypicStatus=0;
+                procdrawMypicMode=1;
+            } else if(387<= y && y <= 407){
+                drawMypicTempObj.pop();
+            }
         }
+    }
+    if (eventProcreateStep == 2){
+        if (254<=x && x <= 711  && eventEggAni>=10){
+            if (262 <= y && y <= 449){
+                var procCharaX= Math.floor(13-(x-254)/(711-254)*13);
+                var procCharaY=Math.floor((y-262)/(449-262)*7);
+                if (drawMypicTempName.length<6){
+                    if (keyboarddata[procCharaX][procCharaY] == "←"){
+                        drawMypicTempName=drawMypicTempName.substr(0,drawMypicTempName.length-1);
+                    } else if(keyboarddata[procCharaX][procCharaY] == "゛"){
+
+                    } else if(keyboarddata[procCharaX][procCharaY] == "゜"){
+
+                    } else if(keyboarddata[procCharaX][procCharaY] == "ア"){
+
+                    } else{
+                        drawMypicTempName+=keyboarddata[procCharaX][procCharaY];
+                    }
+                }
+            }
+        }    
     }
 }
 function moveEveDraw(x,y){ //マウスのムーブイベント
@@ -210,6 +231,7 @@ function trigEvent(trigEventnum){
         eventEggScroll=0,eventEggSelectNum=0;
         procdrawMypicMode=0;
         drawMypicTempObj=[];
+        drawMypicTempName="";
         //持っている卵のリストを作成
         tempEggList=[];
         for(var i = 0;i < items.length;i++){
@@ -440,7 +462,7 @@ function fieldMain() {
                 ctx2d.font="16pt " + mainfontName;
                 ctx2d.fillText("この子になまえをつけよう！".substr(0,eventEggAni/2),width/2-230,height/2-120);
                 ctx2d.font="20pt " + mainfontName;
-                ctx2d.fillText("ああああああ",width/2-215,height/2-60);
+                ctx2d.fillText(drawMypicTempName,width/2-215,height/2-60);
                 for(var i = 0;i < keyboarddata.length;i++){
                     for(var j = 0;j < keyboarddata[i].length;j++){
                         ctx2d.fillText(keyboarddata[i][j],width/2+200-i*35,height/2+20+j*26);

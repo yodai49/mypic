@@ -489,7 +489,20 @@ function fieldMain() {
             } else if(eventProcreateStep==3){ //生まれた！
                 ctx2d.font="16pt " + mainfontName;
                 ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*Math.min(1,eventEggAni/20)*(Math.sin(globalTime/10)*0.3+0.7)+")";
-                ctx2d.fillText((drawMypicTempName + "がうまれた！").substr(0,eventEggAni/3),width/2-230,height/2-120);
+                ctx2d.fillText((drawMypicTempName + "がうまれた！　おうちにおくられた").substr(0,eventEggAni/3),width/2-230,height/2-125);
+                ctx2d.font="11pt " + mainfontName;
+                ctx2d.fillText("さいだいHP: " + mypicstock[mypicstock.length-1][3],width/2-230,height/2+113);
+                ctx2d.fillText("さいだいDP: " + mypicstock[mypicstock.length-1][5],width/2-230,height/2+133);
+                ctx2d.fillText("こうげき:　" + mypicstock[mypicstock.length-1][6],width/2-230,height/2+158);
+                ctx2d.fillText("ぼうぎょ: " + mypicstock[mypicstock.length-1][7],width/2-230,height/2+178);
+
+                ctx2d.fillText("うん: " + mypicstock[mypicstock.length-1][9],width/2-100,height/2+113);
+                ctx2d.fillText("すばやさ: " + mypicstock[mypicstock.length-1][10],width/2-100,height/2+133);
+                ctx2d.fillText("とくせい:" + specialAvilityText[mypicstock[mypicstock.length-1][11]],width/2-100,height/2+158);
+
+                ctx2d.fillStyle="rgba("+ typeDataCol[mypicstock[mypicstock.length-1][15]]+","+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*Math.min(1,eventEggAni/20)*(Math.sin(globalTime/10)*0.3+0.7)+")";
+                ctx2d.fillText("ぞくせい:" + typeDataText[mypicstock[mypicstock.length-1][15]],width/2-100,height/2+178);
+
                 ctx2d.fillStyle="rgba(0,0,0,"+0.8*(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8*Math.min(1,eventEggAni/20)+")";
                 ctx2d.fillRect(width/2-100,height/2-110,200,200);
                 drawMypic(0,width/2-100,height/2-110,200,200,1,1);

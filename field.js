@@ -51,7 +51,10 @@ function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
 }
 function procreateProcess(){
     mypicstock.push(
-        [drawMypicTempName,drawMypicTempObj,999,999,99,99,100,100,[0,1,2,3],5,100,3,2,120,1,0,0]
+        [drawMypicTempName,drawMypicTempObj,
+            999,999,99,99,
+            100,100,[0,1,2,3],
+            5,100,3,2,120,1,0,0]
     );
 }
 function clickEveDraw(x,y){ //クリックイベント

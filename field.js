@@ -274,7 +274,7 @@ function fieldMain() {
             ctx2d.fillRect(width/2-250,height/2-200,500,400);
             ctx2d.font="20pt " + mainfontName;
             ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-            ctx2d.fillText("マイピクいれかえ",width/2-230,height/2-160);    
+            ctx2d.fillText("マイピクのおうち",width/2-230,height/2-160);    
             var stockMypicOffsetX,stockMypicOffsetY;
             for(var i = 0;i < 6;i++){
                 if (mypicstock.length > i+stockMypicScroll){ ////ストックマイピクを描画
@@ -517,7 +517,7 @@ function fieldMain() {
                 ctx2d.fillStyle="rgba(0,0,0,"+0.8*(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
                 ctx2d.fillRect(width/2-100,height/2-110,200,200);
                 drawMypic(0,width/2-100,height/2-110,200,200,1,1);
-                ctx2d.fillStyle="rgba(0,0,0,"+(1-Math.pow(Math.min(1,eventEggAni/100),2))+")";
+                ctx2d.fillStyle="rgba(0,0,0,"+(1-Math.pow(Math.min(1,eventEggAni/100),1))+")";
                 ctx2d.fillRect(width/2-250,height/2-200,500,400);
             }
             eventEggAni++;

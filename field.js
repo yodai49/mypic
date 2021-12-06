@@ -54,7 +54,7 @@ function procreateProcess(){
         [drawMypicTempName,drawMypicTempObj,
             eggData[selectEggKind][2],eggData[selectEggKind][2],eggData[selectEggKind][3],eggData[selectEggKind][3],
             eggData[selectEggKind][4],eggData[selectEggKind][5],eggData[selectEggKind][6],
-            eggData[selectEggKind][7],eggData[selectEggKind][8],eggData[selectEggKind][9],1,0,
+            eggData[selectEggKind][7],eggData[selectEggKind][8],Math.floor(Math.random()*specialAvilityText.length),1,0,
             4,eggData[selectEggKind][10],eggData[selectEggKind][11]]
     );
 }

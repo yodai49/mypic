@@ -21,6 +21,7 @@ var drawMypicTempObj=[];//描き途中のマイピクの形状を保持
 var drawMypicRadius=0,drawMypicTempName="",selectEggItemNum=0,selectEggKind=0;
 var titleConfirmWindow=0,titleConfirmSelect=1,titleConfirmMessage="",titleConfirmMessage2="",titleConfirmMode=0;
 var eventMessageWindow=0,eventMessageWindowMsg="",procreateMsg="";
+var encount_down=0,encount_down_cnt=0;
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
     if (mode==1){
@@ -198,6 +199,21 @@ function moveEveDraw(x,y){ //マウスのムーブイベント
     drawMypicRadius=Math.sqrt(drawMypicRadius);
 }
 
+function encount_check(){//敵との遭遇率encount=6*((200−運)/200)
+    var encountRate = (6*((200 - infToRange(mypicstock[mypic[0]][9],0,100,30))/200));
+    var tempEncRandom=((3000+encount_down*6000)*Math.random());
+    
+    if (encountRate>=tempEncRandom) {
+        encount=true;
+    } else {
+        encount=false;
+    }
+    if (encount_down_cnt){
+        encount_down_cnt--;
+        if(!encount_down_cnt) encount_down=0,eventMessageWindow=1,eventMessageWindowMsg="スプレーのこうかがきれた！";
+    }
+}
+
 function checkConflict(dir){
     /* 当たり判定
     @param dir--移動しようとする方向　0-3で、左右上下の順番
@@ -290,6 +306,7 @@ function myposmodify(){
 }
 function walkeve(){ //歩くときに発生する処理
     myposmodify();
+    encount_check();
     walkanimation=(walkanimation+1)%30; //歩く処理
 }
 function trigEvent(trigEventnum){
@@ -725,6 +742,39 @@ function fieldMain() {
                 menuSelectChildNum++,menuSelectFlg=1;
             } 
         }
+        if (zkey && !menuSelectFlg && menuWindowChildAni && !eventMessageWindow && itemdata[items[menuSelectChildNum][0]][1]){//アイテムの使用
+            if (items[menuSelectChildNum][0] == 0){
+
+            } else if(items[menuSelectChildNum][0] == 1){
+
+            } else if (items[menuSelectChildNum][0] == 2){
+
+            } else if(items[menuSelectChildNum][0] == 3){
+                
+            } else if (items[menuSelectChildNum][0] == 4){
+
+            } else if(items[menuSelectChildNum][0] ==5){
+                
+            } else if (items[menuSelectChildNum][0] == 6){
+
+            } else if(items[menuSelectChildNum][0] == 7){
+                
+            }else if(items[menuSelectChildNum][0] == 12){
+                
+            } else if (items[menuSelectChildNum][0] == 13){
+
+            } else if(items[menuSelectChildNum][0] ==14){
+                
+            } else if (items[menuSelectChildNum][0] == 15){
+
+            } else if(items[menuSelectChildNum][0] == 16){
+                encount_down_cnt=3000;
+                eventMessageWindow=1;
+                eventMessageWindowMsg="むしよけスプレーをつかった！";
+            }
+            menuSelectFlg=1;
+            consumeItem(menuSelectChildNum);
+        }
         if (!upkey && !downkey && !leftkey && !rightkey && !zkey && !xkey) menuSelectFlg=0;
         if (menuSelectNum<0) menuSelectNum=0;
         if (menuSelectNum >= menuWindowTxt.length) menuSelectNum=menuWindowTxt.length-1;
@@ -864,7 +914,11 @@ function fieldMain() {
                         ctx2d.fillText("× " + items[i+itemsScroll][1],700,60+32*i);    
                     }
                 }
-                ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild*(Math.sin(globalTime/6)*0.3+0.7)+")";
+                if (itemdata[items[menuSelectChildNum][0]][1]){
+                    ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild*(Math.sin(globalTime/6)*0.3+0.7)+")";
+                } else{
+                    ctx2d.fillStyle="rgba(155,155,155," + menuWindowTransChild*(Math.sin(globalTime/6)*0.3+0.7)+")";
+                }
                 ctx2d.font="20px "+mainfontName;
                 ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][0],360,60+32*(menuSelectChildNum-itemsScroll));
                 ctx2d.fillText("× " + items[menuSelectChildNum][1],700,60+32*(menuSelectChildNum-itemsScroll));

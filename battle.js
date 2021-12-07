@@ -30,12 +30,19 @@ function battleMain() {
         else if(battleMode==1){
             if(loopmode==0) {//No選択
                 if(loopselect==0)loopmode=1;//戦う技選択
+                else if(loopselect==1)loopmode=2, loopselect=0;//アイテム選択
+                else if(loopselect==2)loopmode=3, loopselect=0;//マイピク選択
                 else if(loopselect==3)battleMode=5;//逃げる
                 else loopmode=loopselect+1, loopselect=0;
             } else if(loopmode==1) {//技実行
-                battleMode=2, Acount=0, Acheck=true;;}
-            else if(loopmode==2);//アイテム選択
-            else if(loopmode==3);//マイピク
+                battleMode=2, Acount=0, Acheck=true;}
+            else if(loopmode==2){//アイテム選択
+            }
+            else if(loopmode==3){//マイピク
+                if(loopselect==1){
+                    
+                }
+            }
         }
         else if(battleMode==2){Acheck=true;
             if(oneMoveFlg) battleMode=6;
@@ -72,8 +79,16 @@ function battleMain() {
     
     if(battleMode==1){//行動選択(loop)
         if(downkey) {
-            loopselect=Math.min(3,loopselect+1),downkey=false;}
-        else if(upkey) loopselect=Math.max(0,loopselect-1), upkey=false;
+            if(loopmode==3){loopselect=Math.min(5,loopselect+1);}
+            else{loopselect=Math.min(3,loopselect+1);}
+            downkey=false;}
+        else if(upkey){
+            loopselect=Math.max(0,loopselect-1);
+            upkey=false;}
+        else if(rightkey){
+            if(loopmode==3){loopselect=Math.min(5,loopselect+3);}rightkey=false;}
+        else if(leftkey){
+            if(loopmode==3){loopselect=Math.max(0,loopselect-3);}leftkey=false;}
     }
 
     if(battleMode==2){//攻撃選択時の処理
@@ -156,10 +171,6 @@ function battleMain() {
                 fieldReDrawFlg=1;}}
     }
     if(battleMode==7){}//敗北
-
-
-    
-
 }
 
 function hitorder(){//先攻後攻決め: floor(素早さ*(乱数0.95-1.05))

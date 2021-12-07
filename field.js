@@ -256,7 +256,6 @@ function createField(){
         fieldimg.onload=function(){fieldcanvasctx.drawImage(fieldimg,fielddata[myposworld][j][0],fielddata[myposworld][j][1]);loadedimgCnt++;}
     }
     eventflgs=[];
-    checkConflict(0);
 }
 function initiate_field(){
     /*　フィールド・キャラクターの初期化処理/////////////////////////////////////////
@@ -339,7 +338,8 @@ function fieldMain() {
     @return なし
     */
     if (fieldReDrawFlg && loadedimgCnt==imgCnt) {
-        field2d.clearRect(0,0,width,height),field2d.drawImage(fieldcanvas,0,0,width,height,0,0,width,height),fieldReDrawFlg=0; //背景の描画
+        field2d.clearRect(0,0,width,height),field2d.drawImage(fieldcanvas,0,0,width,height,0,0,width,height),fieldReDrawFlg=0, checkConflict(0);
+        //背景の描画
     }
     ctx2d.drawImage(characanvas,pre_charasize*Math.floor(walkanimation/15),pre_charasize*walkdir,pre_charasize,pre_charasize,myposx,myposy,charasize,charasize); //キャラクターの描画
     if (happenedEvent){
@@ -435,7 +435,7 @@ function fieldMain() {
                 ctx2d.fillText("だれといれかえる？",width/2-135,height/2-75);
                 for(var i = 0; i < 6;i++){
                     if (stockMypicChgNum == i){
-                        ctx2d.fillStyle="rgba(255,255,255,"+ (1-Math.abs(stockMypicChgWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                        ctx2d.fillStyle="rgba(255,255,255,"+ (1-Math.abs(stockMypicChgWindow-menuWindowAniSpeed)/menuWindowAniSpeed)*(Math.sin(globalTime/6)*0.3+0.7)+")";
                     } else{
                         ctx2d.fillStyle="rgba(105,105,105,"+ (1-Math.abs(stockMypicChgWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
                     }
@@ -514,10 +514,11 @@ function fieldMain() {
                         ctx2d.fillText("× "+tempEggList[i+eventEggScroll][1],width/2+180,height/2-80+23*i);     
                     }
                 }
-                ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*(Math.sin(globalTime/6)*0.3+0.7)+")";
                 ctx2d.fillText(itemdata[tempEggList[eventEggSelectNum][0]][0],width/2-230,height/2-80+23*(eventEggSelectNum-eventEggScroll));  
                 ctx2d.fillText("× "+tempEggList[eventEggSelectNum][1],width/2+180,height/2-80+23*(eventEggSelectNum-eventEggScroll)); 
                 ctx2d.font="12pt " + mainfontName;
+                ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
                 ctx2d.fillText(itemdata[tempEggList[eventEggSelectNum][0]][3].substr(0,28),width/2-230,height/2-80+23*10.5);
                 ctx2d.fillText(itemdata[tempEggList[eventEggSelectNum][0]][3].substr(28,28),width/2-230,height/2-80+23*11.2);
             } else if(eventProcreateStep==1){ //お絵かき
@@ -636,7 +637,7 @@ function fieldMain() {
         if (zkey && eventWindowAni && !menuSelectFlg) eventWindowAni++;
         if (!zkey) selectTitleFlg=0;
     } else { /////メニューウィンドウが表示されている時
-        if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni && !titleConfirmWindow && !menuSelectFlg) menuWindow++;
+        if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni && !titleConfirmWindow && !menuSelectFlg && !eventMessageWindow) menuWindow++;
         if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni && titleConfirmWindow && !menuSelectFlg) titleConfirmWindow++,menuSelectFlg=1;
         if(zkey && menuWindow && !menuWindowChildAni && !titleConfirmWindow && !menuSelectFlg && !eventMessageWindow){
             if (menuSelectNum==3){ //セーブ
@@ -775,7 +776,11 @@ function fieldMain() {
         ctx2d.font="30px "+mainfontName;
         for(let i = 0; i < menuWindowTxt.length;i++){
             if (menuSelectNum==i){
-                ctx2d.fillStyle="rgba(255,255,255," + menuWindowTrans+")";
+                if (menuWindowChildAni || eventMessageWindow || titleConfirmWindow){
+                    ctx2d.fillStyle="rgba(255,255,255," + menuWindowTrans+")";                    
+                } else{
+                    ctx2d.fillStyle="rgba(255,255,255," + menuWindowTrans*(Math.sin(globalTime/6)*0.3+0.7)+")";
+                }
             } else{
                 ctx2d.fillStyle="rgba(100,100,100," + menuWindowTrans+")"; 
             }
@@ -859,10 +864,11 @@ function fieldMain() {
                         ctx2d.fillText("× " + items[i+itemsScroll][1],700,60+32*i);    
                     }
                 }
-                ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
+                ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild*(Math.sin(globalTime/6)*0.3+0.7)+")";
                 ctx2d.font="20px "+mainfontName;
                 ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][0],360,60+32*(menuSelectChildNum-itemsScroll));
                 ctx2d.fillText("× " + items[menuSelectChildNum][1],700,60+32*(menuSelectChildNum-itemsScroll));
+                ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
                 ctx2d.fillRect(360,60+32*9.5,300,1);
                 ctx2d.font="16px "+mainfontName;
                 ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(0,25),360,60+32*10.3);

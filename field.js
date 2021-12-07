@@ -769,7 +769,8 @@ function fieldMain() {
 
             } else if(items[menuSelectChildNum][0] == 16){
                 encount_down_cnt=3000;
-                titleConfirmMode=1;
+                eventMessageWindow=1;
+                eventMessageWindowMsg="むしよけスプレーをつかった！";
             }
             menuSelectFlg=1;
             consumeItem(menuSelectChildNum);

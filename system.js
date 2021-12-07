@@ -37,7 +37,7 @@ function consumeItem(consumeNum){
     }
 }
 
-function hpmpChg(chgStatus,chgAmount,isEnemy,Num){
+function changeHPMP(chgStatus,chgAmount,isEnemy,Num){
     /* HPとかMPを増減させる関数
     @param  chgStatus - - - HPなら0、MPなら1を指定
             chgAmount - - - 増減する量を指定　減るならマイナス
@@ -48,7 +48,9 @@ function hpmpChg(chgStatus,chgAmount,isEnemy,Num){
             -1  - - その他の異常終了
     */
     if (!isEnemy){ //味方
-        enemyData[]
+        mypicstock[mypic[Num]][2+2*chgStatus]=Math.min(Math.max(0,mypicstock[mypic[Num]][2+2*chgStatus]+chgAmount),mypicstock[mypic[Num]][3+2*chgStatus]);
+        if (!mypicstock[mypic[Num]][2+2*chgStatus]) return 1;
+        return 0;
     } else{ //敵
 
     }

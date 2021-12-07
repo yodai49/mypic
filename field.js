@@ -200,6 +200,7 @@ function moveEveDraw(x,y){ //マウスのムーブイベント
 }
 
 function encount_check(){//敵との遭遇率encount=6*((200−運)/200)
+    if (mypic.length==0) return 0;
     var encountRate = (6*((200 - infToRange(mypicstock[mypic[0]][9],0,100,30))/200));
     var tempEncRandom=((3000+encount_down*6000)*Math.random());
     
@@ -654,7 +655,7 @@ function fieldMain() {
         if (!zkey) selectTitleFlg=0;
     } else { /////メニューウィンドウが表示されている時
         if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni && !titleConfirmWindow && !menuSelectFlg && !eventMessageWindow) menuWindow++;
-        if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni && titleConfirmWindow && !menuSelectFlg) titleConfirmWindow++,menuSelectFlg=1;
+        if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni && titleConfirmWindow && !menuSelectFlg && !eventMessageWindow) titleConfirmWindow++,menuSelectFlg=1;
         if(zkey && menuWindow && !menuWindowChildAni && !titleConfirmWindow && !menuSelectFlg && !eventMessageWindow){
             if (menuSelectNum==3){ //セーブ
                 titleConfirmWindow=1;
@@ -832,8 +833,8 @@ function fieldMain() {
     if (menuMypicDetailAni && menuMypicDetailAni!=menuWindowAniSpeed) menuMypicDetailAni++;
     if (menuMypicDetailAni == menuWindowAniSpeed*2) menuMypicDetailAni=0;
     if (!zkey) menuzflg=0;
-    if(xkey && !(menuWindowChildAni-menuWindowAniSpeed) && menuWindowChildAni && !menuMypicDetailAni) menuWindowChildAni++;
-    if(xkey && !(menuWindowChildAni-menuWindowAniSpeed) && menuWindowChildAni && !(menuMypicDetailAni-menuWindowAniSpeed)) menuMypicDetailAni++;
+    if(xkey && !(menuWindowChildAni-menuWindowAniSpeed) && menuWindowChildAni && !menuMypicDetailAni && !eventMessageWindow) menuWindowChildAni++;
+    if(xkey && !(menuWindowChildAni-menuWindowAniSpeed) && menuWindowChildAni && !(menuMypicDetailAni-menuWindowAniSpeed) && !eventMessageWindow) menuMypicDetailAni++;
     if(vkey &&  !(menuWindowChildAni-menuWindowAniSpeed) && menuWindowChildAni && !menuMypicDetailAni) menuSortMypicNum=menuSelectChildNum;
     if(menuWindow){    //メニューの描画
         ctx2d.fillStyle="rgba(0,0,0," + menuWindowTrans*0.8+")";
@@ -964,7 +965,9 @@ function fieldMain() {
             ctx2d.font="12pt " + mainfontName;
             for(var i = 0;i < mypic.length;i++){
                 ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-                ctx2d.fillText(mypicstock[mypic[i]][0],(width-350)/2+15,height/2-65+30);        
+                ctx2d.fillText(mypicstock[mypic[i]][0],(width-350)/2+15,height/2-65+30+i*25);
+                ctx2d.fillText("HP: "+ mypicstock[mypic[i]][2] + "/" + mypicstock[mypic[i]][3],(width-350)/2+125,height/2-65+30+i*25);
+                ctx2d.fillText("MP: "+ mypicstock[mypic[i]][4] + "/" + mypicstock[mypic[i]][5],(width-350)/2+255,height/2-65+30+i*25);
             }
         } else{
             ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";

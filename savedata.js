@@ -24,7 +24,7 @@ function loadData(){
 
 function resetData(){
     //データをリセットする処理 変数に初期値をセットする　初プレイやはじめからを選択したときに使う
-    localStorage.clear();
+    //localStorage.clear();
     items=[];
     for(var i = 0;i < itemdata.length;i++) items.push([i,99]);
     mypic=[0];

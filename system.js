@@ -37,21 +37,27 @@ function consumeItem(consumeNum){
     }
 }
 
-function changeHPMP(chgStatus,chgAmount,isEnemy,Num){
+function changeHPMP(chgStatus,chgAmount,isEnemy,Num,isSimulate){
     /* HPとかMPを増減させる関数
     @param  chgStatus - - - HPなら0、MPなら1を指定
             chgAmount - - - 増減する量を指定　減るならマイナス
             isEnemy - - - - 味方なら0、敵なら1を指定
             Num     - - - - 味方の場合、何番目に適用するかを指定
     @return 0 - - - 通常に完了
-            1 - - - HPの減少によって死んだ
+            1 - - - HPが0以下になる（なった）、あるいはMPが0未満になる（なった）
             -1  - - その他の異常終了
     */
     if (!isEnemy){ //味方
-        mypicstock[mypic[Num]][2+2*chgStatus]=Math.min(Math.max(0,mypicstock[mypic[Num]][2+2*chgStatus]+chgAmount),mypicstock[mypic[Num]][3+2*chgStatus]);
-        if (!mypicstock[mypic[Num]][2+2*chgStatus]) return 1;
-        return 0;
-    } else{ //敵
+        if (!isSimulate){ //実際にやるとき
+            mypicstock[mypic[Num]][2+2*chgStatus]=Math.min(Math.max(0,mypicstock[mypic[Num]][2+2*chgStatus]+chgAmount),mypicstock[mypic[Num]][3+2*chgStatus]);
+            if (!mypicstock[mypic[Num]][2+2*chgStatus]) return 1;
+            return 0;
+        } else{ //シミュレーションチェックの時
+            var tmpSimulate=Math.max(0,mypicstock[mypic[Num]][2+2*chgStatus]+chgAmount+chgStatus);
+            if (!tmpSimulate) return 1; //HPかMPが0以下、0未満になるなら
+            return 0;
+        }
+    } else{ //敵 管理方法が分かり次第実装
 
     }
 }

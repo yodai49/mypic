@@ -58,27 +58,71 @@ function procreateProcess(){ //卵の孵化処理
             linelength+=Math.sqrt(Math.pow((drawMypicTempObj[i][1]-drawMypicTempObj[i][3]),2)+Math.pow((drawMypicTempObj[i][2]-drawMypicTempObj[i][4]),2));
         } else { //円なら
             arccnt++;
-            arclength+=drawMypicTempObj[i][3];
+            arclength+=drawMypicTempObj[i][3]*2*Math.PI;
         }
         for(var j = 0; j < drawMypicTempObj.length;j++){//交わりのチェック
             if (i != j){
                 if (drawMypicTempObj[i][0] == 0 && drawMypicTempObj[j][0] == 0){
-
+                    var tc=(drawMypicTempObj[i][1] - drawMypicTempObj[i][3])*(drawMypicTempObj[j][2] - drawMypicTempObj[i][2])+(drawMypicTempObj[i][2] - drawMypicTempObj[i][4])*(drawMypicTempObj[i][1] - drawMypicTempObj[j][1]);
+                    var td=(drawMypicTempObj[i][1] - drawMypicTempObj[i][3])*(drawMypicTempObj[j][4] - drawMypicTempObj[i][2])+(drawMypicTempObj[i][2] - drawMypicTempObj[i][4])*(drawMypicTempObj[i][1] - drawMypicTempObj[j][3]);
+                    if (tc*td<0) lineCline++;
                 } else if(drawMypicTempObj[i][0] == 0 && drawMypicTempObj[j][0] == 1){
-                } else if(drawMypicTempObj[i][0] == 1 && drawMypicTempObj[j][0] == 0){
+                    let x1=drawMypicTempObj[i][1],x2=drawMypicTempObj[i][3],y1=drawMypicTempObj[i][2],y2=drawMypicTempObj[i][4];
+                    let xr=drawMypicTempObj[j][1],yr=drawMypicTempObj[j][2],r=drawMypicTempObj[j][3];
+                    if (r >= Math.sqrt(Math.pow(x1-xr,2)+Math.pow(y1-yr,2))){
+                        lineCarc++;
+                    } else if (r >= Math.sqrt(Math.pow(x2-xr,2)+Math.pow(y2-yr,2))){
+                        lineCarc++;
+                    }  else if((xr-x1)*(xr-x2)+(yr-y1)*(yr-y2) < 0){
+                        lineCarc++;
+                    }
                 } else if(drawMypicTempObj[i][0] == 1 && drawMypicTempObj[j][0] == 1){
+                    if (Math.sqrt(Math.pow(drawMypicTempObj[i][1]-drawMypicTempObj[j][1],2)+Math.pow(drawMypicTempObj[i][2]-drawMypicTempObj[j][2],2))< drawMypicTempObj[i][3]+drawMypicTempObj[j][3]) arcCarc++;
                 }
             }
         }
     }
+    lineCline/=2;
+    arcCarc/=2;
     lineratio=linelength/(linelength+arclength);
-    console.log(linelength,arclength,linecnt,arccnt);
+    let neweggData=[];
+    const randomrate=0.15;//ランダムで決まる割合　0.2なら元データの0.8〜1の範囲になる
+    for(var i=0;i<12;i++) neweggData[i] = eggData[selectEggKind][i];
+    neweggData[2]*= (1-randomrate+randomrate*Math.random())*Math.min(1.5,(0.8+0.07*lineCline));//HP
+    neweggData[3]*= (1-randomrate+randomrate*Math.random())*Math.min(1.5,(0.8+0.07*lineCarc));//MP
+    neweggData[4]*= (1-randomrate+randomrate*Math.random())*Math.min(1.2,(0.8+0.4*Math.pow(lineratio,0.5)));//攻撃力
+    neweggData[5]*= (1-randomrate+randomrate*Math.random())*Math.min(1.2,(0.8+0.4*Math.pow((1-lineratio),0.5)));//防御力
+    neweggData[7]*= (1-randomrate+randomrate*Math.random())*Math.min(1.6,0.8+0.1*arcCarc);//運
+    neweggData[8]*= (1-randomrate+randomrate*Math.random())*Math.max(1.6,(1.5-(linecnt+arccnt)/15*0.8));//すばやさ
+    neweggData[5]*= Math.max(1.6,(0.8+(linecnt+arccnt)/15*0.8));//防御力
+    let specialAvilityDice=[],diceConfig=[0.35/2,0.1,0.05,0.025];
+    for(var i = 0;i < specialAvilityText.length;i++) specialAvilityDice[i]=0;
+    for(var i = 0;i < diceConfig.length;i++){
+        specialAvilityDice[(linecnt+arccnt+i+specialAvilityText)%specialAvilityText.length]+=diceConfig[i];
+        specialAvilityDice[(linecnt+arccnt-i+specialAvilityText)%specialAvilityText.length]+=diceConfig[i];
+    }
+    let procMypicDice=Math.random();
+    let tempsum=0;
+    for(var i = 0;i < specialAvilityText.length;i++){
+        tempsum+=specialAvilityDice[i];
+        if (procMypicDice<tempsum) {
+            procMypicDice=i;
+            break;
+        }   
+    }
+    neweggData[11] = procMypicDice;
+    neweggData[2]=Math.floor(neweggData[2]);
+    neweggData[3]=Math.floor(neweggData[3]);
+    neweggData[4]=Math.floor(neweggData[4]);
+    neweggData[5]=Math.floor(neweggData[5]);
+    neweggData[7]=Math.floor(neweggData[7]);
+    neweggData[8]=Math.floor(neweggData[8]);
     mypicstock.push(
         [drawMypicTempName,drawMypicTempObj,
-            eggData[selectEggKind][2],eggData[selectEggKind][2],eggData[selectEggKind][3],eggData[selectEggKind][3],
-            eggData[selectEggKind][4],eggData[selectEggKind][5],eggData[selectEggKind][6],
-            eggData[selectEggKind][7],eggData[selectEggKind][8],Math.floor(Math.random()*specialAvilityText.length),1,0,
-            4,eggData[selectEggKind][10],eggData[selectEggKind][11]]
+            neweggData[2],neweggData[2],neweggData[3],neweggData[3],
+            neweggData[4],neweggData[5],neweggData[6],
+            neweggData[7],neweggData[8],Math.floor(Math.random()*specialAvilityText.length),1,0,
+            4,neweggData[10],neweggData[11]]
     );
 }
 function clickEveDraw(x,y){ //クリックイベント

@@ -19,7 +19,7 @@ var drawMypicStatus=0; //0なら何も描いていない　1なら始点を描�
 var drawMypicTempPos=[0,0];//描いた始点を保持
 var drawMypicTempObj=[];//描き途中のマイピクの形状を保持
 var drawMypicRadius=0,drawMypicTempName="",selectEggItemNum=0,selectEggKind=0;
-var titleConfirmWindow=0,titleConfirmSelect=1;
+var titleConfirmWindow=0,titleConfirmSelect=1,titleConfirmMessage="",titleConfirmMessage2="",titleConfirmMode=0;
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
     if (mode==1){
@@ -547,10 +547,17 @@ function fieldMain() {
         if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni && titleConfirmWindow && !menuSelectFlg) titleConfirmWindow++,menuSelectFlg=1;
         if(zkey && menuWindow && !menuWindowChildAni && !titleConfirmWindow && !menuSelectFlg){
             if (menuSelectNum==3){ //セーブ
-                
+                titleConfirmWindow=1;
+                menuSelectFlg=1;
+                titleConfirmMessage="セーブしますか？";
+                titleConfirmMessage2="";
+                titleConfirmMode=3;
             } else if(menuSelectNum==4){ //タイトル
                 titleConfirmWindow=1;
                 menuSelectFlg=1;
+                titleConfirmMessage="ほんとうにタイトルにもどりますか？";
+                titleConfirmMessage2="セーブしていないデータはうしなわれます";
+                titleConfirmMode=3;
             } else { //メニューを開く時
                 menuWindowChildAni++;
                 menuSelectChildNum=0, itemsScroll=0;
@@ -558,7 +565,19 @@ function fieldMain() {
             }
         }else if(zkey && menuWindow  && titleConfirmWindow && !menuSelectFlg){
             if (menuSelectNum==3){ //セーブ
-                
+                if (titleConfirmMode==3){
+                    if (!titleConfirmSelect){
+                        saveData();
+                        titleConfirmMessage="セーブしました！";
+                        titleConfirmMessage2="";
+                        titleConfirmMode=5;    
+                    } else{
+                        titleConfirmWindow++;
+                    }
+                } else if (titleConfirmMode==5){
+                    titleConfirmWindow++;
+                }
+                menuSelectFlg=1;
             } else if(menuSelectNum==4){ //タイトル
                 titleConfirmWindow++;
                 menuSelectFlg=1;
@@ -617,18 +636,20 @@ function fieldMain() {
             ctx2d.fillRect(width/2-200,height/2-60,400,120);
             ctx2d.font="14pt "+ mainfontName;
             ctx2d.fillStyle="rgba(255,255,255,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-            ctx2d.fillText("ほんとうにタイトルにもどりますか？",width/2-180,height/2-20);
-            ctx2d.fillText("セーブしていないデータは失われます",width/2-180,height/2);
-            if (!titleConfirmSelect){
-                ctx2d.fillStyle="rgba(255,255,255,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)*(0.7+Math.sin(globalTime/6)*0.3)+")";
-                ctx2d.fillText("はい",(width-ctx2d.measureText("はい").width)/2-80,height/2+35);
-                ctx2d.fillStyle="rgba(105,105,105,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-                ctx2d.fillText("いいえ",(width-ctx2d.measureText("いいえ").width)/2+80,height/2+35);    
-            } else{
-                ctx2d.fillStyle="rgba(105,105,105,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-                ctx2d.fillText("はい",(width-ctx2d.measureText("はい").width)/2-80,height/2+35);
-                ctx2d.fillStyle="rgba(255,255,255,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)*(0.7+Math.sin(globalTime/6)*0.3)+")";
-                ctx2d.fillText("いいえ",(width-ctx2d.measureText("いいえ").width)/2+80,height/2+35);    
+            ctx2d.fillText(titleConfirmMessage,width/2-180,height/2-20);
+            ctx2d.fillText(titleConfirmMessage2,width/2-180,height/2);
+            if (titleConfirmMode != 5){
+                if (!titleConfirmSelect){
+                    ctx2d.fillStyle="rgba(255,255,255,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)*(0.7+Math.sin(globalTime/6)*0.3)+")";
+                    ctx2d.fillText("はい",(width-ctx2d.measureText("はい").width)/2-80,height/2+35);
+                    ctx2d.fillStyle="rgba(105,105,105,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                    ctx2d.fillText("いいえ",(width-ctx2d.measureText("いいえ").width)/2+80,height/2+35);        
+                } else{
+                    ctx2d.fillStyle="rgba(105,105,105,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                    ctx2d.fillText("はい",(width-ctx2d.measureText("はい").width)/2-80,height/2+35);
+                    ctx2d.fillStyle="rgba(255,255,255,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)*(0.7+Math.sin(globalTime/6)*0.3)+")";
+                    ctx2d.fillText("いいえ",(width-ctx2d.measureText("いいえ").width)/2+80,height/2+35);    
+                }
             }
             if (leftkey && !menuSelectFlg) titleConfirmSelect=0,menuSelectFlg=1;
             if (rightkey && !menuSelectFlg) titleConfirmSelect=1,menuSelectFlg=1;

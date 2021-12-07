@@ -67,7 +67,18 @@ function procreateProcess(){ //卵の孵化処理
                     var td=(drawMypicTempObj[i][1] - drawMypicTempObj[i][3])*(drawMypicTempObj[j][4] - drawMypicTempObj[i][2])+(drawMypicTempObj[i][2] - drawMypicTempObj[i][4])*(drawMypicTempObj[i][1] - drawMypicTempObj[j][3]);
                     if (tc*td<0) lineCline++;
                 } else if(drawMypicTempObj[i][0] == 0 && drawMypicTempObj[j][0] == 1){
-                    
+                    let x1=drawMypicTempObj[i][1],x2=drawMypicTempObj[i][3],y1=drawMypicTempObj[i][2],y2=drawMypicTempObj[i][4];
+                    let xr=drawMypicTempObj[j][1],yr=drawMypicTempObj[j][2],r=drawMypicTempObj[j][3];
+                    let alpha = 0;
+                    if (x2== x1) alpha = 99999;
+                    if (x2 != x1) alpha = (y2-y1)/(x2-x1);
+                    let a = 1+alpha*alpha;
+                    let b = 2*y1*alpha-2*alpha*alpha*x1-2*xr-2*alpha*yr;
+                    let c = alpha*alpha*x1*x1-2*y1*alpha*x1+y1*y1+2*alpha*x1*yr-2*y1*yr+xr*xr+yr*yr+r*r;
+                    let d = b*b-4*a*c;
+                    let x_solve1 = (-b+Math.sqrt(d))/2*a;
+                    let x_solve2= (-b-Math.sqrt(d))/2*a;
+                    //x_solve1とsolve2が線分の間にあるかどうかをチェック
                 } else if(drawMypicTempObj[i][0] == 1 && drawMypicTempObj[j][0] == 1){
                     if (Math.sqrt(Math.pow(drawMypicTempObj[i][1]-drawMypicTempObj[j][1],2)+Math.pow(drawMypicTempObj[i][2]-drawMypicTempObj[j][2],2))< drawMypicTempObj[i][3]+drawMypicTempObj[j][3]) arcCarc++;
                 }

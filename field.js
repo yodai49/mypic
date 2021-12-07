@@ -543,8 +543,8 @@ function fieldMain() {
         }
         if (!zkey) selectTitleFlg=0;
     } else { /////メニューウィンドウが表示されている時
-        if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni && !titleConfirmWindow) menuWindow++;
-        if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni && titleConfirmWindow) titleConfirmWindow++;
+        if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni && !titleConfirmWindow && !menuSelectFlg) menuWindow++;
+        if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni && titleConfirmWindow && !menuSelectFlg) titleConfirmWindow++,menuSelectFlg=1;
         if(zkey && menuWindow && !menuWindowChildAni && !titleConfirmWindow && !menuSelectFlg){
             if (menuSelectNum==3){ //セーブ
                 
@@ -607,7 +607,7 @@ function fieldMain() {
                 menuSelectChildNum++,menuSelectFlg=1;
             } 
         }
-        if (!upkey && !downkey && !leftkey && !rightkey && !zkey) menuSelectFlg=0;
+        if (!upkey && !downkey && !leftkey && !rightkey && !zkey && !xkey) menuSelectFlg=0;
         if (menuSelectNum<0) menuSelectNum=0;
         if (menuSelectNum >= menuWindowTxt.length) menuSelectNum=menuWindowTxt.length-1;
         if (titleConfirmWindow && (titleConfirmWindow-menuWindowAniSpeed)) titleConfirmWindow++;

@@ -15,6 +15,7 @@ var Messagenum=1;//0:field, 1:battle
 var messChoice=0;//選択肢シーンでの分岐判定
 var messCheck=false;
 var Choicenum=0;
+var battleLaunchFlg=0;
 
 function messageMain(){
     if(onMessage){
@@ -79,9 +80,8 @@ function battlemessMain(){
         ctx2d.fillStyle=white;
         ctx2d.font="28px san-serif";
         ctx2d.fillText(introMessage[in_lstnum], width*25/100,height*74/100);
-        if (Acheck){ /////バトル開始時の処理　ここにまとめる
-            
-            fieldReDrawFlg=1,Acheck=0;
+        if (battleLaunchFlg){ /////バトル開始時の処理　ここにまとめる
+            fieldReDrawFlg=1,battleLaunchFlg=0;
         }
     }
     battleloop();

@@ -50,7 +50,7 @@ function battleMain() {
             //命中する　
             damage = calcDamage(firstSt[12], firstSkill[1], firstSt[6], secondSt[7], firstSkill[3], secondSt[15]);
             changeHPMP(0, (-1)*damage, attackorder, 0, 0);//HP変化
-            changeHPMP(1, firstSkill[4], !attackorder, 0, 0);//MP消費
+            changeHPMP(1, (-1)*firstSkill[4], !attackorder, 0, 0);//MP消費
             if(secondSt[2] == 0){//HP=0
                 if(attackorder){//敵が死んだので勝利
                     battleMode=6;
@@ -77,7 +77,7 @@ function battleMain() {
             if(Acount>0){
             damage = calcDamage(secondSt[12], secondSkill[1], secondSt[6], firstSt[7], secondSkill[3], firstSt[15]);
             changeHPMP(0, (-1)*damage, !attackorder, 0, 0);//HP変化
-            changeHPMP(1, secondSkill[4], attackorder, 0, 0);//MP消費
+            changeHPMP(1, (-1)*secondSkill[4], attackorder, 0, 0);//MP消費
             if(firstSt[2] == 0){//HP=0
                 if(!attackorder){//敵が死んだので勝利
                     battleMode=6;
@@ -101,14 +101,13 @@ function battleMain() {
         if(Acount==99)battleMode=1, Acount=0, loopmode=0,loopselect=0;//行動選択に戻る
     }
 
-    if(battleMode==3);//アイテム選択時
-    if(battleMode==4);//マイピク交代
-    if(battleMode==5);{//逃げる選択
+    else if(battleMode==3);//アイテム選択時
+    else if(battleMode==4);//マイピク交代
+    else if(battleMode==5);{//逃げる選択
         hitorder();
         if(attackorder){//逃げれる
         }
         else{
-            
         }
     }
     if(battleMode==6);{//勝利

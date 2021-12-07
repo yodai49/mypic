@@ -22,7 +22,7 @@ var spacekey=false, leftkey=false, upkey=false, rightkey=false, downkey=false;
 var zkey=0,xkey=0,ckey=0,vkey=0, bkey=0;
 var characanvas,fieldcanvas,fieldbackcanvas; //プリレンダリング用のキャンバス fieldcanvasは前景、fieldbackcanvasは背景（当たり判定なし）
 var items=[[0,39],[1,39],[2,3],[3,4],[4,2],[5,1],[6,30],[7,50],[8,5],[9,33],[10,2],[23,7],[24,7],[26,7],[27,7],[28,7],[29,2],[31,3],[32,4],[33,7],[35,7],[36,1]];
-var mypic=[0,1,2,3,4,5]//ストックでの管理番号
+var mypic=[0,1,2,3,4,5];//ストックでの管理番号
 var mypicstock=[
     ["ああああああ",[[0,10,30,25,15],[0,25,15,40,30],[0,60,30,75,15],[0,75,15,90,30],[0,30,70,50,90],[0,50,90,70,70]],250,300,50,50,100,100,[4,20,30,9],5,100,3,2,120,4,0,0],
     ["机",[[0,10,30,25,15],[0,25,15,40,30],[0,60,30,75,15],[0,75,15,90,30],[0,30,70,50,90],[0,50,90,70,70]],200,300,50,50,100,100,[0,1,2,3],5,100,3,3,3100,4,0,0],
@@ -81,6 +81,11 @@ window.addEventListener('DOMContentLoaded', function(){ ///キー入力イベン
         e.clientY-document.getElementById("mainCanvas").getBoundingClientRect().top)
     });
 });
+
+var isFirst=localStorage.getItem("xpos");
+if (isFirst==undefined){//初回起動時だったら
+    resetData();
+}
 
 //起動時の処理//
 initiate_field();

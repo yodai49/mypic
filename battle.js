@@ -106,9 +106,6 @@ function battleMain() {
     if(battleMode==5);{//逃げる選択
         hitorder();
         if(attackorder){//逃げれる
-            if(Acheck){Acheck=false;
-                
-            }
         }
         else{
             

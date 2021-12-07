@@ -9,6 +9,7 @@ var firstSt, secondSt;
 var damage;//攻撃のダメージ量(HP基準)
 var Acount=0, Acheck=true;//attackcount, 攻撃時のカウンタ, attackcheck,zkey入力に１回だけ作動するように
 var attackMiss=false;
+var baseEnemyData;
 
 function battleMain() {
     //character
@@ -17,6 +18,10 @@ function battleMain() {
     //enemy
     ctx2d.fillStyle=red;
     ctx2d.fillRect(600,200,50,50);
+
+    if(battleMode==0){//敵データの保存
+        baseEnemyData=enemyData[0];
+    }
     
     if(battleMode==1){//行動選択(loop)
         if(downkey) {
@@ -25,11 +30,12 @@ function battleMain() {
     }
 
     if(battleMode==2){//攻撃選択時の処理
+        console.log("Acount:"+Acount+"Acheck:"+Acheck);
         if(Acount==0 && Acheck){
-            Acount++, Acheck=false;
+            Acount++;
             hitorder();
-            if(attackorder) firstSt=mypicstock[mypic[0]], secondSt=enemyData[0];
-            else firstSt=enemyData[0], secondSt=mypicstock[mypic[0]];
+            if(attackorder) firstSt=mypicstock[mypic[0]], secondSt=baseEnemyData;
+            else firstSt=baseEnemyData, secondSt=mypicstock[mypic[0]];
             //先攻後攻のキャラデータが入った
 
             //先攻の攻撃
@@ -38,13 +44,11 @@ function battleMain() {
             secondSkill=skillData[secondSt[8][loopselect]];//技データのリストが取れる
         }
         
-        if(Acount==1 && Acheck){
+        else if(Acount==1 && Acheck){
             Acheck=false;
-            console.log("a");
         if(hitcheck(firstSkill[2], secondSt[9])){//MPの残り判定も追加しないと意見//
             //命中する　
             damage = calcDamage(firstSt[12], firstSkill[1], firstSt[6], secondSt[7], firstSkill[3], secondSt[15]);
-            console.log("a");
             secondSt[2] -= Math.max(secondSt[2] - damage, 0);//HP変化
             firstSt[4] -= firstSkill[4];//DP減少
             if(secondSt[2] == 0){//HP=0
@@ -111,6 +115,7 @@ function battleMain() {
         if(battleMode==0){
             in_lstnum++;
             if(in_lstnum == BattleMessage[lstnum].length && lstnum==0){
+                console.log("sss");
                 battleMode=1, in_lstnum=0;}//loopに行く
         }
         else if(battleMode==1){
@@ -120,7 +125,7 @@ function battleMain() {
                 else loopmode=loopselect+1, loopselect=0;
             }
             else if(loopmode==1) {//技実行
-                battleMode=2;}
+                battleMode=2, Acount=0, Acheck=true;;}
             else if(loopmode==2);//アイテム選択
             else if(loopmode==3);//マイピク
         }
@@ -150,7 +155,7 @@ function encount_check(){//敵との遭遇率encount=6*((200−運)/200)
 
 function hitorder(){//先攻後攻決め: floor(素早さ*(乱数0.95-1.05))
     var mypicSpeed = Math.floor(mypicstock[mypic[0]][10]*(0.95+(1.05-0.95)*Math.random()));
-    var enemySpeed = Math.floor(enemyData[0][10]*(0.95+(1.05-0.95)*Math.random()));
+    var enemySpeed = Math.floor(baseEnemyData[10]*(0.95+(1.05-0.95)*Math.random()));
     if(mypicSpeed>=enemySpeed) attackorder=true;//味方の方が速い
     else attackorder=false;
 }

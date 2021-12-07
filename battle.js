@@ -33,9 +33,14 @@ function battleMain() {
                 else if(loopselect==3)battleMode=5;//逃げる
                 else loopmode=loopselect+1, loopselect=0;
             } else if(loopmode==1) {//技実行
-                battleMode=2, Acount=0, Acheck=true;;}
-            else if(loopmode==2);//アイテム選択
-            else if(loopmode==3);//マイピク
+                battleMode=2, Acount=0, Acheck=true;}
+            else if(loopmode==2){//アイテム選択
+            }
+            else if(loopmode==3){//マイピク
+                if(loopselect==0){
+                    
+                }
+            }
         }
         else if(battleMode==2){Acheck=true;
             if(oneMoveFlg) battleMode=6;
@@ -156,10 +161,6 @@ function battleMain() {
                 fieldReDrawFlg=1;}}
     }
     if(battleMode==7){}//敗北
-
-
-    
-
 }
 
 function encount_check(){//敵との遭遇率encount=6*((200−運)/200)

@@ -78,14 +78,15 @@ function messageMain(){
     }
 }
 function battlemessMain(){
+
     if(battleMode==0){//intro,end
         ctx2d.fillStyle=white;
         ctx2d.font="28px san-serif";
         ctx2d.fillText(BattleMessage[lstnum][in_lstnum], 100,500);
-        fieldReDrawFlg=1; ///////////////ここ変更　野生のなんとかが現れた！がでる直前にこの行を移動
-    } else{
-        battleloop();
+        fieldReDrawFlg=1;
     }
+    battleloop();
+    
 
     //一連のメッセージ終了時イベント
     if(battleMode==0){

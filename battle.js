@@ -49,8 +49,8 @@ function battleMain() {
         if(hitcheck(firstSkill[2], secondSt[9])){//MPの残り判定も追加しないと意見//
             //命中する　
             damage = calcDamage(firstSt[12], firstSkill[1], firstSt[6], secondSt[7], firstSkill[3], secondSt[15]);
-            secondSt[2] -= Math.max(secondSt[2] - damage, 0);//HP変化
-            firstSt[4] -= firstSkill[4];//DP減少
+            changeHPMP(0, (-1)*damage, attackorder, 0, 0);//HP変化
+            changeHPMP(1, firstSkill[4], !attackorder, 0, 0);//MP消費
             if(secondSt[2] == 0){//HP=0
                 if(attackorder){//敵が死んだので勝利
                     battleMode=6;
@@ -76,8 +76,8 @@ function battleMain() {
             //命中する
             if(Acount>0){
             damage = calcDamage(secondSt[12], secondSkill[1], secondSt[6], firstSt[7], secondSkill[3], firstSt[15]);
-            firstSt[2] -= Math.max(firstSt[2] - damage,0);//HP変化
-            secondSt[4] -= secondSkill[4];//DP減少
+            changeHPMP(0, (-1)*damage, !attackorder, 0, 0);//HP変化
+            changeHPMP(1, secondSkill[4], attackorder, 0, 0);//MP消費
             if(firstSt[2] == 0){//HP=0
                 if(!attackorder){//敵が死んだので勝利
                     battleMode=6;
@@ -105,7 +105,8 @@ function battleMain() {
     if(battleMode==4);//マイピク交代
     if(battleMode==5);//逃げる選択
     if(battleMode==6);{//勝利
-        //if(Acheck)mode=1;
+        if(in_lstnum == winMessage.length){
+            mode=1, battleMode=0, lstnum=0,in_lstnum=0;}
     }
     if(battleMode==7);//敗北
 
@@ -134,7 +135,7 @@ function battleMain() {
             else if(Acount==2)Acount=99, attackMiss=false;
         }
         else if(battleMode==6){
-            Acheck=true;
+            in_lstnum++;
         }
         zkey=false;
     }

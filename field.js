@@ -598,12 +598,12 @@ function fieldMain() {
         }
         if (upkey && !menuSelectFlg && !menuWindowChildAni) menuSelectNum--,menuSelectFlg=1;
         if (downkey && !menuSelectFlg && !menuWindowChildAni) menuSelectNum++,menuSelectFlg=1;
+        if (spacekey) menuSelectFlg=0;
         if (upkey && !menuSelectFlg && menuWindowChildAni) {  //上キー
             if (menuSelectNum==0 && menuSelectChildNum>=2 && !menuMypicDetailAni){//マイピク
                 menuSelectChildNum-=2,menuSelectFlg=1;
             } else if (menuSelectNum==1 && menuSelectChildNum&& !menuMypicDetailAni){
                 menuSelectChildNum--,menuSelectFlg=1;
-                if (spacekey) menuSelectFlg=0;
                 if (menuSelectChildNum < itemsScroll && itemsScroll) itemsScroll--;    
             }
         }
@@ -612,7 +612,6 @@ function fieldMain() {
                 menuSelectChildNum+=2,menuSelectFlg=1;
             } else if (menuSelectNum==1 && (menuSelectChildNum!=(items.length-1)) && !menuMypicDetailAni){
                 menuSelectChildNum++,menuSelectFlg=1;
-                if (spacekey) menuSelectFlg=0;
                 if (menuSelectChildNum>=10 && menuSelectChildNum-itemsScroll == 10) itemsScroll++;
             }
         }

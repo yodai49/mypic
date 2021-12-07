@@ -744,46 +744,21 @@ function fieldMain() {
             } 
         }
         if (zkey && menuSelectNum==1 && !menuSelectFlg && menuWindowChildAni && !eventMessageWindow && itemdata[items[menuSelectChildNum][0]][1]){//アイテムの使用
-            if (items[menuSelectChildNum][0] == 0){
+            if (items[menuSelectChildNum][0] >=0 && items[menuSelectChildNum][0] <= 7){
                 eventMessageWindow=1;
                 eventMessageWindowMsg="/だれにつかう？";
-            } else if(items[menuSelectChildNum][0] == 1){
-                eventMessageWindow=1;
-                eventMessageWindowMsg="/だれにつかう？";
-            } else if (items[menuSelectChildNum][0] == 2){
-                eventMessageWindow=1;
-                eventMessageWindowMsg="/だれにつかう？";
-            } else if(items[menuSelectChildNum][0] == 3){
-                eventMessageWindow=1;
-                eventMessageWindowMsg="/だれにつかう？";
-            } else if (items[menuSelectChildNum][0] == 4){
-                eventMessageWindow=1;
-                eventMessageWindowMsg="/だれにつかう？";
-            } else if(items[menuSelectChildNum][0] ==5){
-                eventMessageWindow=1;
-                eventMessageWindowMsg="/だれにつかう？";
-            } else if (items[menuSelectChildNum][0] == 6){
-                eventMessageWindow=1;
-                eventMessageWindowMsg="/だれにつかう？";
-            } else if(items[menuSelectChildNum][0] == 7){
-                eventMessageWindow=1;
-                eventMessageWindowMsg="/だれにつかう？";
-            }else if(items[menuSelectChildNum][0] == 12){
-                eventMessageWindow=1;
-                eventMessageWindowMsg="/だれにつかう？";
-            } else if (items[menuSelectChildNum][0] == 13){
-                eventMessageWindow=1;
-                eventMessageWindowMsg="/だれにつかう？";
-            } else if(items[menuSelectChildNum][0] ==14){
+            } else if(items[menuSelectChildNum][0] <= 12 && items[menuSelectChildNum][0] <= 14){
                 eventMessageWindow=1;
                 eventMessageWindowMsg="/だれにつかう？";
             } else if (items[menuSelectChildNum][0] == 15){
+                consumeItem(menuSelectChildNum);
                 nextMode=1;
                 modeAnimation=1;
                 myposx=homposx,myposy=homposy,myposworld=homposworld;
                 eventMessageWindow=1;
                 eventMessageWindowMsg=itemdata[items[menuSelectChildNum][0]][0] + "をつかった！";
             } else if(items[menuSelectChildNum][0] == 16){
+                consumeItem(menuSelectChildNum);
                 encount_down_cnt=3000;
                 eventMessageWindow=1;
                 eventMessageWindowMsg=itemdata[items[menuSelectChildNum][0]][0] + "をつかった！";    
@@ -792,7 +767,6 @@ function fieldMain() {
             if (eventMessageWindowMsg=="/だれにつかう？" && mypic.length==0){
                 eventMessageWindowMsg="つかえるマイピクを持っていない！";
             }
-            consumeItem(menuSelectChildNum);
             menuSelectFlg=1;
         }
         if (!upkey && !downkey && !leftkey && !rightkey && !zkey && !xkey) menuSelectFlg=0;
@@ -961,6 +935,30 @@ function fieldMain() {
             if (upkey && !menuSelectFlg) menuSelectFlg=1,eventMessageSelectNum=Math.max(0,eventMessageSelectNum-1);
             if (downkey && !menuSelectFlg) menuSelectFlg=1,eventMessageSelectNum=Math.min(mypic.length-1,eventMessageSelectNum+1);
             if (zkey && !menuSelectFlg) { //使う処理はここに書く
+                if (items[menuSelectChildNum][0] == 0){
+                    changeHPMP(0,mypicstock[mypic[eventMessageSelectNum]][3]*0.3,0,eventMessageSelectNum,0);
+                } else if(items[menuSelectChildNum][0] == 1){
+                    changeHPMP(0,mypicstock[mypic[eventMessageSelectNum]][3]*0.6,0,eventMessageSelectNum,0);
+                } else if (items[menuSelectChildNum][0] == 2){
+                    changeHPMP(0,mypicstock[mypic[eventMessageSelectNum]][3]*1,0,eventMessageSelectNum,0);
+                } else if(items[menuSelectChildNum][0] == 3){
+                    changeHPMP(0,50,0,eventMessageSelectNum,0);
+                } else if (items[menuSelectChildNum][0] == 4){
+                    changeHPMP(0,100,0,eventMessageSelectNum,0);
+                } else if(items[menuSelectChildNum][0] ==5){
+                    changeHPMP(0,150,0,eventMessageSelectNum,0);
+                } else if (items[menuSelectChildNum][0] == 6){
+                    changeHPMP(1,30,0,eventMessageSelectNum,0);
+                } else if(items[menuSelectChildNum][0] == 7){
+                    changeHPMP(1,60,0,eventMessageSelectNum,0);
+                }else if(items[menuSelectChildNum][0] == 12){
+
+                } else if (items[menuSelectChildNum][0] == 13){
+
+                } else if(items[menuSelectChildNum][0] ==14){
+
+                }
+                consumeItem(menuSelectChildNum);
                 menuSelectFlg=1;
                 eventMessageWindowMsg=itemdata[menuSelectChildNum][0]+"を"+mypicstock[mypic[eventMessageSelectNum]][0]+"につかった！";
             }

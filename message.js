@@ -121,14 +121,15 @@ function battleloop(){
     ctx2d.fillText("HP: "+enemyData[0][2]+"/"+enemyData[0][3], width*82/100,height*78/100);
     /////////////////
 
-    if (fieldReDrawFlg){
+    if (fieldReDrawFlg){ /////背景の再描画処理　戦闘開始時にこのフラグが立つ
         field2d.fillStyle=skyblue;
-        field2d.fillRect(0,0,width,height);     
+        field2d.fillRect(0,0,width,height);
         field2d.fillStyle=black;
         field2d.fillRect(0,height*65/100,width,height*35/100);
         const messageImg=new Image();//メッセージウィンドウ
         messageImg.src="./imgs/messageWindow.png";
-        field2d.drawImage(messageImg,0,0,800,200,width*20/100,height*62/100,width*60/100,height*37/100);    
+        field2d.drawImage(messageImg,0,0,800,200,width*20/100,height*62/100,width*60/100,height*37/100);  
+        fieldReDrawFlg=0;  
     }
 
     if(battleMode==1){

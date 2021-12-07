@@ -70,3 +70,9 @@ function changeHPMP(chgStatus,chgAmount,isEnemy,Num,isSimulate){
         }
     }
 }
+
+function infToRange(x,min,max,param){
+    return x;
+    ///arcTanで0〜無限のパラメーターを指定された範囲に単調増加になるように移す関数 paramが大きいと緩やかになる
+    return Math.atan(x/param)*200/Math.PI*(max-min)+min;
+}

@@ -166,7 +166,7 @@ function battleMain() {
 }
 
 function encount_check(){//敵との遭遇率encount=6*((200−運)/200)
-    var encountRate = Math.floor(6*((200 - mypicstock[mypic[0]][9])/200));
+    var encountRate = Math.floor(6*((200 - infToRange(mypicstock[mypic[0]][9],0,100,30))/200));
     if(encountRate>=Math.floor(100*Math.random())) encount=true;
     else encount=false;
 }
@@ -184,7 +184,7 @@ function hitcount(){//攻撃回数: Hitcount=((自分の素早さ)/(敵の素早
 }
 
 function hitcheck(my_hitrate, oppLucky){//命中判定: (技の命中率*((100-敵の運)/100))
-    var hitodds = Math.floor(my_hitrate*((200-oppLucky)/200));
+    var hitodds = Math.floor(my_hitrate*((200-infToRange(oppLucky,0,100,30))/200));
     if(hitodds>=Math.floor(100*Math.random())) return true;
     else return false;
 }

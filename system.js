@@ -58,7 +58,15 @@ function changeHPMP(chgStatus,chgAmount,isEnemy,Num,isSimulate){
             if (!tmpSimulate) return 1; //HPかMPが0以下、0未満になるなら
             return 0;
         }
-    } else{ //敵 管理方法が分かり次第実装
-
+    } else{ //敵
+        if (!isSimulate){ //実際にやるとき
+            baseEnemyData[2+2*chgStatus]=Math.min(Math.max(0,baseEnemyData[2+2*chgStatus]+chgAmount),baseEnemyData[3+2*chgStatus]);
+            if (!baseEnemyData[2+2*chgStatus]) return 1;
+            return 0;
+        } else{ //シミュレーションチェックの時
+            var tmpSimulate=Math.max(0,baseEnemyData[2+2*chgStatus]+chgAmount+chgStatus);
+            if (!tmpSimulate) return 1; //HPかMPが0以下、0未満になるなら
+            return 0;
+        }
     }
 }

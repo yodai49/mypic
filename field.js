@@ -278,7 +278,6 @@ function initiate_field(){
     @param なし
     @return なし
     */
-   myposx=30,myposy=30,myposworld=0;//ポジションのセッティング
    menuSelectNum=0,menuSelectFlg=0; //選択中のメニュー
    fieldReDrawFlg=1;
 
@@ -680,6 +679,7 @@ function fieldMain() {
                     menuSortMypicNum=-1;    
                 }
             }
+            menuSelectFlg=1;
         }else if(zkey && menuWindow  && titleConfirmWindow && !menuSelectFlg){
             if (menuSelectNum==3){ //セーブ
                 if (titleConfirmMode==3){
@@ -766,14 +766,18 @@ function fieldMain() {
             } else if(items[menuSelectChildNum][0] ==14){
                 
             } else if (items[menuSelectChildNum][0] == 15){
-
+                nextMode=1;
+                modeAnimation=1;
+                myposx=homposx,myposy=homposy,myposworld=homposworld;
+                eventMessageWindow=1;
+                eventMessageWindowMsg=itemdata[items[menuSelectChildNum][0]][0] + "をつかった！";
             } else if(items[menuSelectChildNum][0] == 16){
                 encount_down_cnt=3000;
                 eventMessageWindow=1;
-                eventMessageWindowMsg="むしよけスプレーをつかった！";
+                eventMessageWindowMsg=itemdata[items[menuSelectChildNum][0]][0] + "をつかった！";    
             }
-            menuSelectFlg=1;
             consumeItem(menuSelectChildNum);
+            menuSelectFlg=1;
         }
         if (!upkey && !downkey && !leftkey && !rightkey && !zkey && !xkey) menuSelectFlg=0;
         if (menuSelectNum<0) menuSelectNum=0;

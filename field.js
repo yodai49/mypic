@@ -51,6 +51,14 @@ function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
     }
 }
 function procreateProcess(){ //卵の孵化処理
+    var linecnt=0,arccnt=0,linelength=0,arclength=0,lineratio=0,lineCarc=0,lineCline=0,arcCarc=0;
+    for(var i = 0; i < drawMypicTempObj.length;i++){
+        if (drawMypicTempObj[i][0] == 0){//線なら 
+            linecnt++;
+        } else { //円なら
+            arccnt++;
+        }
+    }
     mypicstock.push(
         [drawMypicTempName,drawMypicTempObj,
             eggData[selectEggKind][2],eggData[selectEggKind][2],eggData[selectEggKind][3],eggData[selectEggKind][3],

@@ -163,12 +163,6 @@ function battleMain() {
     if(battleMode==7){}//敗北
 }
 
-function encount_check(){//敵との遭遇率encount=6*((200−運)/200)
-    var encountRate = Math.floor(6*((200 - infToRange(mypicstock[mypic[0]][9],0,100,30))/200));
-    if(encountRate>=Math.floor(100*Math.random())) encount=true;
-    else encount=false;
-}
-
 function hitorder(){//先攻後攻決め: floor(素早さ*(乱数0.95-1.05))
     var mypicSpeed = Math.floor(mypicstock[mypic[0]][10]*(0.95+(1.05-0.95)*Math.random()));
     var enemySpeed = Math.floor(baseEnemyData[10]*(0.95+(1.05-0.95)*Math.random()));

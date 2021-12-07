@@ -20,7 +20,7 @@ var drawMypicTempPos=[0,0];//描いた始点を保持
 var drawMypicTempObj=[];//描き途中のマイピクの形状を保持
 var drawMypicRadius=0,drawMypicTempName="",selectEggItemNum=0,selectEggKind=0;
 var titleConfirmWindow=0,titleConfirmSelect=1,titleConfirmMessage="",titleConfirmMessage2="",titleConfirmMode=0;
-var eventMessageWindow=0,eventMessageWindowMsg="",procreateMsg="";
+var eventMessageWindow=0,eventMessageWindowMsg="",eventMessageSelectNum=0,procreateMsg="";
 var encount_down=0,encount_down_cnt=0;
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
@@ -788,6 +788,7 @@ function fieldMain() {
                 eventMessageWindow=1;
                 eventMessageWindowMsg=itemdata[items[menuSelectChildNum][0]][0] + "をつかった！";    
             }
+            eventMessageSelectNum=0;
             if (eventMessageWindowMsg=="/だれにつかう？" && mypic.length==0){
                 eventMessageWindowMsg="つかえるマイピクを持っていない！";
             }
@@ -956,7 +957,17 @@ function fieldMain() {
         }
     }
     if(eventMessageWindow){
-        if (eventMessageWindowMsg.substr(0,1) == "/"){
+        if (eventMessageWindowMsg.substr(0,1)=="/"){
+            if (upkey && !menuSelectFlg) menuSelectFlg=1,eventMessageSelectNum=Math.max(0,eventMessageSelectNum-1);
+            if (downkey && !menuSelectFlg) menuSelectFlg=1,eventMessageSelectNum=Math.min(mypic.length-1,eventMessageSelectNum+1);
+            if (zkey && !menuSelectFlg) { //使う処理はここに書く
+                menuSelectFlg=1;
+                eventMessageWindowMsg=itemdata[menuSelectChildNum][0]+"を"+mypicstock[mypic[eventMessageSelectNum]][0]+"につかった！";
+            }
+            if (xkey && !menuSelectFlg){
+                menuSelectFlg=1;
+                eventMessageWindow++;
+            }
             ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
             ctx2d.font="16pt " + mainfontName;
             ctx2d.fillRect((width-400)/2,height/2-100,400,200);
@@ -964,7 +975,11 @@ function fieldMain() {
             ctx2d.fillText(eventMessageWindowMsg.substr(1),(width-350)/2,height/2-65);    
             ctx2d.font="12pt " + mainfontName;
             for(var i = 0;i < mypic.length;i++){
-                ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                if(eventMessageSelectNum==i){
+                    ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)*(Math.sin(globalTime/6)*0.3+0.7)+")";
+                } else{
+                    ctx2d.fillStyle="rgba(105,105,105," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                }
                 ctx2d.fillText(mypicstock[mypic[i]][0],(width-350)/2+15,height/2-65+30+i*25);
                 ctx2d.fillText("HP: "+ mypicstock[mypic[i]][2] + "/" + mypicstock[mypic[i]][3],(width-350)/2+125,height/2-65+30+i*25);
                 ctx2d.fillText("MP: "+ mypicstock[mypic[i]][4] + "/" + mypicstock[mypic[i]][5],(width-350)/2+255,height/2-65+30+i*25);

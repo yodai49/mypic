@@ -4,7 +4,7 @@ var loopselect=0;//loop内での現在選択値(0-3)
 var lstnum=0;//Messageリスト内の扱うリストを指定
 var in_lstnum=0;//各リスト内の出力位置を管理
 var encount=false;//敵出現ポインタ
-var attackorder;//攻撃の順番
+var attackorder=true;//攻撃の順番
 var firstSt, secondSt;
 var damage;//攻撃のダメージ量(HP基準)
 var Acount=0, Acheck=true;//attackcount, 攻撃時のカウンタ, attackcheck,zkey入力に１回だけ作動するように
@@ -19,8 +19,55 @@ function battleMain() {
     ctx2d.fillStyle=red;
     ctx2d.fillRect(600,200,50,50);
 
+    //zkey入力時に次のメッセージに進む
+    if(zkey){
+        if(battleMode==0){
+            in_lstnum++;
+            if(in_lstnum == BattleMessage[lstnum].length && lstnum==0){
+                battleMode=1, in_lstnum=0;}//loopに行く
+        }
+        else if(battleMode==1){
+            if(loopmode==0) {//No選択
+                if(loopselect==0)loopmode=1;//戦う技選択
+                else if(loopselect==3)battleMode=5;//逃げる
+                else loopmode=loopselect+1, loopselect=0;
+            }
+            else if(loopmode==1) {//技実行
+                battleMode=2, Acount=0, Acheck=true;;}
+            else if(loopmode==2);//アイテム選択
+            else if(loopmode==3);//マイピク
+        }
+        else if(battleMode==2){Acheck=true;
+            if(Acount==1)Acount++, attackMiss=false;
+            else if(Acount==2)Acount=99, attackMiss=false;
+        }
+        else if(battleMode==5){
+            if(!attackorder){//逃げれない
+                battleMode=1, loopmode=0, loopselect=0;}
+            else{//逃げてfieldに遷移
+                mode=1, battleMode=0, loopmode=0, loopselect=0, lstnum=0, in_lstnum=0;}
+        }
+        else if(battleMode==6){
+            in_lstnum++;
+        }
+        zkey=false;
+    }
+    //////
+
+    //xkey入力:キャンセルに使用
+    if(xkey){
+        if(battleMode==1 && loopmode==1) loopmode=0, loopselect=0;
+    }
+    //////
+
+
     if(battleMode==0){//敵データの保存
-        baseEnemyData=enemyData[0];
+        baseEnemyData=[];
+        for(var i = 0;i < enemyData[0].length;i++){
+            baseEnemyData[i]=enemyData[0][i];
+        }
+        console.log(baseEnemyData);
+
     }
     
     if(battleMode==1){//行動選択(loop)
@@ -30,7 +77,6 @@ function battleMain() {
     }
 
     if(battleMode==2){//攻撃選択時の処理
-        console.log("Acount:"+Acount+"Acheck:"+Acheck);
         if(Acount==0 && Acheck){
             Acount++;
             hitorder();
@@ -103,57 +149,20 @@ function battleMain() {
 
     else if(battleMode==3);//アイテム選択時
     else if(battleMode==4);//マイピク交代
-    else if(battleMode==5);{//逃げる選択
+    else if(battleMode==5){//逃げる選択
         hitorder();
-        if(attackorder){//逃げれる
-        }
-        else{
-        }
     }
-    if(battleMode==6);{//勝利
+    else if(battleMode==6);{//勝利
         if(in_lstnum == winMessage.length){ //勝利後、フィールドに戻る時の処理はここに追加
-            mode=1, battleMode=0, lstnum=0,in_lstnum=0;
+            mode=1, battleMode=0, loopmode=0, loopselect=0, lstnum=0,in_lstnum=0;
             fieldReDrawFlg=1;
         }
     }
     if(battleMode==7);//敗北
 
 
-    //zkey入力時に次のメッセージに進む
-    if(zkey){
-        if(battleMode==0){
-            in_lstnum++;
-            if(in_lstnum == BattleMessage[lstnum].length && lstnum==0){
-                console.log("sss");
-                battleMode=1, in_lstnum=0;}//loopに行く
-        }
-        else if(battleMode==1){
-            if(loopmode==0) {//No選択
-                if(loopselect==0)loopmode=1;//戦う技選択
-                else if(loopselect==3)battleMode=5;//逃げる
-                else loopmode=loopselect+1, loopselect=0;
-            }
-            else if(loopmode==1) {//技実行
-                battleMode=2, Acount=0, Acheck=true;;}
-            else if(loopmode==2);//アイテム選択
-            else if(loopmode==3);//マイピク
-        }
-        else if(battleMode==2){Acheck=true;
-            if(Acount==1)Acount++, attackMiss=false;
-            else if(Acount==2)Acount=99, attackMiss=false;
-        }
-        else if(battleMode==6){
-            in_lstnum++;
-        }
-        zkey=false;
-    }
-    //////
+    
 
-    //xkey入力:キャンセルに使用
-    if(xkey){
-        if(battleMode==1 && loopmode==1) loopmode=0, loopselect=0;
-    }
-    //////
 }
 
 function encount_check(){//敵との遭遇率encount=6*((200−運)/200)

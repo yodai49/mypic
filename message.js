@@ -115,11 +115,11 @@ function battleloop(){
     //敵ステータス表示
     ctx2d.fillRect(width*82/100,height*68/100,35,35);
     ctx2d.font="18px "+mainfontName;
-    ctx2d.fillText(enemyData[0][0], width*88/100,height*71/100);
-    ctx2d.fillText("Lv."+enemyData[0][12], width*88/100,height*74/100);
+    ctx2d.fillText(baseEnemyData[0], width*88/100,height*71/100);
+    ctx2d.fillText("Lv."+baseEnemyData[12], width*88/100,height*74/100);
     ctx2d.font="18px "+mainfontName;
-    ctx2d.fillText("HP: "+enemyData[0][2]+"/"+enemyData[0][3], width*82/100,height*79/100);
-    ctx2d.fillText("DP: "+enemyData[0][4]+"/"+enemyData[0][5], width*82/100,height*83/100);
+    ctx2d.fillText("HP: "+baseEnemyData[2]+"/"+baseEnemyData[3], width*82/100,height*79/100);
+    ctx2d.fillText("DP: "+baseEnemyData[4]+"/"+baseEnemyData[5], width*82/100,height*83/100);
 
     /////////////////
 
@@ -183,6 +183,15 @@ function battleloop(){
         //ctx2d.fillText(InBattleMessage[lstnum], width*45/100,height*73/100);
         //戦闘終了か判定
         //false->選択画面に
+    }
+
+    else if(battleMode==5){//逃げるメッセージ
+        if(!attackorder){
+            ctx2d.font="28px "+mainfontName;
+            ctx2d.fillText("敵が速くて逃げられない!", width*30/100,height*73/100);}
+        else{
+            ctx2d.font="28px "+mainfontName;
+            ctx2d.fillText(mypicstock[mypic[0]][0]+"は逃げた", width*30/100,height*73/100);}
     }
 
     else if(battleMode==6){//勝利message

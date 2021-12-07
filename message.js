@@ -79,7 +79,11 @@ function battlemessMain(){
         ctx2d.fillStyle=white;
         ctx2d.font="28px san-serif";
         ctx2d.fillText(introMessage[in_lstnum], width*25/100,height*74/100);
-        fieldReDrawFlg=1;}
+        if (Acheck){ /////バトル開始時の処理　ここにまとめる
+            
+            fieldReDrawFlg=1,Acheck=0;
+        }
+    }
     battleloop();
     
 
@@ -127,7 +131,11 @@ function battleloop(){
         field2d.fillRect(0,height*65/100,width,height*35/100);
         const messageImg=new Image();//メッセージウィンドウ
         messageImg.src="./imgs/messageWindow.png";
-        messageImg.onload=function(){field2d.drawImage(messageImg,0,0,800,200,width*20/100,height*62/100,width*60/100,height*37/100)}; 
+        console.log("bbb");
+        messageImg.onload=function(){
+            console.log("aaa");
+            field2d.drawImage(messageImg,0,0,800,200,width*20/100,height*62/100,width*60/100,height*37/100)
+        }; 
         fieldReDrawFlg=0;
     }
 

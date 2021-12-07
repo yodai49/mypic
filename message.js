@@ -136,6 +136,7 @@ function battleloop(){
         fieldReDrawFlg=0;
     }
 
+    
     if(battleMode==1){
         ctx2d.font="28px "+mainfontName;
         ctx2d.fillText("たたかう", width*29/100,height*73/100);

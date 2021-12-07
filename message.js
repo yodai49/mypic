@@ -161,8 +161,8 @@ function battleloop(){
             //マイピク情報
             ctx2d.font="20px "+mainfontName;
             for (let i=0; i < mypic.length; i++){
-            ctx2d.fillText(mypicstock[mypic[i]][0], width*(55+10*Math.max(0,Math.ceil((i-2)/3)))/100,height*(73+10*(i%3))/100);}
-            make_pointer(width*52/100,height*(71+7*loopselect)/100,width*50/100,height*(69+7*loopselect)/100,width*50/100,height*(73+7*loopselect)/100);
+            ctx2d.fillText(mypicstock[mypic[i]][0], width*(47+17*Math.max(0,Math.ceil((i-2)/3)))/100,height*(82+6*(i%3))/100);}
+            make_pointer(width*(46+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(80.5+6*(loopselect%3))/100,width*(44+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(78.5+6*(loopselect%3))/100,width*(44+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(82.5+6*(loopselect%3))/100);
         }
     }
     

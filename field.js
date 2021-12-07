@@ -676,7 +676,7 @@ function fieldMain() {
             }
         }
         if (downkey && !menuSelectFlg && menuWindowChildAni) {//下キー
-            if (menuSelectNum==0 && menuSelectChildNum<=3 && !menuMypicDetailAni){//マイピク
+            if (menuSelectNum==0 && menuSelectChildNum+2<mypic.length && !menuMypicDetailAni){//マイピク
                 menuSelectChildNum+=2,menuSelectFlg=1;
             } else if (menuSelectNum==1 && (menuSelectChildNum!=(items.length-1)) && !menuMypicDetailAni){
                 menuSelectChildNum++,menuSelectFlg=1;
@@ -689,7 +689,7 @@ function fieldMain() {
             } 
         }
         if (rightkey && !menuSelectFlg && menuWindowChildAni) {//右キー
-            if (menuSelectNum==0 && !(menuSelectChildNum%2)&& !menuMypicDetailAni){//マイピク
+            if (menuSelectNum==0 && !(menuSelectChildNum%2) && mypic.length != 1 && !menuMypicDetailAni){//マイピク
                 menuSelectChildNum++,menuSelectFlg=1;
             } 
         }

@@ -2,10 +2,10 @@ const questionMess = ["おはよう", "Q: 今日は冒険する？　　　は�
 const talkMess = ["こんにちは","あなたの名前を入力してください。","設定が完了しました。","ゲームをお楽しみください!!"]
 const Message=[questionMess, talkMess];
 var topmypic = "ディアルガ";
+var winMessage;
 const introMessage = ["野生のモンスターAが現れた！", "勝負だ! マイピクX!"];
-const winMessage = [topmypic+"は勝負に勝った",topmypic+"は経験値500と1000マイルを獲得した。"];
 const endMess2 = [topmypic+"は逃げた。"];
-const BattleMessage = [introMessage, winMessage, endMess2];
+const BattleMessage = [introMessage, endMess2];
 
 var InBattleMessage = ["敵に１５のダメージ！", "敵の攻撃Z", "自分に３０のダメージ"];
 
@@ -102,15 +102,15 @@ function battleloop(){
     ctx2d.fillRect(width*4/100,height*68/100,35,35);
     drawMypic(0,width*4/100,height*68/100,35,35,1,0);
     ctx2d.fillStyle=white;
-    ctx2d.font="17px "+mainfontName;
-    ctx2d.fillText(mypicstock[mypic[0]][0], width*9/100,height*71/100);
-    ctx2d.fillText("Lv."+mypicstock[mypic[0]][12], width*9/100,height*74/100);
     ctx2d.font="18px "+mainfontName;
-    ctx2d.fillText("HP: "+mypicstock[mypic[0]][2]+"/"+mypicstock[mypic[0]][3], width*4/100,height*79/100);
-    ctx2d.fillText("DP: "+mypicstock[mypic[0]][4]+"/"+mypicstock[mypic[0]][5], width*4/100,height*83/100);
-    ctx2d.fillText("こうげき: "+mypicstock[mypic[0]][6], width*4/100,height*87/100);
-    ctx2d.fillText("ぼうぎょ: "+mypicstock[mypic[0]][7], width*4/100,height*91/100);
-    ctx2d.fillText("すばやさ: "+mypicstock[mypic[0]][10], width*4/100,height*95/100);
+    ctx2d.fillText(mypicstock[mypic[0]][0], width*8/100,height*71/100);
+    ctx2d.fillText("Lv."+mypicstock[mypic[0]][12], width*8/100,height*75/100);
+    ctx2d.font="16px "+mainfontName;
+    ctx2d.fillText("HP: "+mypicstock[mypic[0]][2]+"/"+mypicstock[mypic[0]][3], width*3/100,height*82/100);
+    ctx2d.fillText("DP: "+mypicstock[mypic[0]][4]+"/"+mypicstock[mypic[0]][5], width*3/100,height*85/100);
+    ctx2d.fillText("こうげき: "+mypicstock[mypic[0]][6], width*3/100,height*88/100);
+    ctx2d.fillText("ぼうぎょ: "+mypicstock[mypic[0]][7], width*3/100,height*91/100);
+    ctx2d.fillText("すばやさ: "+mypicstock[mypic[0]][10], width*3/100,height*94/100);
     /////////////////
     //敵ステータス表示
     ctx2d.fillRect(width*82/100,height*68/100,35,35);
@@ -120,7 +120,6 @@ function battleloop(){
     ctx2d.font="18px "+mainfontName;
     ctx2d.fillText("HP: "+baseEnemyData[2]+"/"+baseEnemyData[3], width*82/100,height*79/100);
     ctx2d.fillText("DP: "+baseEnemyData[4]+"/"+baseEnemyData[5], width*82/100,height*83/100);
-
     /////////////////
 
     if (fieldReDrawFlg){ /////背景の再描画処理　戦闘開始時にこのフラグが立つ
@@ -132,7 +131,7 @@ function battleloop(){
         const messageImg=new Image();//メッセージウィンドウ
         messageImg.src="./imgs/messageWindow.png";
         messageImg.onload=function(){
-            field2d.drawImage(messageImg,0,0,800,200,width*20/100,height*62/100,width*60/100,height*37/100)
+            field2d.drawImage(messageImg,0,0,800,200,width*21/100,height*62/100,width*58/100,height*37/100)
         }; 
         fieldReDrawFlg=0;
     }
@@ -195,6 +194,10 @@ function battleloop(){
     }
 
     else if(battleMode==6){//勝利message
+        if(oneMoveFlg){
+            winMessage = [enemyData[0][0]+"は倒れた。",mypicstock[mypic[0]][0]+"は勝負に勝った!",mypicstock[mypic[0]][0]+"は経験値500と1000マイルを獲得した。"];
+            oneMoveFlg=false;
+        }
         ctx2d.fillStyle=white;
         ctx2d.font="28px "+mainfontName;
         ctx2d.fillText(winMessage[in_lstnum], width*25/100,height*74/100);

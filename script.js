@@ -118,7 +118,7 @@ function init() {
         ctx2d.fillRect(0,0,width,height);
 
         if (modeAnimation && (modeAnimation-2*modeChangeAniSpeed)) modeAnimation++;
-        if(!(modeAnimation-modeChangeAniSpeed)) fieldReDrawFlg=1,mode=nextMode;
+        if(!(modeAnimation-modeChangeAniSpeed)) fieldReDrawFlg=1,mode=nextMode,initiate_field(),menuWindow=0;
         if (!(modeAnimation-2*modeChangeAniSpeed)) modeAnimation=0;
 
         globalTime++;

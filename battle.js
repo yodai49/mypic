@@ -13,7 +13,7 @@ var attackMiss=false;
 function battleMain() {
     //character
     ctx2d.fillStyle=blue;
-    ctx2d.fillRect(200,200,50,50);
+    drawMypic(0,190,130+Math.max(0,Math.sin(globalTime/7)*20-17),180,180,1,0);
     //enemy
     ctx2d.fillStyle=red;
     ctx2d.fillRect(600,200,50,50);

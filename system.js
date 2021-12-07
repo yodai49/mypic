@@ -3,6 +3,7 @@ const skyblue="rgba(102,204,204,1.0)";
 const blue="rgba(0,0,255,1.0)";
 const red="rgba(255,0,0,1.0)";
 const white="rgba(255,255,255,1.0)";
+const darkgray="rgba(50,50,50,1.0)";
 
 function make_pointer(a,b,c,d,e,f){ //図形作成
     //描画コンテキストの取得
@@ -33,5 +34,22 @@ function consumeItem(consumeNum){
     items[consumeNum][1]--;
     if(!items[consumeNum][1]){
         items.splice(consumeNum,1);
+    }
+}
+
+function hpmpChg(chgStatus,chgAmount,isEnemy,Num){
+    /* HPとかMPを増減させる関数
+    @param  chgStatus - - - HPなら0、MPなら1を指定
+            chgAmount - - - 増減する量を指定　減るならマイナス
+            isEnemy - - - - 味方なら0、敵なら1を指定
+            Num     - - - - 味方の場合、何番目に適用するかを指定
+    @return 0 - - - 通常に完了
+            1 - - - HPの減少によって死んだ
+            -1  - - その他の異常終了
+    */
+    if (!isEnemy){ //味方
+        enemyData[]
+    } else{ //敵
+
     }
 }

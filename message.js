@@ -98,10 +98,12 @@ function battlemessMain(){
 }
 
 function battleloop(){
-    ctx2d.fillStyle=white;
     ctx2d.font="28px san-serif";
     //味方ステータス表示
+    ctx2d.fillStyle=darkgray;
     ctx2d.fillRect(width*7/100,height*67/100,35,35);
+    drawMypic(0,width*7/100,height*67/100,35,35,1,0);
+    ctx2d.fillStyle=white;
     ctx2d.font="20px "+mainfontName;
     ctx2d.fillText(mypicstock[mypic[0]][0], width*14/100,height*69/100);
     ctx2d.fillText("Lv."+mypicstock[mypic[0]][12], width*14/100,height*73/100);

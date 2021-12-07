@@ -11,11 +11,6 @@ var Acount=0, Acheck=true;//attackcount, 攻撃時のカウンタ, attackcheck,z
 var attackMiss=false;
 
 function battleMain() {
-    ctx2d.fillStyle=skyblue;
-    ctx2d.fillRect(0,0,width,height);
-    ctx2d.fillStyle=black;
-    ctx2d.fillRect(0,height*65/100,width,height*35/100);
-
     //character
     ctx2d.fillStyle=blue;
     ctx2d.fillRect(200,200,50,50);

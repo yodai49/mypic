@@ -39,10 +39,9 @@ function battleMain() {
             else if(loopmode==2){//アイテム選択
             }
             else if(loopmode==3){//マイピク
-                if(loopselect==1){
-                    
+                mypic[0]=[mypic[loopselect], mypic[loopselect]=mypic[0]][0]//交換
+                loopmode=0, loopselect=0;
                 }
-            }
         }
         else if(battleMode==2){Acheck=true;
             if(oneMoveFlg) battleMode=6;
@@ -65,6 +64,7 @@ function battleMain() {
     //xkey入力:キャンセルに使用
     if(xkey){
         if(battleMode==1 && loopmode==1) loopmode=0, loopselect=0;
+        else if(battleMode==1 && loopmode==3) loopmode=0, loopselect=0;
     }
     //////
 

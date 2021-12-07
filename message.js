@@ -136,7 +136,7 @@ function battleloop(){
         fieldReDrawFlg=0;
     }
 
-    
+
     if(battleMode==1){
         ctx2d.font="28px "+mainfontName;
         ctx2d.fillText("たたかう", width*29/100,height*73/100);
@@ -161,9 +161,10 @@ function battleloop(){
         else if(loopmode==3){
             //マイピク情報
             ctx2d.font="20px "+mainfontName;
+            ctx2d.fillText("どのマイピクと交代する？", width*48/100,height*74/100);
             for (let i=0; i < mypic.length; i++){
-            ctx2d.fillText(mypicstock[mypic[i]][0], width*(47+17*Math.max(0,Math.ceil((i-2)/3)))/100,height*(82+6*(i%3))/100);}
-            make_pointer(width*(46+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(80.5+6*(loopselect%3))/100,width*(44+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(78.5+6*(loopselect%3))/100,width*(44+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(82.5+6*(loopselect%3))/100);
+            ctx2d.fillText(mypicstock[mypic[i]][0], width*(47+17*Math.max(0,Math.ceil((i-2)/3)))/100,height*(81+6*(i%3))/100);}
+            make_pointer(width*(46+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(79.5+6*(loopselect%3))/100,width*(44+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(77.5+6*(loopselect%3))/100,width*(44+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(81.5+6*(loopselect%3))/100);
         }
     }
     

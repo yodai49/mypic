@@ -279,9 +279,8 @@ function fieldMain() {
             var stockMypicOffsetX,stockMypicOffsetY;
             for(var i = 0;i < 6;i++){
                 if (mypicstock.length > i+stockMypicScroll){ ////ストックマイピクを描画
-                    ctx2d.font="16pt " + mainfontName;
                     stockMypicOffsetY=height/2-200+83;
-                    stockMypicOffsetX=width/2-250;
+                    stockMypicOffsetX=width/2-240;
                     if (!(i % 2)) stockMypicOffsetX+=20;
                     if (i%2) stockMypicOffsetX+=260;
                     if (i>1) stockMypicOffsetY+=110;
@@ -295,7 +294,8 @@ function fieldMain() {
                     } else{
                         ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8+")";
                     }
-                    ctx2d.fillText(mypicstock[i+stockMypicScroll][0],stockMypicOffsetX,stockMypicOffsetY);    
+                    ctx2d.font="14pt " + mainfontName;
+                    ctx2d.fillText(mypicstock[i+stockMypicScroll][0],stockMypicOffsetX-15,stockMypicOffsetY);    
                     ctx2d.font="10pt " + mainfontName;
                     ctx2d.fillText("Lv. "+ mypicstock[i+stockMypicScroll][12],stockMypicOffsetX+10,stockMypicOffsetY+20);    
                     ctx2d.fillText("Exp. "+ mypicstock[i+stockMypicScroll][13],stockMypicOffsetX+10,stockMypicOffsetY+36);    
@@ -305,7 +305,7 @@ function fieldMain() {
                 }
                 if(i == stockMypicSelectNum-stockMypicScroll){
                     ctx2d.strokeStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*(Math.sin(globalTime/10)*0.3+0.7)+")";
-                    ctx2d.strokeRect(stockMypicOffsetX-10,stockMypicOffsetY-20,225,108)
+                    ctx2d.strokeRect(stockMypicOffsetX-25,stockMypicOffsetY-20,240,108)
                 }
             }
             if (upkey && !menuSelectFlg){
@@ -473,7 +473,7 @@ function fieldMain() {
                 drawMypic(0,width/2-135,height/2-110,270,270,1,1);
             } else if(eventProcreateStep==2){ //ネーミング
                 ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*Math.min(1,eventEggAni/20)*Math.sin(globalTime/5)+")";
-                ctx2d.fillText("　".repeat(drawMypicTempName.length) + "_",width/2-215,height/2-60);
+                if (drawMypicTempName.length != 6) ctx2d.fillText("_",width/2-215+ctx2d.measureText(drawMypicTempName).width,height/2-60);
                 ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*Math.min(1,eventEggAni/20)+")";
                 ctx2d.font="16pt " + mainfontName;
                 ctx2d.fillText("この子になまえをつけよう！".substr(0,eventEggAni/2),width/2-230,height/2-120);
@@ -677,6 +677,7 @@ function fieldMain() {
                     if (i >= 4) mypicOffsetY+=height*0.7/3;
                     ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
                     ctx2d.font="20px "+mainfontName;
+                    if (mypicstock[mypic[i]][0].length==6) ctx2d.font="16px "+mainfontName;
                     ctx2d.fillText(mypicstock[mypic[i]][0],mypicOffsetX,mypicOffsetY);
                     ctx2d.font="12px "+mainfontName;
                     ctx2d.fillText("HP: " + mypicstock[mypic[i]][2]+ " / " + mypicstock[mypic[i]][3],mypicOffsetX,mypicOffsetY+20);

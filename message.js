@@ -81,8 +81,9 @@ function battlemessMain(){
     if(battleMode==0){//intro,end
         ctx2d.fillStyle=white;
         ctx2d.font="28px san-serif";
-        ctx2d.fillText(BattleMessage[lstnum][in_lstnum], 100,500);}
-    else{
+        ctx2d.fillText(BattleMessage[lstnum][in_lstnum], 100,500);
+        fieldReDrawFlg=1; ///////////////ここ変更　野生のなんとかが現れた！がでる直前にこの行を移動
+    } else{
         battleloop();
     }
 
@@ -91,7 +92,7 @@ function battlemessMain(){
         if(in_lstnum == BattleMessage[lstnum].length && lstnum==0){
             battleMode=1, in_lstnum=0;}//loopに行く
         else if(in_lstnum == BattleMessage[lstnum].length && (lstnum==1 || lstnum==2)){
-            onMessage=false, lstnum=0, in_lstnum=0, loopnum=0, loopselect=0, mode=1;}//最終メッセージを完了したらmode変更
+            onMessage=false, lstnum=0, in_lstnum=0, loopnum=0, loopselect=0, mode=1,fieldReDrawFlg=1;}//最終メッセージを完了したらmode変更
     }
     //////
 }
@@ -101,10 +102,10 @@ function battleloop(){
     ctx2d.font="28px san-serif";
     //味方ステータス表示
     ctx2d.fillRect(width*7/100,height*67/100,35,35);
-    ctx2d.font="20px san-serif";
+    ctx2d.font="20px "+mainfontName;
     ctx2d.fillText(mypicstock[mypic[0]][0], width*14/100,height*69/100);
     ctx2d.fillText("Lv."+mypicstock[mypic[0]][12], width*14/100,height*73/100);
-    ctx2d.font="18px san-serif";
+    ctx2d.font="18px "+mainfontName;
     ctx2d.fillText("HP: "+mypicstock[mypic[0]][2]+"/"+mypicstock[mypic[0]][3], width*7/100,height*78/100);
     ctx2d.fillText("DP: "+mypicstock[mypic[0]][4]+"/"+mypicstock[mypic[0]][5], width*7/100,height*82/100);
     ctx2d.fillText("こうげき: "+mypicstock[mypic[0]][6], width*7/100,height*86/100);
@@ -113,18 +114,25 @@ function battleloop(){
     /////////////////
     //敵ステータス表示
     ctx2d.fillRect(width*82/100,height*67/100,35,35);
-    ctx2d.font="20px san-serif";
+    ctx2d.font="20px "+mainfontName;
     ctx2d.fillText(enemyData[0][0], width*88/100,height*69/100);
     ctx2d.fillText("Lv."+enemyData[0][12], width*88/100,height*73/100);
-    ctx2d.font="18px san-serif";
+    ctx2d.font="18px "+mainfontName;
     ctx2d.fillText("HP: "+enemyData[0][2]+"/"+enemyData[0][3], width*82/100,height*78/100);
     /////////////////
-    const messageImg=new Image();//メッセージウィンドウ
-    messageImg.src="./imgs/messageWindow.png";
-    ctx2d.drawImage(messageImg,0,0,800,200,width*20/100,height*62/100,width*60/100,height*37/100);
+
+    if (fieldReDrawFlg){
+        field2d.fillStyle=skyblue;
+        field2d.fillRect(0,0,width,height);     
+        field2d.fillStyle=black;
+        field2d.fillRect(0,height*65/100,width,height*35/100);
+        const messageImg=new Image();//メッセージウィンドウ
+        messageImg.src="./imgs/messageWindow.png";
+        field2d.drawImage(messageImg,0,0,800,200,width*20/100,height*62/100,width*60/100,height*37/100);    
+    }
 
     if(battleMode==1){
-        ctx2d.font="28px san-serif";
+        ctx2d.font="28px "+mainfontName;
         ctx2d.fillText("たたかう", width*30/100,height*73/100);
         ctx2d.fillText("アイテム", width*30/100,height*80/100);
         ctx2d.fillText("マイピク", width*30/100,height*87/100);
@@ -150,7 +158,7 @@ function battleloop(){
     }
     
     if(battleMode==2){//戦闘選択時の挙動
-        ctx2d.font="28px san-serif";
+        ctx2d.font="28px "+mainfontName;
         if(attackMiss){
             ctx2d.fillText(firstSkill[0]+"は当たらなかった...", width*30/100,height*73/100);
         }

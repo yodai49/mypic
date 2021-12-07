@@ -284,7 +284,6 @@ function fieldMain() {
     */
     if (fieldReDrawFlg && loadedimgCnt==imgCnt) {
         field2d.clearRect(0,0,width,height),field2d.drawImage(fieldcanvas,0,0,width,height,0,0,width,height),fieldReDrawFlg=0; //背景の描画
-        console.log("aa");
     }
     ctx2d.drawImage(characanvas,pre_charasize*Math.floor(walkanimation/15),pre_charasize*walkdir,pre_charasize,pre_charasize,myposx,myposy,charasize,charasize); //キャラクターの描画
     if (happenedEvent){

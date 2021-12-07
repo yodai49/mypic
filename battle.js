@@ -105,8 +105,10 @@ function battleMain() {
     if(battleMode==4);//マイピク交代
     if(battleMode==5);//逃げる選択
     if(battleMode==6);{//勝利
-        if(in_lstnum == winMessage.length){
-            mode=1, battleMode=0, lstnum=0,in_lstnum=0;}
+        if(in_lstnum == winMessage.length){ //勝利後、フィールドに戻る時の処理はここに追加
+            mode=1, battleMode=0, lstnum=0,in_lstnum=0;
+            fieldReDrawFlg=1;
+        }
     }
     if(battleMode==7);//敗北
 

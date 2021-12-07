@@ -704,9 +704,9 @@ function fieldMain() {
                     modeAnimation=1;
                 }
             }
-        }  else if(zkey && !menuzflg&& menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum==-1){ //マイピクの詳細画面を見る時
+        }  else if(zkey &&!menuSelectFlg&& !menuzflg&& menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum==-1){ //マイピクの詳細画面を見る時
             menuMypicDetailAni++;
-        } else if(zkey && menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum!=-1){ //マイピクの詳細画面を見る時
+        } else if(zkey &&!menuSelectFlg&& menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum!=-1){ //マイピクの詳細画面を見る時
             //入れ替え処理
             var menuTmpSort=mypic[menuSortMypicNum];
             mypic[menuSortMypicNum]=mypic[menuSelectChildNum];

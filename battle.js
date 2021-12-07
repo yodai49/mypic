@@ -103,7 +103,17 @@ function battleMain() {
 
     if(battleMode==3);//アイテム選択時
     if(battleMode==4);//マイピク交代
-    if(battleMode==5);//逃げる選択
+    if(battleMode==5);{//逃げる選択
+        hitorder();
+        if(attackorder){//逃げれる
+            if(Acheck){Acheck=false;
+                
+            }
+        }
+        else{
+            
+        }
+    }
     if(battleMode==6);{//勝利
         if(in_lstnum == winMessage.length){ //勝利後、フィールドに戻る時の処理はここに追加
             mode=1, battleMode=0, lstnum=0,in_lstnum=0;

@@ -25,7 +25,12 @@ function titleMain() {
    if (upkey && !selectTitleFlg) selectTitleNum=0,selectTitleFlg=1;
    if(downkey && !selectTitleFlg) selectTitleNum=1,selectTitleFlg=1;
    if (!upkey &&  !downkey && !zkey) selectTitleFlg=0;
-   if (zkey && !selectTitleFlg) {
+   if (zkey && !selectTitleFlg) { ///ゲームスタートの処理
+       if (!selectTitleNum){//はじめから
+            resetData();
+       } else{ //つづきから
+            loadData();
+       }
        nextMode=1;
        modeAnimation=1;
        selectTitleFlg=1;

@@ -713,10 +713,10 @@ function fieldMain() {
             menuSortMypicNum=-1;
             menuzflg=1;
         }
-        if (upkey && !eventMessageWindow&& !menuSelectFlg && !menuWindowChildAni) menuSelectNum--,menuSelectFlg=1;
-        if (downkey && !eventMessageWindow&& !menuSelectFlg && !menuWindowChildAni) menuSelectNum++,menuSelectFlg=1;
+        if (upkey && !eventMessageWindow&& !menuSelectFlg && !menuWindowChildAni && !eventMessageWindow) menuSelectNum--,menuSelectFlg=1;
+        if (downkey && !eventMessageWindow&& !menuSelectFlg && !menuWindowChildAni && !eventMessageWindow) menuSelectNum++,menuSelectFlg=1;
         if (spacekey) menuSelectFlg=0;
-        if (upkey && !menuSelectFlg && menuWindowChildAni) {  //上キー
+        if (upkey && !menuSelectFlg && menuWindowChildAni&& !eventMessageWindow) {  //上キー
             if (menuSelectNum==0 && menuSelectChildNum>=2 && !menuMypicDetailAni){//マイピク
                 menuSelectChildNum-=2,menuSelectFlg=1;
             } else if (menuSelectNum==1 && menuSelectChildNum&& !menuMypicDetailAni){
@@ -724,7 +724,7 @@ function fieldMain() {
                 if (menuSelectChildNum < itemsScroll && itemsScroll) itemsScroll--;    
             }
         }
-        if (downkey && !menuSelectFlg && menuWindowChildAni) {//下キー
+        if (downkey && !menuSelectFlg && menuWindowChildAni && !eventMessageWindow) {//下キー
             if (menuSelectNum==0 && menuSelectChildNum+2<mypic.length && !menuMypicDetailAni){//マイピク
                 menuSelectChildNum+=2,menuSelectFlg=1;
             } else if (menuSelectNum==1 && (menuSelectChildNum!=(items.length-1)) && !menuMypicDetailAni){
@@ -732,39 +732,50 @@ function fieldMain() {
                 if (menuSelectChildNum>=10 && menuSelectChildNum-itemsScroll == 10) itemsScroll++;
             }
         }
-        if (leftkey && !menuSelectFlg && menuWindowChildAni) { //左キー
+        if (leftkey && !menuSelectFlg && menuWindowChildAni&& !eventMessageWindow) { //左キー
             if (menuSelectNum==0 && (menuSelectChildNum%2)&& !menuMypicDetailAni){//マイピク
                 menuSelectChildNum--,menuSelectFlg=1;
             } 
         }
-        if (rightkey && !menuSelectFlg && menuWindowChildAni) {//右キー
+        if (rightkey && !menuSelectFlg && menuWindowChildAni&& !eventMessageWindow) {//右キー
             if (menuSelectNum==0 && !(menuSelectChildNum%2) && mypic.length != 1 && !menuMypicDetailAni){//マイピク
                 menuSelectChildNum++,menuSelectFlg=1;
             } 
         }
-        if (zkey && !menuSelectFlg && menuWindowChildAni && !eventMessageWindow && itemdata[items[menuSelectChildNum][0]][1]){//アイテムの使用
+        if (zkey && menuSelectNum==1 && !menuSelectFlg && menuWindowChildAni && !eventMessageWindow && itemdata[items[menuSelectChildNum][0]][1]){//アイテムの使用
             if (items[menuSelectChildNum][0] == 0){
-
+                eventMessageWindow=1;
+                eventMessageWindowMsg="/だれにつかう？";
             } else if(items[menuSelectChildNum][0] == 1){
-
+                eventMessageWindow=1;
+                eventMessageWindowMsg="/だれにつかう？";
             } else if (items[menuSelectChildNum][0] == 2){
-
+                eventMessageWindow=1;
+                eventMessageWindowMsg="/だれにつかう？";
             } else if(items[menuSelectChildNum][0] == 3){
-                
+                eventMessageWindow=1;
+                eventMessageWindowMsg="/だれにつかう？";
             } else if (items[menuSelectChildNum][0] == 4){
-
+                eventMessageWindow=1;
+                eventMessageWindowMsg="/だれにつかう？";
             } else if(items[menuSelectChildNum][0] ==5){
-                
+                eventMessageWindow=1;
+                eventMessageWindowMsg="/だれにつかう？";
             } else if (items[menuSelectChildNum][0] == 6){
-
+                eventMessageWindow=1;
+                eventMessageWindowMsg="/だれにつかう？";
             } else if(items[menuSelectChildNum][0] == 7){
-                
+                eventMessageWindow=1;
+                eventMessageWindowMsg="/だれにつかう？";
             }else if(items[menuSelectChildNum][0] == 12){
-                
+                eventMessageWindow=1;
+                eventMessageWindowMsg="/だれにつかう？";
             } else if (items[menuSelectChildNum][0] == 13){
-
+                eventMessageWindow=1;
+                eventMessageWindowMsg="/だれにつかう？";
             } else if(items[menuSelectChildNum][0] ==14){
-                
+                eventMessageWindow=1;
+                eventMessageWindowMsg="/だれにつかう？";
             } else if (items[menuSelectChildNum][0] == 15){
                 nextMode=1;
                 modeAnimation=1;
@@ -775,6 +786,9 @@ function fieldMain() {
                 encount_down_cnt=3000;
                 eventMessageWindow=1;
                 eventMessageWindowMsg=itemdata[items[menuSelectChildNum][0]][0] + "をつかった！";    
+            }
+            if (eventMessageWindowMsg=="/だれにつかう？" && mypic.length==0){
+                eventMessageWindowMsg="つかえるマイピクを持っていない！";
             }
             consumeItem(menuSelectChildNum);
             menuSelectFlg=1;
@@ -919,7 +933,11 @@ function fieldMain() {
                     }
                 }
                 if (itemdata[items[menuSelectChildNum][0]][1]){
-                    ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild*(Math.sin(globalTime/6)*0.3+0.7)+")";
+                    if (!eventMessageWindow){
+                        ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild*(Math.sin(globalTime/6)*0.3+0.7)+")";
+                    } else{
+                        ctx2d.fillStyle="rgba(255,255,255,1)";
+                    }
                 } else{
                     ctx2d.fillStyle="rgba(155,155,155," + menuWindowTransChild*(Math.sin(globalTime/6)*0.3+0.7)+")";
                 }
@@ -937,11 +955,24 @@ function fieldMain() {
         }
     }
     if(eventMessageWindow){
-        ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-        ctx2d.font="16pt " + mainfontName;
-        ctx2d.fillRect(width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2,height/2-50,(40+ctx2d.measureText(eventMessageWindowMsg).width),100);
-        ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-        ctx2d.fillText(eventMessageWindowMsg,(width-ctx2d.measureText(eventMessageWindowMsg).width)/2,height/2+5);
+        if (eventMessageWindowMsg.substr(0,1) == "/"){
+            ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+            ctx2d.font="16pt " + mainfontName;
+            ctx2d.fillRect((width-400)/2,height/2-100,400,200);
+            ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+            ctx2d.fillText(eventMessageWindowMsg.substr(1),(width-350)/2,height/2-65);    
+            ctx2d.font="12pt " + mainfontName;
+            for(var i = 0;i < mypic.length;i++){
+                ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                ctx2d.fillText(mypicstock[mypic[i]][0],(width-350)/2+15,height/2-65+30);        
+            }
+        } else{
+            ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+            ctx2d.font="16pt " + mainfontName;
+            ctx2d.fillRect(width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2,height/2-50,(40+ctx2d.measureText(eventMessageWindowMsg).width),100);
+            ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+            ctx2d.fillText(eventMessageWindowMsg,(width-ctx2d.measureText(eventMessageWindowMsg).width)/2,height/2+5);    
+        }
         if (eventMessageWindow-menuWindowAniSpeed) eventMessageWindow++;
         if (!(eventMessageWindow-menuWindowAniSpeed*2)) eventMessageWindow=0;
         if (!zkey && !xkey && !upkey && !downkey && !leftkey && !rightkey) menuSelectFlg=0;

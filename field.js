@@ -200,17 +200,18 @@ function moveEveDraw(x,y){ //マウスのムーブイベント
 }
 
 function encount_check(){//敵との遭遇率encount=6*((200−運)/200)
-    var encountRate = Math.floor(6*((200 - infToRange(mypicstock[mypic[0]][9],0,100,30))/200));
-
-    if(!encount_down && encountRate>=Math.floor(100*Math.random())) {
-        encount=true;
-    } else if(encount_down && encountRate>=Math.floor(100*Math.random())*Math.floor(100*Math.random())) {
+    var encountRate = (6*((200 - infToRange(mypicstock[mypic[0]][9],0,100,30))/200));
+    var tempEncRandom=((3000+encount_down*6000)*Math.random());
+    
+    if (encountRate>=tempEncRandom) {
         encount=true;
     } else {
         encount=false;
     }
-    if (encount_down_cnt) encount_down_cnt--;
-    if(!encount_down_cnt) encount_down=0;
+    if (encount_down_cnt){
+        encount_down_cnt--;
+        if(!encount_down_cnt) encount_down=0,eventMessageWindow=1,eventMessageWindowMsg="スプレーのこうかがきれた！";
+    }
 }
 
 function checkConflict(dir){
@@ -305,6 +306,7 @@ function myposmodify(){
 }
 function walkeve(){ //歩くときに発生する処理
     myposmodify();
+    encount_check();
     walkanimation=(walkanimation+1)%30; //歩く処理
 }
 function trigEvent(trigEventnum){
@@ -766,7 +768,7 @@ function fieldMain() {
             } else if (items[menuSelectChildNum][0] == 15){
 
             } else if(items[menuSelectChildNum][0] == 16){
-                console.log("アイテム！");
+                encount_down_cnt=3000;
                 titleConfirmMode=1;
             }
             menuSelectFlg=1;

@@ -50,7 +50,7 @@ function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
         }    
     }
 }
-function procreateProcess(){
+function procreateProcess(){ //卵の孵化処理
     mypicstock.push(
         [drawMypicTempName,drawMypicTempObj,
             eggData[selectEggKind][2],eggData[selectEggKind][2],eggData[selectEggKind][3],eggData[selectEggKind][3],

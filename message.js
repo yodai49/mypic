@@ -78,7 +78,7 @@ function messageMain(){
 function battlemessMain(){
     if(battleMode==0){//intro,end
         ctx2d.fillStyle=white;
-        ctx2d.font="28px san-serif";
+        ctx2d.font="28px "+mainfontName;
         ctx2d.fillText(introMessage[in_lstnum], width*25/100,height*74/100);
         if (battleLaunchFlg){ /////バトル開始時の処理　ここにまとめる
             fieldReDrawFlg=1,battleLaunchFlg=0;
@@ -96,7 +96,7 @@ function battlemessMain(){
 }
 
 function battleloop(){
-    ctx2d.font="28px san-serif";
+    ctx2d.font="28px "+mainfontName;
     //味方ステータス表示
     ctx2d.fillStyle=darkgray;
     ctx2d.fillRect(width*4/100,height*68/100,35,35);
@@ -189,7 +189,7 @@ function battleloop(){
 
     else if(battleMode==6){//勝利message
         ctx2d.fillStyle=white;
-        ctx2d.font="28px san-serif";
+        ctx2d.font="28px "+mainfontName;
         ctx2d.fillText(winMessage[in_lstnum], width*25/100,height*74/100);
     }
 }

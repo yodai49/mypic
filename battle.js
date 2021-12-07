@@ -10,6 +10,7 @@ var damage;//攻撃のダメージ量(HP基準)
 var Acount=0, Acheck=true;//attackcount, 攻撃時のカウンタ, attackcheck,zkey入力に１回だけ作動するように
 var attackMiss=false;
 var baseEnemyData;
+var oneMoveFlg=false;//1回だけ作動させたい時に使う
 
 function battleMain() {
     //character
@@ -31,14 +32,14 @@ function battleMain() {
                 if(loopselect==0)loopmode=1;//戦う技選択
                 else if(loopselect==3)battleMode=5;//逃げる
                 else loopmode=loopselect+1, loopselect=0;
-            }
-            else if(loopmode==1) {//技実行
+            } else if(loopmode==1) {//技実行
                 battleMode=2, Acount=0, Acheck=true;;}
             else if(loopmode==2);//アイテム選択
             else if(loopmode==3);//マイピク
         }
         else if(battleMode==2){Acheck=true;
-            if(Acount==1)Acount++, attackMiss=false;
+            if(oneMoveFlg) battleMode=6;
+            else if(Acount==1)Acount++, attackMiss=false;
             else if(Acount==2)Acount=99, attackMiss=false;
         }
         else if(battleMode==5){
@@ -66,7 +67,6 @@ function battleMain() {
         for(var i = 0;i < enemyData[0].length;i++){
             baseEnemyData[i]=enemyData[0][i];
         }
-        console.log(baseEnemyData);
 
     }
     
@@ -99,14 +99,12 @@ function battleMain() {
             changeHPMP(1, (-1)*firstSkill[4], !attackorder, 0, 0);//MP消費
             if(secondSt[2] == 0){//HP=0
                 if(attackorder){//敵が死んだので勝利
-                    battleMode=6;
-                }
-                else if(mypicstock[mypic[0]][2]==0&&mypicstock[mypic[1]][2]==0&&mypicstock[mypic[2]][2]==0&&mypicstock[mypic[3]][2]==0&&mypicstock[mypic[4]][2]==0&&mypicstock[mypic[5]][2]==0){
+                    oneMoveFlg=true;
+                } else if(mypicstock[mypic[0]][2]==0&&mypicstock[mypic[1]][2]==0&&mypicstock[mypic[2]][2]==0&&mypicstock[mypic[3]][2]==0&&mypicstock[mypic[4]][2]==0&&mypicstock[mypic[5]][2]==0){
                     //味方6体全員死んだ場合
                     //"戦える手持ちのマイピクはいない!","は意識が遠のき倒れてしまった。"
                     //gameover,loopend
-                }
-                else{ //生存残りマイピクがいる
+                } else{ //生存残りマイピクがいる
                     //マイピクchangeを実行,後攻はない
                 }
             }
@@ -126,9 +124,8 @@ function battleMain() {
             changeHPMP(1, (-1)*secondSkill[4], attackorder, 0, 0);//MP消費
             if(firstSt[2] == 0){//HP=0
                 if(!attackorder){//敵が死んだので勝利
-                    battleMode=6;
-                }
-                else if(mypicstock[mypic[0]][2]==0&&mypicstock[mypic[1]][2]==0&&mypicstock[mypic[2]][2]==0&&mypicstock[mypic[3]][2]==0&&mypicstock[mypic[4]][2]==0&&mypicstock[mypic[5]][2]==0){
+                    oneMoveFlg=true;
+                } else if(mypicstock[mypic[0]][2]==0&&mypicstock[mypic[1]][2]==0&&mypicstock[mypic[2]][2]==0&&mypicstock[mypic[3]][2]==0&&mypicstock[mypic[4]][2]==0&&mypicstock[mypic[5]][2]==0){
                     //味方6体全員死んだ場合
                     //"戦える手持ちのマイピクはいない!","は意識が遠のき倒れてしまった。"
                     //gameover,loopend
@@ -147,18 +144,18 @@ function battleMain() {
         if(Acount==99)battleMode=1, Acount=0, loopmode=0,loopselect=0;//行動選択に戻る
     }
 
-    else if(battleMode==3);//アイテム選択時
-    else if(battleMode==4);//マイピク交代
+    else if(battleMode==3){}//アイテム選択時
+    else if(battleMode==4){}//マイピク交代
     else if(battleMode==5){//逃げる選択
         hitorder();
     }
-    else if(battleMode==6);{//勝利
-        if(in_lstnum == winMessage.length){ //勝利後、フィールドに戻る時の処理はここに追加
-            mode=1, battleMode=0, loopmode=0, loopselect=0, lstnum=0,in_lstnum=0;
-            fieldReDrawFlg=1;
-        }
+    else if(battleMode==6){//勝利
+        if(!oneMoveFlg){//onemoveflgでwinmessageが読み込まれるのを待ってから実行
+            if(in_lstnum == winMessage.length){ //勝利後、フィールドに戻る時の処理はここに追加
+                mode=1, battleMode=0, loopmode=0, loopselect=0, lstnum=0,in_lstnum=0;
+                fieldReDrawFlg=1;}}
     }
-    if(battleMode==7);//敗北
+    if(battleMode==7){}//敗北
 
 
     

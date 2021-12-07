@@ -43,6 +43,7 @@ function changeHPMP(chgStatus,chgAmount,isEnemy,Num,isSimulate){
             chgAmount - - - 増減する量を指定　減るならマイナス
             isEnemy - - - - 味方なら0、敵なら1を指定
             Num     - - - - 味方の場合、何番目に適用するかを指定
+            isSimulate  - - 実際には増減を行わず、増減が可能かどうかだけ知りたい時は1を指定（技を放つ前の残りのMPチェックとかに使う)
     @return 0 - - - 通常に完了
             1 - - - HPが0以下になる（なった）、あるいはMPが0未満になる（なった）
             -1  - - その他の異常終了

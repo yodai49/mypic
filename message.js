@@ -280,8 +280,8 @@ function battleloop(){
                     make_pointer(width*(38+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(79.5+6*(loopselect%3))/100,width*(36+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(77.5+6*(loopselect%3))/100,width*(36+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(81.5+6*(loopselect%3))/100);
                 break;
             case 2:
-                ctx2d.fillText(mypicstock[mypic[0]][0]+"交代だ!",width*25/100,height*75/100);
-                ctx2d.fillText("ゆけ "+mypicstock[mypic[loopselect]][0]+"!!", width*25/100,height*83/100);
+                ctx2d.fillText(mypicstock[mypic[0]][0]+" 交代だ!",width*25/100,height*75/100);
+                ctx2d.fillText("たのんだ "+mypicstock[mypic[loopselect]][0]+"!!", width*25/100,height*83/100);
                 break;
         }
     }

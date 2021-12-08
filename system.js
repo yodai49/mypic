@@ -37,7 +37,14 @@ function consumeItem(consumeNum){
 }
 function getItem(getNum){
     ////////アイテムをゲットする関数　getNumにゲットするアイテムの番号を指定(itemsでの番号)
-    
+    for(var i = 0;i < items.length;i++){
+        if (items[i][0] == getNum){
+            items[i][1]++;
+            if(items[i][1]>=100) items[i][1]=99;
+            return 0;
+        }
+    }
+    items.push([getNum,1]);
 }
 
 function changeHPMP(chgStatus,chgAmount,isEnemy,Num,isSimulate){

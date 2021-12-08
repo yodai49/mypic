@@ -22,7 +22,7 @@ var drawMypicRadius=0,drawMypicTempName="",selectEggItemNum=0,selectEggKind=0;
 var titleConfirmWindow=0,titleConfirmSelect=1,titleConfirmMessage="",titleConfirmMessage2="",titleConfirmMode=0;
 var eventMessageWindow=0,eventMessageWindowMsg="",eventMessageSelectNum=0,procreateMsg="";
 var encount_down=0,encount_down_cnt=0;
-var nowShopData,eventShopSelectNum=0;
+var nowShopData,eventShopSelectNum=0,showmoney=0;
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
     if (mypic.length<=drawMypicNum) return 0;
@@ -350,6 +350,7 @@ function trigEvent(trigEventnum,trigEventObj){
     } else if(trigEventnum==3 && !menuSelectFlg){ //お店
         eventWindowKind=3;
         eventWindowAni++;
+        showmoney=money;
         nowShopData=shopData[trigEventObj[5]]
     }
     menuSelectFlg=1;
@@ -659,8 +660,8 @@ function fieldMain() {
             ctx2d.fillText(currencyName, width/2+200-85,height/2-150+60+eventShopSelectNum*20);
             ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
             ctx2d.fillRect(width/2-200+20,height/2-150+260,360,1);
-            ctx2d.fillText("おかね　" + money  + " "+currencyName, width/2+180-ctx2d.measureText("おかね　" + money  + " "+currencyName).width,height/2-150+285);
-            if(xkey && !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg) eventWindowAni++,menuSelectFlg=1;
+            ctx2d.fillText("おかね　" + showmoney  + " "+currencyName, width/2+180-ctx2d.measureText("おかね　" + money  + " "+currencyName).width,height/2-150+285);
+            if(xkey && !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow) eventWindowAni++,menuSelectFlg=1;
             if(upkey && eventShopSelectNum && !(eventWindowAni-menuWindowAniSpeed) && !menuSelectFlg) eventShopSelectNum--,menuSelectFlg=1;
             if(downkey && eventShopSelectNum != nowShopData.length-1&& !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg) eventShopSelectNum++,menuSelectFlg=1;
             if(zkey && !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow) {
@@ -676,6 +677,9 @@ function fieldMain() {
                     menuSelectFlg=1;    
                 }
             }
+            if(money < showmoney) showmoney-=10;
+            if (money > showmoney) showmoney+=10;
+            if (Math.abs(showmoney-money)<10) showmoney=money;
         }
         if (!upkey && !downkey && !zkey && !leftkey && !rightkey && !xkey && !zkey) menuSelectFlg=0;
         if (eventWindowAni && (eventWindowAni-menuWindowAniSpeed)) eventWindowAni++;

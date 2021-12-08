@@ -708,7 +708,6 @@ function fieldMain() {
             }
         }  else if(zkey &&!menuSelectFlg&& !menuzflg&& menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum==-1){ //マイピクの詳細画面を見る時
             menuMypicDetailAni++;
-            menuSelectChildNum=0;
             menuSelectFlg=1;
         } else if(zkey &&!menuSelectFlg&& menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum!=-1){ //マイピクの詳細画面を見る時
             //入れ替え処理
@@ -755,7 +754,7 @@ function fieldMain() {
                 if (items[menuSelectChildNum][0] >=0 && items[menuSelectChildNum][0] <= 7){
                     eventMessageWindow=1;
                     eventMessageWindowMsg="/だれにつかう？";
-                } else if(items[menuSelectChildNum][0] <= 12 && items[menuSelectChildNum][0] <= 14){
+                } else if(items[menuSelectChildNum][0] >= 12 && items[menuSelectChildNum][0] <= 14){
                     eventMessageWindow=1;
                     eventMessageWindowMsg="/だれにつかう？";
                 } else if (items[menuSelectChildNum][0] == 15){
@@ -960,12 +959,12 @@ function fieldMain() {
                     changeHPMP(1,30,0,eventMessageSelectNum,0);
                 } else if(items[menuSelectChildNum][0] == 7){
                     changeHPMP(1,60,0,eventMessageSelectNum,0);
-                }else if(items[menuSelectChildNum][0] == 12){//経験値のやつはここに追加
-
+                }else if(items[menuSelectChildNum][0] == 12){//経験値増やす系
+                    changeEXP(100,eventMessageSelectNum);
                 } else if (items[menuSelectChildNum][0] == 13){
-
+                    changeEXP(500,eventMessageSelectNum);
                 } else if(items[menuSelectChildNum][0] ==14){
-
+                    changeEXP(1000,eventMessageSelectNum);
                 }
                 consumeItem(menuSelectChildNum);
                 menuSelectFlg=1;

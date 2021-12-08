@@ -247,8 +247,24 @@ function checkConflict(dir){
             if (eventobj[myposworld][i][1] < myposy+charasize && eventobj[myposworld][i][1] + eventobj[myposworld][i][3] > myposy){
                 eventflgs[i]=1;
             }
-        }
+        }    
     }
+
+    for(let i = 0;i  < eventobj[myposworld].length;i++){
+        if (eventobj[myposworld][i][4] == 4){
+            eventflgs[i]=0;
+            let tmpdirfix=[0,0,0,0];
+            tmpdirfix[dir]=5;
+            if (eventobj[myposworld][i][0] < myposx+charasize+tmpdirfix[1]-tmpdirfix[0] && eventobj[myposworld][i][0] + eventobj[myposworld][i][2] > myposx+tmpdirfix[1]-tmpdirfix[0]){
+                if (eventobj[myposworld][i][1] < myposy+charasize+tmpdirfix[3]-tmpdirfix[2] && eventobj[myposworld][i][1] + eventobj[myposworld][i][3] > myposy+tmpdirfix[3]-tmpdirfix[2] ){
+                    eventflgs[i]=1;
+                    if(!popupMsg.length) popupMsg.push(["この場所へ行けないようだ！　またあとで来てみよう",120,0,0,-1]);
+                    return 1;
+                }
+            }    
+        } 
+    }
+
     for(let i = 0;i < itemobj[myposworld].length;i++){
         itemflgs[i]=0;
         if (itemobj[myposworld][i][0] < myposx+charasize && itemobj[myposworld][i][0] + itemobj[myposworld][i][2] > myposx){

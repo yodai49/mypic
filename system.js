@@ -35,6 +35,10 @@ function consumeItem(consumeNum){
         items.splice(consumeNum,1);
     }
 }
+function getItem(getNum){
+    ////////アイテムをゲットする関数　getNumにゲットするアイテムの番号を指定(itemsでの番号)
+    
+}
 
 function changeHPMP(chgStatus,chgAmount,isEnemy,Num,isSimulate){
     /* HPとかMPを増減させる関数

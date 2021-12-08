@@ -22,13 +22,17 @@ var drawMypicRadius=0,drawMypicTempName="",selectEggItemNum=0,selectEggKind=0;
 var titleConfirmWindow=0,titleConfirmSelect=1,titleConfirmMessage="",titleConfirmMessage2="",titleConfirmMode=0;
 var eventMessageWindow=0,eventMessageWindowMsg="",eventMessageSelectNum=0,procreateMsg="";
 var encount_down=0,encount_down_cnt=0;
+var nowShopData,eventShopSelectNum=0;
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
     if (mypic.length<=drawMypicNum) return 0;
+    ctx2d.lineWidth=1;
+    if (dw>50) ctx2d.lineWidth=2;
+    if (dw>100) ctx2d.lineWidth=3;
+    if (dw>150) ctx2d.lineWidth=4;
     if (mode==1){
         for(var i = 0;i < drawMypicTempObj.length;i++){
             ctx2d.strokeStyle="rgba(255,255,255,"+trans+")";
-            ctx2d.strokeWidth=1;
             ctx2d.beginPath();
             if (drawMypicTempObj[i][0] == 0){ //線
                 ctx2d.moveTo(dx+dw*drawMypicTempObj[i][1]/100,dy+dh*drawMypicTempObj[i][2]/100);
@@ -41,7 +45,6 @@ function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
     } else{
         for(var i = 0;i < mypicstock[drawMypicNum][1].length;i++){
             ctx2d.strokeStyle="rgba(255,255,255,"+trans+")";
-            ctx2d.strokeWidth=1;
             ctx2d.beginPath();
             if (mypicstock[drawMypicNum][1][i][0] == 0){ //線
                 ctx2d.moveTo(dx+dw*mypicstock[drawMypicNum][1][i][1]/100,dy+dh*mypicstock[drawMypicNum][1][i][2]/100);
@@ -310,7 +313,7 @@ function walkeve(){ //歩くときに発生する処理
     encount_check();
     walkanimation=(walkanimation+1)%30; //歩く処理
 }
-function trigEvent(trigEventnum){
+function trigEvent(trigEventnum,trigEventObj){
     if (trigEventnum==1){ //マイピク整理のイベント
         if (mypicstock.length){
             eventWindowAni++;
@@ -344,6 +347,10 @@ function trigEvent(trigEventnum){
             eventMessageWindow=1;
             eventMessageWindowMsg="かえせるたまごを持っていないようだ！";
         }
+    } else if(trigEventnum==3 && !menuSelectFlg){ //お店
+        eventWindowKind=3;
+        eventWindowAni++;
+        nowShopData=shopData[trigEventObj[5]]
     }
     menuSelectFlg=1;
 }
@@ -569,14 +576,12 @@ function fieldMain() {
                     if (!procdrawMypicMode){ //線
                         ctx2d.beginPath();
                         ctx2d.strokeStyle="rgba(255,255,255,1)";
-                        ctx2d.strokeWidth=1;
                         ctx2d.moveTo(drawMypicTempPos[0],drawMypicTempPos[1]);
                         ctx2d.lineTo(inFieldX,inFieldY);
                         ctx2d.stroke();    
                     } else { //円
                         ctx2d.beginPath();
                         ctx2d.strokeStyle="rgba(255,255,255,1)";
-                        ctx2d.strokeWidth=1;
                         ctx2d.arc(drawMypicTempPos[0],drawMypicTempPos[1],drawMypicRadius,0,Math.PI*2);
                         ctx2d.stroke();    
                     }
@@ -613,7 +618,7 @@ function fieldMain() {
                 ctx2d.fillText("すばやさ: " + mypicstock[mypicstock.length-1][10],width/2-100,height/2+133);
                 ctx2d.fillText("とくせい:" + specialAvilityText[mypicstock[mypicstock.length-1][11]],width/2-100,height/2+158);
                 ctx2d.strokeStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*Math.min(1,eventEggAni/20)*Math.min(1,eventEggAni/20)+")";
-                ctx2d.strokeWidth=1;
+                ctx2d.lineWidth=1;
                 ctx2d.strokeRect(width/2+57,height/2+97,180,87);
                 ctx2d.fillText("わざ",width/2+60,height/2+113);
                 ctx2d.font="9pt " + mainfontName;
@@ -633,10 +638,49 @@ function fieldMain() {
                 ctx2d.fillRect(width/2-250,height/2-200,500,400);
             }
             eventEggAni++;
+        } else if(eventWindowKind==3){ //お店
+            ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
+            ctx2d.fillRect(width/2-200,height/2-150,400,300);
+            ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
+            ctx2d.font="18pt " + mainfontName;
+            ctx2d.fillText("おみせ" , width/2-200+15,height/2-150+30);
+            ctx2d.font="13pt " + mainfontName;
+            ctx2d.fillStyle="rgba(105,105,105," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
+            for(var i = 0;i < Math.min(10,nowShopData.length);i++){
+                if (i!=eventShopSelectNum){
+                    ctx2d.fillText(itemdata[nowShopData[i][0]][0], width/2-200+35,height/2-150+60+i*20);
+                    ctx2d.fillText(nowShopData[i][1], width/2+200-105-ctx2d.measureText(nowShopData[i][1]).width,height/2-150+60+i*20);
+                    ctx2d.fillText(currencyName, width/2+200-85,height/2-150+60+i*20);
+                }
+            }
+            ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*(Math.sin(globalTime/6)*0.3+0.7) + ")";
+            ctx2d.fillText(itemdata[nowShopData[eventShopSelectNum][0]][0], width/2-200+35,height/2-150+60+eventShopSelectNum*20);
+            ctx2d.fillText(nowShopData[eventShopSelectNum][1], width/2+200-105-ctx2d.measureText(nowShopData[eventShopSelectNum][1]).width,height/2-150+60+eventShopSelectNum*20);
+            ctx2d.fillText(currencyName, width/2+200-85,height/2-150+60+eventShopSelectNum*20);
+            ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
+            ctx2d.fillRect(width/2-200+20,height/2-150+260,360,1);
+            ctx2d.fillText("おかね　" + money  + " "+currencyName, width/2+180-ctx2d.measureText("おかね　" + money  + " "+currencyName).width,height/2-150+285);
+            if(xkey && !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg) eventWindowAni++,menuSelectFlg=1;
+            if(upkey && eventShopSelectNum && !(eventWindowAni-menuWindowAniSpeed) && !menuSelectFlg) eventShopSelectNum--,menuSelectFlg=1;
+            if(downkey && eventShopSelectNum != nowShopData.length-1&& !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg) eventShopSelectNum++,menuSelectFlg=1;
+            if(zkey && !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow) {
+                if (money >= nowShopData[eventShopSelectNum][1]){
+                    money-=nowShopData[eventShopSelectNum][1];
+                    getItem(nowShopData[eventShopSelectNum][0]);
+                    eventMessageWindow=1;
+                    eventMessageWindowMsg=itemdata[nowShopData[eventShopSelectNum][0]][0]+"を買った！";
+                    menuSelectFlg=1;    
+                } else {
+                    eventMessageWindow=1;
+                    eventMessageWindowMsg="お金が足りない！";
+                    menuSelectFlg=1;    
+                }
+            }
         }
-        if (!upkey && !downkey && !zkey && !leftkey && !rightkey && !xkey) menuSelectFlg=0;
+        if (!upkey && !downkey && !zkey && !leftkey && !rightkey && !xkey && !zkey) menuSelectFlg=0;
         if (eventWindowAni && (eventWindowAni-menuWindowAniSpeed)) eventWindowAni++;
         if (eventWindowAni == 2*menuWindowAniSpeed) eventWindowAni=0,happenedEvent=0; 
+        if (spacekey) menuSelectFlg=0;
     } else if(!menuWindow&& !eventMessageWindow){ /////メニューウィンドウが表示されていない時
         if(ckey) menuWindow++;
         if (leftkey) walkdir=0;
@@ -649,7 +693,7 @@ function fieldMain() {
         if (downkey && !checkConflict(3)) myposy+=walkspeed,walkeve();
         if (zkey && !selectTitleFlg&& !eventMessageWindow) { //アクションキー
             for(var i = 0; i < eventobj[myposworld].length;i++){
-                if (eventflgs[i] && !happenedEvent) trigEvent(eventobj[myposworld][i][4]);
+                if (eventflgs[i] && !happenedEvent) trigEvent(eventobj[myposworld][i][4],eventobj[myposworld][i]);
             }
         }
         if (zkey && eventWindowAni && !menuSelectFlg) eventWindowAni++;
@@ -865,12 +909,12 @@ function fieldMain() {
                     drawMypic(mypic[i],mypicOffsetX+100,mypicOffsetY-20,120,120,menuWindowTransChild);
                     if (i == menuSelectChildNum){
                         ctx2d.strokeStyle="rgba(255,255,255,"+(Math.sin(globalTime/8)*0.3+0.7)+")";
-                        ctx2d.strokeWidth=3;
+                        ctx2d.lineWidth=3;
                         ctx2d.strokeRect(mypicOffsetX-5,mypicOffsetY-25,230,height*0.7/3+2);
                     }
                     if (i == menuSortMypicNum){
                         ctx2d.strokeStyle="rgba(255,255,0,"+(Math.sin(globalTime/8)*0.3+0.7)+")";
-                        ctx2d.strokeWidth=3;
+                        ctx2d.lineWidth=3;
                         ctx2d.strokeRect(mypicOffsetX-5,mypicOffsetY-25,230,height*0.7/3+2);
                     }
                 }
@@ -1004,6 +1048,8 @@ function fieldMain() {
         if (!zkey && !xkey && !upkey && !downkey && !leftkey && !rightkey) menuSelectFlg=0;
         if ((zkey||xkey) && !(eventMessageWindow-menuWindowAniSpeed) && !menuSelectFlg) eventMessageWindow++,menuSelectFlg=1;
     }
+    if (!upkey && !downkey && !zkey && !leftkey && !rightkey && !xkey && !zkey) menuSelectFlg=0;
+
     if (warpAni) { //ワープの処理 
         warpAni++;
         ctx2d.fillStyle="rgba(0,0,0," + (1-Math.abs(warpAni-10)/10)  +")";

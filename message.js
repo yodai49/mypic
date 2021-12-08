@@ -95,7 +95,6 @@ function battlemessMain(){
     if(battleMode==0){
         if(in_lstnum == introMessage.length){
             battleMode=1, in_lstnum=0;}}//loopに行く
-        
     //////
 }
 
@@ -235,7 +234,7 @@ function battleloop(){
         ctx2d.font="26px "+mainfontName;
         switch (chgCount){
             case 0:
-                ctx2d.fillText(mypicstock[mypic[0]][0]+"交代だ!",25/100,height*75/100);
+                ctx2d.fillText(mypicstock[mypic[0]][0]+"交代だ!",width*25/100,height*75/100);
                 ctx2d.fillText("ゆけ "+mypicstock[mypic[loopselect]][0]+"!!", width*25/100,height*83/100);
                 break;
             case 1:
@@ -266,6 +265,29 @@ function battleloop(){
         ctx2d.fillStyle=white;
         ctx2d.font="26px "+mainfontName;
         ctx2d.fillText(winMessage[in_lstnum], width*25/100,height*75/100);
+    }
+
+    else if(battleMode==7){//戦闘不能後の次のマイピク選択
+        ctx2d.font="26px "+mainfontName;
+        switch (chgCount){
+            case 0:
+                ctx2d.fillText(mypicstock[mypic[0]][0]+" は倒れた。",width*25/100,height*75/100);
+                break;
+            case 1:
+                ctx2d.fillText("交代するマイピクを選択してください。", width*25/100,height*75/100);
+                for (let i=0; i < mypic.length; i++){
+                    ctx2d.fillText(mypicstock[mypic[i]][0], width*(40+17*Math.max(0,Math.ceil((i-2)/3)))/100,height*(81+6*(i%3))/100);}
+                    make_pointer(width*(38+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(79.5+6*(loopselect%3))/100,width*(36+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(77.5+6*(loopselect%3))/100,width*(36+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(81.5+6*(loopselect%3))/100);
+                break;
+            case 2:
+                ctx2d.fillText(mypicstock[mypic[0]][0]+"交代だ!",width*25/100,height*75/100);
+                ctx2d.fillText("ゆけ "+mypicstock[mypic[loopselect]][0]+"!!", width*25/100,height*83/100);
+                break;
+        }
+    }
+
+    else if(battleMode==8){//敗北message
+
     }
 }
 

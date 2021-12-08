@@ -8,6 +8,7 @@ var attackorder=true;//攻撃の順番
 var firstSt, secondSt;
 var damage;//攻撃のダメージ量(HP基準)
 var Acount=0, Acheck=true;//attackcount, 攻撃時のカウンタ, attackcheck,zkey入力に１回だけ作動するように
+var chgCount=0;//マイピク交代のカウンタ
 var attackMiss=false;
 var baseEnemyData;
 var oneMoveFlg=false;//1回だけ作動させたい時に使う
@@ -37,16 +38,22 @@ function battleMain() {
             } else if(loopmode==1) {//技実行
                 battleMode=2, Acount=0, Acheck=true;}
             else if(loopmode==2){//アイテム選択
+                battleMode=3;
             }
-            else if(loopmode==3){//マイピク
-                mypic[0]=[mypic[loopselect], mypic[loopselect]=mypic[0]][0]//交換
-                loopmode=0, loopselect=0;
+            else if(loopmode==3 && loopselect!=0){//マイピク
+                battleMode=4;
                 }
         }
         else if(battleMode==2){Acheck=true;
             if(oneMoveFlg) battleMode=6;
             else if(Acount==1)Acount++, attackMiss=false;
             else if(Acount==2)Acount=99, attackMiss=false;
+        }
+        else if(battleMode==3){
+        }
+        else if(battleMode==4){
+            if(chgCount==0 || chgCount==1)chgCount++, oneMoveFlg=true;
+            else if (chgCount==2)battleMode=1,chgCount=0;
         }
         else if(battleMode==5){
             if(!attackorder){//逃げれない
@@ -79,7 +86,8 @@ function battleMain() {
     
     if(battleMode==1){//行動選択(loop)
         if(downkey) {
-            if(loopmode==3){loopselect=Math.min(5,loopselect+1);}
+            if (loopmode==2)loopselect=Math.min(item.length,loopselect+1);
+            else if(loopmode==3){loopselect=Math.min(5,loopselect+1);}
             else{loopselect=Math.min(3,loopselect+1);}
             downkey=false;}
         else if(upkey){
@@ -126,7 +134,6 @@ function battleMain() {
         }
         else attackMiss=true;
         }
-
         //後攻の攻撃
         //命中の判定
         if(Acount==2 && Acheck){
@@ -159,8 +166,43 @@ function battleMain() {
         if(Acount==99)battleMode=1, Acount=0, loopmode=0,loopselect=0;//行動選択に戻る
     }
 
-    else if(battleMode==3){}//アイテム選択時
-    else if(battleMode==4){}//マイピク交代
+    else if(battleMode==3){//アイテム選択時
+    }
+    else if(battleMode==4){//マイピク交代
+        //マイピク交代処理
+        if(chgCount==1){
+            if(oneMoveFlg) {oneMoveFlg=false;
+                mypic[0]=[mypic[loopselect], mypic[loopselect]=mypic[0]][0]//交換
+                firstSt=mypicstock[mypic[0]], secondSt=baseEnemyData;
+                secondSkill=skillData[secondSt[8][2]];//技データのリストが取れる
+                loopmode=0, loopselect=0;}
+        }
+        if(chgCount==2){
+            if(oneMoveFlg){oneMoveFlg=false;
+            if(hitcheck(secondSkill[2], firstSt[9])){//MPの残り判定も追加しないと意見//
+                //命中する
+                damage = calcDamage(secondSt[12], secondSkill[1], secondSt[6], firstSt[7], secondSkill[3], firstSt[15]);
+                changeHPMP(0, (-1)*damage, !attackorder, 0, 0);//HP変化
+                changeHPMP(1, (-1)*secondSkill[4], attackorder, 0, 0);//MP消費
+                if(firstSt[2] == 0){//HP=0
+                    if(!attackorder){//敵が死んだので勝利
+                        oneMoveFlg=true;
+                    } else if(mypicstock[mypic[0]][2]==0&&mypicstock[mypic[1]][2]==0&&mypicstock[mypic[2]][2]==0&&mypicstock[mypic[3]][2]==0&&mypicstock[mypic[4]][2]==0&&mypicstock[mypic[5]][2]==0){
+                        //味方6体全員死んだ場合
+                        //"戦える手持ちのマイピクはいない!","は意識が遠のき倒れてしまった。"
+                        //gameover,loopend
+                    } else{ //生存残りマイピクがいる
+                        //マイピクchangeを実行,後攻はない
+                    }
+                }
+            }
+            else{
+                //攻撃が外れた
+                attackMiss=true;
+            }}
+        }
+        //敵の攻撃処理
+    }
     else if(battleMode==5){//逃げる選択
         hitorder();
     }

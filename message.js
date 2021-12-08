@@ -80,7 +80,7 @@ function battlemessMain(){
     if(battleMode==0){//intro,end
         ctx2d.fillStyle=white;
         ctx2d.font="28px "+mainfontName;
-        ctx2d.fillText(introMessage[in_lstnum], width*25/100,height*74/100);
+        if(!modeAnimation) ctx2d.fillText(introMessage[in_lstnum], width*25/100,height*74/100);
         if (battleLaunchFlg){ /////バトル開始時の処理　ここにまとめる
             fieldReDrawFlg=1,battleLaunchFlg=0;
         }
@@ -158,6 +158,8 @@ function battleloop(){
             
         else if(loopmode==2){
             //バッグの表示
+            ctx2d.font="20px "+mainfontName;
+            itemBaseBattle
         }
         else if(loopmode==3){
             //マイピク情報
@@ -189,6 +191,23 @@ function battleloop(){
         //ctx2d.fillText(InBattleMessage[lstnum], width*45/100,height*73/100);
         //戦闘終了か判定
         //false->選択画面に
+    }
+    else if(battleMode==4){
+        ctx2d.font="28px "+mainfontName;
+        switch (chgCount){
+            case 0:
+                ctx2d.fillText(mypicstock[mypic[0]][0]+"交代だ!", width*30/100,height*73/100);
+                ctx2d.fillText("ゆけ "+mypicstock[mypic[loopselect]][0]+"!!", width*30/100,height*83/100);
+                break;
+            case 1:
+                ctx2d.fillText(baseEnemyData[0]+"の"+skillData[baseEnemyData[8][2]][0]+"!", width*30/100,height*73/100);
+                break;
+            case 2:
+                if(attackMiss){
+                    ctx2d.fillText(secondSkill[2]+"は当たらなかった...", width*30/100,height*73/100);}
+                else ctx2d.fillText(firstSt[0]+"に"+damage+"のダメージ!", width*30/100,height*73/100);
+                break;
+        }
     }
 
     else if(battleMode==5){//逃げるメッセージ

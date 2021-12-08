@@ -605,7 +605,7 @@ function fieldMain() {
                 ctx2d.font="11pt " + mainfontName;
                 ctx2d.fillText("さいだいHP: " + mypicstock[mypicstock.length-1][3],width/2-230,height/2+113);
                 ctx2d.fillText("さいだいDP: " + mypicstock[mypicstock.length-1][5],width/2-230,height/2+133);
-                ctx2d.fillText("こうげき:　" + mypicstock[mypicstock.length-1][6],width/2-230,height/2+158);
+                ctx2d.fillText("こうげき: " + mypicstock[mypicstock.length-1][6],width/2-230,height/2+158);
                 ctx2d.fillText("ぼうぎょ: " + mypicstock[mypicstock.length-1][7],width/2-230,height/2+178);
 
                 ctx2d.fillText("うん: " + mypicstock[mypicstock.length-1][9],width/2-100,height/2+113);

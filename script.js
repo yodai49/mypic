@@ -86,9 +86,6 @@ window.addEventListener('DOMContentLoaded', function(){ ///キー入力イベン
     });
 });
 
-//起動時の処理//
-initiate_field();
-
 function checkfirstLaunch(){
     isFirst=localStorage.getItem("myposx");
     if (isFirst==undefined){//初回起動時だったら
@@ -99,6 +96,10 @@ function checkfirstLaunch(){
         isFirst=0;
     }    
 }
+
+//起動時の処理//
+initiate_field();
+checkfirstLaunch();
 
 function init() {
     //2Dの処理

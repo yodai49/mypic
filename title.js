@@ -13,7 +13,7 @@ function titleMain() {
     ctx2d.clearRect(0,0,width,height);
    ctx2d.fillStyle="rgba(255,255,255,1)";
    ctx2d.font="50pt " + mainfontName;
-   ctx2d.fillText("マイピク",(width-ctx2d.measureText("マイピク").width)/2,height/2);
+   ctx2d.fillText("マイピクチャーズ",(width-ctx2d.measureText("マイピクチャーズ").width)/2,height/2);
    ctx2d.font="20pt " + mainfontName;
    if (!selectTitleNum){
     ctx2d.fillStyle="rgba(255,255,255,"+(Math.sin(globalTime/6)*0.3+0.7)+")";

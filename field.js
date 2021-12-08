@@ -25,10 +25,13 @@ var encount_down=0,encount_down_cnt=0;
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
     if (mypic.length<=drawMypicNum) return 0;
+    ctx2d.lineWidth=1;
+    if (dw>50) ctx2d.lineWidth=2;
+    if (dw>100) ctx2d.lineWidth=3;
+    if (dw>150) ctx2d.lineWidth=4;
     if (mode==1){
         for(var i = 0;i < drawMypicTempObj.length;i++){
             ctx2d.strokeStyle="rgba(255,255,255,"+trans+")";
-            ctx2d.strokeWidth=1;
             ctx2d.beginPath();
             if (drawMypicTempObj[i][0] == 0){ //線
                 ctx2d.moveTo(dx+dw*drawMypicTempObj[i][1]/100,dy+dh*drawMypicTempObj[i][2]/100);
@@ -41,7 +44,6 @@ function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
     } else{
         for(var i = 0;i < mypicstock[drawMypicNum][1].length;i++){
             ctx2d.strokeStyle="rgba(255,255,255,"+trans+")";
-            ctx2d.strokeWidth=1;
             ctx2d.beginPath();
             if (mypicstock[drawMypicNum][1][i][0] == 0){ //線
                 ctx2d.moveTo(dx+dw*mypicstock[drawMypicNum][1][i][1]/100,dy+dh*mypicstock[drawMypicNum][1][i][2]/100);
@@ -569,14 +571,12 @@ function fieldMain() {
                     if (!procdrawMypicMode){ //線
                         ctx2d.beginPath();
                         ctx2d.strokeStyle="rgba(255,255,255,1)";
-                        ctx2d.strokeWidth=1;
                         ctx2d.moveTo(drawMypicTempPos[0],drawMypicTempPos[1]);
                         ctx2d.lineTo(inFieldX,inFieldY);
                         ctx2d.stroke();    
                     } else { //円
                         ctx2d.beginPath();
                         ctx2d.strokeStyle="rgba(255,255,255,1)";
-                        ctx2d.strokeWidth=1;
                         ctx2d.arc(drawMypicTempPos[0],drawMypicTempPos[1],drawMypicRadius,0,Math.PI*2);
                         ctx2d.stroke();    
                     }
@@ -613,7 +613,7 @@ function fieldMain() {
                 ctx2d.fillText("すばやさ: " + mypicstock[mypicstock.length-1][10],width/2-100,height/2+133);
                 ctx2d.fillText("とくせい:" + specialAvilityText[mypicstock[mypicstock.length-1][11]],width/2-100,height/2+158);
                 ctx2d.strokeStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*Math.min(1,eventEggAni/20)*Math.min(1,eventEggAni/20)+")";
-                ctx2d.strokeWidth=1;
+                ctx2d.lineWidth=1;
                 ctx2d.strokeRect(width/2+57,height/2+97,180,87);
                 ctx2d.fillText("わざ",width/2+60,height/2+113);
                 ctx2d.font="9pt " + mainfontName;
@@ -865,12 +865,12 @@ function fieldMain() {
                     drawMypic(mypic[i],mypicOffsetX+100,mypicOffsetY-20,120,120,menuWindowTransChild);
                     if (i == menuSelectChildNum){
                         ctx2d.strokeStyle="rgba(255,255,255,"+(Math.sin(globalTime/8)*0.3+0.7)+")";
-                        ctx2d.strokeWidth=3;
+                        ctx2d.lineWidth=3;
                         ctx2d.strokeRect(mypicOffsetX-5,mypicOffsetY-25,230,height*0.7/3+2);
                     }
                     if (i == menuSortMypicNum){
                         ctx2d.strokeStyle="rgba(255,255,0,"+(Math.sin(globalTime/8)*0.3+0.7)+")";
-                        ctx2d.strokeWidth=3;
+                        ctx2d.lineWidth=3;
                         ctx2d.strokeRect(mypicOffsetX-5,mypicOffsetY-25,230,height*0.7/3+2);
                     }
                 }

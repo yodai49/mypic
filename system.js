@@ -100,6 +100,7 @@ function changeLevel(chgLev,Num){
    mypicstock[mypic[Num]][7]=Math.floor(Math.min(999,mypicstock[mypic[Num]][7]));
    mypicstock[mypic[Num]][9]=Math.floor(Math.min(999,mypicstock[mypic[Num]][9]));
    mypicstock[mypic[Num]][10]=Math.floor(Math.min(999,mypicstock[mypic[Num]][10]));
+   
    //ステータスアップの処理をここに追加
    popupMsg.push([mypicstock[mypic[Num]][0] + "のレベルが" + mypicstock[mypic[Num]][12] +"になった！",120,0,0,Num]);
 }

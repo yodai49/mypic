@@ -17,7 +17,7 @@ const fieldnum=5;//フィールドの数
 
 //描画系　コンフィグはここ
 const width = 960, height = 540; //ウィンドウのサイズ
-const mainfontName="Reggae One";
+const mainfontName="Stick";
 const currencyName="マイル";
 var ctx2d; //メインキャンバス
 var field2d;//フィールドキャンバスのコンテキスト

@@ -16,6 +16,7 @@ var messChoice=0;//選択肢シーンでの分岐判定
 var messCheck=false;
 var Choicenum=0;
 var battleLaunchFlg=0;
+const popupWindowAniSpeed=15;
 
 function messageMain(){
     if(onMessage){
@@ -207,5 +208,30 @@ function battleloop(){
         ctx2d.fillStyle=white;
         ctx2d.font="28px "+mainfontName;
         ctx2d.fillText(winMessage[in_lstnum], width*25/100,height*74/100);
+    }
+}
+
+function drawPopupMsg(){
+    for (var i = 0; i < Math.min(8,popupMsg.length);i++){
+        popupMsg[i][1]--;
+        if (popupMsg[i][1]<=0){
+            popupMsg.splice(i,1);
+        } else{
+            popupMsg[i][2]++;
+            ctx2d.font="10pt " + mainfontName;
+            ctx2d.fillStyle="rgba(0,0,0," + Math.min(1,popupMsg[i][1]/popupWindowAniSpeed,popupMsg[i][2]/popupWindowAniSpeed)*0.8 +")";
+            ctx2d.fillRect(-20+Math.min(1,popupMsg[i][1]/popupWindowAniSpeed,popupMsg[i][2]/popupWindowAniSpeed)*40,20+40*i,Math.max(250,ctx2d.measureText(popupMsg[i][0]).width+50),35);
+            if (popupMsg[i][4]!=-1){
+                ctx2d.fillStyle="rgba(0,0,0," + Math.min(1,popupMsg[i][1]/popupWindowAniSpeed,popupMsg[i][2]/popupWindowAniSpeed) +")";
+                ctx2d.fillRect(-20+Math.min(1,popupMsg[i][1]/popupWindowAniSpeed,popupMsg[i][2]/popupWindowAniSpeed)*40+3,20+40*i+3,29,29);
+                drawMypic(popupMsg[i][4],-20+Math.min(1,popupMsg[i][1]/popupWindowAniSpeed,popupMsg[i][2]/popupWindowAniSpeed)*40+3,20+40*i+3,29,29,Math.min(1,popupMsg[i][1]/popupWindowAniSpeed,popupMsg[i][2]/popupWindowAniSpeed),0);
+            } else{
+                ctx2d.fillStyle="rgba(255,255,255," + Math.min(1,popupMsg[i][1]/popupWindowAniSpeed,popupMsg[i][2]/popupWindowAniSpeed) +")";
+                ctx2d.fillRect(-20+Math.min(1,popupMsg[i][1]/popupWindowAniSpeed,popupMsg[i][2]/popupWindowAniSpeed)*40+3+13,20+40*i+3+13,3,3);
+            }
+            ctx2d.font="10pt " + mainfontName;
+            ctx2d.fillStyle="rgba(255,255,255," + Math.min(1,popupMsg[i][1]/popupWindowAniSpeed,popupMsg[i][2]/popupWindowAniSpeed) +")";
+            ctx2d.fillText(popupMsg[i][0],42-20+Math.min(1,popupMsg[i][1]/popupWindowAniSpeed,popupMsg[i][2]/popupWindowAniSpeed)*40,43+40*i);
+        }
     }
 }

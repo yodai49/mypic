@@ -24,6 +24,7 @@ var eventMessageWindow=0,eventMessageWindowMsg="",eventMessageSelectNum=0,procre
 var encount_down=0,encount_down_cnt=0;
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
+    if (mypic.length<=drawMypicNum) return 0;
     if (mode==1){
         for(var i = 0;i < drawMypicTempObj.length;i++){
             ctx2d.strokeStyle="rgba(255,255,255,"+trans+")";
@@ -211,7 +212,7 @@ function encount_check(){//敵との遭遇率encount=6*((200−運)/200)
     }
     if (encount_down_cnt){
         encount_down_cnt--;
-        if(!encount_down_cnt) encount_down=0,eventMessageWindow=1,eventMessageWindowMsg="スプレーのこうかがきれた！";
+        if(!encount_down_cnt) encount_down=0,popupMsg.push(["むしよけスプレーの効果がきれた！",120,0,0,-1]);
     }
 }
 
@@ -707,7 +708,6 @@ function fieldMain() {
             }
         }  else if(zkey &&!menuSelectFlg&& !menuzflg&& menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum==-1){ //マイピクの詳細画面を見る時
             menuMypicDetailAni++;
-            menuSelectChildNum=0;
             menuSelectFlg=1;
         } else if(zkey &&!menuSelectFlg&& menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum!=-1){ //マイピクの詳細画面を見る時
             //入れ替え処理
@@ -754,7 +754,7 @@ function fieldMain() {
                 if (items[menuSelectChildNum][0] >=0 && items[menuSelectChildNum][0] <= 7){
                     eventMessageWindow=1;
                     eventMessageWindowMsg="/だれにつかう？";
-                } else if(items[menuSelectChildNum][0] <= 12 && items[menuSelectChildNum][0] <= 14){
+                } else if(items[menuSelectChildNum][0] >= 12 && items[menuSelectChildNum][0] <= 14){
                     eventMessageWindow=1;
                     eventMessageWindowMsg="/だれにつかう？";
                 } else if (items[menuSelectChildNum][0] == 15){
@@ -912,8 +912,8 @@ function fieldMain() {
                 ctx2d.font="20px "+mainfontName;
                 for(var i = 0;i < Math.min(10,items.length-itemsScroll);i++){
                     if (i != menuSelectChildNum-itemsScroll){
-                        ctx2d.fillText(itemdata[items[i+itemsScroll][0]][0],360,60+32*i);
-                        ctx2d.fillText("× " + items[i+itemsScroll][1],700,60+32*i);    
+                        ctx2d.fillText(itemdata[items[i+itemsScroll][0]][0],360,90+28*i);
+                        ctx2d.fillText("× " + items[i+itemsScroll][1],700,90+28*i);    
                     }
                 }
                 if (itemdata[items[menuSelectChildNum][0]][1]){
@@ -926,10 +926,12 @@ function fieldMain() {
                     ctx2d.fillStyle="rgba(155,155,155," + menuWindowTransChild*(Math.sin(globalTime/6)*0.3+0.7)+")";
                 }
                 ctx2d.font="20px "+mainfontName;
-                ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][0],360,60+32*(menuSelectChildNum-itemsScroll));
-                ctx2d.fillText("× " + items[menuSelectChildNum][1],700,60+32*(menuSelectChildNum-itemsScroll));
+                ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][0],360,90+28*(menuSelectChildNum-itemsScroll));
+                ctx2d.fillText("× " + items[menuSelectChildNum][1],700,90+28*(menuSelectChildNum-itemsScroll));
                 ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
                 ctx2d.fillRect(360,60+32*9.5,300,1);
+                ctx2d.font="16px "+mainfontName;
+                ctx2d.fillText("おかね："+ money + currencyName,750-ctx2d.measureText("おかね："+ money + currencyName).width,48);
                 ctx2d.font="16px "+mainfontName;
                 ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(0,25),360,60+32*10.3);
                 ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(25,25),360,60+32*11);
@@ -959,12 +961,12 @@ function fieldMain() {
                     changeHPMP(1,30,0,eventMessageSelectNum,0);
                 } else if(items[menuSelectChildNum][0] == 7){
                     changeHPMP(1,60,0,eventMessageSelectNum,0);
-                }else if(items[menuSelectChildNum][0] == 12){//経験値のやつはここに追加
-
+                }else if(items[menuSelectChildNum][0] == 12){//経験値増やす系
+                    changeEXP(100,eventMessageSelectNum);
                 } else if (items[menuSelectChildNum][0] == 13){
-
+                    changeEXP(500,eventMessageSelectNum);
                 } else if(items[menuSelectChildNum][0] ==14){
-
+                    changeEXP(1000,eventMessageSelectNum);
                 }
                 consumeItem(menuSelectChildNum);
                 menuSelectFlg=1;

@@ -69,23 +69,34 @@ function changeHPMP(chgStatus,chgAmount,isEnemy,Num,isSimulate){
         }
     }
 }
+function changeLevel(chgLev,Num){
+    /* レベルを上げる関数　必ず1だけ上がる
+    @param  chgLev - - - 上がった後のレベルを格納
+            Num     - - - - 何番目に適用するかを指定
+    @return 0 
+    */
+   mypicstock[mypic[Num]][12]+=1;
+   //ステータスアップの処理をここに追加
+   popupMsg.push([mypicstock[mypic[Num]][0] + "のレベルが" + mypicstock[mypic[Num]][12] +"になった！",120,0,0,Num]);
+}
 
 function changeEXP(chgAmount,Num){
-    /* HPとかMPを増減させる関数
+    /* 経験値を入れる関数（減らすことはできない）
     @param  chgAmount - - - 入る経験値の量を指定
             Num     - - - - 何番目に適用するかを指定
     @return 0 - - - レベルアップなし
             1〜　- - レベルアップあり
     */
-    if (!isSimulate){ //実際にやるとき
-        mypicstock[mypic[Num]][2+2*chgStatus]=Math.min(Math.max(0,mypicstock[mypic[Num]][2+2*chgStatus]+chgAmount),mypicstock[mypic[Num]][3+2*chgStatus]);
-        if (!mypicstock[mypic[Num]][2+2*chgStatus]) return 1;
-        return 0;
-    } else{ //シミュレーションチェックの時
-        var tmpSimulate=Math.max(0,mypicstock[mypic[Num]][2+2*chgStatus]+chgAmount+chgStatus);
-        if (!tmpSimulate) return 1; //HPかMPが0以下、0未満になるなら
-        return 0;
+    let nextLevExp = Math.floor(Math.pow(mypicstock[mypic[Num]][12]+1,1.5+(1/3*(3-mypicstock[mypic[Num]][16]))));
+    if (nextLevExp <= Math.min(99999,mypicstock[mypic[Num]][13]+chgAmount)){ //レベルアップありのとき
+        let tmpExp=Math.min(99999,mypicstock[mypic[Num]][13]+chgAmount)-nextLevExp;
+        mypicstock[mypic[Num]][13]=nextLevExp;
+        changeLevel(mypicstock[mypic[Num]][12]+1,Num);
+        changeEXP(tmpExp,Num);
+    }else{
+        mypicstock[mypic[Num]][13]=Math.min(99999,mypicstock[mypic[Num]][13]+chgAmount);
     }
+    return 0;
 }
 
 function infToRange(x,min,max,param){

@@ -8,21 +8,24 @@ var menuWindow=0;//メニューウィンドウの表示非表示
 var shopWindow=0;//ショップウィンドウの表示非表示
 var globalTime=0;//タイム　1ループで1増える
 var isFirst=localStorage.getItem("xpos");//初回起動時かどうかを確認
+var popupMsg=[];//ポップアップで表示するメッセージを格納 形式[msgの内容、生き残り時間、0、ディレイ、ピクチャ(なにもないなら[]を指定)]
 const modeChangeAniSpeed=30;
 
 //フィールド系
 var myposx=0,myposy=0, myposworld=0;//キャラクターの位置　x：横　y:縦　world:ワールド番号
 const fieldnum=5;//フィールドの数
 
-//描画系
+//描画系　コンフィグはここ
 const width = 960, height = 540; //ウィンドウのサイズ
 const mainfontName="Reggae One";
+const currencyName="マイル";
 var ctx2d; //メインキャンバス
 var field2d;//フィールドキャンバスのコンテキスト
 var spacekey=false, leftkey=false, upkey=false, rightkey=false, downkey=false;
 var zkey=0,xkey=0,ckey=0,vkey=0, bkey=0;
 var characanvas,fieldcanvas,fieldbackcanvas; //プリレンダリング用のキャンバス fieldcanvasは前景、fieldbackcanvasは背景（当たり判定なし）
 var items=[[0,39],[1,39],[2,3],[3,4],[4,2],[5,1],[6,30],[7,50],[8,5],[9,33],[10,2],[23,7],[24,7],[26,7],[27,7],[28,7],[29,2],[31,3],[32,4],[33,7],[35,7],[36,1]];
+var money=0;
 var mypic=[0,1,2,3,4,5];//ストックでの管理番号
 var mypicstock=[
     ["うああ",[[0,10,30,25,15],[0,25,15,40,30],[0,60,30,75,15],[0,75,15,90,30],[0,30,70,50,90],[0,50,90,70,70]],250,300,50,50,100,100,[4,20,30,9],5,100,3,2,120,4,0,0],
@@ -111,7 +114,6 @@ function init() {
         ctx2d.clearRect(0,0,width,height);
 
         if(encount || bkey) mode=2, onMessage=true,battleLaunchFlg=1,encount=0;//バトル開始の処理
-
         //各モジュールのMain関数を呼び出し
         if (mode == 0){ //タイトル
             titleMain();
@@ -121,6 +123,7 @@ function init() {
             battleMain();
         }
         messageMain();
+        drawPopupMsg();
         ctx2d.fillStyle="rgba(0,0,0," +(1-Math.abs(modeAnimation-modeChangeAniSpeed)/modeChangeAniSpeed)+")";
         ctx2d.fillRect(0,0,width,height);
 

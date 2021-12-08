@@ -52,7 +52,7 @@ function battleMain() {
             if(!attackorder){//逃げれない
                 battleMode=1, loopmode=0, loopselect=0;}
             else{//逃げてfieldに遷移
-                mode=1, battleMode=0, loopmode=0, loopselect=0, lstnum=0, in_lstnum=0;}
+                modeAnimation=1, nextMode=1, battleMode=0, loopmode=0, loopselect=0, lstnum=0, in_lstnum=0;}
         }
         else if(battleMode==6){
             in_lstnum++;

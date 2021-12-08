@@ -702,6 +702,7 @@ function fieldMain() {
                 if (!titleConfirmSelect) {
                     nextMode=0;
                     modeAnimation=1;
+                    checkfirstLaunch();
                 }
             }
         }  else if(zkey &&!menuSelectFlg&& !menuzflg&& menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum==-1){ //マイピクの詳細画面を見る時
@@ -745,29 +746,34 @@ function fieldMain() {
                 menuSelectChildNum++,menuSelectFlg=1;
             } 
         }
-        if (zkey && menuSelectNum==1 && !menuSelectFlg && menuWindowChildAni && !eventMessageWindow && itemdata[items[menuSelectChildNum][0]][1]){//アイテムの使用
-            if (items[menuSelectChildNum][0] >=0 && items[menuSelectChildNum][0] <= 7){
+        if (zkey && menuSelectNum==1 && !menuSelectFlg && menuWindowChildAni && !eventMessageWindow){//アイテムの使用
+            if (!itemdata[items[menuSelectChildNum][0]][1]){
                 eventMessageWindow=1;
-                eventMessageWindowMsg="/だれにつかう？";
-            } else if(items[menuSelectChildNum][0] <= 12 && items[menuSelectChildNum][0] <= 14){
-                eventMessageWindow=1;
-                eventMessageWindowMsg="/だれにつかう？";
-            } else if (items[menuSelectChildNum][0] == 15){
-                consumeItem(menuSelectChildNum);
-                nextMode=1;
-                modeAnimation=1;
-                myposx=homposx,myposy=homposy,myposworld=homposworld;
-                eventMessageWindow=1;
-                eventMessageWindowMsg=itemdata[items[menuSelectChildNum][0]][0] + "をつかった！";
-            } else if(items[menuSelectChildNum][0] == 16){
-                consumeItem(menuSelectChildNum);
-                encount_down_cnt=3000;
-                eventMessageWindow=1;
-                eventMessageWindowMsg=itemdata[items[menuSelectChildNum][0]][0] + "をつかった！";    
-            }
-            eventMessageSelectNum=0;
-            if (eventMessageWindowMsg=="/だれにつかう？" && mypic.length==0){
-                eventMessageWindowMsg="つかえるマイピクを持っていない！";
+                eventMessageWindowMsg="ここではつかえない！";
+            } else{
+                if (items[menuSelectChildNum][0] >=0 && items[menuSelectChildNum][0] <= 7){
+                    eventMessageWindow=1;
+                    eventMessageWindowMsg="/だれにつかう？";
+                } else if(items[menuSelectChildNum][0] <= 12 && items[menuSelectChildNum][0] <= 14){
+                    eventMessageWindow=1;
+                    eventMessageWindowMsg="/だれにつかう？";
+                } else if (items[menuSelectChildNum][0] == 15){
+                    consumeItem(menuSelectChildNum);
+                    nextMode=1;
+                    modeAnimation=1;
+                    myposx=homposx,myposy=homposy,myposworld=homposworld;
+                    eventMessageWindow=1;
+                    eventMessageWindowMsg=itemdata[items[menuSelectChildNum][0]][0] + "をつかった！";
+                } else if(items[menuSelectChildNum][0] == 16){
+                    consumeItem(menuSelectChildNum);
+                    encount_down_cnt=3000;
+                    eventMessageWindow=1;
+                    eventMessageWindowMsg=itemdata[items[menuSelectChildNum][0]][0] + "をつかった！";    
+                }
+                eventMessageSelectNum=0;
+                if (eventMessageWindowMsg=="/だれにつかう？" && mypic.length==0){
+                    eventMessageWindowMsg="つかえるマイピクを持っていない！";
+                }
             }
             menuSelectFlg=1;
         }

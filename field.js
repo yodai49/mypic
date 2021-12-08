@@ -636,16 +636,16 @@ function fieldMain() {
         if (!upkey && !downkey && !zkey && !leftkey && !rightkey && !xkey) menuSelectFlg=0;
         if (eventWindowAni && (eventWindowAni-menuWindowAniSpeed)) eventWindowAni++;
         if (eventWindowAni == 2*menuWindowAniSpeed) eventWindowAni=0,happenedEvent=0; 
-    } else if(!menuWindow){ /////メニューウィンドウが表示されていない時
+    } else if(!menuWindow&& !eventMessageWindow){ /////メニューウィンドウが表示されていない時
         if(ckey) menuWindow++;
         if (leftkey) walkdir=0;
         if (rightkey) walkdir=1;
         if (upkey) walkdir=2;
         if (downkey) walkdir=3;
-        if (leftkey && !checkConflict(0) && !eventMessageWindow) myposx-=walkspeed,walkeve();
-        if (rightkey && !checkConflict(1)&& !eventMessageWindow) myposx+=walkspeed,walkeve();
-        if (upkey && !checkConflict(2)&& !eventMessageWindow) myposy-=walkspeed,walkeve();
-        if (downkey && !checkConflict(3)&& !eventMessageWindow) myposy+=walkspeed,walkeve();
+        if (leftkey && !checkConflict(0)) myposx-=walkspeed,walkeve();
+        if (rightkey && !checkConflict(1)) myposx+=walkspeed,walkeve();
+        if (upkey && !checkConflict(2)) myposy-=walkspeed,walkeve();
+        if (downkey && !checkConflict(3)) myposy+=walkspeed,walkeve();
         if (zkey && !selectTitleFlg&& !eventMessageWindow) { //アクションキー
             for(var i = 0; i < eventobj[myposworld].length;i++){
                 if (eventflgs[i] && !happenedEvent) trigEvent(eventobj[myposworld][i][4]);
@@ -706,6 +706,8 @@ function fieldMain() {
             }
         }  else if(zkey &&!menuSelectFlg&& !menuzflg&& menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum==-1){ //マイピクの詳細画面を見る時
             menuMypicDetailAni++;
+            menuSelectChildNum=0;
+            menuSelectFlg=1;
         } else if(zkey &&!menuSelectFlg&& menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum!=-1){ //マイピクの詳細画面を見る時
             //入れ替え処理
             var menuTmpSort=mypic[menuSortMypicNum];

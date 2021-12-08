@@ -1140,7 +1140,7 @@ function fieldMain() {
                     mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][14].splice(0,1);
                 }
             }
-            ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+            ctx2d.fillStyle="rgbac(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
             ctx2d.fillRect((width-400)/2,height/2-100,400,200);
             ctx2d.font="16pt " + mainfontName;
             ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";

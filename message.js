@@ -80,9 +80,9 @@ function battlemessMain(){
         ctx2d.fillStyle=white;
         ctx2d.font="26px "+mainfontName;
         if(Bsetcheck){
-            introMessage[0]="野生の"+enemyData[0][0]+"が現れた！";
-            introMessage[1]="勝負だ, "+mypicstock[mypic[0]][0]+"!";
-            endMess2[0]=mypicstock[mypic[0]][0]+"は逃げた。";}
+            introMessage[0]="野生の "+enemyData[0][0]+" があらわれた！";
+            introMessage[1]="勝負だ、 "+mypicstock[mypic[0]][0]+" !";
+            endMess2[0]=mypicstock[mypic[0]][0]+"はにげた。";}
         if(!modeAnimation) ctx2d.fillText(introMessage[in_lstnum], width*25/100,height*75/100);
         if (battleLaunchFlg){ /////バトル開始時の処理　ここにまとめる
             fieldReDrawFlg=1,battleLaunchFlg=0;
@@ -168,6 +168,10 @@ function battleloop(){
                 BerrorFlg=false;}
             ctx2d.font="18px "+mainfontName;
             for (let i=0; i < 5; i++){
+                if(!itemdata[items[BtopItem+i][0]][2]) ctx2d.fillStyle=darkgray2;
+                else if(items[BtopItem+i][0] == 14 && moneyUpFlg) ctx2d.fillStyle=darkgray2;
+                else if(items[BtopItem+i][0] == 15 && experienceUpFlg) ctx2d.fillStyle=darkgray2;
+                else ctx2d.fillStyle=white;
                 ctx2d.fillText(itemdata[items[BtopItem+i][0]][0], width*46/100,height*(73+(i*5))/100);
                 ctx2d.fillText("×"+items[BtopItem+i][1], width*71/100,height*(73+(i*5))/100);}
             make_pointer(width*45/100,height*(72+5*(loopselect-BtopItem))/100,width*43/100,height*(70+5*(loopselect-BtopItem))/100,width*43/100,height*(74+5*(loopselect-BtopItem))/100);
@@ -176,20 +180,30 @@ function battleloop(){
         else if(loopmode==3){
             //マイピク情報
             if(BerrorFlg){//errorメッセージ表示
-                popupMsg.push(["ここでは使えないよ!",120,0,0,-1]);
+                popupMsg.push(["ひんしなので選べない!",120,0,0,-1]);
                 BerrorFlg=false;}
             ctx2d.font="20px "+mainfontName;
             ctx2d.fillText("どのマイピクと交代する？", width*48/100,height*74/100);
             for (let i=0; i < mypic.length; i++){
-            ctx2d.fillText(mypicstock[mypic[i]][0], width*(47+17*Math.max(0,Math.ceil((i-2)/3)))/100,height*(81+6*(i%3))/100);}
-            make_pointer(width*(46+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(79.5+6*(loopselect%3))/100,width*(44+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(77.5+6*(loopselect%3))/100,width*(44+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(81.5+6*(loopselect%3))/100);
+                if(mypicstock[mypic[i]][2]==0)ctx2d.fillStyle=darkgray2;
+                else ctx2d.fillStyle=white;
+                ctx2d.fillText(mypicstock[mypic[i]][0], width*(47+17*Math.max(0,Math.ceil((i-2)/3)))/100,height*(81+6*(i%3))/100);}
+                make_pointer(width*(46+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(79.5+6*(loopselect%3))/100,width*(44+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(77.5+6*(loopselect%3))/100,width*(44+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(81.5+6*(loopselect%3))/100);
         }
         else if(loopmode==4){
+            if(BerrorFlg){//errorメッセージ表示
+                popupMsg.push(["ここでは使えないよ!",120,0,0,-1]);
+                BerrorFlg=false;}
             ctx2d.font="20px "+mainfontName;
-            ctx2d.fillText("誰に使用する？", width*53/100,height*74/100);
+            ctx2d.fillText("だれに使用する？", width*53/100,height*74/100);
             for (let i=0; i < mypic.length; i++){
-            ctx2d.fillText(mypicstock[mypic[i]][0], width*(47+17*Math.max(0,Math.ceil((i-2)/3)))/100,height*(81+6*(i%3))/100);}
-            make_pointer(width*(46+17*Math.max(0,Math.ceil((BwhoUse-2)/3)))/100,height*(79.5+6*(BwhoUse%3))/100,width*(44+17*Math.max(0,Math.ceil((BwhoUse-2)/3)))/100,height*(77.5+6*(BwhoUse%3))/100,width*(44+17*Math.max(0,Math.ceil((BwhoUse-2)/3)))/100,height*(81.5+6*(BwhoUse%3))/100);
+                if(items[loopselect][0]==6 || items[loopselect][0]==7){
+                    if(mypicstock[mypic[i]][2]!=0)ctx2d.fillStyle=darkgray2;
+                    else ctx2d.fillStyle=white;}
+                else if(mypicstock[mypic[i]][2]==0)ctx2d.fillStyle=darkgray2;
+                else ctx2d.fillStyle=white;
+                ctx2d.fillText(mypicstock[mypic[i]][0], width*(47+17*Math.max(0,Math.ceil((i-2)/3)))/100,height*(81+6*(i%3))/100);}
+                make_pointer(width*(46+17*Math.max(0,Math.ceil((BwhoUse-2)/3)))/100,height*(79.5+6*(BwhoUse%3))/100,width*(44+17*Math.max(0,Math.ceil((BwhoUse-2)/3)))/100,height*(77.5+6*(BwhoUse%3))/100,width*(44+17*Math.max(0,Math.ceil((BwhoUse-2)/3)))/100,height*(81.5+6*(BwhoUse%3))/100);
         }
     }
     
@@ -254,7 +268,7 @@ function battleloop(){
             ctx2d.fillText("敵が速くて逃げられない!",25/100,height*75/100);}
         else{
             ctx2d.font="26px "+mainfontName;
-            ctx2d.fillText(mypicstock[mypic[0]][0]+" は逃げた", width*25/100,height*75/100);}
+            ctx2d.fillText(mypicstock[mypic[0]][0]+" はにげた", width*25/100,height*75/100);}
     }
 
     else if(battleMode==6){//勝利message
@@ -274,8 +288,13 @@ function battleloop(){
                 ctx2d.fillText(mypicstock[mypic[0]][0]+" は倒れた。",width*25/100,height*75/100);
                 break;
             case 1:
+                if(BerrorFlg){//errorメッセージ表示
+                    popupMsg.push(["ひんしなので選べない!",120,0,0,-1]);
+                    BerrorFlg=false;}
                 ctx2d.fillText("交代するマイピクを選択してください。", width*25/100,height*75/100);
                 for (let i=0; i < mypic.length; i++){
+                    if(mypicstock[mypic[i]][2]==0)ctx2d.fillStyle=darkgray2;
+                    else ctx2d.fillStyle=white;
                     ctx2d.fillText(mypicstock[mypic[i]][0], width*(40+17*Math.max(0,Math.ceil((i-2)/3)))/100,height*(81+6*(i%3))/100);}
                     make_pointer(width*(38+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(79.5+6*(loopselect%3))/100,width*(36+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(77.5+6*(loopselect%3))/100,width*(36+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(81.5+6*(loopselect%3))/100);
                 break;

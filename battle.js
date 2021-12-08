@@ -16,7 +16,7 @@ var oneMoveFlg=false;//1回だけ作動させたい時に使う
 var BerrorFlg=false;
 var BtopItem=0;
 var BwhoUse=0;//アイテムを誰に使用するか
-var moneyUpFlg=false;//金運の知らせ使用
+var moneyUpFlg=false, experienceUpFlg=false;//金運の知らせ使用
 var bMemory=[0,0,0];//0:攻撃,1:防御,2:MaxHP
 var unFightFlg=false;//戦闘不能
 var gameoverFlg=false;//敗北
@@ -45,12 +45,17 @@ function battleMain() {
             } else if(loopmode==1) {//技実行
                 battleMode=2, Acount=0, Acheck=true;
             } else if(loopmode==2){//アイテム選択
-                if(items[loopselect][0] == 11)battleMode=3, oneMoveFlg=true;
-                else if(!itemdata[loopselect][2] || moneyUpFlg)BerrorFlg=true;
+                if(!itemdata[loopselect][2] || (loopselect==14 && moneyUpFlg) || (loopselect==15 && experienceUpFlg))BerrorFlg=true;
+                else if(items[loopselect][0] == 14 || items[loopselect][0] == 15)battleMode=3, oneMoveFlg=true;//金運の知らせか経験値Up
                 else loopmode=4;
-            } else if(loopmode==4){battleMode=3, oneMoveFlg=true;//誰に使用するか決める
+            } else if(loopmode==4){
+                if(items[loopselect][0]==6 || items[loopselect][0]==7){
+                    if(mypicstock[mypic[BwhoUse]][2]!=0) BerrorFlg=true;
+                    else battleMode=3, oneMoveFlg=true;}
+                else if(mypicstock[mypic[BwhoUse]][2]==0) BerrorFlg=true;
+                else battleMode=3, oneMoveFlg=true;//誰に使用するか決める
             } else if(loopmode==3){//マイピク交代
-                if(loopselect==0) BerrorFlg=true;
+                if(mypicstock[mypic[loopselect]][2]==0) BerrorFlg=true;
                 else battleMode=4;
             }
         } else if(battleMode==2){Acheck=true;
@@ -79,7 +84,9 @@ function battleMain() {
         } else if(battleMode==6){
             in_lstnum++;
         } else if(battleMode==7){
-            if(chgCount==0 || chgCount==1)chgCount++;
+            if (chgCount==1 && mypicstock[mypic[loopselect]][2]==0)BerrorFlg=true;
+            else if(chgCount==0 || chgCount==1)chgCount++;
+            else if(chgCount==2)chgCount++, oneMoveFlg=true;
         }
         zkey=false;
     }
@@ -174,21 +181,26 @@ function battleMain() {
         if(oneMoveFlg && itemCount==0){
             //HP,MP回復系
             if(items[loopselect][0] == 0){
-                changeHPMP(0,mypicstock[mypic[BwhoUse]][3]*0.3,0,BwhoUse,0);}
+                changeHPMP(0,Math.floor(mypicstock[mypic[BwhoUse]][3]*0.3),0,BwhoUse,0);}
             else if(items[loopselect][0] == 1){
-                changeHPMP(0,mypicstock[mypic[BwhoUse]][3]*0.6,0,BwhoUse,0);}
+                changeHPMP(0,Math.floor(mypicstock[mypic[BwhoUse]][3]*0.6),0,BwhoUse,0);}
             else if(items[loopselect][0] == 2){
-                changeHPMP(0,mypicstock[mypic[BwhoUse]][3]*1,0,BwhoUse,0);}
+                changeHPMP(0,mypicstock[mypic[BwhoUse]][3],BwhoUse,0);}
             else if(items[loopselect][0] == 3){
                 changeHPMP(0,50,0,BwhoUse,0);}
             else if(items[loopselect][0] == 4){
                 changeHPMP(0,100,0,BwhoUse,0);}
             else if(items[loopselect][0] == 5){
                 changeHPMP(0,150,0,BwhoUse,0);}
+            else if(items[loopselect][0] == 6){
+                changeHPMP(0,Math.floor(mypicstock[mypic[BwhoUse]][3]*0.5),0,BwhoUse,0);}
+            else if(items[loopselect][0] == 7){
+                changeHPMP(0,mypicstock[mypic[BwhoUse]][3],0,BwhoUse,0);}
             else if(items[loopselect][0] == 8){
                 changeHPMP(1,30,0,BwhoUse,0);}
             else if(items[loopselect][0] == 9){
                 changeHPMP(1,60,0,BwhoUse,0);}
+
             //強化系
             else if(items[loopselect][0] == 11){
                 mypicstock[mypic[BwhoUse]][6] = Math.floor(mypicstock[mypic[BwhoUse]][6]*1.4);}
@@ -200,6 +212,8 @@ function battleMain() {
                 mypicstock[mypic[BwhoUse]][2] += hpAmount;}
             //獲得金Up
             else if(items[loopselect][0] == 14) moneyUpFlg=true;
+            //獲得経験値Up
+            else if(items[loopselect][0] == 15) experienceUpFlg=true;
             consumeItem(loopselect);//アイテム消費
             //itemcount1での処理に必要
             firstSt=mypicstock[mypic[0]], secondSt=baseEnemyData;
@@ -247,7 +261,7 @@ function battleMain() {
         else if(upkey && chgCount==1)loopselect=Math.max(0,loopselect-1), upkey=false;
         else if(rightkey && chgCount==1)loopselect=Math.min(mypic.length-1,loopselect+3), rightkey=false;
         else if(leftkey && chgCount==1)loopselect=Math.max(0,loopselect-3), leftkey=false;
-        if(chgCount==2){
+        if(chgCount==3){
             if(oneMoveFlg) {oneMoveFlg=false;
                 mypicstock[mypic[0]][6]=bMemory[0];
                 mypicstock[mypic[0]][7]=bMemory[1];
@@ -257,6 +271,7 @@ function battleMain() {
                 bMemory[1]=mypicstock[mypic[0]][7];
                 bMemory[2]=mypicstock[mypic[0]][3];
             }
+            battleMode=1, loopmode=0, loopselect=0, chgCount=0;
         }
     } else if(battleMode==8){}//敗北
 }

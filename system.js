@@ -117,3 +117,29 @@ function infToRange(x,min,max,param){
     ///arcTanで0〜無限のパラメーターを指定された範囲に単調増加になるように移す関数 paramが大きいと緩やかになる
     return Math.atan(x/param)*200/Math.PI*(max-min)+min;
 }
+
+function changeColor(typenum){//typenum:属性値(0~6)
+    switch(typenum){
+        case 0://無属性
+            ctx2d.fillStyle="rgba("+typeDataCol[0]+",1.0)";
+            break;
+        case 1://火属性
+            ctx2d.fillStyle="rgba("+typeDataCol[1]+",1.0)";
+            break;
+        case 2://水属性
+            ctx2d.fillStyle="rgba("+typeDataCol[2]+",1.0)";
+            break;
+        case 3://木属性
+            ctx2d.fillStyle="rgba("+typeDataCol[3]+",1.0)";
+            break;
+        case 4://風属性
+            ctx2d.fillStyle="rgba("+typeDataCol[4]+",1.0)";
+            break;
+        case 5://岩属性
+            ctx2d.fillStyle="rgba("+typeDataCol[5]+",1.0)";
+            break;
+        case 6://幻属性
+            ctx2d.fillStyle="rgba("+typeDataCol[6]+",1.0)";
+            break;
+    }
+}

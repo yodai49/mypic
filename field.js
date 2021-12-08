@@ -23,6 +23,7 @@ var titleConfirmWindow=0,titleConfirmSelect=1,titleConfirmMessage="",titleConfir
 var eventMessageWindow=0,eventMessageWindowMsg="",eventMessageSelectNum=0,procreateMsg="";
 var encount_down=0,encount_down_cnt=0;
 var nowShopData,eventShopSelectNum=0,showmoney=0;
+var checkSkillConflict=[];
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
     if (mypic.length<=drawMypicNum) return 0;
@@ -995,16 +996,11 @@ function fieldMain() {
                     ctx2d.fillText("とくせい: "+ specialAvilityText[mypicstock[mypic[menuSelectChildNum]][11]],menuMypicDetailposX+240,menuMypicDetailposY+242);
                     ctx2d.fillText("けいけんち: "+ mypicstock[mypic[menuSelectChildNum]][13],menuMypicDetailposX+30,menuMypicDetailposY+166);
                     for(var i = 0; i <4;i++){
-                        if (i <  mypicstock[mypic[menuSelectChildNum]][14]){
-                            ctx2d.fillStyle="rgba("+ typeDataCol[skillData[mypicstock[mypic[menuSelectChildNum]][8][i]][3]]+"," + (1-Math.abs(menuMypicDetailAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.9+")";
-                            ctx2d.fillText(skillData[mypicstock[mypic[menuSelectChildNum]][8][i]][0],menuMypicDetailposX+30,menuMypicDetailposY+190+i*16);
-                            ctx2d.fillStyle="rgba(255,255,255," + (1-Math.abs(menuMypicDetailAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.9+")";
-                            ctx2d.fillText("DP:"+skillData[mypicstock[mypic[menuSelectChildNum]][8][i]][4],menuMypicDetailposX+150,menuMypicDetailposY+190+i*16);
-                            ctx2d.fillText(skillData[mypicstock[mypic[menuSelectChildNum]][8][i]][1],menuMypicDetailposX+120,menuMypicDetailposY+190+i*16);
-                        } else {
-                            ctx2d.fillStyle="rgba(255,255,255," + (1-Math.abs(menuMypicDetailAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.9+")";
-                            ctx2d.fillText("???",menuMypicDetailposX+30,menuMypicDetailposY+190+i*16);
-                        }
+                        ctx2d.fillStyle="rgba("+ typeDataCol[skillData[mypicstock[mypic[menuSelectChildNum]][8][i]][3]]+"," + (1-Math.abs(menuMypicDetailAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.9+")";
+                        ctx2d.fillText(skillData[mypicstock[mypic[menuSelectChildNum]][8][i]][0],menuMypicDetailposX+30,menuMypicDetailposY+190+i*16);
+                        ctx2d.fillStyle="rgba(255,255,255," + (1-Math.abs(menuMypicDetailAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.9+")";
+                        ctx2d.fillText("DP:"+skillData[mypicstock[mypic[menuSelectChildNum]][8][i]][4],menuMypicDetailposX+150,menuMypicDetailposY+190+i*16);
+                        ctx2d.fillText(skillData[mypicstock[mypic[menuSelectChildNum]][8][i]][1],menuMypicDetailposX+120,menuMypicDetailposY+190+i*16);
                     }
                     ctx2d.fillStyle="rgba(0,0,0," + (1-Math.abs(menuMypicDetailAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.9+")";
                     ctx2d.fillRect(menuMypicDetailposX+197,menuMypicDetailposY+45,180,180);
@@ -1042,6 +1038,10 @@ function fieldMain() {
 
             }
         }
+    }
+    if (checkSkillConflict.length && !eventMessageWindow){
+        eventMessageWindow=1;
+        eventMessageWindowMsg="@" + checkSkillConflict.pop();
     }
     if(eventMessageWindow){
         if (eventMessageWindowMsg.substr(0,1)=="/"){
@@ -1126,7 +1126,40 @@ function fieldMain() {
                 ctx2d.fillText("HP: "+ mypicstock[mypic[i]][2] + "/" + mypicstock[mypic[i]][3],(width-350)/2+125,height/2-65+30+i*25);
                 ctx2d.fillText("MP: "+ mypicstock[mypic[i]][4] + "/" + mypicstock[mypic[i]][5],(width-350)/2+255,height/2-65+30+i*25);
             }
-        } else{
+        } else if(eventMessageWindowMsg.substr(0,1) == "@"){//技を忘れさせる場合
+            if (upkey && !menuSelectFlg) menuSelectFlg=1,eventMessageSelectNum=Math.max(0,eventMessageSelectNum-1);
+            if (downkey && !menuSelectFlg) menuSelectFlg=1,eventMessageSelectNum=Math.min(4,eventMessageSelectNum+1);
+            if (zkey && !menuSelectFlg) { //使う処理はここに書く
+
+            }
+            ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+            ctx2d.fillRect((width-400)/2,height/2-100,400,200);
+            ctx2d.font="16pt " + mainfontName;
+            ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+            ctx2d.fillText("どの技を忘れさせる？",(width-350)/2,height/2-65);    
+            ctx2d.font="12pt " + mainfontName;
+            console.log(mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][14]);
+            for(var i = 0;i < 5;i++){
+                if(eventMessageSelectNum==i){
+                    ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)*(Math.sin(globalTime/6)*0.3+0.7)+")";
+                } else{
+                    ctx2d.fillStyle="rgba(105,105,105," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                }
+                if (i != 4){
+                    ctx2d.fillText(skillData[mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][8][i]][0],(width-350)/2+15,height/2-65+30+i*25);
+                    ctx2d.fillText(typeDataText[skillData[mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][8][i]][3]],(width-350)/2+145,height/2-65+30+i*25);
+                    ctx2d.fillText("威力:" + skillData[mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][8][i]][1],(width-350)/2+165,height/2-65+30+i*25);
+                    ctx2d.fillText("MP:" + skillData[mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][8][i]][4],(width-350)/2+235,height/2-65+30+i*25);
+                    ctx2d.fillText("命中:" + skillData[mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][8][i]][4],(width-350)/2+295,height/2-65+30+i*25);
+                } else{
+                    ctx2d.fillText(skillData[mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][14][0]][0],(width-350)/2+15,height/2-65+30+i*25);
+                    ctx2d.fillText(typeDataText[skillData[mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][8][i]][3]],(width-350)/2+145,height/2-65+30+i*25);
+                    ctx2d.fillText("威力:" + skillData[mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][14][0]][1],(width-350)/2+165,height/2-65+30+i*25);
+                    ctx2d.fillText("MP:" + skillData[mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][14][0]][2],(width-350)/2+235,height/2-65+30+i*25);
+                    ctx2d.fillText("命中:" + skillData[mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][8][i]][2],(width-350)/2+295,height/2-65+30+i*25);
+                }
+            }
+        }else{
             ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
             ctx2d.font="16pt " + mainfontName;
             ctx2d.fillRect(width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2,height/2-50,(40+ctx2d.measureText(eventMessageWindowMsg).width),100);

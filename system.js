@@ -87,20 +87,26 @@ function changeLevel(chgLev,Num){
             Num     - - - - 何番目に適用するかを指定
     @return 0 
     */
-   mypicstock[mypic[Num]][12]=Math.min(chgLev,99);
-   mypicstock[mypic[Num]][3]+=(1+(Math.pow(mypicstock[mypic[Num]][3],1.004)- mypicstock[mypic[Num]][3])+Math.floor(Math.random()*2.2));
-   mypicstock[mypic[Num]][5]+=(1+(Math.pow(mypicstock[mypic[Num]][5],1.004)- mypicstock[mypic[Num]][5])+Math.floor(Math.random()*2.2));
-   mypicstock[mypic[Num]][6]+=(1+(Math.pow(mypicstock[mypic[Num]][6],1.004)- mypicstock[mypic[Num]][6])+Math.floor(Math.random()*2.2));
-   mypicstock[mypic[Num]][7]+=(1+(Math.pow(mypicstock[mypic[Num]][7],1.004)- mypicstock[mypic[Num]][7])+Math.floor(Math.random()*2.2));
-   mypicstock[mypic[Num]][9]=Math.min(10,mypicstock[mypic[Num]][9]+Math.floor(Math.random()*1.08));
-   mypicstock[mypic[Num]][10]=Math.min(200,mypicstock[mypic[Num]][10]+Math.floor(Math.random()*2)+1);
-   mypicstock[mypic[Num]][3]=Math.floor(Math.min(999,mypicstock[mypic[Num]][3]));
-   mypicstock[mypic[Num]][5]=Math.floor(Math.min(999,mypicstock[mypic[Num]][5]));
-   mypicstock[mypic[Num]][6]=Math.floor(Math.min(999,mypicstock[mypic[Num]][6]));
-   mypicstock[mypic[Num]][7]=Math.floor(Math.min(999,mypicstock[mypic[Num]][7]));
-   mypicstock[mypic[Num]][9]=Math.floor(Math.min(999,mypicstock[mypic[Num]][9]));
-   mypicstock[mypic[Num]][10]=Math.floor(Math.min(999,mypicstock[mypic[Num]][10]));
-   
+    mypicstock[mypic[Num]][12]=Math.min(chgLev,99);
+    mypicstock[mypic[Num]][3]+=(1+(Math.pow(mypicstock[mypic[Num]][3],1.004)- mypicstock[mypic[Num]][3])+Math.floor(Math.random()*2.2));
+    mypicstock[mypic[Num]][5]+=(1+(Math.pow(mypicstock[mypic[Num]][5],1.004)- mypicstock[mypic[Num]][5])+Math.floor(Math.random()*2.2));
+    mypicstock[mypic[Num]][6]+=(1+(Math.pow(mypicstock[mypic[Num]][6],1.004)- mypicstock[mypic[Num]][6])+Math.floor(Math.random()*2.2));
+    mypicstock[mypic[Num]][7]+=(1+(Math.pow(mypicstock[mypic[Num]][7],1.004)- mypicstock[mypic[Num]][7])+Math.floor(Math.random()*2.2));
+    mypicstock[mypic[Num]][9]=Math.min(10,mypicstock[mypic[Num]][9]+Math.floor(Math.random()*1.08));
+    mypicstock[mypic[Num]][10]=Math.min(200,mypicstock[mypic[Num]][10]+Math.floor(Math.random()*2)+1);
+    mypicstock[mypic[Num]][3]=Math.floor(Math.min(999,mypicstock[mypic[Num]][3]));
+    mypicstock[mypic[Num]][5]=Math.floor(Math.min(999,mypicstock[mypic[Num]][5]));
+    mypicstock[mypic[Num]][6]=Math.floor(Math.min(999,mypicstock[mypic[Num]][6]));
+    mypicstock[mypic[Num]][7]=Math.floor(Math.min(999,mypicstock[mypic[Num]][7]));
+    mypicstock[mypic[Num]][9]=Math.floor(Math.min(999,mypicstock[mypic[Num]][9]));
+    mypicstock[mypic[Num]][10]=Math.floor(Math.min(999,mypicstock[mypic[Num]][10]));
+    const skillLv=[5,9,14,18,23,27,33,40,48,54];
+    for(let i = 0;i < skillLv.length;i++){
+        if (skillLv[i] == chgLev){ //スキルの習得時
+            checkSkillConflict.push(Num);
+            mypicstock[mypic[Num]][14].push(mypicstock[mypic[Num]][8][i+4]);
+        }
+    }
    //ステータスアップの処理をここに追加
    popupMsg.push([mypicstock[mypic[Num]][0] + "のレベルが" + mypicstock[mypic[Num]][12] +"になった！",120,0,0,Num]);
 }

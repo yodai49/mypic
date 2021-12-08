@@ -212,7 +212,7 @@ function encount_check(){//敵との遭遇率encount=6*((200−運)/200)
     }
     if (encount_down_cnt){
         encount_down_cnt--;
-        if(!encount_down_cnt) encount_down=0,eventMessageWindow=1,eventMessageWindowMsg="スプレーのこうかがきれた！";
+        if(!encount_down_cnt) encount_down=0,popupMsg.push(["むしよけスプレーの効果がきれた！",120,0,0,-1]);
     }
 }
 

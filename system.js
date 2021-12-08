@@ -37,7 +37,7 @@ function consumeItem(consumeNum){
 }
 function getItem(getNum){
     ////////アイテムをゲットする関数　getNumにゲットするアイテムの番号を指定(itemsでの番号)
-
+    
 }
 
 function changeHPMP(chgStatus,chgAmount,isEnemy,Num,isSimulate){

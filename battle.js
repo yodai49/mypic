@@ -61,17 +61,17 @@ function battleMain() {
         } else if(battleMode==2){Acheck=true;
             if(oneMoveFlg) battleMode=6;
             else if(unFightFlg) battleMode=7, chgCount=0, loopselect=0, unFightFlg=false;
-            else if(gameoverFlg) battleMode=8, chgCount=0, gameoverFlg=false;
+            else if(gameoverFlg) battleMode=8, chgCount=0, oneMoveFlg=true, gameoverFlg=false;
             else if(Acount==1)Acount++, attackMiss=false;
             else if(Acount==2)Acount=99, attackMiss=false;
         } else if(battleMode==3){
             if(unFightFlg) battleMode=7, chgCount=0, loopselect=0, unFightFlg=false;
-            else if(gameoverFlg) battleMode=8, chgCount=0, gameoverFlg=false;
+            else if(gameoverFlg) battleMode=8, chgCount=0, oneMoveFlg=true, gameoverFlg=false;
             else if(itemCount==0 || itemCount==1)itemCount++, oneMoveFlg=true;
             else if(itemCount==2)battleMode=1, itemCount=0, loopmode=0, loopselect=0, BtopItem=0;;
         } else if(battleMode==4){
             if(unFightFlg) battleMode=7, chgCount=0, loopselect=0, unFightFlg=false;
-            else if(gameoverFlg) battleMode=8, chgCount=0, gameoverFlg=false;
+            else if(gameoverFlg) battleMode=8, chgCount=0, oneMoveFlg=true, gameoverFlg=false;
             else if(chgCount==0 || chgCount==1)chgCount++, oneMoveFlg=true;
             else if (chgCount==2){
                 battleMode=1, chgCount=0, loopmode=0, loopselect=0;
@@ -87,6 +87,8 @@ function battleMain() {
             if (chgCount==1 && mypicstock[mypic[loopselect]][2]==0)BerrorFlg=true;
             else if(chgCount==0 || chgCount==1)chgCount++;
             else if(chgCount==2)chgCount++, oneMoveFlg=true;
+        } else if(battleMode==8){
+            in_lstnum++;
         }
         zkey=false;
     }
@@ -155,13 +157,10 @@ function battleMain() {
             if(secondSt[2] == 0){//HP=0
                 if(attackorder){//敵が死んだので勝利
                     oneMoveFlg=true;
-                } else if(mypicstock[mypic[0]][2]==0&&mypicstock[mypic[1]][2]==0&&mypicstock[mypic[2]][2]==0&&mypicstock[mypic[3]][2]==0&&mypicstock[mypic[4]][2]==0&&mypicstock[mypic[5]][2]==0){
+                } else if(mypicstock[mypic[0]][2]==0&&mypicstock[mypic[Math.min(1,mypic.length-1)]][2]==0&&mypicstock[mypic[Math.min(2,mypic.length-1)]][2]==0&&mypicstock[mypic[Math.min(3,mypic.length-1)]][2]==0&&mypicstock[mypic[Math.min(4,mypic.length-1)]][2]==0&&mypicstock[mypic[Math.min(5,mypic.length-1)]][2]==0){
                     //味方6体全員死んだ場合
-                    //"戦える手持ちのマイピクはいない!","は意識が遠のき倒れてしまった。"
-                    //gameover,loopend
                     gameoverFlg=true;
                 } else{ //生存残りマイピクがいる
-                    //マイピクchangeを実行,後攻はない
                     unFightFlg=true;
                 }
             }
@@ -273,7 +272,15 @@ function battleMain() {
             }
             battleMode=1, loopmode=0, loopselect=0, chgCount=0;
         }
-    } else if(battleMode==8){}//敗北
+    } else if(battleMode==8){//敗北
+        if(!oneMoveFlg){//onemoveflgでwinmessageが読み込まれるのを待ってから実行
+            if(in_lstnum == loseMessage.length){ //勝利後、フィールドに戻る時の処理はここに追加
+                nextMode=0, modeAnimation=1, battleMode=0, loopmode=0, loopselect=0, lstnum=0, in_lstnum=0;
+                mypicstock[mypic[0]][6]=bMemory[0];
+                mypicstock[mypic[0]][7]=bMemory[1];
+                mypicstock[mypic[0]][3]=bMemory[2];
+                fieldReDrawFlg=1;}}
+    }
 }
 
 function hitorder(){//先攻後攻決め: floor(素早さ*(乱数0.95-1.05))
@@ -343,13 +350,10 @@ function lateEnemyAttack(){
         if(firstSt[2] == 0){//HP=0
             if(!attackorder){//敵が死んだので勝利
                 oneMoveFlg=true;
-            } else if(mypicstock[mypic[0]][2]==0&&mypicstock[mypic[1]][2]==0&&mypicstock[mypic[2]][2]==0&&mypicstock[mypic[3]][2]==0&&mypicstock[mypic[4]][2]==0&&mypicstock[mypic[5]][2]==0){
+            } else if(mypicstock[mypic[0]][2]==0&&mypicstock[mypic[Math.min(1,mypic.length-1)]][2]==0&&mypicstock[mypic[Math.min(2,mypic.length-1)]][2]==0&&mypicstock[mypic[Math.min(3,mypic.length-1)]][2]==0&&mypicstock[mypic[Math.min(4,mypic.length-1)]][2]==0&&mypicstock[mypic[Math.min(5,mypic.length-1)]][2]==0){
                 //味方6体全員死んだ場合
-                //"戦える手持ちのマイピクはいない!","は意識が遠のき倒れてしまった。"
-                //gameover,loopend
                 gameoverFlg=true;
             } else{ //生存残りマイピクがいる
-                //マイピクchangeを実行,後攻はない
                 unFightFlg=true;
             }
         }

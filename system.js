@@ -87,6 +87,7 @@ function changeLevel(chgLev,Num){
     @return 0 
     */
    mypicstock[mypic[Num]][12]+=1;
+   
    //ステータスアップの処理をここに追加
    popupMsg.push([mypicstock[mypic[Num]][0] + "のレベルが" + mypicstock[mypic[Num]][12] +"になった！",120,0,0,Num]);
 }

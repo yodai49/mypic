@@ -20,8 +20,12 @@ function titleMain() {
        if (i % 4 == 1) titleAniX=-1;
        if (i % 4 == 2) titleAniY=1;
        if (i % 4 == 3) titleAniY=-1;
-       let param=30
+       let param=30;
        let t=3*(titleAni-i*param)%1000;
+       if ((titleAni*3)%1000 < 700){
+       } else{
+        t=3*(titleAni-param*(gameTitle.length+1.2))%1000;
+       }
        titleAniY=-0.16*(Math.max(0,-t*t+t*param)+Math.max(0,(-(t-param)*(t-param)+(t-param)*param)/2)+Math.max(0,(-(t-2*param)*(t-2*param)+(t-2*param)*param)/4));
        let drawX=width/2+(i-gameTitle.length/2)*80,drawY=height/2+titleAniY;
         ctx2d.fillText(gameTitle.substr(i,1),drawX,drawY);

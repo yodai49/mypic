@@ -9,7 +9,7 @@ var menuSelectNum=0,menuSelectFlg=0;
 var menuSelectChildNum=0,menuWindowChildAni=0,itemsScroll=0;
 var menuMypicDetailAni=0,menuSortMypicNum=-1;
 var imgCnt=0,loadedimgCnt=0,warpAni=0;
-var fieldReDrawFlg=0,warpFlg=0,nowWarpObj,eventflgs=[];
+var fieldReDrawFlg=0,warpFlg=0,nowWarpObj,eventflgs=[],itemflgs=[];
 var menuMypicDetailposX=200,menuMypicDetailposY=100,menuzflg=0,happenedEvent=0;
 var eventWindowAni=0,eventWindowKind=0,stockMypicScroll=0,stockMypicSelectNum=0,stockMypicChgWindow=0,stockMypicChgNum=0,eventProcreateStep=0;
 var tempEggList=[],eventEggScroll=0,eventEggAni=0,procdrawMypicMode=0;
@@ -249,6 +249,14 @@ function checkConflict(dir){
             }
         }
     }
+    for(let i = 0;i < itemobj[myposworld].length;i++){
+        itemflgs[i]=0;
+        if (itemobj[myposworld][i][0] < myposx+charasize && itemobj[myposworld][i][0] + itemobj[myposworld][i][2] > myposx){
+            if (itemobj[myposworld][i][1] < myposy+charasize && itemobj[myposworld][i][1] + itemobj[myposworld][i][3] > myposy){
+                itemflgs[i]=1;
+            }
+        }
+    }
     var tempColision = 0;
     for(let j = 0;j < 10;j++){
         tempColision = 1;
@@ -364,8 +372,15 @@ function fieldMain() {
     @return なし
     */
     if (fieldReDrawFlg && loadedimgCnt==imgCnt) {
-        field2d.clearRect(0,0,width,height),field2d.drawImage(fieldcanvas,0,0,width,height,0,0,width,height),fieldReDrawFlg=0, checkConflict(0);
-        //背景の描画
+        field2d.clearRect(0,0,width,height),field2d.drawImage(fieldcanvas,0,0,width,height,0,0,width,height),fieldReDrawFlg=0, checkConflict(0);//背景の描画
+        //アイテムの描画
+        for(let i = 0;i < fieldItemStatus[myposworld].length;i++){
+            if(fieldItemStatus[myposworld][i][5]){
+                const itemimg=new Image();
+                itemimg.src="./imgs/item.png";
+                itemimg.onload=function(){field2d.drawImage(itemimg,fieldItemStatus[myposworld][i][0],fieldItemStatus[myposworld][i][1],fieldItemStatus[myposworld][i][2],fieldItemStatus[myposworld][i][3])}    
+            }
+        }
     }
     ctx2d.drawImage(characanvas,pre_charasize*Math.floor(walkanimation/15),pre_charasize*walkdir,pre_charasize,pre_charasize,myposx,myposy,charasize,charasize); //キャラクターの描画
     if (happenedEvent){
@@ -374,6 +389,21 @@ function fieldMain() {
         }
         happenedEvent=1-happenedEvent;
     }
+
+    ////////////////////////////////////////////////////////////////デバッグモード
+    if(debugMode%2){ //デバッグモード 1が立っていたらワープを表示
+        for(let i = 0;i < fieldwarpobj[myposworld].length;i++){
+            field2d.fillStyle="rgba(255,0,0,0.3)";
+            field2d.fillRect(fieldwarpobj[myposworld][i][0],fieldwarpobj[myposworld][i][1],fieldwarpobj[myposworld][i][2],fieldwarpobj[myposworld][i][3]);
+        }    
+    }
+    if (Math.floor(debugMode/2)%2){
+        for(let i = 0;i < eventobj[myposworld].length;i++){
+            field2d.fillStyle="rgba(0,255,0,0.3)";
+            field2d.fillRect(eventobj[myposworld][i][0],eventobj[myposworld][i][1],eventobj[myposworld][i][2],eventobj[myposworld][i][3]);
+        }
+    }
+
     ////////////////////////////////////////////////////////キー入力等処理
     if (eventWindowAni){ //イベントウィンドウが表示されている時
         if (eventWindowKind==1){ //整理イベント
@@ -698,6 +728,15 @@ function fieldMain() {
         if (zkey && !selectTitleFlg&& !eventMessageWindow) { //アクションキー
             for(var i = 0; i < eventobj[myposworld].length;i++){
                 if (eventflgs[i] && !happenedEvent) trigEvent(eventobj[myposworld][i][4],eventobj[myposworld][i]);
+            }
+            for(var i = 0;i < itemobj[myposworld].length;i++){
+                if (itemflgs[i] && !menuSelectFlg && fieldItemStatus[myposworld][i][5]){
+                    popupMsg.push([itemdata[fieldItemStatus[myposworld][i][4]][0]+"をゲットした！",120,0,0,-1]);
+                    fieldItemStatus[myposworld][i][5]--;
+                    getItem(fieldItemStatus[myposworld][i][4]);
+                    fieldReDrawFlg=1;
+                    console.log(fieldItemStatus);
+                }
             }
         }
         if (zkey && eventWindowAni && !menuSelectFlg) eventWindowAni++;
@@ -1025,8 +1064,8 @@ function fieldMain() {
                 eventMessageWindow++;
             }
             ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-            ctx2d.font="16pt " + mainfontName;
             ctx2d.fillRect((width-400)/2,height/2-100,400,200);
+            ctx2d.font="16pt " + mainfontName;
             ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
             ctx2d.fillText(eventMessageWindowMsg.substr(1),(width-350)/2,height/2-65);    
             ctx2d.font="12pt " + mainfontName;
@@ -1044,6 +1083,10 @@ function fieldMain() {
             ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
             ctx2d.font="16pt " + mainfontName;
             ctx2d.fillRect(width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2,height/2-50,(40+ctx2d.measureText(eventMessageWindowMsg).width),100);
+            ctx2d.strokeStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+            ctx2d.lineWidth=1;
+            ctx2d.strokeRect(width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2,height/2-50,(40+ctx2d.measureText(eventMessageWindowMsg).width)-4,100-4);
+            ctx2d.strokeRect(width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2+4,height/2-50+4,(40+ctx2d.measureText(eventMessageWindowMsg).width)-4,100-4);
             ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
             ctx2d.fillText(eventMessageWindowMsg,(width-ctx2d.measureText(eventMessageWindowMsg).width)/2,height/2+5);    
         }
@@ -1068,19 +1111,5 @@ function fieldMain() {
         warpFlg=0;
     } else if(warpAni==20){ //ワープアニメーション終了時
         warpAni=0;
-    }
-
-    ////////////////////////////////////////////////////////////////デバッグモード
-    if(debugMode%2){ //デバッグモード 1が立っていたらワープを表示
-        for(let i = 0;i < fieldwarpobj[myposworld].length;i++){
-            ctx2d.fillStyle="rgba(255,0,0,0.3)";
-            ctx2d.fillRect(fieldwarpobj[myposworld][i][0],fieldwarpobj[myposworld][i][1],fieldwarpobj[myposworld][i][2],fieldwarpobj[myposworld][i][3]);
-        }    
-    }
-    if (Math.floor(debugMode/2)%2){
-        for(let i = 0;i < eventobj[myposworld].length;i++){
-            ctx2d.fillStyle="rgba(0,255,0,0.3)";
-            ctx2d.fillRect(eventobj[myposworld][i][0],eventobj[myposworld][i][1],eventobj[myposworld][i][2],eventobj[myposworld][i][3]);
-        }    
     }
 }

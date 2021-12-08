@@ -1098,7 +1098,7 @@ function fieldMain() {
                 } else if (items[menuSelectChildNum][0] == 17){
                     changeEXP(500,eventMessageSelectNum);
                 } else if(items[menuSelectChildNum][0] ==18){
-                    changeEXP(1000,eventMessageSelectNum);
+                    changeEXP(9000,eventMessageSelectNum);
                 }
                 if(!notConsume){
                     consumeItem(menuSelectChildNum);

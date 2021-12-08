@@ -85,19 +85,21 @@ function changeLevel(chgLev,Num){
     @param  chgLev - - - 上がった後のレベルを格納
             Num     - - - - 何番目に適用するかを指定
     @return 0 
-    */ //ステータスアップの処理をここに追加
-   mypicstock[mypic[Num]][3]+=(2+(Math.pow(mypicstock[mypic[Num]][3],1.05)- mypicstock[mypic[Num]][3])+Math.floor(Math.random()*5));
-   mypicstock[mypic[Num]][5]+=(2+(Math.pow(mypicstock[mypic[Num]][5],1.05)- mypicstock[mypic[Num]][5])+Math.floor(Math.random()*5));
-   mypicstock[mypic[Num]][6]+=(2+(Math.pow(mypicstock[mypic[Num]][6],1.05)- mypicstock[mypic[Num]][6])+Math.floor(Math.random()*5));
-   mypicstock[mypic[Num]][7]+=(2+(Math.pow(mypicstock[mypic[Num]][7],1.05)- mypicstock[mypic[Num]][7])+Math.floor(Math.random()*5));
-   mypicstock[mypic[Num]][9]+=(2+(Math.pow(mypicstock[mypic[Num]][9],1.05)- mypicstock[mypic[Num]][9])+Math.floor(Math.random()*5));
+    */
+   mypicstock[mypic[Num]][12]=Math.min(chgLev,99);
+   mypicstock[mypic[Num]][3]+=(1+(Math.pow(mypicstock[mypic[Num]][3],1.004)- mypicstock[mypic[Num]][3])+Math.floor(Math.random()*2.2));
+   mypicstock[mypic[Num]][5]+=(1+(Math.pow(mypicstock[mypic[Num]][5],1.004)- mypicstock[mypic[Num]][5])+Math.floor(Math.random()*2.2));
+   mypicstock[mypic[Num]][6]+=(1+(Math.pow(mypicstock[mypic[Num]][6],1.004)- mypicstock[mypic[Num]][6])+Math.floor(Math.random()*2.2));
+   mypicstock[mypic[Num]][7]+=(1+(Math.pow(mypicstock[mypic[Num]][7],1.004)- mypicstock[mypic[Num]][7])+Math.floor(Math.random()*2.2));
+   mypicstock[mypic[Num]][9]=Math.min(10,mypicstock[mypic[Num]][9]+Math.floor(Math.random()*1.08));
    mypicstock[mypic[Num]][10]=Math.min(200,mypicstock[mypic[Num]][10]+Math.floor(Math.random()*2)+1);
-   mypicstock[mypic[Num]][12]=Math.min(10,mypicstock[mypic[Num]][12]+Math.floor(Math.random()*1.08));
-   mypicstock[mypic[Num]][3]=Math.min(999,mypicstock[mypic[Num]][3]);
-   mypicstock[mypic[Num]][5]=Math.min(999,mypicstock[mypic[Num]][5]);
-   mypicstock[mypic[Num]][6]=Math.min(999,mypicstock[mypic[Num]][6]);
-   mypicstock[mypic[Num]][7]=Math.min(999,mypicstock[mypic[Num]][7]);
-   mypicstock[mypic[Num]][9]=Math.min(999,mypicstock[mypic[Num]][9]);
+   mypicstock[mypic[Num]][3]=Math.floor(Math.min(999,mypicstock[mypic[Num]][3]));
+   mypicstock[mypic[Num]][5]=Math.floor(Math.min(999,mypicstock[mypic[Num]][5]));
+   mypicstock[mypic[Num]][6]=Math.floor(Math.min(999,mypicstock[mypic[Num]][6]));
+   mypicstock[mypic[Num]][7]=Math.floor(Math.min(999,mypicstock[mypic[Num]][7]));
+   mypicstock[mypic[Num]][9]=Math.floor(Math.min(999,mypicstock[mypic[Num]][9]));
+   mypicstock[mypic[Num]][10]=Math.floor(Math.min(999,mypicstock[mypic[Num]][10]));
+   //ステータスアップの処理をここに追加
    popupMsg.push([mypicstock[mypic[Num]][0] + "のレベルが" + mypicstock[mypic[Num]][12] +"になった！",120,0,0,Num]);
 }
 
@@ -112,8 +114,10 @@ function changeEXP(chgAmount,Num){
     if (nextLevExp <= Math.min(99999,mypicstock[mypic[Num]][13]+chgAmount)){ //レベルアップありのとき
         let tmpExp=Math.min(99999,mypicstock[mypic[Num]][13]+chgAmount)-nextLevExp;
         mypicstock[mypic[Num]][13]=nextLevExp;
-        changeLevel(mypicstock[mypic[Num]][12]+1,Num);
-        changeEXP(tmpExp,Num);
+        if (mypicstock[mypic[Num]][12] != 99){
+            changeLevel(mypicstock[mypic[Num]][12]+1,Num);
+            changeEXP(tmpExp,Num);    
+        }
     }else{
         mypicstock[mypic[Num]][13]=Math.min(99999,mypicstock[mypic[Num]][13]+chgAmount);
     }

@@ -132,35 +132,42 @@ function battleloop(){
         const messageImg=new Image();//メッセージウィンドウ
         messageImg.src="./imgs/messageWindow.png";
         messageImg.onload=function(){
-            field2d.drawImage(messageImg,0,0,800,200,width*21/100,height*62/100,width*58/100,height*37/100)
+            field2d.drawImage(messageImg,0,0,800,200,width*21/100,height*62/100,width*58/100,height*38/100);
         }; 
         fieldReDrawFlg=0;
     }
 
 
     if(battleMode==1){
-        ctx2d.font="28px "+mainfontName;
-        ctx2d.fillText("たたかう", width*29/100,height*73/100);
-        ctx2d.fillText("アイテム", width*29/100,height*80/100);
-        ctx2d.fillText("マイピク", width*29/100,height*87/100);
-        ctx2d.fillText("にげる", width*29/100,height*94/100);
+        ctx2d.font="27px "+mainfontName;
+        ctx2d.fillText("たたかう", width*28.5/100,height*75/100);
+        ctx2d.fillText("アイテム", width*28.5/100,height*81/100);
+        ctx2d.fillText("マイピク", width*28.5/100,height*87/100);
+        ctx2d.fillText("にげる", width*28.5/100,height*93/100);
 
         if(loopmode==0){
-            make_pointer(width*27/100,height*(71+7*loopselect)/100,width*25/100,height*(69+7*loopselect)/100,width*25/100,height*(73+7*loopselect)/100);
+            make_pointer(width*27/100,height*(73+6*loopselect)/100,width*25/100,height*(71+6*loopselect)/100,width*25/100,height*(75+6*loopselect)/100);
         }
 
         if(loopmode==1){
-            ctx2d.fillText(skillData[mypicstock[mypic[0]][8][0]][0], width*55/100,height*73/100);
-            ctx2d.fillText(skillData[mypicstock[mypic[0]][8][1]][0], width*55/100,height*80/100);
-            ctx2d.fillText(skillData[mypicstock[mypic[0]][8][2]][0], width*55/100,height*87/100);
-            ctx2d.fillText(skillData[mypicstock[mypic[0]][8][3]][0], width*55/100,height*94/100);
+            for(let i=0; i<4; i++){
+                ctx2d.fillText(skillData[mypicstock[mypic[0]][8][i]][0], width*55/100,height*(73+7*i)/100);
+            }
             make_pointer(width*52/100,height*(71+7*loopselect)/100,width*50/100,height*(69+7*loopselect)/100,width*50/100,height*(73+7*loopselect)/100);}
             
-        else if(loopmode==2){
-            //バッグの表示
-            ctx2d.font="20px "+mainfontName;
-            itemBaseBattle
-        }
+        else if(loopmode==2){//バッグの表示
+            //loopselect: ポインタが指すアイテムの要素番号
+            //BtopItem: 表示するアイテムの一番上の要素番号
+            if(BitemErrorFlg){//errorメッセージ表示
+                popupMsg.push(["ここでは使えないよ!",120,0,0,-1]);
+                BitemErrorFlg=false;}
+            ctx2d.font="18px "+mainfontName;
+            for (let i=0; i < 5; i++){
+                ctx2d.fillText(itemdata[items[BtopItem+i][0]][0], width*46/100,height*(73+(i*5))/100);
+                ctx2d.fillText("×"+items[BtopItem+i][1], width*71/100,height*(73+(i*5))/100);}
+            make_pointer(width*45/100,height*(72+5*(loopselect-BtopItem))/100,width*43/100,height*(70+5*(loopselect-BtopItem))/100,width*43/100,height*(74+5*(loopselect-BtopItem))/100);
+            }
+            
         else if(loopmode==3){
             //マイピク情報
             ctx2d.font="20px "+mainfontName;
@@ -168,6 +175,13 @@ function battleloop(){
             for (let i=0; i < mypic.length; i++){
             ctx2d.fillText(mypicstock[mypic[i]][0], width*(47+17*Math.max(0,Math.ceil((i-2)/3)))/100,height*(81+6*(i%3))/100);}
             make_pointer(width*(46+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(79.5+6*(loopselect%3))/100,width*(44+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(77.5+6*(loopselect%3))/100,width*(44+17*Math.max(0,Math.ceil((loopselect-2)/3)))/100,height*(81.5+6*(loopselect%3))/100);
+        }
+        else if(loopmode==4){
+            ctx2d.font="20px "+mainfontName;
+            ctx2d.fillText("誰に使用する？", width*53/100,height*74/100);
+            for (let i=0; i < mypic.length; i++){
+            ctx2d.fillText(mypicstock[mypic[i]][0], width*(47+17*Math.max(0,Math.ceil((i-2)/3)))/100,height*(81+6*(i%3))/100);}
+            make_pointer(width*(46+17*Math.max(0,Math.ceil((BwhoUse-2)/3)))/100,height*(79.5+6*(BwhoUse%3))/100,width*(44+17*Math.max(0,Math.ceil((BwhoUse-2)/3)))/100,height*(77.5+6*(BwhoUse%3))/100,width*(44+17*Math.max(0,Math.ceil((BwhoUse-2)/3)))/100,height*(81.5+6*(BwhoUse%3))/100);
         }
     }
     
@@ -192,7 +206,23 @@ function battleloop(){
         //戦闘終了か判定
         //false->選択画面に
     }
-    else if(battleMode==4){
+    else if(battleMode==3){//アイテム
+        ctx2d.font="28px "+mainfontName;
+        switch (itemCount){
+            case 0:
+                ctx2d.fillText(itemdata[items[loopselect][0]][0]+"をつかった!", width*30/100,height*73/100);
+                break;
+            case 1:
+                ctx2d.fillText(baseEnemyData[0]+"の"+skillData[baseEnemyData[8][2]][0]+"!", width*30/100,height*73/100);
+                break;
+            case 2:
+                if(attackMiss){
+                    ctx2d.fillText(secondSkill[2]+"は当たらなかった...", width*30/100,height*73/100);}
+                else ctx2d.fillText(firstSt[0]+"に"+damage+"のダメージ!", width*30/100,height*73/100);
+                break;
+            }
+    }
+    else if(battleMode==4){//マイピク交代
         ctx2d.font="28px "+mainfontName;
         switch (chgCount){
             case 0:

@@ -128,7 +128,7 @@ function procreateProcess(){ //卵の孵化処理
             neweggData[2],neweggData[2],neweggData[3],neweggData[3],
             neweggData[4],neweggData[5],neweggData[6],
             neweggData[7],neweggData[8],Math.floor(Math.random()*specialAvilityText.length),1,0,
-            4,neweggData[10],neweggData[11]]
+            [],neweggData[10],neweggData[11]]
     );
 }
 function clickEveDraw(x,y){ //クリックイベント
@@ -1098,7 +1098,7 @@ function fieldMain() {
                 } else if (items[menuSelectChildNum][0] == 17){
                     changeEXP(500,eventMessageSelectNum);
                 } else if(items[menuSelectChildNum][0] ==18){
-                    changeEXP(9000,eventMessageSelectNum);
+                    changeEXP(1000,eventMessageSelectNum);
                 }
                 if(!notConsume){
                     consumeItem(menuSelectChildNum);

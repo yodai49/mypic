@@ -13,7 +13,7 @@ var itemCount=0;
 var attackMiss=false;
 var baseEnemyData;
 var oneMoveFlg=false;//1回だけ作動させたい時に使う
-var BitemErrorFlg=false;
+var BerrorFlg=false;
 var BtopItem=0;
 var BwhoUse=0;//アイテムを誰に使用するか
 var moneyUpFlg=false;//金運の知らせ使用
@@ -43,13 +43,14 @@ function battleMain() {
             } else if(loopmode==1) {//技実行
                 battleMode=2, Acount=0, Acheck=true;
             } else if(loopmode==2){//アイテム選択
-                if(!itemdata[loopselect][2] || moneyUpFlg)BitemErrorFlg=true;
+                if(items[loopselect][0] == 11)battleMode=3, oneMoveFlg=true;
+                else if(!itemdata[loopselect][2] || moneyUpFlg)BerrorFlg=true;
                 else loopmode=4;
-            } else if(loopmode==4){battleMode=3, oneMoveFlg=true;;//誰に使用するか決める
-            } else if(loopmode==3 && loopselect!=0){//マイピク交代
-                battleMode=4;
+            } else if(loopmode==4){battleMode=3, oneMoveFlg=true;//誰に使用するか決める
+            } else if(loopmode==3){//マイピク交代
+                if(loopselect==0) BerrorFlg=true;
+                else battleMode=4;
             }
-        
         }
         else if(battleMode==2){Acheck=true;
             if(oneMoveFlg) battleMode=6;
@@ -58,7 +59,7 @@ function battleMain() {
         }
         else if(battleMode==3){
             if(itemCount==0 || itemCount==1)itemCount++, oneMoveFlg=true;
-            else if(itemCount==2)battleMode=1, itemCount=0, loopmode=0, loopselect=0;
+            else if(itemCount==2)battleMode=1, itemCount=0, loopmode=0, loopselect=0, BtopItem=0;;
         }
         else if(battleMode==4){
             if(chgCount==0 || chgCount==1)chgCount++, oneMoveFlg=true;
@@ -178,7 +179,6 @@ function battleMain() {
         }
         else{
             //攻撃が外れた
-            console.log("miss");
             attackMiss=true;
         }}
         if(Acount==99)battleMode=1, Acount=0, loopmode=0,loopselect=0;//行動選択に戻る
@@ -250,7 +250,7 @@ function battleMain() {
     else if(battleMode==6){//勝利
         if(!oneMoveFlg){//onemoveflgでwinmessageが読み込まれるのを待ってから実行
             if(in_lstnum == winMessage.length){ //勝利後、フィールドに戻る時の処理はここに追加
-                mode=1, battleMode=0, loopmode=0, loopselect=0, lstnum=0,in_lstnum=0;
+                nextMode=1, modeAnimation=1, battleMode=0, loopmode=0, loopselect=0, lstnum=0,in_lstnum=0;
                 fieldReDrawFlg=1;}}
     }
     if(battleMode==7){}//敗北

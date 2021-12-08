@@ -11,6 +11,8 @@ function saveData(){
     localStorage.setItem("mypic",jsonOb);
     jsonOb=JSON.stringify(mypicstock,undefined,1);
     localStorage.setItem("mypicstock",jsonOb);
+    jsonOb=JSON.stringify(fieldItemStatus,undefined,1);
+    localStorage.setItem("fieldItemStatus",jsonOb);
 }
 
 function loadData(){
@@ -22,6 +24,7 @@ function loadData(){
     items=JSON.parse(localStorage.getItem("items"));
     mypic=JSON.parse(localStorage.getItem("mypic"));
     mypicstock=JSON.parse(localStorage.getItem("mypicstock"));
+    fieldItemStatus=JSON.parse(localStorage.getItem("fieldItemStatus"));
 }
 
 function resetData(){
@@ -34,4 +37,5 @@ function resetData(){
         ["ああああああ",[[0,10,30,25,15],[0,25,15,40,30],[0,60,30,75,15],[0,75,15,90,30],[0,30,70,50,90],[0,50,90,70,70]],250,300,50,50,100,100,[4,20,30,9],5,100,3,2,120,4,0,0]
     ]
     myposx=homposx,myposy=homposy,myposworld=homposworld,money=10000;
+    fieldItemStatus=itemobj;
 }

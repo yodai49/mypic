@@ -364,8 +364,15 @@ function fieldMain() {
     @return なし
     */
     if (fieldReDrawFlg && loadedimgCnt==imgCnt) {
-        field2d.clearRect(0,0,width,height),field2d.drawImage(fieldcanvas,0,0,width,height,0,0,width,height),fieldReDrawFlg=0, checkConflict(0);
-        //背景の描画
+        field2d.clearRect(0,0,width,height),field2d.drawImage(fieldcanvas,0,0,width,height,0,0,width,height),fieldReDrawFlg=0, checkConflict(0);//背景の描画
+        //アイテムの描画
+        for(let i = 0;i < fieldItemStatus[myposworld].length;i++){
+            if(fieldItemStatus[myposworld][i][5]){
+                const itemimg=new Image();
+                itemimg.src="./imgs/item.png";
+                itemimg.onload=function(){field2d.drawImage(itemimg,fieldItemStatus[myposworld][i][0],fieldItemStatus[myposworld][i][1],fieldItemStatus[myposworld][i][2],fieldItemStatus[myposworld][i][3])}    
+            }
+        }
     }
     ctx2d.drawImage(characanvas,pre_charasize*Math.floor(walkanimation/15),pre_charasize*walkdir,pre_charasize,pre_charasize,myposx,myposy,charasize,charasize); //キャラクターの描画
     if (happenedEvent){
@@ -374,6 +381,21 @@ function fieldMain() {
         }
         happenedEvent=1-happenedEvent;
     }
+
+    ////////////////////////////////////////////////////////////////デバッグモード
+    if(debugMode%2){ //デバッグモード 1が立っていたらワープを表示
+        for(let i = 0;i < fieldwarpobj[myposworld].length;i++){
+            ctx2d.fillStyle="rgba(255,0,0,0.3)";
+            ctx2d.fillRect(fieldwarpobj[myposworld][i][0],fieldwarpobj[myposworld][i][1],fieldwarpobj[myposworld][i][2],fieldwarpobj[myposworld][i][3]);
+        }    
+    }
+    if (Math.floor(debugMode/2)%2){
+        for(let i = 0;i < eventobj[myposworld].length;i++){
+            ctx2d.fillStyle="rgba(0,255,0,0.3)";
+            ctx2d.fillRect(eventobj[myposworld][i][0],eventobj[myposworld][i][1],eventobj[myposworld][i][2],eventobj[myposworld][i][3]);
+        }
+    }
+
     ////////////////////////////////////////////////////////キー入力等処理
     if (eventWindowAni){ //イベントウィンドウが表示されている時
         if (eventWindowKind==1){ //整理イベント
@@ -1072,19 +1094,5 @@ function fieldMain() {
         warpFlg=0;
     } else if(warpAni==20){ //ワープアニメーション終了時
         warpAni=0;
-    }
-
-    ////////////////////////////////////////////////////////////////デバッグモード
-    if(debugMode%2){ //デバッグモード 1が立っていたらワープを表示
-        for(let i = 0;i < fieldwarpobj[myposworld].length;i++){
-            ctx2d.fillStyle="rgba(255,0,0,0.3)";
-            ctx2d.fillRect(fieldwarpobj[myposworld][i][0],fieldwarpobj[myposworld][i][1],fieldwarpobj[myposworld][i][2],fieldwarpobj[myposworld][i][3]);
-        }    
-    }
-    if (Math.floor(debugMode/2)%2){
-        for(let i = 0;i < eventobj[myposworld].length;i++){
-            ctx2d.fillStyle="rgba(0,255,0,0.3)";
-            ctx2d.fillRect(eventobj[myposworld][i][0],eventobj[myposworld][i][1],eventobj[myposworld][i][2],eventobj[myposworld][i][3]);
-        }    
     }
 }

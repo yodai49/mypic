@@ -1,12 +1,10 @@
 const questionMess = ["おはよう", "Q: 今日は冒険する？　　　はい　　　いいえ", ["冒険に出かけるぞ"], ["今日は家でゆっくりしよう", "おやすみなさい"], "一日が終了した。"];
 const talkMess = ["こんにちは","あなたの名前を入力してください。","設定が完了しました。","ゲームをお楽しみください!!"]
 const Message=[questionMess, talkMess];
-var topmypic = "ディアルガ";
 var introMessage = ["", ""];
 var endMess2 = [""];
 var BattleMessage = [introMessage, endMess2];
-var winMessage;
-
+var winMessage, loseMessage;
 var InBattleMessage = ["敵に１５のダメージ！", "敵の攻撃Z", "自分に３０のダメージ"];
 var onMessage=true;
 var Messagenum=1;//0:field, 1:battle
@@ -306,7 +304,12 @@ function battleloop(){
     }
 
     else if(battleMode==8){//敗北message
-
+        if(oneMoveFlg){
+            loseMessage = [mypicstock[mypic[0]][0]+" は倒れた。","戦える手持ちのマイピクがいない!!","突然意識が遠のき倒れてしまった..."];
+            oneMoveFlg=false;}
+        ctx2d.fillStyle=white;
+        ctx2d.font="26px "+mainfontName;
+        ctx2d.fillText(loseMessage[in_lstnum], width*25/100,height*75/100);
     }
 }
 

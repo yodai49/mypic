@@ -664,8 +664,8 @@ function fieldMain() {
             if(upkey && eventShopSelectNum && !(eventWindowAni-menuWindowAniSpeed) && !menuSelectFlg) eventShopSelectNum--,menuSelectFlg=1;
             if(downkey && eventShopSelectNum != nowShopData.length-1&& !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg) eventShopSelectNum++,menuSelectFlg=1;
             if(zkey && !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow) {
-                if (money >= itemdata[nowShopData[eventShopSelectNum][0]][1]){
-                    money-=itemdata[nowShopData[eventShopSelectNum][0]][1];
+                if (money >= nowShopData[eventShopSelectNum][1]){
+                    money-=nowShopData[eventShopSelectNum][1];
                     getItem(nowShopData[eventShopSelectNum][0]);
                     eventMessageWindow=1;
                     eventMessageWindowMsg=itemdata[nowShopData[eventShopSelectNum][0]][0]+"を買った！";

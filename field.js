@@ -24,6 +24,7 @@ var eventMessageWindow=0,eventMessageWindowMsg="",eventMessageSelectNum=0,procre
 var encount_down=0,encount_down_cnt=0;
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
+    if (mypic.length<=drawMypicNum) return 0;
     if (mode==1){
         for(var i = 0;i < drawMypicTempObj.length;i++){
             ctx2d.strokeStyle="rgba(255,255,255,"+trans+")";

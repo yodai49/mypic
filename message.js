@@ -2,16 +2,15 @@ const questionMess = ["おはよう", "Q: 今日は冒険する？　　　は�
 const talkMess = ["こんにちは","あなたの名前を入力してください。","設定が完了しました。","ゲームをお楽しみください!!"]
 const Message=[questionMess, talkMess];
 var topmypic = "ディアルガ";
+var introMessage = ["", ""];
+var endMess2 = [""];
+var BattleMessage = [introMessage, endMess2];
 var winMessage;
-const introMessage = ["野生のモンスターAが現れた！", "勝負だ! マイピクX!"];
-const endMess2 = [topmypic+"は逃げた。"];
-const BattleMessage = [introMessage, endMess2];
 
 var InBattleMessage = ["敵に１５のダメージ！", "敵の攻撃Z", "自分に３０のダメージ"];
-
 var onMessage=true;
 var Messagenum=1;//0:field, 1:battle
-
+var Bsetcheck=true;
 var messChoice=0;//選択肢シーンでの分岐判定
 var messCheck=false;
 var Choicenum=0;
@@ -23,7 +22,7 @@ function messageMain(){
         if(mode==1){
         /*
         ctx2d.fillStyle=white;
-        ctx2d.font="28px san-serif";
+        ctx2d.font="26px san-serif";
         //textの表示
         if(messCheck){
             ctx2d.fillText(Message[lstnum][in_lstnum][Choicenum], 300,500);
@@ -79,8 +78,12 @@ function messageMain(){
 function battlemessMain(){
     if(battleMode==0){//intro,end
         ctx2d.fillStyle=white;
-        ctx2d.font="28px "+mainfontName;
-        if(!modeAnimation) ctx2d.fillText(introMessage[in_lstnum], width*25/100,height*74/100);
+        ctx2d.font="26px "+mainfontName;
+        if(Bsetcheck){
+            introMessage[0]="野生の"+enemyData[0][0]+"が現れた！";
+            introMessage[1]="勝負だ, "+mypicstock[mypic[0]][0]+"!";
+            endMess2[0]=mypicstock[mypic[0]][0]+"は逃げた。";}
+        if(!modeAnimation) ctx2d.fillText(introMessage[in_lstnum], width*25/100,height*75/100);
         if (battleLaunchFlg){ /////バトル開始時の処理　ここにまとめる
             fieldReDrawFlg=1,battleLaunchFlg=0;
         }
@@ -97,7 +100,7 @@ function battlemessMain(){
 }
 
 function battleloop(){
-    ctx2d.font="28px "+mainfontName;
+    ctx2d.font="26px "+mainfontName;
     //味方ステータス表示
     ctx2d.fillStyle=darkgray;
     ctx2d.fillRect(width*4/100,height*68/100,35,35);
@@ -139,7 +142,7 @@ function battleloop(){
 
 
     if(battleMode==1){
-        ctx2d.font="27px "+mainfontName;
+        ctx2d.font="25px "+mainfontName;
         ctx2d.fillText("たたかう", width*28.5/100,height*75/100);
         ctx2d.fillText("アイテム", width*28.5/100,height*81/100);
         ctx2d.fillText("マイピク", width*28.5/100,height*87/100);
@@ -151,16 +154,19 @@ function battleloop(){
 
         if(loopmode==1){
             for(let i=0; i<4; i++){
-                ctx2d.fillText(skillData[mypicstock[mypic[0]][8][i]][0], width*55/100,height*(73+7*i)/100);
+                ctx2d.font="25px "+mainfontName;
+                ctx2d.fillText(skillData[mypicstock[mypic[0]][8][i]][0], width*47/100,height*(75+6*i)/100);
+                ctx2d.font="17px "+mainfontName;
+                ctx2d.fillText("MP:"+skillData[mypicstock[mypic[0]][8][i]][4], width*70/100,height*(74+6*i)/100);
             }
-            make_pointer(width*52/100,height*(71+7*loopselect)/100,width*50/100,height*(69+7*loopselect)/100,width*50/100,height*(73+7*loopselect)/100);}
+            make_pointer(width*45/100,height*(73+6*loopselect)/100,width*43/100,height*(71+6*loopselect)/100,width*43/100,height*(75+6*loopselect)/100);}
             
         else if(loopmode==2){//バッグの表示
             //loopselect: ポインタが指すアイテムの要素番号
             //BtopItem: 表示するアイテムの一番上の要素番号
-            if(BitemErrorFlg){//errorメッセージ表示
+            if(BerrorFlg){//errorメッセージ表示
                 popupMsg.push(["ここでは使えないよ!",120,0,0,-1]);
-                BitemErrorFlg=false;}
+                BerrorFlg=false;}
             ctx2d.font="18px "+mainfontName;
             for (let i=0; i < 5; i++){
                 ctx2d.fillText(itemdata[items[BtopItem+i][0]][0], width*46/100,height*(73+(i*5))/100);
@@ -170,6 +176,9 @@ function battleloop(){
             
         else if(loopmode==3){
             //マイピク情報
+            if(BerrorFlg){//errorメッセージ表示
+                popupMsg.push(["ここでは使えないよ!",120,0,0,-1]);
+                BerrorFlg=false;}
             ctx2d.font="20px "+mainfontName;
             ctx2d.fillText("どのマイピクと交代する？", width*48/100,height*74/100);
             for (let i=0; i < mypic.length; i++){
@@ -186,77 +195,77 @@ function battleloop(){
     }
     
     else if(battleMode==2){//戦闘選択時の挙動
-        ctx2d.font="28px "+mainfontName;
+        ctx2d.font="26px "+mainfontName;
         if(attackMiss){
-            ctx2d.fillText(firstSkill[0]+"は当たらなかった...", width*30/100,height*73/100);
+            ctx2d.fillText(firstSkill[0]+"は当たらなかった...", width*25/100,height*75/100);
         }
         else{
         switch (Acount){
             case 1:
-                ctx2d.fillText(firstSt[0]+"の"+firstSkill[0]+"!", width*30/100,height*73/100);
+                ctx2d.fillText(firstSt[0]+" の "+firstSkill[0]+"!", width*25/100,height*75/100);
                 break;
             case 2:
-                ctx2d.fillText(secondSt[0]+"の"+secondSkill[0]+"!", width*30/100,height*73/100);
+                ctx2d.fillText(secondSt[0]+" の "+secondSkill[0]+"!", width*25/100,height*75/100);
                 break;
         }
         }
         //if(compspeed())判定
         //attackcount()で先攻の回数判定
-        //ctx2d.fillText(InBattleMessage[lstnum], width*45/100,height*73/100);
+        //ctx2d.fillText(InBattleMessage[lstnum], width*45/100,height*75/100);
         //戦闘終了か判定
         //false->選択画面に
     }
     else if(battleMode==3){//アイテム
-        ctx2d.font="28px "+mainfontName;
+        ctx2d.font="26px "+mainfontName;
         switch (itemCount){
             case 0:
-                ctx2d.fillText(itemdata[items[loopselect][0]][0]+"をつかった!", width*30/100,height*73/100);
+                ctx2d.fillText(itemdata[items[loopselect][0]][0]+"をつかった!", width*25/100,height*75/100);
                 break;
             case 1:
-                ctx2d.fillText(baseEnemyData[0]+"の"+skillData[baseEnemyData[8][2]][0]+"!", width*30/100,height*73/100);
+                ctx2d.fillText(baseEnemyData[0]+"の"+skillData[baseEnemyData[8][2]][0]+"!", width*25/100,height*75/100);
                 break;
             case 2:
                 if(attackMiss){
-                    ctx2d.fillText(secondSkill[2]+"は当たらなかった...", width*30/100,height*73/100);}
-                else ctx2d.fillText(firstSt[0]+"に"+damage+"のダメージ!", width*30/100,height*73/100);
+                    ctx2d.fillText(secondSkill[0]+"は当たらなかった...", width*25/100,height*75/100);}
+                else ctx2d.fillText(firstSt[0]+"に"+damage+"のダメージ!", width*25/100,height*75/100);
                 break;
             }
     }
     else if(battleMode==4){//マイピク交代
-        ctx2d.font="28px "+mainfontName;
+        ctx2d.font="26px "+mainfontName;
         switch (chgCount){
             case 0:
-                ctx2d.fillText(mypicstock[mypic[0]][0]+"交代だ!", width*30/100,height*73/100);
-                ctx2d.fillText("ゆけ "+mypicstock[mypic[loopselect]][0]+"!!", width*30/100,height*83/100);
+                ctx2d.fillText(mypicstock[mypic[0]][0]+"交代だ!",25/100,height*75/100);
+                ctx2d.fillText("ゆけ "+mypicstock[mypic[loopselect]][0]+"!!", width*25/100,height*83/100);
                 break;
             case 1:
-                ctx2d.fillText(baseEnemyData[0]+"の"+skillData[baseEnemyData[8][2]][0]+"!", width*30/100,height*73/100);
+                ctx2d.fillText(baseEnemyData[0]+"の"+skillData[baseEnemyData[8][2]][0]+"!", width*25/100,height*75/100);
                 break;
             case 2:
                 if(attackMiss){
-                    ctx2d.fillText(secondSkill[2]+"は当たらなかった...", width*30/100,height*73/100);}
-                else ctx2d.fillText(firstSt[0]+"に"+damage+"のダメージ!", width*30/100,height*73/100);
+                    ctx2d.fillText(secondSkill[0]+" は当たらなかった...", width*25/100,height*75/100);}
+                else ctx2d.fillText(firstSt[0]+"に"+damage+"のダメージ!", width*25/100,height*75/100);
                 break;
         }
     }
 
     else if(battleMode==5){//逃げるメッセージ
         if(!attackorder){
-            ctx2d.font="28px "+mainfontName;
-            ctx2d.fillText("敵が速くて逃げられない!", width*30/100,height*73/100);}
+            ctx2d.font="26px "+mainfontName;
+            ctx2d.fillText("敵が速くて逃げられない!",25/100,height*75/100);}
         else{
-            ctx2d.font="28px "+mainfontName;
-            ctx2d.fillText(mypicstock[mypic[0]][0]+"は逃げた", width*30/100,height*73/100);}
+            ctx2d.font="26px "+mainfontName;
+            ctx2d.fillText(mypicstock[mypic[0]][0]+" は逃げた", width*25/100,height*75/100);}
     }
 
     else if(battleMode==6){//勝利message
         if(oneMoveFlg){
-            winMessage = [enemyData[0][0]+"は倒れた。",mypicstock[mypic[0]][0]+"は勝負に勝った!",mypicstock[mypic[0]][0]+"は経験値500と1000マイルを獲得した。"];
+            winMessage = [enemyData[0][0]+" は倒れた。",mypicstock[mypic[0]][0]+" は勝負に勝った!","経験値500と1000マイルを手にいれた。"];
             oneMoveFlg=false;
         }
         ctx2d.fillStyle=white;
-        ctx2d.font="28px "+mainfontName;
-        ctx2d.fillText(winMessage[in_lstnum], width*25/100,height*74/100);
+        ctx2d.font="26px "+mainfontName;
+        ctx2d.fillText(winMessage[in_lstnum], width*25/100,height*75/100);
     }
 }
 

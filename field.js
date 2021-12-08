@@ -912,8 +912,8 @@ function fieldMain() {
                 ctx2d.font="20px "+mainfontName;
                 for(var i = 0;i < Math.min(10,items.length-itemsScroll);i++){
                     if (i != menuSelectChildNum-itemsScroll){
-                        ctx2d.fillText(itemdata[items[i+itemsScroll][0]][0],360,60+32*i);
-                        ctx2d.fillText("× " + items[i+itemsScroll][1],700,60+32*i);    
+                        ctx2d.fillText(itemdata[items[i+itemsScroll][0]][0],360,90+28*i);
+                        ctx2d.fillText("× " + items[i+itemsScroll][1],700,90+28*i);    
                     }
                 }
                 if (itemdata[items[menuSelectChildNum][0]][1]){
@@ -926,10 +926,12 @@ function fieldMain() {
                     ctx2d.fillStyle="rgba(155,155,155," + menuWindowTransChild*(Math.sin(globalTime/6)*0.3+0.7)+")";
                 }
                 ctx2d.font="20px "+mainfontName;
-                ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][0],360,60+32*(menuSelectChildNum-itemsScroll));
-                ctx2d.fillText("× " + items[menuSelectChildNum][1],700,60+32*(menuSelectChildNum-itemsScroll));
+                ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][0],360,90+28*(menuSelectChildNum-itemsScroll));
+                ctx2d.fillText("× " + items[menuSelectChildNum][1],700,90+28*(menuSelectChildNum-itemsScroll));
                 ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
                 ctx2d.fillRect(360,60+32*9.5,300,1);
+                ctx2d.font="16px "+mainfontName;
+                ctx2d.fillText("おかね："+ money + currencyName,750-ctx2d.measureText("おかね："+ money + currencyName).width,48);
                 ctx2d.font="16px "+mainfontName;
                 ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(0,25),360,60+32*10.3);
                 ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(25,25),360,60+32*11);

@@ -15,9 +15,10 @@ const modeChangeAniSpeed=30;
 var myposx=0,myposy=0, myposworld=0;//キャラクターの位置　x：横　y:縦　world:ワールド番号
 const fieldnum=5;//フィールドの数
 
-//描画系
+//描画系　コンフィグはここ
 const width = 960, height = 540; //ウィンドウのサイズ
 const mainfontName="Reggae One";
+const currencyName="マイル";
 var ctx2d; //メインキャンバス
 var field2d;//フィールドキャンバスのコンテキスト
 var spacekey=false, leftkey=false, upkey=false, rightkey=false, downkey=false;

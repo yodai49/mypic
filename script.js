@@ -7,6 +7,7 @@ var myPicWindow=0;//マイピク描画画面の表示非表示
 var menuWindow=0;//メニューウィンドウの表示非表示
 var shopWindow=0;//ショップウィンドウの表示非表示
 var globalTime=0;//タイム　1ループで1増える
+var isFirst=localStorage.getItem("xpos");//初回起動時かどうかを確認
 const modeChangeAniSpeed=30;
 
 //フィールド系
@@ -82,9 +83,12 @@ window.addEventListener('DOMContentLoaded', function(){ ///キー入力イベン
     });
 });
 
-var isFirst=localStorage.getItem("xpos");
 if (isFirst==undefined){//初回起動時だったら
+    isFirst=1;
     resetData();
+    selectTitleNum=0;
+} else {
+    isFirst=0;
 }
 
 //起動時の処理//

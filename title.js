@@ -1,4 +1,4 @@
-var selectTitleFlg=0,selectTitleNum=0;
+var selectTitleFlg=0,selectTitleNum=1;
 function titleMain() {
     /*　タイトル画面の描画関数
     @param なし
@@ -24,6 +24,7 @@ function titleMain() {
    }
    if (upkey && !selectTitleFlg) selectTitleNum=0,selectTitleFlg=1;
    if(downkey && !selectTitleFlg) selectTitleNum=1,selectTitleFlg=1;
+   if (isFirst) selectTitleNum=0;
    if (!upkey &&  !downkey && !zkey) selectTitleFlg=0;
    if (zkey && !selectTitleFlg) { ///ゲームスタートの処理
        if (!selectTitleNum){//はじめから

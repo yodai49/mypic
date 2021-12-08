@@ -107,20 +107,20 @@ function battleloop(){
     ctx2d.fillText(mypicstock[mypic[0]][0], width*8/100,height*71/100);
     ctx2d.fillText("Lv."+mypicstock[mypic[0]][12], width*8/100,height*75/100);
     ctx2d.font="16px "+mainfontName;
-    ctx2d.fillText("HP: "+mypicstock[mypic[0]][2]+"/"+mypicstock[mypic[0]][3], width*3/100,height*82/100);
+    ctx2d.fillText("HP: "+mypicstock[mypic[0]][2]+"/"+mypicstock[mypic[0]][3], width*3/100,height*81/100);
     ctx2d.fillText("DP: "+mypicstock[mypic[0]][4]+"/"+mypicstock[mypic[0]][5], width*3/100,height*85/100);
-    ctx2d.fillText("こうげき: "+mypicstock[mypic[0]][6], width*3/100,height*88/100);
-    ctx2d.fillText("ぼうぎょ: "+mypicstock[mypic[0]][7], width*3/100,height*91/100);
-    ctx2d.fillText("すばやさ: "+mypicstock[mypic[0]][10], width*3/100,height*94/100);
+    ctx2d.fillText("こうげき: "+mypicstock[mypic[0]][6], width*3/100,height*89/100);
+    ctx2d.fillText("ぼうぎょ: "+mypicstock[mypic[0]][7], width*3/100,height*93/100);
+    ctx2d.fillText("すばやさ: "+mypicstock[mypic[0]][10], width*3/100,height*97/100);
     /////////////////
     //敵ステータス表示
     ctx2d.fillRect(width*82/100,height*68/100,35,35);
     ctx2d.font="18px "+mainfontName;
     ctx2d.fillText(baseEnemyData[0], width*88/100,height*71/100);
-    ctx2d.fillText("Lv."+baseEnemyData[12], width*88/100,height*74/100);
-    ctx2d.font="18px "+mainfontName;
-    ctx2d.fillText("HP: "+baseEnemyData[2]+"/"+baseEnemyData[3], width*82/100,height*79/100);
-    ctx2d.fillText("DP: "+baseEnemyData[4]+"/"+baseEnemyData[5], width*82/100,height*83/100);
+    ctx2d.fillText("Lv."+baseEnemyData[12], width*88/100,height*75/100);
+    ctx2d.font="16px "+mainfontName;
+    ctx2d.fillText("HP: "+baseEnemyData[2]+"/"+baseEnemyData[3], width*82/100,height*81/100);
+    ctx2d.fillText("DP: "+baseEnemyData[4]+"/"+baseEnemyData[5], width*82/100,height*85/100);
     /////////////////
 
     if (fieldReDrawFlg){ /////背景の再描画処理　戦闘開始時にこのフラグが立つ
@@ -151,8 +151,10 @@ function battleloop(){
 
         if(loopmode==1){
             for(let i=0; i<4; i++){
+                changeColor(skillData[mypicstock[mypic[0]][8][i]][3]);
                 ctx2d.font="25px "+mainfontName;
                 ctx2d.fillText(skillData[mypicstock[mypic[0]][8][i]][0], width*47/100,height*(75+6*i)/100);
+                ctx2d.fillStyle=white;
                 ctx2d.font="17px "+mainfontName;
                 ctx2d.fillText("MP:"+skillData[mypicstock[mypic[0]][8][i]][4], width*70/100,height*(74+6*i)/100);
             }

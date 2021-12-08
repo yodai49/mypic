@@ -209,3 +209,18 @@ function battleloop(){
         ctx2d.fillText(winMessage[in_lstnum], width*25/100,height*74/100);
     }
 }
+
+function drawPopupMsg(){
+    for (var i = 0; i < popupMsg.length;i++){
+        popupMsg[i][1]--;
+        if (popupMsg[i][1]<=0){
+            popupMsg.pop(i);
+        } else{
+            popupMsg[i][2]++;
+            ctx2d.fillStyle="rgba(0,0,0," + Math.min(1,popupMsg[i][1]/10,popupMsg[i][2]/10)*0.8 +")";
+            ctx2d.fillRect(-20+Math.min(1,popupMsg[i][1]/10,popupMsg[i][2]/10)*40,20+40*i,200,35);
+            ctx2d.fillStyle="rgba(255,255,255," + Math.min(1,popupMsg[i][1]/10,popupMsg[i][2]/10) +")";
+            ctx2d.fillText(popupMsg[i][0],-20+Math.min(1,popupMsg[i][1]/10,popupMsg[i][2]/10)*40,40+40*i);
+        }
+    }
+}

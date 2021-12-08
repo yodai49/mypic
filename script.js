@@ -8,6 +8,7 @@ var menuWindow=0;//メニューウィンドウの表示非表示
 var shopWindow=0;//ショップウィンドウの表示非表示
 var globalTime=0;//タイム　1ループで1増える
 var isFirst=localStorage.getItem("xpos");//初回起動時かどうかを確認
+var popupMsg=[];//ポップアップで表示するメッセージを格納 形式[msgの内容、生き残り時間、0、ディレイ、ピクチャ(なにもないなら[]を指定)]
 const modeChangeAniSpeed=30;
 
 //フィールド系
@@ -121,6 +122,7 @@ function init() {
             battleMain();
         }
         messageMain();
+        drawPopupMsg();
         ctx2d.fillStyle="rgba(0,0,0," +(1-Math.abs(modeAnimation-modeChangeAniSpeed)/modeChangeAniSpeed)+")";
         ctx2d.fillRect(0,0,width,height);
 

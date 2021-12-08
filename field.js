@@ -98,7 +98,7 @@ function procreateProcess(){ //卵の孵化処理
     neweggData[3]*= (1-randomrate+randomrate*Math.random())*Math.min(1.5,(0.8+0.07*lineCarc));//MP
     neweggData[4]*= (1-randomrate+randomrate*Math.random())*Math.min(1.2,(0.9+0.4*Math.pow(lineratio,1)));//攻撃力
     neweggData[5]*= (1-randomrate+randomrate*Math.random())*Math.min(1.2,(0.9+0.4*Math.pow((1-lineratio),1)));//防御力
-    neweggData[7]*= (1-randomrate+randomrate*Math.random())*Math.min(1.6,0.8+0.1*arcCarc);//運
+    neweggData[7]+= 3*(randomrate*Math.random()+(1-randomrate)*Math.min(1,0.3*Math.sqrt(arcCarc)));//運
     neweggData[8]*= (1-randomrate+randomrate*Math.random())*Math.max(1.6,(1.5-(linecnt+arccnt)/15*0.8));//すばやさ
     neweggData[5]*= Math.min(1.5,(0.7+(linecnt+arccnt)/15*0.8));//防御力
     let specialAvilityDice=[],diceConfig=[0.35/2,0.1,0.05,0.025];

@@ -9,9 +9,14 @@ var firstSt, secondSt;
 var damage;//攻撃のダメージ量(HP基準)
 var Acount=0, Acheck=true;//attackcount, 攻撃時のカウンタ, attackcheck,zkey入力に１回だけ作動するように
 var chgCount=0;//マイピク交代のカウンタ
+var itemCount=0;
 var attackMiss=false;
 var baseEnemyData;
 var oneMoveFlg=false;//1回だけ作動させたい時に使う
+var BitemErrorFlg=false;
+var BtopItem=0;
+var BwhoUse=0;//アイテムを誰に使用するか
+var moneyUpFlg=false;//金運の知らせ使用
 
 function battleMain() {
     //character
@@ -36,13 +41,15 @@ function battleMain() {
                 else if(loopselect==3)battleMode=5;//逃げる
                 else loopmode=loopselect+1, loopselect=0;
             } else if(loopmode==1) {//技実行
-                battleMode=2, Acount=0, Acheck=true;}
-            else if(loopmode==2){//アイテム選択
-                battleMode=3;
-            }
-            else if(loopmode==3 && loopselect!=0){//マイピク
+                battleMode=2, Acount=0, Acheck=true;
+            } else if(loopmode==2){//アイテム選択
+                if(!itemdata[loopselect][2] || moneyUpFlg)BitemErrorFlg=true;
+                else loopmode=4;
+            } else if(loopmode==4){battleMode=3, oneMoveFlg=true;;//誰に使用するか決める
+            } else if(loopmode==3 && loopselect!=0){//マイピク交代
                 battleMode=4;
-                }
+            }
+        
         }
         else if(battleMode==2){Acheck=true;
             if(oneMoveFlg) battleMode=6;
@@ -50,10 +57,12 @@ function battleMain() {
             else if(Acount==2)Acount=99, attackMiss=false;
         }
         else if(battleMode==3){
+            if(itemCount==0 || itemCount==1)itemCount++, oneMoveFlg=true;
+            else if(itemCount==2)battleMode=1, itemCount=0, loopmode=0, loopselect=0;
         }
         else if(battleMode==4){
             if(chgCount==0 || chgCount==1)chgCount++, oneMoveFlg=true;
-            else if (chgCount==2)battleMode=1,chgCount=0;
+            else if (chgCount==2)battleMode=1,chgCount=0, loopmode=0, loopselect=0;
         }
         else if(battleMode==5){
             if(!attackorder){//逃げれない
@@ -70,8 +79,9 @@ function battleMain() {
 
     //xkey入力:キャンセルに使用
     if(xkey){
-        if(battleMode==1 && loopmode==1) loopmode=0, loopselect=0;
-        else if(battleMode==1 && loopmode==3) loopmode=0, loopselect=0;
+        if(battleMode==1 && (loopmode==1 || loopmode==2 || loopmode==3)) loopmode=0, BtopItem=0, loopselect=0;
+        else if(battleMode==1 && loopmode==4) loopmode=2, BwhoUse=0;
+        xkey=false;
     }
     //////
 
@@ -81,22 +91,30 @@ function battleMain() {
         for(var i = 0;i < enemyData[0].length;i++){
             baseEnemyData[i]=enemyData[0][i];
         }
-
     }
     
     if(battleMode==1){//行動選択(loop)
         if(downkey) {
-            if (loopmode==2)loopselect=Math.min(item.length,loopselect+1);
+            if (loopmode==2){
+                loopselect=Math.min(items.length-1,loopselect+1);
+                if(loopselect-BtopItem==5)BtopItem++;}
             else if(loopmode==3){loopselect=Math.min(5,loopselect+1);}
+            else if(loopmode==4){BwhoUse=Math.min(5,BwhoUse+1);}
             else{loopselect=Math.min(3,loopselect+1);}
             downkey=false;}
         else if(upkey){
-            loopselect=Math.max(0,loopselect-1);
+            if(loopmode==4)BwhoUse=Math.max(0,BwhoUse-1);
+            else loopselect=Math.max(0,loopselect-1);
+            if(loopmode==2 && loopselect<BtopItem)BtopItem--;
             upkey=false;}
         else if(rightkey){
-            if(loopmode==3){loopselect=Math.min(5,loopselect+3);}rightkey=false;}
+            if(loopmode==3){loopselect=Math.min(5,loopselect+3);}
+            else if(loopmode==4){BwhoUse=Math.min(5,BwhoUse+3);}
+            rightkey=false;}
         else if(leftkey){
-            if(loopmode==3){loopselect=Math.max(0,loopselect-3);}leftkey=false;}
+            if(loopmode==3){loopselect=Math.max(0,loopselect-3);}
+            else if(loopmode==4){BwhoUse=Math.max(0,BwhoUse-3);}
+            leftkey=false;}
     }
 
     if(battleMode==2){//攻撃選択時の処理
@@ -167,6 +185,48 @@ function battleMain() {
     }
 
     else if(battleMode==3){//アイテム選択時
+        //selectmode: 選択しているアイテムのitemでの番号
+        //BwhoUse:使用するマイピクのmypicでの番号
+        if(oneMoveFlg && itemCount==0){
+            //HP,MP回復系
+            if(items[loopselect][0] == 0){
+                changeHPMP(0,mypicstock[mypic[BwhoUse]][3]*0.3,0,BwhoUse,0);}
+            else if(items[loopselect][0] == 1){
+                changeHPMP(0,mypicstock[mypic[BwhoUse]][3]*0.6,0,BwhoUse,0);}
+            else if(items[loopselect][0] == 2){
+                changeHPMP(0,mypicstock[mypic[BwhoUse]][3]*1,0,BwhoUse,0);}
+            else if(items[loopselect][0] == 3){
+                changeHPMP(0,50,0,BwhoUse,0);}
+            else if(items[loopselect][0] == 4){
+                changeHPMP(0,100,0,BwhoUse,0);}
+            else if(items[loopselect][0] == 5){
+                changeHPMP(0,150,0,BwhoUse,0);}
+            else if(items[loopselect][0] == 6){
+                changeHPMP(1,30,0,BwhoUse,0);}
+            else if(items[loopselect][0] == 7){
+                changeHPMP(1,60,0,BwhoUse,0);}
+            //強化系
+            else if(items[loopselect][0] == 8){
+                mypicstock[mypic[BwhoUse]][6] = Math.floor(mypicstock[mypic[BwhoUse]][6]*1.4);}
+            else if(items[loopselect][0] == 9){
+                mypicstock[mypic[BwhoUse]][7] = Math.floor(mypicstock[mypic[BwhoUse]][7]*1.4);}
+            else if(items[loopselect][0] == 10){
+                var hpAmount = Math.floor(mypicstock[mypic[BwhoUse]][3]/5);
+                mypicstock[mypic[BwhoUse]][3] = Math.floor(mypicstock[mypic[BwhoUse]][3]*1.4);
+                mypicstock[mypic[BwhoUse]][2] += hpAmount;}
+            //獲得金Up
+            else if(items[loopselect][0] == 11) moneyUpFlg=true;
+            consumeItem(loopselect);//アイテム消費
+            //itemcount1での処理に必要
+            firstSt=mypicstock[mypic[0]], secondSt=baseEnemyData;
+            secondSkill=skillData[secondSt[8][2]];
+            oneMoveFlg=false;
+        }
+        else if(itemCount==1){
+            if(oneMoveFlg){oneMoveFlg=false;
+                lateEnemyAttack();
+            }
+        }
     }
     else if(battleMode==4){//マイピク交代
         //マイピク交代処理
@@ -175,31 +235,12 @@ function battleMain() {
                 mypic[0]=[mypic[loopselect], mypic[loopselect]=mypic[0]][0]//交換
                 firstSt=mypicstock[mypic[0]], secondSt=baseEnemyData;
                 secondSkill=skillData[secondSt[8][2]];//技データのリストが取れる
-                loopmode=0, loopselect=0;}
+                }
         }
         if(chgCount==2){
             if(oneMoveFlg){oneMoveFlg=false;
-            if(hitcheck(secondSkill[2], firstSt[9])){//MPの残り判定も追加しないと意見//
-                //命中する
-                damage = calcDamage(secondSt[12], secondSkill[1], secondSt[6], firstSt[7], secondSkill[3], firstSt[15]);
-                changeHPMP(0, (-1)*damage, !attackorder, 0, 0);//HP変化
-                changeHPMP(1, (-1)*secondSkill[4], attackorder, 0, 0);//MP消費
-                if(firstSt[2] == 0){//HP=0
-                    if(!attackorder){//敵が死んだので勝利
-                        oneMoveFlg=true;
-                    } else if(mypicstock[mypic[0]][2]==0&&mypicstock[mypic[1]][2]==0&&mypicstock[mypic[2]][2]==0&&mypicstock[mypic[3]][2]==0&&mypicstock[mypic[4]][2]==0&&mypicstock[mypic[5]][2]==0){
-                        //味方6体全員死んだ場合
-                        //"戦える手持ちのマイピクはいない!","は意識が遠のき倒れてしまった。"
-                        //gameover,loopend
-                    } else{ //生存残りマイピクがいる
-                        //マイピクchangeを実行,後攻はない
-                    }
-                }
+            lateEnemyAttack();
             }
-            else{
-                //攻撃が外れた
-                attackMiss=true;
-            }}
         }
         //敵の攻撃処理
     }
@@ -271,4 +312,28 @@ function needEx(level){//(レベル)^2.5
 
 function getEx(){//戦闘後獲得する経験値
     return Math.floor(Math.floor(50*enemylevel*(0.9+(1.1-0.9)*Math.random()))*itemBonus*BossBonus)
+}
+
+function lateEnemyAttack(){
+    if(hitcheck(secondSkill[2], firstSt[9])){//MPの残り判定も追加しないと意見//
+        //命中する
+        damage = calcDamage(secondSt[12], secondSkill[1], secondSt[6], firstSt[7], secondSkill[3], firstSt[15]);
+        changeHPMP(0, (-1)*damage, !attackorder, 0, 0);//HP変化
+        changeHPMP(1, (-1)*secondSkill[4], attackorder, 0, 0);//MP消費
+        if(firstSt[2] == 0){//HP=0
+            if(!attackorder){//敵が死んだので勝利
+                oneMoveFlg=true;
+            } else if(mypicstock[mypic[0]][2]==0&&mypicstock[mypic[1]][2]==0&&mypicstock[mypic[2]][2]==0&&mypicstock[mypic[3]][2]==0&&mypicstock[mypic[4]][2]==0&&mypicstock[mypic[5]][2]==0){
+                //味方6体全員死んだ場合
+                //"戦える手持ちのマイピクはいない!","は意識が遠のき倒れてしまった。"
+                //gameover,loopend
+            } else{ //生存残りマイピクがいる
+                //マイピクchangeを実行,後攻はない
+            }
+        }
+    }
+    else{
+        //攻撃が外れた
+        attackMiss=true;
+    }
 }

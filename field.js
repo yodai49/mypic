@@ -961,7 +961,7 @@ function fieldMain() {
                     changeHPMP(1,30,0,eventMessageSelectNum,0);
                 } else if(items[menuSelectChildNum][0] == 7){
                     changeHPMP(1,60,0,eventMessageSelectNum,0);
-                }else if(items[menuSelectChildNum][0] == 12){//経験値増やす系
+                } else if(items[menuSelectChildNum][0] == 12){//経験値増やす系
                     changeEXP(100,eventMessageSelectNum);
                 } else if (items[menuSelectChildNum][0] == 13){
                     changeEXP(500,eventMessageSelectNum);

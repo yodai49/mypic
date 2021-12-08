@@ -190,16 +190,16 @@ function battleMain() {
             else if(items[loopselect][0] == 9){
                 changeHPMP(1,60,0,BwhoUse,0);}
             //強化系
-            else if(items[loopselect][0] == 10){
-                mypicstock[mypic[BwhoUse]][6] = Math.floor(mypicstock[mypic[BwhoUse]][6]*1.4);}
             else if(items[loopselect][0] == 11){
-                mypicstock[mypic[BwhoUse]][7] = Math.floor(mypicstock[mypic[BwhoUse]][7]*1.4);}
+                mypicstock[mypic[BwhoUse]][6] = Math.floor(mypicstock[mypic[BwhoUse]][6]*1.4);}
             else if(items[loopselect][0] == 12){
+                mypicstock[mypic[BwhoUse]][7] = Math.floor(mypicstock[mypic[BwhoUse]][7]*1.4);}
+            else if(items[loopselect][0] == 13){
                 var hpAmount = Math.floor(mypicstock[mypic[BwhoUse]][3]/5);
                 mypicstock[mypic[BwhoUse]][3] = Math.floor(mypicstock[mypic[BwhoUse]][3]*1.4);
                 mypicstock[mypic[BwhoUse]][2] += hpAmount;}
             //獲得金Up
-            else if(items[loopselect][0] == 13) moneyUpFlg=true;
+            else if(items[loopselect][0] == 14) moneyUpFlg=true;
             consumeItem(loopselect);//アイテム消費
             //itemcount1での処理に必要
             firstSt=mypicstock[mypic[0]], secondSt=baseEnemyData;

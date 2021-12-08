@@ -702,6 +702,7 @@ function fieldMain() {
                 if (!titleConfirmSelect) {
                     nextMode=0;
                     modeAnimation=1;
+                    checkfirstLaunch();
                 }
             }
         }  else if(zkey &&!menuSelectFlg&& !menuzflg&& menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum==-1){ //マイピクの詳細画面を見る時

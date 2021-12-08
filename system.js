@@ -87,7 +87,7 @@ function changeEXP(chgAmount,Num){
     @return 0 - - - レベルアップなし
             1〜　- - レベルアップあり
     */
-    let nextLevExp = Math.floor(Math.pow(mypicstock[mypic[Num]][12]+1,2.5));
+    let nextLevExp = Math.floor(Math.pow(mypicstock[mypic[Num]][12]+1,1.5+(1/3*(3-mypicstock[mypic[Num]][16]))));
     if (nextLevExp <= Math.min(99999,mypicstock[mypic[Num]][13]+chgAmount)){ //レベルアップありのとき
         let tmpExp=Math.min(99999,mypicstock[mypic[Num]][13]+chgAmount)-nextLevExp;
         mypicstock[mypic[Num]][13]=nextLevExp;

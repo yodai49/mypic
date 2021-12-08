@@ -212,7 +212,7 @@ function battleloop(){
 }
 
 function drawPopupMsg(){
-    for (var i = 0; i < popupMsg.length;i++){
+    for (var i = 0; i < Math.min(8,popupMsg.length);i++){
         popupMsg[i][1]--;
         if (popupMsg[i][1]<=0){
             popupMsg.splice(i,1);

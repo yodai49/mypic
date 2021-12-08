@@ -7,6 +7,7 @@ var myPicWindow=0;//マイピク描画画面の表示非表示
 var menuWindow=0;//メニューウィンドウの表示非表示
 var shopWindow=0;//ショップウィンドウの表示非表示
 var globalTime=0;//タイム　1ループで1増える
+var titleAni=0;
 var isFirst=localStorage.getItem("xpos");//初回起動時かどうかを確認
 var popupMsg=[];//ポップアップで表示するメッセージを格納 形式[msgの内容、生き残り時間、0、ディレイ、ピクチャ(なにもないなら[]を指定)]
 const modeChangeAniSpeed=30;
@@ -129,7 +130,10 @@ function init() {
         ctx2d.fillRect(0,0,width,height);
 
         if (modeAnimation && (modeAnimation-2*modeChangeAniSpeed)) modeAnimation++;
-        if(!(modeAnimation-modeChangeAniSpeed)) fieldReDrawFlg=1,mode=nextMode,initiate_field(),menuWindow=0;
+        if(!(modeAnimation-modeChangeAniSpeed)){
+            fieldReDrawFlg=1,mode=nextMode,initiate_field(),menuWindow=0;
+            if (mode==0) titleAni=0;
+        } 
         if (!(modeAnimation-2*modeChangeAniSpeed)) modeAnimation=0;
 
         globalTime++;

@@ -24,7 +24,7 @@ const fielddata=[ //フィールドの画像データが全て格納されてい
 const fieldenemy=[ //フィールドごとに出会うモンスターのタイプセット番号
     0,1,0,0,0,0
 ]
-const fieldenemyDataSet=[ //出会う敵の確率 [Num,odds]の形で格納　oddsの総和はなんでもよい
+const fieldenemyDataSet=[ //出会う敵の確率 [Num,odds]の形で格納 oddsの総和はなんでもよい
     [[0,1],[1,1]],
     [[2,1]],
     [],

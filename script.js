@@ -118,7 +118,7 @@ function init() {
         //2次元のリセット処理
         ctx2d.clearRect(0,0,width,height);
 
-        if(encount || bkey) mode=2, onMessage=true,battleLaunchFlg=1,encount=0;//バトル開始の処理
+        if(encount || bkey) battleAnimationFlg=true;
         //各モジュールのMain関数を呼び出し
         if (mode == 0){ //タイトル
             titleMain();
@@ -129,6 +129,7 @@ function init() {
         }
         messageMain();
         drawPopupMsg();
+        if(battleAnimationFlg) battleStartAnimation();
         ctx2d.fillStyle="rgba(0,0,0," +(1-Math.abs(modeAnimation-modeChangeAniSpeed)/modeChangeAniSpeed)+")";
         ctx2d.fillRect(0,0,width,height);
 

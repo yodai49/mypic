@@ -894,18 +894,18 @@ function fieldMain() {
                 } else if(items[menuSelectChildNum][0] >= 16 && items[menuSelectChildNum][0] <= 18){
                     eventMessageWindow=1;
                     eventMessageWindowMsg="/だれにつかう？";
-                } else if (items[menuSelectChildNum][0] == 15){
-                    consumeItem(menuSelectChildNum);
+                } else if (items[menuSelectChildNum][0] == 19){
                     nextMode=1;
                     modeAnimation=1;
                     myposx=homposx,myposy=homposy,myposworld=homposworld;
                     eventMessageWindow=1;
                     eventMessageWindowMsg=itemdata[items[menuSelectChildNum][0]][0] + "をつかった！";
-                } else if(items[menuSelectChildNum][0] == 16){
                     consumeItem(menuSelectChildNum);
+                } else if(items[menuSelectChildNum][0] == 20){
                     encount_down_cnt=3000;
                     eventMessageWindow=1;
                     eventMessageWindowMsg=itemdata[items[menuSelectChildNum][0]][0] + "をつかった！";    
+                    consumeItem(menuSelectChildNum);
                 }
                 eventMessageSelectNum=0;
                 if (eventMessageWindowMsg=="/だれにつかう？" && mypic.length==0){
@@ -913,6 +913,7 @@ function fieldMain() {
                 }
             }
             menuSelectFlg=1;
+            if (menuSelectChildNum>= items.length) menuSelectChildNum=items.length-1;
         }
         if (!upkey && !downkey && !leftkey && !rightkey && !zkey && !xkey) menuSelectFlg=0;
         if (menuSelectNum<0) menuSelectNum=0;
@@ -1136,9 +1137,10 @@ function fieldMain() {
                     changeEXP(1000,eventMessageSelectNum);
                 }
                 if(!notConsume){
+                    eventMessageWindowMsg=itemdata[items[menuSelectChildNum][0]][0]+"を"+mypicstock[mypic[eventMessageSelectNum]][0]+"につかった！"; 
                     consumeItem(menuSelectChildNum);
                     menuSelectFlg=1;
-                    eventMessageWindowMsg=itemdata[menuSelectChildNum][0]+"を"+mypicstock[mypic[eventMessageSelectNum]][0]+"につかった！";    
+                    if (menuSelectChildNum>= items.length) menuSelectChildNum=items.length-1;
                 }
             }
             if (xkey && !menuSelectFlg){

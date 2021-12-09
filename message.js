@@ -219,20 +219,20 @@ function battleloop(){
             ctx2d.fillText(firstSkill[0]+"は当たらなかった...", width*25/100,height*75/100);
         }
         else{
-        switch (Acount){
-            case 1:
-                if (!damageMessageFlg) ctx2d.fillText(firstSt[0]+" の "+firstSkill[0]+"!", width*25/100,height*75/100);
-                else {ctx2d.fillText(secondSt[0]+"に"+damage+"のダメージ!", width*25/100,height*75/100);
-                    if(typeMatch(secondSkill[3], firstSt[15])==1/2)ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
-                    else if(typeMatch(secondSkill[3], firstSt[15])==2)ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);}
-                break;
-            case 2:
-                if (!damageMessageFlg) ctx2d.fillText(secondSt[0]+" の "+secondSkill[0]+"!", width*25/100,height*75/100);
-                else {ctx2d.fillText(firstSt[0]+"に"+damage+"のダメージ!", width*25/100,height*75/100);
-                    if(typeMatch(secondSkill[3], firstSt[15])==1/2)ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
-                    else if(typeMatch(secondSkill[3], firstSt[15])==2)ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);}
-                break;
-        }
+            switch (Acount){
+                case 1:
+                    if (!damageMessageFlg) ctx2d.fillText(firstSt[0]+" の "+firstSkill[0]+"!", width*25/100,height*75/100);
+                    else {ctx2d.fillText(secondSt[0]+"に"+damage+"のダメージ!", width*25/100,height*75/100);
+                        if(typeMatch(secondSkill[3], firstSt[15])==1/2)ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
+                        else if(typeMatch(secondSkill[3], firstSt[15])==2)ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);}
+                    break;
+                case 2:
+                    if (!damageMessageFlg) ctx2d.fillText(secondSt[0]+" の "+secondSkill[0]+"!", width*25/100,height*75/100);
+                    else {ctx2d.fillText(firstSt[0]+"に"+damage+"のダメージ!", width*25/100,height*75/100);
+                        if(typeMatch(secondSkill[3], firstSt[15])==1/2)ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
+                        else if(typeMatch(secondSkill[3], firstSt[15])==2)ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);}
+                    break;
+            }
         }
         //if(compspeed())判定
         //attackcount()で先攻の回数判定

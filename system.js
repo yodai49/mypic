@@ -35,6 +35,7 @@ function consumeItem(consumeNum){
     if(!items[consumeNum][1]){
         items.splice(consumeNum,1);
     }
+    items.sort(function(a,b){return (a[0]-b[0]);});
 }
 function getItem(getNum){
     ////////アイテムをゲットする関数　getNumにゲットするアイテムの番号を指定(itemsでの番号)
@@ -46,6 +47,7 @@ function getItem(getNum){
         }
     }
     items.push([getNum,1]);
+    items.sort(function(a,b){return (a[0]-b[0]);});
 }
 
 function changeHPMP(chgStatus,chgAmount,isEnemy,Num,isSimulate){

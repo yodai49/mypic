@@ -288,7 +288,7 @@ function battleloop(){
 
     else if(battleMode==6){//勝利message
         if(oneMoveFlg){
-            winMessage = [baseEnemyData[0]+" は倒れた。",mypicstock[mypic[0]][0]+" は勝負に勝った!","経験値500と1000マイルを手にいれた。"];
+            winMessage = [baseEnemyData[0]+" は倒れた。",mypicstock[mypic[0]][0]+" は勝負に勝った!","経験値"+getExperienceAmount+"と"+getCurrencyAmount+"マイルを手にいれた。"];
             oneMoveFlg=false;
         }
         ctx2d.fillStyle=white;

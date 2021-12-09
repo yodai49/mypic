@@ -133,6 +133,7 @@ function procreateProcess(){ //卵の孵化処理
     );
 }
 function clickEveDraw(x,y){ //クリックイベント
+    if (debugMode==3) console.log(x,y);
     if (mode==1 && eventWindowKind==2 && eventWindowAni && eventProcreateStep==1){ //マイピクドロー中のみ反応
         if (inDrawField && drawMypicTempObj.length <15){ //ドローフィールドの中なら
             if (!drawMypicStatus){
@@ -184,9 +185,6 @@ function clickEveDraw(x,y){ //クリックイベント
     }
 }
 function moveEveDraw(x,y){ //マウスのムーブイベント
-    if (debugMode==3){
-       console.log(x,y);
-    }
     if (mode==1 && eventWindowKind==2 && eventWindowAni && eventProcreateStep==1){ //マイピクドロー中のみ反応
         drawFieldX = (x-(width/2-135))/270*100;
         drawFieldY=(y-(height/2-110))/270*100;

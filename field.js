@@ -206,11 +206,24 @@ function moveEveDraw(x,y){ //マウスのムーブイベント
 
 function encount_check(){//敵との遭遇率encount=6*((200−運)/200)
     if (mypic.length==0) return 0;
-    var encountRate = (6*((200 - infToRange(mypicstock[mypic[0]][9],0,100,30))/200));
-    var tempEncRandom=((3000+encount_down*6000)*Math.random());
-    encountEnemyNum=0;
+    var encountRate = (6*((200 - mypicstock[mypic[0]][9],0,100,100),0,100/200));
+    var tempEncRandom=((2000+encount_down*6000)*Math.random());
+//    console.log(tempEncRandom,encountRate);
     if (encountRate>=tempEncRandom) {
         encount=true;
+        let oddsSum=0,tmpodds=0,encountDice=0;
+        encountEnemyNum=3;
+        for(let i = 0;i < fieldenemyDataSet[fieldenemy[myposworld]].length;i++){
+            oddsSum+=fieldenemyDataSet[fieldenemy[myposworld]][1];
+        }
+        encountDice=oddsSum*Math.random();
+        for(let i = 0; i<fieldenemyDataSet[fieldenemy[myposworld]].length;i++){
+            tmpodds+=fieldenemyDataSet[fieldenemy[myposworld]][1];
+            if (tmpodds>=encountDice) {
+                encountEnemyNum=fieldenemyDataSet[fieldenemy[myposworld]][0]
+                break;
+            }
+        }
     } else {
         encount=false;
     }

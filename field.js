@@ -3,7 +3,7 @@ const charasize=30; //キャラクターのサイズ
 const pre_charasize=60; //プリレンダリング用のキャラクターのサイズ
 const fieldwidth=960;//フィールドの幅の最大値
 const fieldheight=540;//フィールドの高さの最大値
-const debugMode=0; //デバッグモード　1ならワープ位置を赤で表示
+const debugMode=3; //デバッグモード　1ならワープ位置を赤で表示
 var walkspeed=3;//歩くスピード
 var menuSelectNum=0,menuSelectFlg=0;
 var menuSelectChildNum=0,menuWindowChildAni=0,itemsScroll=0;
@@ -133,6 +133,7 @@ function procreateProcess(){ //卵の孵化処理
     );
 }
 function clickEveDraw(x,y){ //クリックイベント
+    if (debugMode==3) console.log(x,y);
     if (mode==1 && eventWindowKind==2 && eventWindowAni && eventProcreateStep==1){ //マイピクドロー中のみ反応
         if (inDrawField && drawMypicTempObj.length <15){ //ドローフィールドの中なら
             if (!drawMypicStatus){
@@ -263,16 +264,23 @@ function checkConflict(dir){
         }    
     }
 
+    let tmpdirfix=[0,0,0,0];
+    tmpdirfix[dir]=5;
+
     for(let i = 0;i  < eventobj[myposworld].length;i++){
         if (eventobj[myposworld][i][4] == 4){
             eventflgs[i]=0;
-            let tmpdirfix=[0,0,0,0];
-            tmpdirfix[dir]=5;
             if (eventobj[myposworld][i][0] < myposx+charasize+tmpdirfix[1]-tmpdirfix[0] && eventobj[myposworld][i][0] + eventobj[myposworld][i][2] > myposx+tmpdirfix[1]-tmpdirfix[0]){
-                if (eventobj[myposworld][i][1] < myposy+charasize+tmpdirfix[3]-tmpdirfix[2] && eventobj[myposworld][i][1] + eventobj[myposworld][i][3] > myposy+tmpdirfix[3]-tmpdirfix[2] ){
-                    eventflgs[i]=1;
-                    if(!popupMsg.length) popupMsg.push(["この場所へ行けないようだ！　またあとで来てみよう",120,0,0,-1]);
-                    return 1;
+                if (eventobj[myposworld][i][1] < myposy+charasize+tmpdirfix[3]-tmpdirfix[2] && eventobj[myposworld][i][1] + eventobj[myposworld][i][3] > myposy+tmpdirfix[3]-tmpdirfix[2]){
+                    let tempitemflg=0;
+                    for(let j = 0;j < items.length;j++){
+                        if(items[j][0] == eventobj[myposworld][i][5]) tempitemflg=1;
+                    }
+                    if (!tempitemflg){
+                        eventflgs[i]=1;
+                        if(!popupMsg.length) popupMsg.push(["この場所へ行けないようだ！　またあとで来てみよう",120,0,0,-1]);
+                        return 1;    
+                    }
                 }
             }    
         } 
@@ -1040,25 +1048,27 @@ function fieldMain() {
                         ctx2d.fillText("× " + items[i+itemsScroll][1],700,90+28*i);    
                     }
                 }
-                if (itemdata[items[menuSelectChildNum][0]][1]){
-                    if (!eventMessageWindow){
-                        ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild*(Math.sin(globalTime/6)*0.3+0.7)+")";
+                if (items.length > menuSelectChildNum){
+                    if (itemdata[items[menuSelectChildNum][0]][1]){
+                        if (!eventMessageWindow){
+                            ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild*(Math.sin(globalTime/6)*0.3+0.7)+")";
+                        } else{
+                            ctx2d.fillStyle="rgba(255,255,255,1)";
+                        }
                     } else{
-                        ctx2d.fillStyle="rgba(255,255,255,1)";
+                        ctx2d.fillStyle="rgba(155,155,155," + menuWindowTransChild*(Math.sin(globalTime/6)*0.3+0.7)+")";
                     }
-                } else{
-                    ctx2d.fillStyle="rgba(155,155,155," + menuWindowTransChild*(Math.sin(globalTime/6)*0.3+0.7)+")";
+                    ctx2d.font="20px "+mainfontName;
+                    ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][0],360,90+28*(menuSelectChildNum-itemsScroll));
+                    ctx2d.fillText("× " + items[menuSelectChildNum][1],700,90+28*(menuSelectChildNum-itemsScroll));    
+                    ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
+                    ctx2d.fillRect(360,60+32*9.5,300,1);
+                    ctx2d.font="16px "+mainfontName;
+                    ctx2d.fillText("おかね："+ money + currencyName,750-ctx2d.measureText("おかね："+ money + currencyName).width,48);
+                    ctx2d.font="16px "+mainfontName;
+                    ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(0,25),360,60+32*10.3);
+                    ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(25,25),360,60+32*11);    
                 }
-                ctx2d.font="20px "+mainfontName;
-                ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][0],360,90+28*(menuSelectChildNum-itemsScroll));
-                ctx2d.fillText("× " + items[menuSelectChildNum][1],700,90+28*(menuSelectChildNum-itemsScroll));
-                ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
-                ctx2d.fillRect(360,60+32*9.5,300,1);
-                ctx2d.font="16px "+mainfontName;
-                ctx2d.fillText("おかね："+ money + currencyName,750-ctx2d.measureText("おかね："+ money + currencyName).width,48);
-                ctx2d.font="16px "+mainfontName;
-                ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(0,25),360,60+32*10.3);
-                ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(25,25),360,60+32*11);
             } else if(menuSelectNum==2){//////マップ
 
             }

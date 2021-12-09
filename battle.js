@@ -104,7 +104,7 @@ function battleMain() {
     if(battleMode==0){//敵データの保存
         baseEnemyData=[];
         for(var i = 0;i < enemyData[0].length;i++){
-            baseEnemyData[i]=enemyData[0][i];
+            baseEnemyData[i]=enemyData[encountEnemyNum][i];
         }
         bMemory[0]=mypicstock[mypic[0]][6];
         bMemory[1]=mypicstock[mypic[0]][7];

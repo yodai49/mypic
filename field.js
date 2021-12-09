@@ -23,7 +23,7 @@ var titleConfirmWindow=0,titleConfirmSelect=1,titleConfirmMessage="",titleConfir
 var eventMessageWindow=0,eventMessageWindowMsg="",eventMessageSelectNum=0,procreateMsg="";
 var encount_down=0,encount_down_cnt=0;
 var nowShopData,eventShopSelectNum=0,showmoney=0;
-var checkSkillConflict=[];
+var checkSkillConflict=[],encountEnemyNum=0;
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
     if (mypic.length<=drawMypicNum) return 0;
@@ -208,7 +208,7 @@ function encount_check(){//敵との遭遇率encount=6*((200−運)/200)
     if (mypic.length==0) return 0;
     var encountRate = (6*((200 - infToRange(mypicstock[mypic[0]][9],0,100,30))/200));
     var tempEncRandom=((3000+encount_down*6000)*Math.random());
-    
+    encountEnemyNum=0;
     if (encountRate>=tempEncRandom) {
         encount=true;
     } else {

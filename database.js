@@ -4,7 +4,7 @@
 const walkCol = [ //歩ける色のリスト 全フィールド共通
     [0,0,0]
 ]
-const homposx=90,homposy=130,homposworld=1;
+const homposx=90,homposy=130,homposworld=0;
 const fieldbackdata=[ //フィールドの背景の長方形データをすべて格納（主に歩ける部分）
     [["fieldbackobj0"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],
     [["0x220000",0,0,4000,4000]],

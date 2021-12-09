@@ -87,7 +87,6 @@ function battlemessMain(){
         }
     }
     battleloop();
-    
 
     //一連のメッセージ終了時イベント
     if(battleMode==0){

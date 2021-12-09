@@ -97,6 +97,7 @@ function battlemessMain(){
 
 function battleloop(){
     ctx2d.font="26px "+mainfontName;
+    //////////////////
     //味方ステータス表示
     ctx2d.fillStyle=darkgray;
     ctx2d.fillRect(width*3/100,height*68/100,35,35);
@@ -119,6 +120,7 @@ function battleloop(){
     ctx2d.fillRect(width*82/100,height*68/100,35,35);
     ctx2d.font="18px "+mainfontName;
     ctx2d.fillText(baseEnemyData[0], width*86/100,height*71/100);
+    ctx2d.fillText("Lv."+baseEnemyData[12], width*86/100,height*75/100);
     changeColor(baseEnemyData[15], 1.0);
     ctx2d.fillText(typeDataText[baseEnemyData[15]], width*93/100,height*75/100);//属性表示
     ctx2d.fillStyle=white;
@@ -220,11 +222,15 @@ function battleloop(){
         switch (Acount){
             case 1:
                 if (!damageMessageFlg) ctx2d.fillText(firstSt[0]+" の "+firstSkill[0]+"!", width*25/100,height*75/100);
-                else ctx2d.fillText(secondSt[0]+"に"+damage+"のダメージ!", width*25/100,height*75/100);
+                else {ctx2d.fillText(secondSt[0]+"に"+damage+"のダメージ!", width*25/100,height*75/100);
+                    if(typeMatch(secondSkill[3], firstSt[15])==1/2)ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
+                    else if(typeMatch(secondSkill[3], firstSt[15])==2)ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);}
                 break;
             case 2:
                 if (!damageMessageFlg) ctx2d.fillText(secondSt[0]+" の "+secondSkill[0]+"!", width*25/100,height*75/100);
-                else ctx2d.fillText(firstSt[0]+"に"+damage+"のダメージ!", width*25/100,height*75/100);
+                else {ctx2d.fillText(firstSt[0]+"に"+damage+"のダメージ!", width*25/100,height*75/100);
+                    if(typeMatch(secondSkill[3], firstSt[15])==1/2)ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
+                    else if(typeMatch(secondSkill[3], firstSt[15])==2)ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);}
                 break;
         }
         }
@@ -282,7 +288,7 @@ function battleloop(){
 
     else if(battleMode==6){//勝利message
         if(oneMoveFlg){
-            winMessage = [enemyData[0][0]+" は倒れた。",mypicstock[mypic[0]][0]+" は勝負に勝った!","経験値500と1000マイルを手にいれた。"];
+            winMessage = [baseEnemyData[0]+" は倒れた。",mypicstock[mypic[0]][0]+" は勝負に勝った!","経験値500と1000マイルを手にいれた。"];
             oneMoveFlg=false;
         }
         ctx2d.fillStyle=white;

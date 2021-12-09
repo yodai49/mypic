@@ -23,6 +23,7 @@ const mainfontName="Stick";
 const currencyName="マイル";
 var ctx2d; //メインキャンバス
 var field2d;//フィールドキャンバスのコンテキスト
+var fieldback2d;//フィールドの背景キャンバスのコンテキスト　当たり判定なし
 var spacekey=false, leftkey=false, upkey=false, rightkey=false, downkey=false;
 var zkey=0,xkey=0,ckey=0,vkey=0, bkey=0;
 var characanvas,fieldcanvas,fieldbackcanvas; //プリレンダリング用のキャンバス fieldcanvasは前景、fieldbackcanvasは背景（当たり判定なし）
@@ -107,6 +108,7 @@ function init() {
     //2Dの処理
     ctx2d=document.getElementById("mainCanvas").getContext("2d");
     field2d=document.getElementById("fieldCanvas").getContext("2d");
+    fieldback2d=document.getElementById("fieldbackCanvas").getContext("2d");
     ctx2d.width = width,ctx2d.height = height;
     field2d.width=width,field2d.height=height;
 

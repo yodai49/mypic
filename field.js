@@ -3,7 +3,7 @@ const charasize=30; //キャラクターのサイズ
 const pre_charasize=60; //プリレンダリング用のキャラクターのサイズ
 const fieldwidth=960;//フィールドの幅の最大値
 const fieldheight=540;//フィールドの高さの最大値
-const debugMode=3; //デバッグモード　1ならワープ位置を赤で表示
+const debugMode=0; //デバッグモード　1ならワープ位置を赤で表示
 var walkspeed=3;//歩くスピード
 var menuSelectNum=0,menuSelectFlg=0;
 var menuSelectChildNum=0,menuWindowChildAni=0,itemsScroll=0;
@@ -292,6 +292,7 @@ function checkConflict(dir){
         var checkimgdata=fieldcanvas.getContext("2d").getImageData(myposx+checkConflictPosx,myposy+checkConflictPosy,1,1);
         for(let i = 0;i < walkCol.length;i++){
             if (checkimgdata.data[0] == walkCol[i][0] && checkimgdata.data[1] == walkCol[i][1] && checkimgdata.data[2] == walkCol[i][2]) tempColision=0;
+            if (!checkimgdata.data[0] && !checkimgdata.data[1]  && !checkimgdata.data[2] && !checkimgdata.data[3]) tempColision=0;
         }
         if (dir==2 || dir == 3) checkConflictPosx+=(charasize/10);
         if (dir==0 || dir == 1) checkConflictPosy+=(charasize/10);
@@ -304,8 +305,10 @@ function createField(){
     fieldcanvas.width=fieldwidth, fieldcanvas.height=fieldheight;
     var fieldcanvasctx=fieldcanvas.getContext("2d"); //フィールドは横並びに描画　幅はfieldwidth
     for(let j = 0;j < fieldbackdata[myposworld].length ;j++){
-        fieldcanvasctx.fillStyle=fieldbackdata[myposworld][j][0];
-        fieldcanvasctx.fillRect(fieldbackdata[myposworld][j][1],fieldbackdata[myposworld][j][2],fieldbackdata[myposworld][j][3],fieldbackdata[myposworld][j][4]);
+        if (fieldbackdata[myposworld][j][0].substr(0,4) == "rgba"){
+            fieldcanvasctx.fillStyle=fieldbackdata[myposworld][j][0];
+            fieldcanvasctx.fillRect(fieldbackdata[myposworld][j][1],fieldbackdata[myposworld][j][2],fieldbackdata[myposworld][j][3],fieldbackdata[myposworld][j][4]);    
+        }
     }
     for(let j = 0; j < fielddata[myposworld].length;j++){
         imgCnt++;
@@ -314,6 +317,15 @@ function createField(){
         fieldimg.onload=function(){fieldcanvasctx.drawImage(fieldimg,fielddata[myposworld][j][0],fielddata[myposworld][j][1]);loadedimgCnt++;}
     }
     eventflgs=[];
+    fieldbackcanvas=document.createElement("canvas");
+    fieldbackcanvas.width=fieldwidth, fieldbackcanvas.height=fieldheight;
+    for(let j = 0;j < fieldbackdata[myposworld].length ;j++){
+        if (fieldbackdata[myposworld][j][0].substr(0,4) != "rgba"){
+            const fieldimg=new Image();
+            fieldimg.src="./imgs/fieldobjects/"+fieldbackdata[myposworld][j][0]+".png";
+            fieldimg.onload=function(){fieldbackcanvas.getContext("2d").drawImage(fieldimg,0,0);}
+        }
+    }
 }
 function initiate_field(){
     /*　フィールド・キャラクターの初期化処理/////////////////////////////////////////
@@ -401,6 +413,7 @@ function fieldMain() {
     @return なし
     */
     if (fieldReDrawFlg && loadedimgCnt==imgCnt) {
+        fieldback2d.clearRect(0,0,width,height),fieldback2d.drawImage(fieldbackcanvas,0,0,width,height,0,0,width,height);
         field2d.clearRect(0,0,width,height),field2d.drawImage(fieldcanvas,0,0,width,height,0,0,width,height),fieldReDrawFlg=0, checkConflict(0);//背景の描画
         //アイテムの描画
         for(let i = 0;i < fieldItemStatus[myposworld].length;i++){

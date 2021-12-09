@@ -4,10 +4,10 @@
 const walkCol = [ //歩ける色のリスト 全フィールド共通
     [0,0,0]
 ]
-const homposx=90,homposy=130,homposworld=0;
+const homposx=90,homposy=130,homposworld=1;
 const fieldbackdata=[ //フィールドの背景の長方形データをすべて格納（主に歩ける部分）
     [["fieldbackobj0",0,0,960,540]],
-    [["rgba(102,255,255,1)",0,0,960,540]],
+    [["fieldbackobj1"]],
     [["0x220000",0,0,4000,4000]],
     [["0x220000",0,0,4000,4000]],
     [["0x220000",0,0,4000,4000]],
@@ -22,7 +22,7 @@ const fielddata=[ //フィールドの画像データが全て格納されてい
     [] //フィールド5
 ]
 const fieldenemy=[ //フィールドごとに出会うモンスターのタイプセット番号
-    0,1,0,0,0,0
+    0,0,0,0,0,0,0,0,0,0
 ]
 const fieldenemyDataSet=[ //出会う敵の確率 [Num,odds]の形で格納 oddsの総和はなんでもよい
     [],
@@ -31,12 +31,12 @@ const fieldenemyDataSet=[ //出会う敵の確率 [Num,odds]の形で格納 odds
     []
 ]
 const fieldwarpobj=[
-    [[693,436,64,14,1,40,30]],//フィールドのワープ場所のデータ　[x,y,width,height,jmpWorld,jmpx,jmpy]
-    [[0,0,20,500,0,920,30]]
+    [[693,436,64,14,1,716,109]],//フィールドのワープ場所のデータ　[x,y,width,height,jmpWorld,jmpx,jmpy]
+    [[691,86,67,12,0,693,396]]
 ]
 const eventobj=[
     [[339,186,70,70,2],[378,128,126,10,1]],//フィールドのイベント場所のデータ　[x,y,width,height,eventnum,(shopnum,move Item Num),はじき出される方向(左右上下の順)]
-    []
+    [[282,252,107,116,3,0]]
 ]
 //eventnum- - - 1 マイピク整理　2 マイピク生み出す 3　お店　4 動けない
 const itemobj=[

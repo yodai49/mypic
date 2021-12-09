@@ -21,6 +21,7 @@ var bMemory=[0,0,0];//0:攻撃,1:防御,2:MaxHP
 var unFightFlg=false;//戦闘不能
 var gameoverFlg=false;//敗北
 var damageMessageFlg=false;
+var getCurrencyAmount, getExperienceAmount;//戦闘後に入手するお金と経験値
 
 function battleMain() {
     //character
@@ -251,9 +252,14 @@ function battleMain() {
     } else if(battleMode==5){//逃げる選択
         hitorder();
     } else if(battleMode==6){//勝利
-        if(!oneMoveFlg){//onemoveflgでwinmessageが読み込まれるのを待ってから実行
+        if(oneMoveFlg) {
+            getCurrencyAmount=getCurrency(baseEnemyData[12]);
+            getExperienceAmount=getEx(baseEnemyData[12]);}
+        else {//onemoveflgでwinmessageが読み込まれるのを待ってから実行
             if(in_lstnum == winMessage.length){ //勝利後、フィールドに戻る時の処理はここに追加
                 nextMode=1, modeAnimation=1, battleMode=0, loopmode=0, loopselect=0, lstnum=0,in_lstnum=0;
+                money+=getCurrencyAmount;//獲得金額を追加
+                changeEXP(getExperienceAmount, 0);//獲得経験値を戦闘マイピクに追加
                 mypicstock[mypic[0]][6]=bMemory[0];
                 mypicstock[mypic[0]][7]=bMemory[1];
                 mypicstock[mypic[0]][3]=bMemory[2];
@@ -340,8 +346,17 @@ function needEx(level){//(レベル)^2.5
     return Math.floor(Math.pow(level, 2.5))
 }
 
-function getEx(){//戦闘後獲得する経験値
-    return Math.floor(Math.floor(50*enemylevel*(0.9+(1.1-0.9)*Math.random()))*itemBonus*BossBonus)
+function getCurrency(enemylevel){//戦闘後獲得するお金
+    if(moneyUpFlg) var itemBonus=1.5
+    else var itemBonus=1;
+    return Math.floor(Math.pow(enemylevel,1.5)*(0.9+(1.1-0.9)*Math.random()*itemBonus));//(level)^1.5*(0.9~1.1)
+}
+
+function getEx(enemylevel){//戦闘後獲得する経験値
+    if(experienceUpFlg) var itemBonus=1.5
+    else var itemBonus=1;
+    //bossbonusの判定
+    return Math.floor(Math.floor(50*enemylevel*(0.9+(1.1-0.9)*Math.random()))*itemBonus);//*BossBonus
 }
 
 function lateEnemyAttack(){

@@ -23,6 +23,8 @@ var gameoverFlg=false;//敗北
 var damageMessageFlg=false;
 var getCurrencyAmount, getExperienceAmount;//戦闘後に入手するお金と経験値
 var pressureFlg;//特性pressure
+var battleAnimationFlg=false;//戦闘開始アニメーション
+var battleAnimationCount=1;//短冊カウンタ
 
 function battleMain() {
     //character
@@ -67,7 +69,7 @@ function battleMain() {
             else if(gameoverFlg) battleMode=8, chgCount=0, oneMoveFlg=true, gameoverFlg=false;
             else if(Acount==1 && !damageMessageFlg)damageMessageFlg=true, attackMiss=false;
             else if(Acount==1 && damageMessageFlg)Acount++, damageMessageFlg=false;
-            else if(Acount==2 && !damageMessageFlg)damageMessageFlg=true, attackMiss=false;
+            else if(Acount==2 && !damageMessageFlg)damageMessageFlg=true, Acheck=false, attackMiss=false;
             else if(Acount==2 && damageMessageFlg)Acount=99, damageMessageFlg=false;
         } else if(battleMode==3){
             if(unFightFlg) battleMode=7, chgCount=0, loopselect=0, unFightFlg=false;
@@ -304,7 +306,7 @@ function hitcount(){//攻撃回数: Hitcount=((自分の素早さ)/(敵の素早
 }
 
 function hitcheck(my_hitrate, oppLucky, my_trate){//命中判定: (技の命中率*((200-敵の運)/200)*特性(集中))
-    if(my_trate == 4)concentrateFlg=5/4, console.log("concentarte");
+    if(my_trate == 4)concentrateFlg=5/4, console.log("concentarte_up");
     else concentrateFlg=1;
     var hitodds = Math.floor(my_hitrate*((200-infToRange(oppLucky,0,100,30))/200)*concentrateFlg);
     if(hitodds>=Math.floor(100*Math.random())) return true;
@@ -385,4 +387,12 @@ function lateEnemyAttack(){
         //攻撃が外れた
         attackMiss=true;
     }
+}
+
+function battleStartAnimation(){
+    ctx2d.fillStyle=black;
+    ctx2d.fillRect(0,0,20*battleAnimationCount,height);
+    battleAnimationCount++;
+    if(battleAnimationCount==23) nextMode=2, modeAnimation=1, onMessage=true,battleLaunchFlg=1, encount=0;//バトル開始の処理
+    if(battleAnimationCount>48) battleAnimationFlg=false, battleAnimationCount=0;
 }

@@ -3,7 +3,7 @@ const charasize=30; //キャラクターのサイズ
 const pre_charasize=60; //プリレンダリング用のキャラクターのサイズ
 const fieldwidth=960;//フィールドの幅の最大値
 const fieldheight=540;//フィールドの高さの最大値
-const debugMode=0; //デバッグモード　1ならワープ位置を赤で表示
+const debugMode=3; //デバッグモード　1ならワープ位置を赤で表示
 var walkspeed=3;//歩くスピード
 var menuSelectNum=0,menuSelectFlg=0;
 var menuSelectChildNum=0,menuWindowChildAni=0,itemsScroll=0;
@@ -184,6 +184,9 @@ function clickEveDraw(x,y){ //クリックイベント
     }
 }
 function moveEveDraw(x,y){ //マウスのムーブイベント
+    if (debugMode==3){
+       console.log(x,y);
+    }
     if (mode==1 && eventWindowKind==2 && eventWindowAni && eventProcreateStep==1){ //マイピクドロー中のみ反応
         drawFieldX = (x-(width/2-135))/270*100;
         drawFieldY=(y-(height/2-110))/270*100;

@@ -1250,6 +1250,7 @@ function fieldMain() {
         createField();
         fieldReDrawFlg=1;
         warpFlg=0;
+        if (fieldNameDatabase[myposworld].length) popupMsg.push([fieldNameDatabase[myposworld],120,0,0,-1]);
     } else if(warpAni==20){ //ワープアニメーション終了時
         warpAni=0;
     }

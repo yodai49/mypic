@@ -22,6 +22,7 @@ var unFightFlg=false;//戦闘不能
 var gameoverFlg=false;//敗北
 var damageMessageFlg=false;
 var getCurrencyAmount, getExperienceAmount;//戦闘後に入手するお金と経験値
+var pressureFlg;//特性pressure
 
 function battleMain() {
     //character
@@ -145,19 +146,19 @@ function battleMain() {
             else firstSt=baseEnemyData, secondSt=mypicstock[mypic[0]];
             //先攻後攻のキャラデータが入った
 
-            //先攻の攻撃
-            //命中の判定
             firstSkill=skillData[firstSt[8][loopselect]];//技データのリストが取れる
             secondSkill=skillData[secondSt[8][loopselect]];//技データのリストが取れる
         }
-        
-        else if(Acount==1 && Acheck){
+        else if(Acount==1 && Acheck){//先攻
             Acheck=false;
         if(hitcheck(firstSkill[2], secondSt[9])){//MPの残り判定も追加しないと意見//
             //命中する　
             damage = calcDamage(firstSt[12], firstSkill[1], firstSt[6], secondSt[7], firstSkill[3], secondSt[15]);
             changeHPMP(0, (-1)*damage, attackorder, 0, 0);//HP変化
-            changeHPMP(1, (-1)*firstSkill[4], !attackorder, 0, 0);//MP消費
+            //プレッシャー特性判定
+            if(secondSt[11]==0) pressureFlg=2;
+            else pressureFlg=1;
+            changeHPMP(1, (-1)*pressureFlg*firstSkill[4], !attackorder, 0, 0);//MP消費
             if(secondSt[2] == 0){//HP=0
                 if(attackorder){//敵が死んだので勝利
                     oneMoveFlg=true;
@@ -165,19 +166,16 @@ function battleMain() {
                     //味方6体全員死んだ場合
                     gameoverFlg=true;
                 } else{ //生存残りマイピクがいる
-                    unFightFlg=true;
-                }
-            }
+                    unFightFlg=true;}}
         }
         else attackMiss=true;
         }
         //後攻の攻撃
-        //命中の判定
         if(Acount==2 && Acheck){
             Acheck=false;
-            lateEnemyAttack();
-        }
+            lateEnemyAttack();}
         if(Acount==99)battleMode=1, Acount=0, loopmode=0,loopselect=0;//行動選択に戻る
+
     } else if(battleMode==3){//アイテム選択時
         //selectmode: 選択しているアイテムのitemでの番号
         //BwhoUse:使用するマイピクのmypicでの番号
@@ -364,7 +362,10 @@ function lateEnemyAttack(){
         //命中する
         damage = calcDamage(secondSt[12], secondSkill[1], secondSt[6], firstSt[7], secondSkill[3], firstSt[15]);
         changeHPMP(0, (-1)*damage, !attackorder, 0, 0);//HP変化
-        changeHPMP(1, (-1)*secondSkill[4], attackorder, 0, 0);//MP消費
+        //プレッシャー特性判定
+        if(firstSt[11]==0) pressureFlg=2;
+        else pressureFlg=1;
+        changeHPMP(1, (-1)*pressureFlg*secondSkill[4], attackorder, 0, 0);//MP消費
         if(firstSt[2] == 0){//HP=0
             if(!attackorder){//敵が死んだので勝利
                 oneMoveFlg=true;

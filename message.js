@@ -78,7 +78,7 @@ function battlemessMain(){
         ctx2d.fillStyle=white;
         ctx2d.font="26px "+mainfontName;
         if(Bsetcheck){
-            introMessage[0]="野生の "+enemyData[0][0]+" があらわれた！";
+            introMessage[0]="野生の "+baseenemyData[0]+" があらわれた！";
             introMessage[1]="勝負だ、 "+mypicstock[mypic[0]][0]+" !";
             endMess2[0]=mypicstock[mypic[0]][0]+"はにげた。";}
         if(!modeAnimation) ctx2d.fillText(introMessage[in_lstnum], width*25/100,height*75/100);
@@ -100,12 +100,15 @@ function battleloop(){
     ctx2d.font="26px "+mainfontName;
     //味方ステータス表示
     ctx2d.fillStyle=darkgray;
-    ctx2d.fillRect(width*4/100,height*68/100,35,35);
-    drawMypic(0,width*4/100,height*68/100,35,35,1,0);
+    ctx2d.fillRect(width*3/100,height*68/100,35,35);
+    drawMypic(0,width*3/100,height*68/100,35,35,1,0);
     ctx2d.fillStyle=white;
     ctx2d.font="18px "+mainfontName;
     ctx2d.fillText(mypicstock[mypic[0]][0], width*8/100,height*71/100);
     ctx2d.fillText("Lv."+mypicstock[mypic[0]][12], width*8/100,height*75/100);
+    changeColor(mypicstock[mypic[0]][15], 1.0);
+    ctx2d.fillText(typeDataText[mypicstock[mypic[0]][15]], width*15/100,height*75/100);//属性表示
+    ctx2d.fillStyle=white;
     ctx2d.font="16px "+mainfontName;
     ctx2d.fillText("HP: "+mypicstock[mypic[0]][2]+"/"+mypicstock[mypic[0]][3], width*3/100,height*81/100);
     ctx2d.fillText("DP: "+mypicstock[mypic[0]][4]+"/"+mypicstock[mypic[0]][5], width*3/100,height*85/100);
@@ -116,8 +119,10 @@ function battleloop(){
     //敵ステータス表示
     ctx2d.fillRect(width*82/100,height*68/100,35,35);
     ctx2d.font="18px "+mainfontName;
-    ctx2d.fillText(baseEnemyData[0], width*88/100,height*71/100);
-    ctx2d.fillText("Lv."+baseEnemyData[12], width*88/100,height*75/100);
+    ctx2d.fillText(baseEnemyData[0], width*86/100,height*71/100);
+    changeColor(baseEnemyData[15], 1.0);
+    ctx2d.fillText(typeDataText[baseEnemyData[15]], width*93/100,height*75/100);//属性表示
+    ctx2d.fillStyle=white;
     ctx2d.font="16px "+mainfontName;
     ctx2d.fillText("HP: "+baseEnemyData[2]+"/"+baseEnemyData[3], width*82/100,height*81/100);
     ctx2d.fillText("DP: "+baseEnemyData[4]+"/"+baseEnemyData[5], width*82/100,height*85/100);
@@ -151,7 +156,7 @@ function battleloop(){
 
         if(loopmode==1){
             for(let i=0; i<4; i++){
-                changeColor(skillData[mypicstock[mypic[0]][8][i]][3]);
+                changeColor(skillData[mypicstock[mypic[0]][8][i]][3], 1.0);
                 ctx2d.font="25px "+mainfontName;
                 ctx2d.fillText(skillData[mypicstock[mypic[0]][8][i]][0], width*47/100,height*(75+6*i)/100);
                 ctx2d.fillStyle=white;
@@ -215,10 +220,12 @@ function battleloop(){
         else{
         switch (Acount){
             case 1:
-                ctx2d.fillText(firstSt[0]+" の "+firstSkill[0]+"!", width*25/100,height*75/100);
+                if (!damageMessageFlg) ctx2d.fillText(firstSt[0]+" の "+firstSkill[0]+"!", width*25/100,height*75/100);
+                else ctx2d.fillText(secondSt[0]+"に"+damage+"のダメージ!", width*25/100,height*75/100);
                 break;
             case 2:
-                ctx2d.fillText(secondSt[0]+" の "+secondSkill[0]+"!", width*25/100,height*75/100);
+                if (!damageMessageFlg) ctx2d.fillText(secondSt[0]+" の "+secondSkill[0]+"!", width*25/100,height*75/100);
+                else ctx2d.fillText(firstSt[0]+"に"+damage+"のダメージ!", width*25/100,height*75/100);
                 break;
         }
         }
@@ -257,7 +264,10 @@ function battleloop(){
             case 2:
                 if(attackMiss){
                     ctx2d.fillText(secondSkill[0]+" は当たらなかった...", width*25/100,height*75/100);}
-                else ctx2d.fillText(firstSt[0]+"に"+damage+"のダメージ!", width*25/100,height*75/100);
+                else {ctx2d.fillText(firstSt[0]+"に"+damage+"のダメージ!", width*25/100,height*75/100);
+                    if(typeMatch(secondSkill[3], firstSt[15])==1/2)ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
+                    else if(typeMatch(secondSkill[3], firstSt[15])==2)ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);
+                }
                 break;
         }
     }

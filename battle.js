@@ -20,6 +20,7 @@ var moneyUpFlg=false, experienceUpFlg=false;//金運の知らせ使用
 var bMemory=[0,0,0];//0:攻撃,1:防御,2:MaxHP
 var unFightFlg=false;//戦闘不能
 var gameoverFlg=false;//敗北
+var damageMessageFlg=false;
 
 function battleMain() {
     //character
@@ -62,8 +63,10 @@ function battleMain() {
             if(oneMoveFlg) battleMode=6;
             else if(unFightFlg) battleMode=7, chgCount=0, loopselect=0, unFightFlg=false;
             else if(gameoverFlg) battleMode=8, chgCount=0, oneMoveFlg=true, gameoverFlg=false;
-            else if(Acount==1)Acount++, attackMiss=false;
-            else if(Acount==2)Acount=99, attackMiss=false;
+            else if(Acount==1 && !damageMessageFlg)damageMessageFlg=true, attackMiss=false;
+            else if(Acount==1 && damageMessageFlg)Acount++, damageMessageFlg=false;
+            else if(Acount==2 && !damageMessageFlg)damageMessageFlg=true, attackMiss=false;
+            else if(Acount==2 && damageMessageFlg)Acount=99, damageMessageFlg=false;
         } else if(battleMode==3){
             if(unFightFlg) battleMode=7, chgCount=0, loopselect=0, unFightFlg=false;
             else if(gameoverFlg) battleMode=8, chgCount=0, oneMoveFlg=true, gameoverFlg=false;

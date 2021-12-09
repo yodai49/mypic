@@ -101,7 +101,7 @@ function changeLevel(chgLev,Num){
     mypicstock[mypic[Num]][9]=Math.floor(Math.min(999,mypicstock[mypic[Num]][9]));
     mypicstock[mypic[Num]][10]=Math.floor(Math.min(999,mypicstock[mypic[Num]][10]));
     const skillLv=[5,9,14,18,23,27,33,40,48,54];
-    for(let i = 0;i < skillLv.length;i++){
+    for(let i = 0;i < Math.min(skillLv.length,(mypicstock[mypic[Num]][8].length-4));i++){
         if (skillLv[i] == chgLev){ //スキルの習得時
             checkSkillConflict.push(Num);
             mypicstock[mypic[Num]][14].push(mypicstock[mypic[Num]][8][i+4]);

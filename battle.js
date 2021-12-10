@@ -24,7 +24,10 @@ var damageMessageFlg=false;
 var getCurrencyAmount, getExperienceAmount;//戦闘後に入手するお金と経験値
 var pressureFlg;//特性pressure
 var battleAnimationFlg=false;//戦闘開始アニメーション
-var battleAnimationCount=1;//短冊カウンタ
+var battleAnimationCount=0;//短冊カウンタ
+var battleAnimationTrans=0;//透明度設定
+var battleTransIncrease=true;//透明度増加
+var battleFirstAniCount=0;///1個目のアニメーションの回数
 
 function battleMain() {
     //character
@@ -390,9 +393,28 @@ function lateEnemyAttack(){
 }
 
 function battleStartAnimation(){
-    ctx2d.fillStyle=black;
-    ctx2d.fillRect(0,0,20*battleAnimationCount,height);
-    battleAnimationCount++;
-    if(battleAnimationCount==23) nextMode=2, modeAnimation=1, onMessage=true,battleLaunchFlg=1, encount=0;//バトル開始の処理
-    if(battleAnimationCount>48) battleAnimationFlg=false, battleAnimationCount=0;
+    if(battleAnimationCount==0){
+        if(battleTransIncrease)battleAnimationTrans += 0.1;
+        else battleAnimationTrans -= 0.1;
+        ctx2d.fillStyle="rgba(0,0,0,"+battleAnimationTrans+")";
+        ctx2d.fillRect(0,0,width,height);
+        if(battleAnimationTrans>1)battleTransIncrease=false;
+        else if(battleAnimationTrans<0)battleTransIncrease=true, battleFirstAniCount++;
+    }
+    if(battleFirstAniCount==2)battleAnimationCount++;//animation2個目への移動
+    if(battleAnimationCount!=0){
+        ctx2d.fillStyle=black;
+        for(let i=0; i<45; i++){
+            if(i%2==0) ctx2d.fillRect(0,12*i,width*battleAnimationCount/60,12);//偶数左から
+            else ctx2d.fillRect(width-battleAnimationCount*width/60,12*i,width*battleAnimationCount/60,12);//奇数右から
+        } battleAnimationCount++;
+
+        if(battleAnimationCount==18) {
+            nextMode=2, modeAnimation=1, onMessage=true,battleLaunchFlg=1, encount=0;}//バトル開始の処理
+        if(battleAnimationCount>61) {
+            battleAnimationFlg=false;
+            battleAnimationCount=0;
+            battleAnimationTrans=0;
+            battleFirstAniCount=0;}
+    }
 }

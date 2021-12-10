@@ -9,7 +9,8 @@ const fieldbackdata=[ //フィールドの背景の長方形データをすべ�
     [["fieldbackobj0"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],
     [["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],
     [["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj2"]],[["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],
-    [["0x220000",0,0,4000,4000]]
+    [["fieldbackobj4"]],[["fieldbackobj4"]],[["fieldbackobj4"]],[["fieldbackobj4"]],[["fieldbackobj4"]],[["fieldbackobj4"]],[["fieldbackobj4"]],[["fieldbackobj4"]],[["fieldbackobj4"]],[["fieldbackobj4"]],
+    [["fieldbackobj5"]],[["fieldbackobj5"]],[["fieldbackobj5"]],[["fieldbackobj5"]],[["fieldbackobj5"]],[["fieldbackobj5"]],[["fieldbackobj5"]],[["fieldbackobj5"]],[["fieldbackobj5"]],[["fieldbackobj5"]]
 ]
 const fielddata=[ //フィールドの画像データが全て格納されている
     [[0,0]],[[0,0]],[[0,0]],[[0,0]],[[0,0]],[[0,0]],[[0,0]],[[0,0]], //フィールド0~9
@@ -52,8 +53,8 @@ const fieldwarpobj=[
     [],[],[],[],[],[],[],[],[],[]
 ]
 const eventobj=[    //x,y,width,height,eventnum,...（下部参照）
-    [[339,186,70,90,2],[378,128,126,10,1],[339,286,30,30,6,0]],[[282,252,107,116,3,0]],
-    [[221,18,300,15,4,-1,3]],[],[[199,338,93,26,3,1],[594,199,94,46,3,2]],[],[],[],[],[],
+    [[339,186,70,90,2],[378,148,126,10,1],[339,286,30,30,6,0]],[[282,252,107,116,3,0]],
+    [[221,18,300,15,4,-1,3]],[],[[199,338,93,26,3,1],[594,199,94,66,3,2]],[],[],[],[],[],
     [[381,453,209,30,4,42,2]],[],[],[],[],[[322,364,95,15,3,3]],[],[],[[278,226,60,15,5,0]],[],//10-19
     [],[],[],[],[[670,112,58,20,3,3]],[],[],[[453,329,62,15,5,0]],[],[],//20
     [],[],[],[],[],[],[],[],[],[],//30

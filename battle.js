@@ -409,9 +409,9 @@ function battleStartAnimation(){
             else ctx2d.fillRect(width-battleAnimationCount*width/60,12*i,width*battleAnimationCount/60,12);//奇数右から
         } battleAnimationCount++;
 
-        if(battleAnimationCount==12) {
+        if(battleAnimationCount==72) {
             nextMode=2, modeAnimation=1, onMessage=true,battleLaunchFlg=1, encount=0;}//バトル開始の処理
-        if(battleAnimationCount>61) {
+        if(battleAnimationCount>121) {
             battleAnimationFlg=false;
             battleAnimationCount=0;
             battleAnimationTrans=0;

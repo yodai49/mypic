@@ -126,7 +126,6 @@ function battleloop(){
     ctx2d.fillStyle=white;
     ctx2d.font="16px "+mainfontName;
     ctx2d.fillText("HP: "+baseEnemyData[2]+"/"+baseEnemyData[3], width*82/100,height*81/100);
-    ctx2d.fillText("DP: "+baseEnemyData[4]+"/"+baseEnemyData[5], width*82/100,height*85/100);
     /////////////////
 
     if (fieldReDrawFlg){ /////背景の再描画処理　戦闘開始時にこのフラグが立つ
@@ -139,6 +138,16 @@ function battleloop(){
         messageImg.src="./imgs/messageWindow.png";
         messageImg.onload=function(){
             field2d.drawImage(messageImg,0,0,800,200,width*21/100,height*62/100,width*58/100,height*38/100);
+        }; 
+        const charaImg=new Image();//メッセージウィンドウ
+        charaImg.src="./imgs/battleBack2.png";
+        charaImg.onload=function(){
+            field2d.drawImage(charaImg,0,0,685,179,width*1/100,height*64/100,width*20/100,height*38/100);
+        }; 
+        const enemyImg=new Image();//メッセージウィンドウ
+        enemyImg.src="./imgs/battleBack1.png";
+        enemyImg.onload=function(){
+            field2d.drawImage(enemyImg,0,0,685,179,width*79/100,height*64/100,width*20/100,height*38/100);
         }; 
         fieldReDrawFlg=0;
     }

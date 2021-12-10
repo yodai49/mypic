@@ -162,7 +162,7 @@ function battleMain() {
                 damage = calcDamage(firstSt[12], firstSkill[1], firstSt[6], secondSt[7], firstSkill[3], secondSt[15]);
                 changeHPMP(0, (-1)*damage, attackorder, 0, 0);//HP変化
                 //プレッシャー特性判定
-                if(secondSt[11]==0) pressureFlg=2;
+                if(secondSt[11]==1) pressureFlg=2;
                 else pressureFlg=1;
                 changeHPMP(1, (-1)*pressureFlg*firstSkill[4], !attackorder, 0, 0);//MP消費
                 if(secondSt[2] == 0){//HP=0
@@ -309,7 +309,7 @@ function hitcount(){//攻撃回数: Hitcount=((自分の素早さ)/(敵の素早
 }
 
 function hitcheck(my_hitrate, oppLucky, my_trate){//命中判定: (技の命中率*((200-敵の運)/200)*特性(集中))
-    if(my_trate == 4)concentrateFlg=5/4, console.log("concentarte_up");
+    if(my_trate == 5)concentrateFlg=5/4, console.log("concentarte_up");
     else concentrateFlg=1;
     var hitodds = Math.floor(my_hitrate*((200-infToRange(oppLucky,0,100,30))/200)*concentrateFlg);
     if(hitodds>=Math.floor(100*Math.random())) return true;
@@ -372,7 +372,7 @@ function lateEnemyAttack(){
         damage = calcDamage(secondSt[12], secondSkill[1], secondSt[6], firstSt[7], secondSkill[3], firstSt[15]);
         changeHPMP(0, (-1)*damage, !attackorder, 0, 0);//HP変化
         //プレッシャー特性判定
-        if(firstSt[11]==0) pressureFlg=2;
+        if(firstSt[11]==1) pressureFlg=2;
         else pressureFlg=1;
         changeHPMP(1, (-1)*pressureFlg*secondSkill[4], attackorder, 0, 0);//MP消費
         if(firstSt[2] == 0){//HP=0
@@ -409,9 +409,9 @@ function battleStartAnimation(){
             else ctx2d.fillRect(width-battleAnimationCount*width/60,12*i,width*battleAnimationCount/60,12);//奇数右から
         } battleAnimationCount++;
 
-        if(battleAnimationCount==12) {
+        if(battleAnimationCount==72) {
             nextMode=2, modeAnimation=1, onMessage=true,battleLaunchFlg=1, encount=0;}//バトル開始の処理
-        if(battleAnimationCount>61) {
+        if(battleAnimationCount>121) {
             battleAnimationFlg=false;
             battleAnimationCount=0;
             battleAnimationTrans=0;

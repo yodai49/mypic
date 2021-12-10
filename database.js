@@ -8,7 +8,7 @@ const homposx=90,homposy=130,homposworld=0;
 const fieldbackdata=[ //フィールドの背景の長方形データをすべて格納（主に歩ける部分）
     [["fieldbackobj0"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],
     [["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],
-    [["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],
+    [["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj2"]],[["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],
     [["0x220000",0,0,4000,4000]]
 ]
 const fielddata=[ //フィールドの画像データが全て格納されている
@@ -43,7 +43,8 @@ const fieldwarpobj=[
     [[0,525,596,15,12,450,40],[663,525,300,15,14,116,40]],[[0,0,15,540,12,900,270],[47,0,160,15,13,892,474],[0,525,960,15,15,450,40],[945,0,15,540,16,40,270]],//-14
     [[0,0,540,15,14,450,480],[945,0,15,540,25,40,270]],[[0,0,15,540,14,892,270],[0,0,960,15,18,450,474],[915,0,15,540,17,40,270]], //-16
     [[33,0,15,540,16,862,350]],[[0,525,960,15,16,450,40]],[],  //-19
-    [[364,0,230,58,10,480,480],[0,525,960,15,21,450,40],[945,0,15,540,23,40,100]],[],[],[],[],[],[],[],[],[],
+    [[364,0,230,58,10,480,480],[0,525,960,15,21,450,40],[945,0,15,540,23,40,100]],[[0,0,960,15,20,450,480],[0,525,960,15,22,200,40], //-21
+    [945,0,15,540,23,40,400]],[],[],[],[],[],[],[],[], //-29
     [],[],[],[],[],[],[],[],[],[],
     [],[],[],[],[],[],[],[],[],[]
 ]

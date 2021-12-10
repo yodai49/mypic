@@ -20,7 +20,7 @@ var drawMypicTempPos=[0,0];//描いた始点を保持
 var drawMypicTempObj=[];//描き途中のマイピクの形状を保持
 var drawMypicRadius=0,drawMypicTempName="",selectEggItemNum=0,selectEggKind=0;
 var titleConfirmWindow=0,titleConfirmSelect=1,titleConfirmMessage="",titleConfirmMessage2="",titleConfirmMode=0;
-var eventMessageWindow=0,eventMessageWindowMsg="",eventMessageSelectNum=0,procreateMsg="";
+var eventMessageWindow=0,eventMessageWindowMsg="",eventMessageSelectNum=0,procreateMsg="",eventMessageWindowMsgStack=[],eventMessageWindowAni=0;
 var encount_down=0,encount_down_cnt=0;
 var nowShopData,eventShopSelectNum=0,showmoney=0;
 var checkSkillConflict=[],encountEnemyNum=0;
@@ -412,6 +412,16 @@ function trigEvent(trigEventnum,trigEventObj){
         eventWindowAni++;
         showmoney=money;
         nowShopData=shopData[trigEventObj[5]]
+    } else if(trigEventnum==5 && !menuSelectFlg){ //ボス戦
+
+    } else if(trigEventnum==6 && !menuSelectFlg){
+        eventMessageWindow=1;
+        eventMessageWindowMsgStack=[];
+        eventMessageWindowMsg="+"+eventMsgText[trigEventObj[5]][0];
+        for(var i = 0;i < (eventMsgText[trigEventObj[5]].length-1);i++){
+            eventMessageWindowMsgStack[i]="+"+eventMsgText[trigEventObj[5]][i+1];
+        }
+        eventMessageWindowAni=1;
     }
     menuSelectFlg=1;
 }
@@ -1154,7 +1164,8 @@ function fieldMain() {
             ctx2d.fillRect((width-400)/2,height/2-100,400,200);
             ctx2d.font="16pt " + mainfontName;
             ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-            ctx2d.fillText(eventMessageWindowMsg.substr(1),(width-350)/2,height/2-65);    
+            ctx2d.fillText(eventMessageWindowMsg.substr(
+                1),(width-350)/2,height/2-65);    
             ctx2d.font="12pt " + mainfontName;
             for(var i = 0;i < mypic.length;i++){
                 if(eventMessageSelectNum==i){
@@ -1223,6 +1234,30 @@ function fieldMain() {
                     }
                 }
             }
+        }else if(eventMessageWindowMsg.substr(0,1) == "+"){ //連続でメッセージが現れる場合
+            eventMessageWindowAni++;
+            ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+            ctx2d.font="16pt " + mainfontName;
+            ctx2d.fillRect(30,400,width-60,110);
+            ctx2d.strokeStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+            ctx2d.lineWidth=1;
+            ctx2d.strokeRect(30-4,400-4,width-60,110);
+            ctx2d.strokeRect(30,400,width-60,110);
+            ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+            ctx2d.fillText(eventMessageWindowMsg.substr(1,Math.min(41,Math.floor(eventMessageWindowAni/2))),40,430);
+            ctx2d.fillText(eventMessageWindowMsg.substr(42,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-41))),40,460);
+            ctx2d.fillText(eventMessageWindowMsg.substr(83,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-82))),40,490);
+            if ((zkey) && !(eventMessageWindow-menuWindowAniSpeed) && !menuSelectFlg){//メッセージの更新処理
+                eventMessageWindowAni=1;
+                if (eventMessageWindowMsgStack.length==0){
+                    eventMessageWindow++,menuSelectFlg=1; //終わりの時
+                    eventMessageWindowMsg="+";
+                } else{
+                    eventMessageWindowMsg=eventMessageWindowMsgStack[0];
+                    eventMessageWindowMsgStack.shift();
+                    menuSelectFlg=1;
+                }
+            } 
         }else{
             ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
             ctx2d.font="16pt " + mainfontName;
@@ -1237,7 +1272,7 @@ function fieldMain() {
         if (eventMessageWindow-menuWindowAniSpeed) eventMessageWindow++;
         if (!(eventMessageWindow-menuWindowAniSpeed*2)) eventMessageWindow=0;
         if (!zkey && !xkey && !upkey && !downkey && !leftkey && !rightkey) menuSelectFlg=0;
-        if ((zkey||xkey) && !(eventMessageWindow-menuWindowAniSpeed) && !menuSelectFlg) eventMessageWindow++,menuSelectFlg=1;
+        if ((zkey||xkey) &&eventMessageWindowMsg.substr(0,1) != "+"&& !(eventMessageWindow-menuWindowAniSpeed) && !menuSelectFlg) eventMessageWindow++,menuSelectFlg=1;
     }
     if (!upkey && !downkey && !zkey && !leftkey && !rightkey && !xkey && !zkey) menuSelectFlg=0;
 

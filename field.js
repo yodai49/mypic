@@ -340,6 +340,9 @@ function initiate_field(){
     @param なし
     @return なし
     */
+   //////DEBUG MODE
+   if(debugMode) walkspeed=12;
+   //////
    menuSelectNum=0,menuSelectFlg=0; //選択中のメニュー
    fieldReDrawFlg=1;
 

@@ -383,7 +383,7 @@ function getEx(enemylevel){//戦闘後獲得する経験値
     if(experienceUpFlg) var itemBonus=1.5
     else var itemBonus=1;
     //bossbonusの判定
-    return Math.floor(Math.floor(50*enemylevel*(0.9+(1.1-0.9)*Math.random()))*itemBonus);//*BossBonus
+    return Math.floor(Math.floor(3*Math.pow(enemylevel,1.2)*(0.9+(1.1-0.9)*Math.random()))*itemBonus);//*BossBonus
 }
 
 function lateEnemyAttack(){

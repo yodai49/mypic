@@ -124,7 +124,7 @@ function battleMain() {
             for(var i = 0;i < enemyData[0].length;i++){
                 baseEnemyData[i]=enemyData[encountEnemyNum][i];
             }
-            encountEnemyNum= 18;
+            encountEnemyNum= 32;
             decideEnemyStatis();
             
             bMemory[0]=mypicstock[mypic[0]][6];
@@ -542,27 +542,27 @@ function drawEnemy(){//敵の画像表示
         case 21://cavebase1
             enemyImg.src="./imgs/enemyImgs/cave1.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,800,800,width*62/100,height*3/100,width*25/100,height*25*3/2/100);};
             break;
         case 22://cavebase2
             enemyImg.src="./imgs/enemyImgs/cave2.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,350,350,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,1574,1776,width*66/100,height*7/100,width*18/100,height*21*3/2/100);};
             break;
         case 23://cavespeed
             enemyImg.src="./imgs/enemyImgs/cave3.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,350,350,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,1584,1695,width*65/100,height*8/100,width*20/100,height*22*3/2/100);};
             break;
         case 24://cavedefend
             enemyImg.src="./imgs/enemyImgs/cave4.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,350,350,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,732,1839,width*70/100,height*6/100,width*10/100,height*23*3/2/100);};
             break;
         case 25://cavetank
             enemyImg.src="./imgs/enemyImgs/cave5.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,1791,1929,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,1791,1929,width*65/100,height*5/100,width*19/100,height*22*3/2/100);};
             break;
         case 26://caverare
             enemyImg.src="./imgs/enemyImgs/caveRare.png";
@@ -572,7 +572,7 @@ function drawEnemy(){//敵の画像表示
         case 27://cavesuperrare
             enemyImg.src="./imgs/enemyImgs/caveSuperRare.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,350,350,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,3326,3714,width*65/100,height*5/100,width*21/100,height*24*3/2/100);};
             break;
         case 28://cavewater2
             enemyImg.src="./imgs/enemyImgs/waterSuperRare.png";
@@ -592,22 +592,22 @@ function drawEnemy(){//敵の画像表示
         case 31://remainsbase1
             enemyImg.src="./imgs/enemyImgs/remains1.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,800,800,width*61/100,height*4/100,width*27/100,height*27*3/2/100);};
             break;
         case 32://remainsbase2
             enemyImg.src="./imgs/enemyImgs/remains2.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,800,800,width*63/100,height*3/100,width*25/100,height*25*3/2/100);};
             break;
         case 33://remainsspeed
             enemyImg.src="./imgs/enemyImgs/remains3.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,800,800,width*63/100,height*3/100,width*25/100,height*25*3/2/100);};
             break;
         case 34://remainsattack
             enemyImg.src="./imgs/enemyImgs/remains4.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,800,800,width*63/100,height*3/100,width*25/100,height*25*3/2/100);};
             break;
         case 35://remainstank
             enemyImg.src="./imgs/enemyImgs/remains5.png";

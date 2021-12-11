@@ -125,7 +125,7 @@ function init() {
             titleMain();
         } else if(mode == 1) { //フィールド
             fieldMain();
-        } else if(mode == 2){　//バトル
+        } else if(mode == 2){ //バトル
             battleMain();
         }
         messageMain();

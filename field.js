@@ -901,12 +901,18 @@ function fieldMain() {
             zkeySE.play(); 
         } else if(zkey &&!menuSelectFlg&& menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum!=-1){ //マイピクの詳細画面を見る時
             //入れ替え処理
-            var menuTmpSort=mypic[menuSortMypicNum];
-            mypic[menuSortMypicNum]=mypic[menuSelectChildNum];
-            mypic[menuSelectChildNum]=menuTmpSort;
-            menuSortMypicNum=-1;
-            menuzflg=1;
-            zkeySE.play(); 
+            if((menuSelectChildNum == 0 && mypicstock[mypic[menuSortMypicNum]][2]==0) || (menuSortMypicNum == 0 && mypicstock[mypic[menuSelectChildNum]][2]==0)){
+                popupMsg.push(["このマイピクはひんしだ！",120,0,0,-1]);
+                menuzflg=1;
+                menuSelectFlg=1;
+            } else{
+                var menuTmpSort=mypic[menuSortMypicNum];
+                mypic[menuSortMypicNum]=mypic[menuSelectChildNum];
+                mypic[menuSelectChildNum]=menuTmpSort;
+                menuSortMypicNum=-1;
+                menuzflg=1;
+                zkeySE.play(); 
+            }
         }
         if (upkey &&!titleConfirmWindow&& !eventMessageWindow&& !menuSelectFlg && !menuWindowChildAni && !eventMessageWindow) menuSelectNum--,menuSelectFlg=1, crosskeySE.play();
         if (downkey &&!titleConfirmWindow&& !eventMessageWindow&& !menuSelectFlg && !menuWindowChildAni && !eventMessageWindow) menuSelectNum++,menuSelectFlg=1, crosskeySE.play();

@@ -3,7 +3,7 @@ const charasize=30; //キャラクターのサイズ
 const pre_charasize=60; //プリレンダリング用のキャラクターのサイズ
 const fieldwidth=960;//フィールドの幅の最大値
 const fieldheight=540;//フィールドの高さの最大値
-const debugMode=3; //デバッグモード　1ならワープ位置を赤で表示
+const debugMode=0; //デバッグモード　1ならワープ位置を赤で表示
 var walkspeed=3;//歩くスピード
 var menuSelectNum=0,menuSelectFlg=0;
 var menuSelectChildNum=0,menuWindowChildAni=0,itemsScroll=0;
@@ -206,7 +206,7 @@ function moveEveDraw(x,y){ //マウスのムーブイベント
 }
 
 function encount_check(){//敵との遭遇率encount=6*((200−運)/200)
-    if (mypic.length==0) return 0;
+    if (mypic.length==0 || debugMode) return 0;
     var encountRate = (6*((200 - mypicstock[mypic[0]][9],0,100,100),0,100/200));
     var tempEncRandom=((100+encount_down*6000)*Math.random());
     if (encountRate>=tempEncRandom && fieldenemyDataSet[fieldenemy[myposworld]].length!=0) {

@@ -133,22 +133,22 @@ function battleloop(){
         //////////////
         //field部分
         const mypicFieldBackImg=new Image();//mypicField
-        if(encountEnemyNum == 5 || (encountEnemyNum>= 9 && encountEnemyNum<= 18)){
+        if(myposworld>=10 && myposworld<=18 || myposworld == 3){
             mypicFieldBackImg.src="./imgs/battleFieldBackForest.png";
             mypicFieldBackImg.onload=function(){
                 field2d.drawImage(mypicFieldBackImg,0,138,450,200,width*0/100,height*0/100,width,height*65/100);
             }; }
-        else if(encountEnemyNum == 6 || (encountEnemyNum>= 19 && encountEnemyNum<= 28)){
+        else if(myposworld>=20 && myposworld<=27){
             mypicFieldBackImg.src="./imgs/battleFieldBackCave.png";
             mypicFieldBackImg.onload=function(){
                 field2d.drawImage(mypicFieldBackImg,0,138,450,200,width*0/100,height*0/100,width,height*65/100);
             }; }
-        else if(encountEnemyNum == 7 || (encountEnemyNum>= 29 && encountEnemyNum<= 38)){
+        else if(myposworld>=30 && myposworld<=36){
             mypicFieldBackImg.src="./imgs/battleFieldBackRemains.png";
             mypicFieldBackImg.onload=function(){
                 field2d.drawImage(mypicFieldBackImg,0,138,450,200,width*0/100,height*0/100,width,height*65/100);
             }; }
-        else if(encountEnemyNum == 8 || (encountEnemyNum>= 39 && encountEnemyNum<= 48)){
+        else if(myposworld>=40 && myposworld<=46){
             mypicFieldBackImg.src="./imgs/battleFieldBackDesert.png";
             mypicFieldBackImg.onload=function(){
                 field2d.drawImage(mypicFieldBackImg,0,58,580,386,width*0/100,height*0/100,width,height*65/100);

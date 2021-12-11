@@ -90,7 +90,8 @@ function battleMain() {
             if(!attackorder){//逃げれない
                 battleMode=1, loopmode=0, loopselect=0;}
             else{//逃げてfieldに遷移
-                modeAnimation=1, nextMode=1, battleMode=0, loopmode=0, loopselect=0, lstnum=0, in_lstnum=0;}
+                modeAnimation=1, nextMode=1, battleMode=0, loopmode=0, loopselect=0, lstnum=0, in_lstnum=0;
+                normalBattleBgm.stop();}
         } else if(battleMode==6){
             in_lstnum++;
         } else if(battleMode==7){
@@ -100,6 +101,7 @@ function battleMain() {
         } else if(battleMode==8){
             in_lstnum++;
         }
+        zkey2SE.play();
         zkey=false;
     }
     //////
@@ -108,19 +110,24 @@ function battleMain() {
     if(xkey){
         if(battleMode==1 && (loopmode==1 || loopmode==2 || loopmode==3)) loopmode=0, BtopItem=0, loopselect=0;
         else if(battleMode==1 && loopmode==4) loopmode=2, BwhoUse=0;
+        xkeySE.play();
         xkey=false;
     }
     //////
 
 
     if(battleMode==0){//敵データの保存
-        baseEnemyData=[];
-        for(var i = 0;i < enemyData[0].length;i++){
-            baseEnemyData[i]=enemyData[encountEnemyNum][i];
+        if(oneMoveFlg){
+            baseEnemyData=[];
+            for(var i = 0;i < enemyData[0].length;i++){
+                baseEnemyData[i]=enemyData[encountEnemyNum][i];
+            }
+            decideEnemyStatis();
+            bMemory[0]=mypicstock[mypic[0]][6];
+            bMemory[1]=mypicstock[mypic[0]][7];
+            bMemory[2]=mypicstock[mypic[0]][3];
+            oneMoveFlg=false;
         }
-        bMemory[0]=mypicstock[mypic[0]][6];
-        bMemory[1]=mypicstock[mypic[0]][7];
-        bMemory[2]=mypicstock[mypic[0]][3];
     } else if(battleMode==1){//行動選択(loop)
         if(downkey) {
             if (loopmode==2){
@@ -129,19 +136,23 @@ function battleMain() {
             else if(loopmode==3){loopselect=Math.min(mypic.length-1,loopselect+1);}
             else if(loopmode==4){BwhoUse=Math.min(mypic.length-1,BwhoUse+1);}
             else{loopselect=Math.min(3,loopselect+1);}
+            crosskeySE.play();
             downkey=false;}
         else if(upkey){
             if(loopmode==4)BwhoUse=Math.max(0,BwhoUse-1);
             else loopselect=Math.max(0,loopselect-1);
             if(loopmode==2 && loopselect<BtopItem)BtopItem--;
+            crosskeySE.play();
             upkey=false;}
         else if(rightkey){
             if(loopmode==3){loopselect=Math.min(mypic.length-1,loopselect+3);}
             else if(loopmode==4){BwhoUse=Math.min(mypic.length-1,BwhoUse+3);}
+            crosskeySE.play();
             rightkey=false;}
         else if(leftkey){
             if(loopmode==3){loopselect=Math.max(0,loopselect-3);}
             else if(loopmode==4){BwhoUse=Math.max(0,BwhoUse-3);}
+            crosskeySE.play();
             leftkey=false;}
     } else if(battleMode==2){//攻撃選択時の処理
         if(Acount==0 && Acheck){
@@ -262,6 +273,7 @@ function battleMain() {
         else {//onemoveflgでwinmessageが読み込まれるのを待ってから実行
             if(in_lstnum == winMessage.length){ //勝利後、フィールドに戻る時の処理はここに追加
                 nextMode=1, modeAnimation=1, battleMode=0, loopmode=0, loopselect=0, lstnum=0,in_lstnum=0;
+                normalBattleBgm.stop();//bgm停止
                 money+=getCurrencyAmount;//獲得金額を追加
                 changeEXP(getExperienceAmount, 0);//獲得経験値を戦闘マイピクに追加
                 mypicstock[mypic[0]][6]=bMemory[0];
@@ -289,6 +301,7 @@ function battleMain() {
         if(!oneMoveFlg){//onemoveflgでwinmessageが読み込まれるのを待ってから実行
             if(in_lstnum == loseMessage.length){ //勝利後、フィールドに戻る時の処理はここに追加
                 nextMode=0, modeAnimation=1, battleMode=0, loopmode=0, loopselect=0, lstnum=0, in_lstnum=0;
+                normalBattleBgm.stop();//bgm停止
                 mypicstock[mypic[0]][6]=bMemory[0];
                 mypicstock[mypic[0]][7]=bMemory[1];
                 mypicstock[mypic[0]][3]=bMemory[2];
@@ -309,7 +322,7 @@ function hitcount(){//攻撃回数: Hitcount=((自分の素早さ)/(敵の素早
 }
 
 function hitcheck(my_hitrate, oppLucky, my_trate){//命中判定: (技の命中率*((200-敵の運)/200)*特性(集中))
-    if(my_trate == 5)concentrateFlg=5/4, console.log("concentarte_up");
+    if(my_trate == 5)concentrateFlg=5/4;
     else concentrateFlg=1;
     var hitodds = Math.floor(my_hitrate*((200-infToRange(oppLucky,0,100,30))/200)*concentrateFlg);
     if(hitodds>=Math.floor(100*Math.random())) return true;
@@ -318,6 +331,10 @@ function hitcheck(my_hitrate, oppLucky, my_trate){//命中判定: (技の命中�
 
 function calcDamage(myLevel, skillPower, myAttack, oppDefend, fskill, stype){//ダメージ計算: (((レベル∗2/4+2)∗技の威力∗自分の攻撃力/敵の防御力+2)∗タイプ相性∗(乱数0.9−1.1))
     return Math.floor(Math.floor(Math.floor(myLevel*2/6+2)* skillPower * myAttack/oppDefend+2) * typeMatch(fskill, stype) * (0.9+(1.1-0.9)*Math.random()));
+}
+
+function traitEffect(){//特性によるダメージ変化, 
+
 }
 
 function typeMatch(fskill, stype){//引数は技属性番号とタイプ番号
@@ -394,6 +411,7 @@ function lateEnemyAttack(){
 
 function battleStartAnimation(){
     if(battleAnimationCount==0){
+        if(battleFirstAniCount==0 && battleAnimationTrans==0 && battleTransIncrease)dungeonBossBattle4Bgm.play();
         if(battleTransIncrease)battleAnimationTrans += 0.1;
         else battleAnimationTrans -= 0.1;
         ctx2d.fillStyle="rgba(0,0,0,"+battleAnimationTrans+")";
@@ -410,11 +428,25 @@ function battleStartAnimation(){
         } battleAnimationCount++;
 
         if(battleAnimationCount==72) {
-            nextMode=2, modeAnimation=1, onMessage=true,battleLaunchFlg=1, encount=0;}//バトル開始の処理
+            nextMode=2, modeAnimation=1, onMessage=true,battleLaunchFlg=1, encount=0, oneMoveFlg=true;}//バトル開始の処理
         if(battleAnimationCount>121) {
             battleAnimationFlg=false;
             battleAnimationCount=0;
             battleAnimationTrans=0;
             battleFirstAniCount=0;}
     }
+}
+
+function checkEnemy(){ //どのてきを召喚するか決める
+
+}
+
+function decideEnemyStatis(){//敵のランダムステータスを確定させる
+    //HP,攻撃,防御,レベル
+    var fluctuationValue=Math.floor(Math.random()*2*baseEnemyData[12][1]) - baseEnemyData[12][1];//変動値決定
+    baseEnemyData[12] = baseEnemyData[12][0] + fluctuationValue;//レベル
+    baseEnemyData[3] = baseEnemyData[3][0] + fluctuationValue*baseEnemyData[3][1];//MaxHP
+    baseEnemyData[2] = baseEnemyData[3];
+    baseEnemyData[6] = baseEnemyData[6][0] + fluctuationValue*baseEnemyData[6][1];//攻撃
+    baseEnemyData[7] = baseEnemyData[7][0] + fluctuationValue*baseEnemyData[7][1];//防御
 }

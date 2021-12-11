@@ -20,7 +20,7 @@ function titleMain() {
        if (i % 4 == 1) titleAniX=-1;
        if (i % 4 == 2) titleAniY=1;
        if (i % 4 == 3) titleAniY=-1;
-       let param=30;
+       let param=30;/////
        let t=3*(titleAni-i*param)%1000;
        if ((titleAni*3)%1000 < 700){
        } else{

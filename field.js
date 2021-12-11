@@ -479,9 +479,9 @@ function fieldMain() {
         }
     }
 
-    if(isFromFirst){ ////最初に強制的に出すメッセージ
+    if(isFromFirst==1){ ////最初に強制的に出すメッセージ
         trigEvent(6,[339,286,30,30,6,0,-1]); 
-        isFromFirst=0;
+        isFromFirst=2;
     }
 
     ////////////////////////////////////////////////////////キー入力等処理
@@ -608,6 +608,8 @@ function fieldMain() {
                     }
                 } else if(eventProcreateStep==3){
                     eventWindowAni++,menuSelectFlg=1;
+                    console.log(isFromFirst);
+                    if (isFromFirst==2) isFromFirst=0, menuSelectFlg=0,trigEvent(6,[339,286,30,30,6,4,-1]); 
                 }
             } 
             if(xkey && !menuSelectFlg){
@@ -796,7 +798,7 @@ function fieldMain() {
         if (eventWindowAni == 2*menuWindowAniSpeed) eventWindowAni=0,happenedEvent=0; 
         if (spacekey) menuSelectFlg=0;
     } else if(!menuWindow&& !eventMessageWindow){ /////メニューウィンドウが表示されていない時
-        if(ckey) menuWindow++,menuSelectNum=0,menuWindowChildAni=0;
+        if(ckey&& !isFromFirst) menuWindow++,menuSelectNum=0,menuWindowChildAni=0;
         if (leftkey) walkdir=0;
         if (rightkey) walkdir=1;
         if (upkey) walkdir=2;
@@ -1280,6 +1282,13 @@ function fieldMain() {
                         inMsgBattleFlg=1;
                         encountEnemyNum=Number(eventMessageWindowMsg.substr(2,3));
                         encount=true;
+                        eventMessageWindowMsg=eventMessageWindowMsgStack[0];
+                        eventMessageWindowMsgStack.shift();
+                        menuSelectFlg=1;
+                    } else if(eventMessageWindowMsg.substr(1,1)=="^" && !isNaN(Number(eventMessageWindowMsg.substr(2,3)))){ //アイテム入手のとき
+                        //アイテム入手のときの書式は"+^XXX"
+                        getItem(Number(eventMessageWindowMsg.substr(2,3)));
+                        popupMsg.push([itemdata[Number(eventMessageWindowMsg.substr(2,3))][0] + "を手に入れた！",120,0,0,-1]);
                         eventMessageWindowMsg=eventMessageWindowMsgStack[0];
                         eventMessageWindowMsgStack.shift();
                         menuSelectFlg=1;

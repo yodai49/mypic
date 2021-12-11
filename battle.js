@@ -28,13 +28,49 @@ var battleAnimationCount=0;//短冊カウンタ
 var battleAnimationTrans=0;//透明度設定
 var battleTransIncrease=true;//透明度増加
 var battleFirstAniCount=0;///1個目のアニメーションの回数
+var mypicIsDamagedAni=100;//アニメーション用
+var enemyIsDamagedAni=100;
+var showMypicHP=0,showEnemyHP=0;
 
 function battleMain() {
     //character
     ctx2d.fillStyle=blue;
-    drawMypic(0,190,130+Math.max(0,Math.sin(globalTime/7)*20-17),180,180,1,0);
+    ctx2d.fillStyle="rgba(150,0,0,0.6)";
+    ctx2d.fillRect(20,160,140,3);
+    if(showMypicHP/mypicstock[mypic[0]][3]<0.2){///味方のHP
+        ctx2d.fillStyle="rgba(150,0,0,0.9)";
+    } else if(showMypicHP/mypicstock[mypic[0]][3]<0.5){
+        ctx2d.fillStyle="rgba(200,200,50,0.9)";
+    } else{
+        ctx2d.fillStyle="rgba(50,200,50,0.9)";
+    }
+    ctx2d.fillRect(20,160,140*showMypicHP/mypicstock[mypic[0]][3],3);
+/*
+    ctx2d.fillStyle="rgba(150,0,0,0.6)"; ///敵のHP
+    ctx2d.fillRect(600,300,140,3);
+    if(showEnemyHP/baseEnemyData[3]<0.2){
+        ctx2d.fillStyle="rgba(150,0,0,0.9)";
+    } else if(showEnemyHP/baseEnemyData[3]<0.5){
+        ctx2d.fillStyle="rgba(200,200,50,0.9)";
+    } else{
+        ctx2d.fillStyle="rgba(50,200,50,0.9)";
+    }
+    ctx2d.fillRect(600,300,140*showEnemyHP/baseEnemyData[3],3);*/
+
+    if(showMypicHP<mypicstock[mypic[0]][2]) showMypicHP++;
+    if(showMypicHP>mypicstock[mypic[0]][2]) showMypicHP--;
+    /*
+    if(showEnemyHP<baseEnemyData[2]) showEnemyHP++;
+    if(showEnemyHP>baseEnemyData[2]) showEnemyHP--;*/
+
+    drawMypic(0,190,130+Math.max(0,Math.sin(globalTime/7)*20-17),180,180,1,0,(mypicIsDamagedAni<=30&& (Math.floor(mypicIsDamagedAni/4)%2)));
+    mypicIsDamagedAni++;
+    enemyIsDamagedAni++;
     //enemy
     drawEnemy();
+    if(!(enemyIsDamagedAni<=30&& (Math.floor(enemyIsDamagedAni/4)%2))){
+        ctx2d.fillStyle="rgba(150,0,0,1)";
+    }
 
     //stage名
     ctx2d.setTransform(1,0,-0.5,1,0,0);
@@ -130,6 +166,7 @@ function battleMain() {
             for(var i = 0;i < enemyData[0].length;i++){
                 baseEnemyData[i]=enemyData[encountEnemyNum][i];
             }
+//            showEnemyHP=baseEnemyData[2];
             decideEnemyStatis();
             bMemory[0]=mypicstock[mypic[0]][6];
             bMemory[1]=mypicstock[mypic[0]][7];
@@ -179,7 +216,9 @@ function battleMain() {
                 attackMiss=false;
                 //命中する　
                 damage = calcDamage(firstSt[12], firstSkill[1], firstSt[6], secondSt[7], firstSkill[3], secondSt[15]);
-                changeHPMP(0, (-1)*damage, attackorder, 0, 0);//HP変化
+                changeHPMP(0, (-1)*damage, attackorder,0, 0);//HP変化
+                if(!attackorder) mypicIsDamagedAni=1;
+                if(attackorder) enemyIsDamagedAni=1;
                 //プレッシャー特性判定
                 if(secondSt[11]==1) pressureFlg=2;
                 else pressureFlg=1;
@@ -340,7 +379,7 @@ function hitcheck(my_hitrate, oppLucky, my_trate){//命中判定: (技の命中�
 
 function calcDamage(myLevel, skillPower, myAttack, oppDefend, fskill, stype){//ダメージ計算: (((レベル∗2/4+2)∗技の威力∗自分の攻撃力/敵の防御力+2)∗タイプ相性∗(乱数0.9−1.1))
 //    return Math.floor(Math.floor(Math.floor(myLevel*2/6+2)* skillPower * myAttack/oppDefend+2) * typeMatch(fskill, stype) * (0.9+(1.1-0.9)*Math.random()));
-    return Math.max(0,Math.floor(((Math.pow(myLevel,0.2)*20/6+2)* skillPower * myAttack/oppDefend) * typeMatch(fskill, stype) * (0.9+(1.1-0.9)*Math.random())));
+    return Math.max(0,Math.floor(((Math.pow(myLevel,0.2)*20/6+2)* skillPower * Math.abs(myAttack,0.5)/oppDefend) * typeMatch(fskill, stype) * (0.9+(1.1-0.9)*Math.random())));
 }
 
 function traitEffect(){//特性によるダメージ変化, 
@@ -398,6 +437,8 @@ function lateEnemyAttack(){
         //命中する
         damage = calcDamage(secondSt[12], secondSkill[1], secondSt[6], firstSt[7], secondSkill[3], firstSt[15]);
         changeHPMP(0, (-1)*damage, !attackorder, 0, 0);//HP変化
+        if(!attackorder) mypicIsDamagedAni=1;
+        if(attackorder) enemyIsDamagedAni=1;
         //プレッシャー特性判定
         if(firstSt[11]==1) pressureFlg=2;
         else pressureFlg=1;
@@ -420,6 +461,9 @@ function lateEnemyAttack(){
 }
 
 function battleStartAnimation(){
+    mypicIsDamagedAni=100;
+    enemyIsDamagedAni=100;
+    showMypicHP=mypicstock[mypic[0]][2];
     if(battleAnimationCount==0){
         if(battleFirstAniCount==0 && battleAnimationTrans==0 && battleTransIncrease) stopFieldBGM(),normalBattleBgm.play();
         if(battleTransIncrease)battleAnimationTrans += 0.1;

@@ -1360,7 +1360,7 @@ function fieldMain() {
                 ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
             }
             if (eventMessageWindowMsg.substr(1,1)=="¥"){
-                for(var i = 0;i < 6;i++){
+                for(var i = 0;i < mypic.length;i++){
                     mypicstock[mypic[i]][2]=mypicstock[mypic[i]][3];
                     mypicstock[mypic[i]][4]=mypicstock[mypic[i]][5];
                 }

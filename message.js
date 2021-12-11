@@ -148,7 +148,7 @@ function battleloop(){
             mypicFieldBackImg.onload=function(){
                 field2d.drawImage(mypicFieldBackImg,0,138,450,200,width*0/100,height*0/100,width,height*65/100);
             }; }
-        else if(encountEnemyNum == 0 || (encountEnemyNum>= 39 && encountEnemyNum<= 48)){
+        else if(encountEnemyNum == 8 || (encountEnemyNum>= 39 && encountEnemyNum<= 48)){
             mypicFieldBackImg.src="./imgs/battleFieldBackDesert.png";
             mypicFieldBackImg.onload=function(){
                 field2d.drawImage(mypicFieldBackImg,0,58,580,386,width*0/100,height*0/100,width,height*65/100);

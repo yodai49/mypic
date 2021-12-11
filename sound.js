@@ -66,6 +66,18 @@ const dungeonBossBattle3Bgm=new Howl({
     loop: true,
     format: ['mp3'],
 });
+const dungeonBossBattle4Bgm=new Howl({
+    src: 'sound/addBattle1.mp3',
+    volume: 0.24,
+    loop: true,
+    format: ['mp3'],
+});
+const dungeonBossBattle5Bgm=new Howl({
+    src: 'sound/addBattle2.mp3',
+    volume: 0.24,
+    loop: true,
+    format: ['mp3'],
+});
 const lastBossBattle1Bgm=new Howl({
     src: 'sound/lastBossBattle.mp3',
     volume: 0.24,
@@ -76,5 +88,40 @@ const lastBossBattle1Bgm=new Howl({
 
 /////////////////////
 ////     SE      ////
-
+const zkeySE=new Howl({
+    src: 'sound/zkeySE.wav',
+    volume: 0.24,
+    loop: false,
+    format: ['mp3'],
+});
+const zkey2SE=new Howl({
+    src: 'sound/zkey2SE.wav',
+    volume: 0.24,
+    loop: false,
+    format: ['mp3'],
+});
+const xkeySE=new Howl({
+    src: 'sound/xkeySE.mp3',
+    volume: 0.24,
+    loop: false,
+    format: ['mp3'],
+});
+const ckeySE=new Howl({
+    src: 'sound/ckeySE.mp3',
+    volume: 0.24,
+    loop: false,
+    format: ['mp3'],
+});
+const warpMapSE=new Howl({
+    src: 'sound/warpMapSE.mp3',
+    volume: 0.24,
+    loop: false,
+    format: ['mp3'],
+});
+const messageSE=new Howl({
+    src: 'sound/messageSE.mp3',
+    volume: 0.24,
+    loop: false,
+    format: ['mp3'],
+});
 /////////////////////

@@ -23,7 +23,7 @@ var titleConfirmWindow=0,titleConfirmSelect=1,titleConfirmMessage="",titleConfir
 var eventMessageWindow=0,eventMessageWindowMsg="",eventMessageSelectNum=0,procreateMsg="",eventMessageWindowMsgStack=[],eventMessageWindowAni=0;
 var encount_down=0,encount_down_cnt=0;
 var nowShopData,eventShopSelectNum=0,showmoney=0;
-var checkSkillConflict=[],encountEnemyNum=0;
+var checkSkillConflict=[],encountEnemyNum=0,inMsgBattleFlg=0;
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
     if (mypic.length<=drawMypicNum) return 0;
@@ -97,8 +97,8 @@ function procreateProcess(){ //卵の孵化処理
     for(var i=0;i<12;i++) neweggData[i] = eggData[selectEggKind][i];
     neweggData[2]*= (1-randomrate+randomrate*Math.random())*Math.min(1.5,(0.8+0.07*lineCline));//HP
     neweggData[3]*= (1-randomrate+randomrate*Math.random())*Math.min(1.5,(0.8+0.07*lineCarc));//MP
-    neweggData[4]*= (1-randomrate+randomrate*Math.random())*Math.min(1.2,(0.9+0.4*Math.pow(lineratio,1)));//攻撃力
-    neweggData[5]*= (1-randomrate+randomrate*Math.random())*Math.min(1.2,(0.9+0.4*Math.pow((1-lineratio),1)));//防御力
+    neweggData[4]*= (1-randomrate+randomrate*Math.random())*Math.min(1.6,(0.9+0.8*Math.pow(lineratio,1)));//攻撃力
+    neweggData[5]*= (1-randomrate+randomrate*Math.random())*Math.min(1.6,(0.9+0.8*Math.pow((1-lineratio),1)));//防御力
     neweggData[7]+= 3*(randomrate*Math.random()+(1-randomrate)*Math.min(1,0.3*Math.sqrt(arcCarc)));//運
     neweggData[8]*= (1-randomrate+randomrate*Math.random())*Math.max(1.6,(1.5-(linecnt+arccnt)/15*0.8));//すばやさ
     neweggData[5]*= Math.min(1.5,(0.7+(linecnt+arccnt)/15*0.8));//防御力
@@ -415,13 +415,25 @@ function trigEvent(trigEventnum,trigEventObj){
     } else if(trigEventnum==5 && !menuSelectFlg){ //ボス戦
 
     } else if(trigEventnum==6 && !menuSelectFlg){
-        eventMessageWindow=1;
-        eventMessageWindowMsgStack=[];
-        eventMessageWindowMsg="+"+eventMsgText[trigEventObj[5]][0];
-        for(var i = 0;i < (eventMsgText[trigEventObj[5]].length-1);i++){
-            eventMessageWindowMsgStack[i]="+"+eventMsgText[trigEventObj[5]][i+1];
+        let tempitemflg=0;
+        for(let i = 0; i < items.length;i++){
+            if(items[i][0] == trigEventObj[6]) tempitemflg=1;
         }
-        eventMessageWindowAni=1;
+        if(trigEventObj[7]!=undefined){
+            if(nextEventNum!=trigEventObj[7]) {
+                return 0;
+            }
+        }
+        if(!tempitemflg){
+            eventMessageWindow=1;
+            eventMessageWindowMsgStack=[];
+            eventMessageWindowMsg="+"+eventMsgText[trigEventObj[5]][0];
+            for(var i = 0;i < (eventMsgText[trigEventObj[5]].length-1);i++){
+                eventMessageWindowMsgStack[i]="+"+eventMsgText[trigEventObj[5]][i+1];
+            }
+            eventMessageWindowAni=1;
+        }
+        if(trigEventObj[7]!=undefined) nextEventNum=trigEventObj[8];
     }
     menuSelectFlg=1;
 }
@@ -465,6 +477,11 @@ function fieldMain() {
             field2d.fillStyle="rgba(0,255,0,0.3)";
             field2d.fillRect(eventobj[myposworld][i][0],eventobj[myposworld][i][1],eventobj[myposworld][i][2],eventobj[myposworld][i][3]);
         }
+    }
+
+    if(isFromFirst==1){ ////最初に強制的に出すメッセージ
+        trigEvent(6,[339,286,30,30,6,0,-1]); 
+        isFromFirst=2;
     }
 
     ////////////////////////////////////////////////////////キー入力等処理
@@ -591,6 +608,8 @@ function fieldMain() {
                     }
                 } else if(eventProcreateStep==3){
                     eventWindowAni++,menuSelectFlg=1;
+                    console.log(isFromFirst);
+                    if (isFromFirst==2) isFromFirst=0, menuSelectFlg=0,trigEvent(6,[339,286,30,30,6,4,-1]); 
                 }
             } 
             if(xkey && !menuSelectFlg){
@@ -779,7 +798,7 @@ function fieldMain() {
         if (eventWindowAni == 2*menuWindowAniSpeed) eventWindowAni=0,happenedEvent=0; 
         if (spacekey) menuSelectFlg=0;
     } else if(!menuWindow&& !eventMessageWindow){ /////メニューウィンドウが表示されていない時
-        if(ckey) menuWindow++;
+        if(ckey&& !isFromFirst) menuWindow++,menuSelectNum=0,menuWindowChildAni=0;
         if (leftkey) walkdir=0;
         if (rightkey) walkdir=1;
         if (upkey) walkdir=2;
@@ -867,15 +886,15 @@ function fieldMain() {
             menuSortMypicNum=-1;
             menuzflg=1;
         }
-        if (upkey && !eventMessageWindow&& !menuSelectFlg && !menuWindowChildAni && !eventMessageWindow) menuSelectNum--,menuSelectFlg=1;
-        if (downkey && !eventMessageWindow&& !menuSelectFlg && !menuWindowChildAni && !eventMessageWindow) menuSelectNum++,menuSelectFlg=1;
+        if (upkey &&!titleConfirmWindow&& !eventMessageWindow&& !menuSelectFlg && !menuWindowChildAni && !eventMessageWindow) menuSelectNum--,menuSelectFlg=1;
+        if (downkey &&!titleConfirmWindow&& !eventMessageWindow&& !menuSelectFlg && !menuWindowChildAni && !eventMessageWindow) menuSelectNum++,menuSelectFlg=1;
         if (spacekey) menuSelectFlg=0;
         if (upkey && !menuSelectFlg && menuWindowChildAni&& !eventMessageWindow) {  //上キー
             if (menuSelectNum==0 && menuSelectChildNum>=2 && !menuMypicDetailAni){//マイピク
                 menuSelectChildNum-=2,menuSelectFlg=1;
             } else if (menuSelectNum==1 && menuSelectChildNum&& !menuMypicDetailAni){
                 menuSelectChildNum--,menuSelectFlg=1;
-                if (menuSelectChildNum < itemsScroll && itemsScroll) itemsScroll--;    
+                if (menuSelectChildNum < itemsScroll && itemsScroll) itemsScroll--;
             }
         }
         if (downkey && !menuSelectFlg && menuWindowChildAni && !eventMessageWindow) {//下キー
@@ -892,7 +911,7 @@ function fieldMain() {
             } 
         }
         if (rightkey && !menuSelectFlg && menuWindowChildAni&& !eventMessageWindow) {//右キー
-            if (menuSelectNum==0 && !(menuSelectChildNum%2) && mypic.length != 1 && !menuMypicDetailAni){//マイピク
+            if (menuSelectNum==0 && !(menuSelectChildNum%2) && mypic.length != 1 &&!(mypic.length == 3 && menuSelectChildNum==2)&&!(mypic.length == 5 && menuSelectChildNum==4)&& !menuMypicDetailAni){//マイピク
                 menuSelectChildNum++,menuSelectFlg=1;
             } 
         }
@@ -1244,9 +1263,11 @@ function fieldMain() {
             ctx2d.strokeRect(30-4,400-4,width-60,110);
             ctx2d.strokeRect(30,400,width-60,110);
             ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-            ctx2d.fillText(eventMessageWindowMsg.substr(1,Math.min(41,Math.floor(eventMessageWindowAni/2))),40,430);
-            ctx2d.fillText(eventMessageWindowMsg.substr(42,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-41))),40,460);
-            ctx2d.fillText(eventMessageWindowMsg.substr(83,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-82))),40,490);
+            if(!encount){
+                ctx2d.fillText(eventMessageWindowMsg.substr(1,Math.min(41,Math.floor(eventMessageWindowAni/2))),40,430);
+                ctx2d.fillText(eventMessageWindowMsg.substr(42,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-41))),40,460);
+                ctx2d.fillText(eventMessageWindowMsg.substr(83,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-82))),40,490);    
+            }
             if ((zkey) && !(eventMessageWindow-menuWindowAniSpeed) && !menuSelectFlg){//メッセージの更新処理
                 eventMessageWindowAni=1;
                 if (eventMessageWindowMsgStack.length==0){
@@ -1256,8 +1277,24 @@ function fieldMain() {
                     eventMessageWindowMsg=eventMessageWindowMsgStack[0];
                     eventMessageWindowMsgStack.shift();
                     menuSelectFlg=1;
+                    if(eventMessageWindowMsg.substr(1,1)=="*" && !isNaN(Number(eventMessageWindowMsg.substr(2,3)))){ //バトル勃発の時
+                        //戦闘のときの書式は"+*XXX"
+                        inMsgBattleFlg=1;
+                        encountEnemyNum=Number(eventMessageWindowMsg.substr(2,3));
+                        encount=true;
+                        eventMessageWindowMsg=eventMessageWindowMsgStack[0];
+                        eventMessageWindowMsgStack.shift();
+                        menuSelectFlg=1;
+                    } else if(eventMessageWindowMsg.substr(1,1)=="^" && !isNaN(Number(eventMessageWindowMsg.substr(2,3)))){ //アイテム入手のとき
+                        //アイテム入手のときの書式は"+^XXX"
+                        getItem(Number(eventMessageWindowMsg.substr(2,3)));
+                        popupMsg.push([itemdata[Number(eventMessageWindowMsg.substr(2,3))][0] + "を手に入れた！",120,0,0,-1]);
+                        eventMessageWindowMsg=eventMessageWindowMsgStack[0];
+                        eventMessageWindowMsgStack.shift();
+                        menuSelectFlg=1;
+                    }
                 }
-            } 
+            }
         }else{
             ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
             ctx2d.font="16pt " + mainfontName;

@@ -4,6 +4,7 @@ function saveData(){
     localStorage.setItem("myposy",myposy);
     localStorage.setItem("myposworld",myposworld);
     localStorage.setItem("money",money);
+    localStorage.setItem("nextEventNum",nextEventNum);
     let jsonOb;
     jsonOb=JSON.stringify(items,undefined,1);
     localStorage.setItem("items",jsonOb);
@@ -21,6 +22,7 @@ function loadData(){
     myposy=Number(localStorage.getItem("myposy"));
     myposworld=Number(localStorage.getItem("myposworld"));
     money=Number(localStorage.getItem("money"));
+    nextEventNum=Number(localStorage.getItem("nextEventNum"));
     items=JSON.parse(localStorage.getItem("items"));
     mypic=JSON.parse(localStorage.getItem("mypic"));
     mypicstock=JSON.parse(localStorage.getItem("mypicstock"));
@@ -31,7 +33,7 @@ function resetData(){
     //データをリセットする処理 変数に初期値をセットする　初プレイやはじめからを選択したときに使う
     //localStorage.clear();
     items=[];
-    for(var i = 0;i < itemdata.length;i++) items.push([i,99]);
+    for(var i = 0;i < 40;i++) items.push([i,50]);
     items.sort(function(a,b){return (a[0]-b[0]);});
     mypic=[0];
     mypicstock=[
@@ -42,4 +44,6 @@ function resetData(){
     for(var i = 0;i < itemobj.length;i++){
         fieldItemStatus[i] = itemobj[i];
     }
+    isFromFirst=1;
+    nextEventNum=0;
 }

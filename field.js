@@ -1,5 +1,5 @@
 var walkanimation=0,walkdir=3; //歩くアニメーション,方向
-const charasize=30; //キャラクターのサイズ
+const charasize=35; //キャラクターのサイズ
 const pre_charasize=60; //プリレンダリング用のキャラクターのサイズ
 const fieldwidth=960;//フィールドの幅の最大値
 const fieldheight=540;//フィールドの高さの最大値
@@ -208,7 +208,7 @@ function moveEveDraw(x,y){ //マウスのムーブイベント
 function encount_check(){//敵との遭遇率encount=6*((200−運)/200)
     if (mypic.length==0 || debugMode) return 0;
     var encountRate = (6*((200 - mypicstock[mypic[0]][9],0,100,100),0,100/200));
-    var tempEncRandom=((100+encount_down*6000)*Math.random());
+    var tempEncRandom=((2000+encount_down*6000)*Math.random());
     if (encountRate>=tempEncRandom && fieldenemyDataSet[fieldenemy[myposworld]].length!=0) {
         encount=true;
         let oddsSum=0,tmpodds=0,encountDice=0;
@@ -243,6 +243,7 @@ function checkConflict(dir){
     if (dir==1) checkConflictPosx= charasize+walkspeed+1,checkConflictPosy=0;
     if (dir==2) checkConflictPosx= 0,checkConflictPosy=-walkspeed-1;
     if (dir==3) checkConflictPosx= 0,checkConflictPosy=charasize+walkspeed+1;
+    if(battleAnimationFlg) return 1;
     if (!warpAni){
         for(let i = 0;i < fieldwarpobj[myposworld].length;i++){
             if (fieldwarpobj[myposworld][i][0] < myposx+charasize && fieldwarpobj[myposworld][i][0] + fieldwarpobj[myposworld][i][2] > myposx){
@@ -374,7 +375,7 @@ function walkeve(){ //歩くときに発生する処理
     walkanimation=(walkanimation+1)%30; //歩く処理
 }
 function trigEvent(trigEventnum,trigEventObj){
-    if (trigEventnum==1){ //マイピク整理のイベント
+    if (trigEventnum==1) { //マイピク整理のイベント
         if (mypicstock.length){
             eventWindowAni++;
             eventWindowKind=1;

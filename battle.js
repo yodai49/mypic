@@ -124,6 +124,7 @@ function battleMain() {
             for(var i = 0;i < enemyData[0].length;i++){
                 baseEnemyData[i]=enemyData[encountEnemyNum][i];
             }
+            encountEnemyNum=9;
             decideEnemyStatis();
             
             bMemory[0]=mypicstock[mypic[0]][6];
@@ -456,32 +457,32 @@ function drawEnemy(){//敵の画像表示
         case 4://lastboss
             enemyImg.src="./imgs/enemyImgs/lastBoss.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,1048,1860,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,1048,1860,width*65/100,height*5/100,width*20/100,height*36/100);};
             break;
         case 5://forestBoss
             enemyImg.src="./imgs/enemyImgs/forestBoss.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,2000,2200,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,2000,2200,width*60/100,height*6/100,width*31/100,height*36/100);};
             break;
         case 6://caveBoss
             enemyImg.src="./imgs/enemyImgs/caveBoss.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,2000,2100,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,2000,2100,width*60/100,height*6/100,width*31/100,height*33/100);};
             break;
         case 7://remainsBoss
             enemyImg.src="./imgs/enemyImgs/remainsBoss.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,1826,1380,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,1826,1380,width*54/100,height*8/100,width*39/100,height*30/100);};
             break;
         case 8://desertBoss
             enemyImg.src="./imgs/enemyImgs/desertBoss.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,1410,1320,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,1410,1320,width*57/100,height*5/100,width*36/100,height*34/100);};
             break;
         case 9://normal1
             enemyImg.src="./imgs/enemyImgs/normal1.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,72,72,width*53/100,height*23/100,width*20/100,height*20/100);};
             break;
         case 10://normal2
             enemyImg.src="./imgs/enemyImgs/forestNormal2.png";

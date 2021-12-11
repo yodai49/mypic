@@ -1257,10 +1257,10 @@ function fieldMain() {
             ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
             ctx2d.font="16pt " + mainfontName;
             if(eventMessageWindowMsg.substr(1,1)=="="){ //手紙の時
-                ctx2d.fillStyle="rgba(50,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
                 ctx2d.font="16pt Klee One";
             }  else if (eventMessageWindowMsg.substr(1,1) == "~"){
-                ctx2d.fillStyle="rgba(50,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
                 ctx2d.font="16pt Yomogi";
             }
             ctx2d.fillRect(30,400,width-60,110);
@@ -1269,6 +1269,9 @@ function fieldMain() {
             ctx2d.strokeRect(30-4,400-4,width-60,110);
             ctx2d.strokeRect(30,400,width-60,110);
             ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+            if(eventMessageWindowMsg.substr(1,1)=="="|| eventMessageWindowMsg.substr(1,1) == "~"){
+                ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+            }
             if(!encount){
                 ctx2d.fillText(eventMessageWindowMsg.substr(1,Math.min(41,Math.floor(eventMessageWindowAni/2))).replace("=","").replace("~",""),40,430);
                 ctx2d.fillText(eventMessageWindowMsg.substr(42,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-41))).replace("=","").replace("~",""),40,460);

@@ -34,8 +34,7 @@ function battleMain() {
     ctx2d.fillStyle=blue;
     drawMypic(0,190,130+Math.max(0,Math.sin(globalTime/7)*20-17),180,180,1,0);
     //enemy
-    ctx2d.fillStyle=red;
-    ctx2d.fillRect(width*70/100,height*28/100,width*6/100,height*9/100);
+    drawEnemy();
 
     //ctx2d.fillStyle=white;
     //ctx2d.fillRect(150,150,100,20);
@@ -440,10 +439,6 @@ function battleStartAnimation(){
     }
 }
 
-function checkEnemy(){ //どのてきを召喚するか決める
-
-}
-
 function decideEnemyStatis(){//敵のランダムステータスを確定させる
     //HP,攻撃,防御,レベル
     var fluctuationValue=Math.floor(Math.random()*2*baseEnemyData[12][1]) - baseEnemyData[12][1];//変動値決定
@@ -452,4 +447,235 @@ function decideEnemyStatis(){//敵のランダムステータスを確定させ�
     baseEnemyData[2] = baseEnemyData[3];
     baseEnemyData[6] = baseEnemyData[6][0] + fluctuationValue*baseEnemyData[6][1];//攻撃
     baseEnemyData[7] = baseEnemyData[7][0] + fluctuationValue*baseEnemyData[7][1];//防御
+}
+
+function drawEnemy(){//敵の画像表示
+    const enemyImg=new Image();//enemy
+    switch(encountEnemyNum){
+        case 4://lastboss
+            enemyImg.src="./imgs/enemyImgs/lastBoss.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,1048,1860,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 5://forestBoss
+            enemyImg.src="./imgs/enemyImgs/forestBoss.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,2000,2200,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 6://caveBoss
+            enemyImg.src="./imgs/enemyImgs/caveBoss.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,2000,2100,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 7://remainsBoss
+            enemyImg.src="./imgs/enemyImgs/remainsBoss.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,1826,1380,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 8://desertBoss
+            enemyImg.src="./imgs/enemyImgs/desertBoss.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,1410,1320,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 9://normal1
+            enemyImg.src="./imgs/enemyImgs/normal1.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 10://normal2
+            enemyImg.src="./imgs/enemyImgs/forestNormal2.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 11://forestbase1
+            enemyImg.src="./imgs/enemyImgs/forest1.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,350,350,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 12://forestbase2
+            enemyImg.src="./imgs/enemyImgs/forest2.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,350,350,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 13://forestspeed
+            enemyImg.src="./imgs/enemyImgs/forest3.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,2000,1796,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 14://forestattack
+            enemyImg.src="./imgs/enemyImgs/forest4.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,1791,1929,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 15://foresttank
+            enemyImg.src="./imgs/enemyImgs/forest5.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,1188,1129,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 16://forestrare
+            enemyImg.src="./imgs/enemyImgs/forestRare.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,2000,2000,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 17://forestsuperrare
+            enemyImg.src="./imgs/enemyImgs/forestSuperRare.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,2000,1926,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 18://forestwater1
+            enemyImg.src="./imgs/enemyImgs/waterSuperRare.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,1753,2000,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 19://normal1
+            enemyImg.src="./imgs/enemyImgs/normal1.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 20://normal2
+            enemyImg.src="./imgs/enemyImgs/caveNormal2.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 21://cavebase1
+            enemyImg.src="./imgs/enemyImgs/cave1.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 22://cavebase2
+            enemyImg.src="./imgs/enemyImgs/cave2.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,350,350,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 23://cavespeed
+            enemyImg.src="./imgs/enemyImgs/cave3.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,350,350,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 24://cavedefend
+            enemyImg.src="./imgs/enemyImgs/cave4.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,350,350,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 25://cavetank
+            enemyImg.src="./imgs/enemyImgs/cave5.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,1791,1929,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 26://caverare
+            enemyImg.src="./imgs/enemyImgs/caveRare.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,2000,2000,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 27://cavesuperrare
+            enemyImg.src="./imgs/enemyImgs/caveSuperRare.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,350,350,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 28://cavewater2
+            enemyImg.src="./imgs/enemyImgs/waterSuperRare.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,1753,2000,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 29://normal1
+            enemyImg.src="./imgs/enemyImgs/normal1.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 30://normal2
+            enemyImg.src="./imgs/enemyImgs/remainsNormal2.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 31://remainsbase1
+            enemyImg.src="./imgs/enemyImgs/remains1.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 32://remainsbase2
+            enemyImg.src="./imgs/enemyImgs/remains2.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 33://remainsspeed
+            enemyImg.src="./imgs/enemyImgs/remains3.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 34://remainsattack
+            enemyImg.src="./imgs/enemyImgs/remains4.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 35://remainstank
+            enemyImg.src="./imgs/enemyImgs/remains5.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,696,1140,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 36://remainsrare
+            enemyImg.src="./imgs/enemyImgs/remainsRare.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,2000,2000,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 37://remainssuperrare
+            enemyImg.src="./imgs/enemyImgs/remainsSuperRare.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,1416,1867,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 38://remainswater3
+            enemyImg.src="./imgs/enemyImgs/waterSuperRare.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,1753,2000,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 39://normal1
+            enemyImg.src="./imgs/enemyImgs/normal1.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 40://normal2
+            enemyImg.src="./imgs/enemyImgs/desertNormal2.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 41://desertbase1
+            enemyImg.src="./imgs/enemyImgs/desert1.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 42://desertbase2
+            enemyImg.src="./imgs/enemyImgs/desert2.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 43://desertspeed
+            enemyImg.src="./imgs/enemyImgs/desert3.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,1030,806,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 44://desertdefend
+            enemyImg.src="./imgs/enemyImgs/desert4.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,350,350,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 45://deserttank
+            enemyImg.src="./imgs/enemyImgs/desert5.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 46://desertrare
+            enemyImg.src="./imgs/enemyImgs/desertRare.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,2000,2000,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 47://desertsuperrare
+            enemyImg.src="./imgs/enemyImgs/desertSuperRare.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,350,350,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+        case 48://desertwater4
+            enemyImg.src="./imgs/enemyImgs/waterSuperRare.png";
+            enemyImg.onload=function(){
+                field2d.drawImage(enemyFieldImg,0,0,1753,2000,width*53/100,height*23/100,width*44/100,height*20/100);};
+            break;
+    }
 }

@@ -419,6 +419,11 @@ function trigEvent(trigEventnum,trigEventObj){
         for(let i = 0; i < items.length;i++){
             if(items[i][0] == trigEventObj[6]) tempitemflg=1;
         }
+        if(trigEventObj[7]!=undefined){
+            if(nextEventNum!=trigEventObj[7]) {
+                return 0;
+            }
+        }
         if(!tempitemflg){
             eventMessageWindow=1;
             eventMessageWindowMsgStack=[];
@@ -426,8 +431,9 @@ function trigEvent(trigEventnum,trigEventObj){
             for(var i = 0;i < (eventMsgText[trigEventObj[5]].length-1);i++){
                 eventMessageWindowMsgStack[i]="+"+eventMsgText[trigEventObj[5]][i+1];
             }
-            eventMessageWindowAni=1;    
+            eventMessageWindowAni=1;
         }
+        if(trigEventObj[7]!=undefined) nextEventNum=trigEventObj[8];
     }
     menuSelectFlg=1;
 }
@@ -473,7 +479,6 @@ function fieldMain() {
         }
     }
 
-    console.log(isFromFirst);
     if(isFromFirst){ ////最初に強制的に出すメッセージ
         trigEvent(6,[339,286,30,30,6,0,-1]); 
         isFromFirst=0;

@@ -15,7 +15,7 @@ const modeChangeAniSpeed=30;
 
 //フィールド系
 var myposx=0,myposy=0, myposworld=0;//キャラクターの位置　x：横　y:縦　world:ワールド番号
-var fieldItemStatus;
+var fieldItemStatus,nextEventNum=0;
 const fieldnum=5;//フィールドの数
 
 //描画系　コンフィグはここ

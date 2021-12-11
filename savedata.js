@@ -4,6 +4,7 @@ function saveData(){
     localStorage.setItem("myposy",myposy);
     localStorage.setItem("myposworld",myposworld);
     localStorage.setItem("money",money);
+    localStorage.setItem("nextEventNum",nextEventNum);
     let jsonOb;
     jsonOb=JSON.stringify(items,undefined,1);
     localStorage.setItem("items",jsonOb);
@@ -21,6 +22,7 @@ function loadData(){
     myposy=Number(localStorage.getItem("myposy"));
     myposworld=Number(localStorage.getItem("myposworld"));
     money=Number(localStorage.getItem("money"));
+    nextEventNum=Number(localStorage.getItem("nextEventNum"));
     items=JSON.parse(localStorage.getItem("items"));
     mypic=JSON.parse(localStorage.getItem("mypic"));
     mypicstock=JSON.parse(localStorage.getItem("mypicstock"));
@@ -43,4 +45,5 @@ function resetData(){
         fieldItemStatus[i] = itemobj[i];
     }
     isFromFirst=1;
+    nextEventNum=0;
 }

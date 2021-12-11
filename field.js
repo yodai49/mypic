@@ -1060,6 +1060,7 @@ function fieldMain() {
                     ctx2d.fillText("DP: "+ mypicstock[mypic[i]][4]+ " / " + mypicstock[mypic[i]][5],mypicOffsetX,mypicOffsetY+37);
                     ctx2d.fillText("レベル: "+ mypicstock[mypic[i]][12],mypicOffsetX,mypicOffsetY+57);
                     ctx2d.fillText("けいけん: "+ mypicstock[mypic[i]][13],mypicOffsetX,mypicOffsetY+74);
+                    ctx2d.fillText("LvUpまで"+  (Math.floor(Math.pow(mypicstock[mypic[i]][12]+1,1.5+(1/3*(3-mypicstock[mypic[i]][16]))))-mypicstock[mypic[i]][13]),mypicOffsetX,mypicOffsetY+91);
                     ctx2d.fillStyle="rgba(0,0,0," + menuWindowTransChild*0.8+")";
                     ctx2d.fillRect(mypicOffsetX+100,mypicOffsetY-20,120,120);
                     drawMypic(mypic[i],mypicOffsetX+100,mypicOffsetY-20,120,120,menuWindowTransChild);

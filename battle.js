@@ -30,7 +30,7 @@ var battleTransIncrease=true;//透明度増加
 var battleFirstAniCount=0;///1個目のアニメーションの回数
 var mypicIsDamagedAni=100;//アニメーション用
 var enemyIsDamagedAni=100;
-var showMypicHP=0,showEnemyHP=0;
+var showMypicHP=0,showEnemyHP=0,showMaxEnemyHP=1,showEnemyHPConst=-1;
 
 function battleMain() {
     //character
@@ -45,24 +45,26 @@ function battleMain() {
         ctx2d.fillStyle="rgba(50,200,50,0.9)";
     }
     ctx2d.fillRect(20,160,140*showMypicHP/mypicstock[mypic[0]][3],3);
-/*
-    ctx2d.fillStyle="rgba(150,0,0,0.6)"; ///敵のHP
-    ctx2d.fillRect(600,300,140,3);
-    if(showEnemyHP/baseEnemyData[3]<0.2){
-        ctx2d.fillStyle="rgba(150,0,0,0.9)";
-    } else if(showEnemyHP/baseEnemyData[3]<0.5){
-        ctx2d.fillStyle="rgba(200,200,50,0.9)";
-    } else{
-        ctx2d.fillStyle="rgba(50,200,50,0.9)";
+
+    if(showEnemyHPConst!=-1){
+        ctx2d.fillStyle="rgba(150,0,0,0.6)"; ///敵のHP
+        ctx2d.fillRect(600,300,140,3);
+        if(showEnemyHP/showMaxEnemyHP<0.2){
+            ctx2d.fillStyle="rgba(150,0,0,0.9)";
+        } else if(showEnemyHP/showMaxEnemyHP<0.5){
+            ctx2d.fillStyle="rgba(200,200,50,0.9)";
+        } else{
+            ctx2d.fillStyle="rgba(50,200,50,0.9)";
+        }
+        ctx2d.fillRect(600,300,140*showEnemyHP/showMaxEnemyHP,3);
+        if(showEnemyHP<baseEnemyData[2]) showEnemyHP++;
+        if(showEnemyHP>baseEnemyData[2]) showEnemyHP--;
     }
-    ctx2d.fillRect(600,300,140*showEnemyHP/baseEnemyData[3],3);*/
+
 
     if(showMypicHP<mypicstock[mypic[0]][2]) showMypicHP++;
     if(showMypicHP>mypicstock[mypic[0]][2]) showMypicHP--;
-    /*
-    if(showEnemyHP<baseEnemyData[2]) showEnemyHP++;
-    if(showEnemyHP>baseEnemyData[2]) showEnemyHP--;*/
-
+    
     drawMypic(0,190,130+Math.max(0,Math.sin(globalTime/7)*20-17),180,180,1,0,(mypicIsDamagedAni<=30&& (Math.floor(mypicIsDamagedAni/4)%2)));
     mypicIsDamagedAni++;
     enemyIsDamagedAni++;
@@ -166,7 +168,6 @@ function battleMain() {
             for(var i = 0;i < enemyData[0].length;i++){
                 baseEnemyData[i]=enemyData[encountEnemyNum][i];
             }
-//            showEnemyHP=baseEnemyData[2];
             decideEnemyStatis();
             bMemory[0]=mypicstock[mypic[0]][6];
             bMemory[1]=mypicstock[mypic[0]][7];
@@ -497,6 +498,9 @@ function decideEnemyStatis(){//敵のランダムステータスを確定させ�
     baseEnemyData[12] = baseEnemyData[12][0] + fluctuationValue;//レベル
     baseEnemyData[3] = baseEnemyData[3][0] + fluctuationValue*baseEnemyData[3][1];//MaxHP
     baseEnemyData[2] = baseEnemyData[3];
+    showEnemyHP=baseEnemyData[2];
+    showEnemyHPConst=baseEnemyData[2];
+    showMaxEnemyHP=baseEnemyData[3];
     baseEnemyData[6] = baseEnemyData[6][0] + fluctuationValue*baseEnemyData[6][1];//攻撃
     baseEnemyData[7] = baseEnemyData[7][0] + fluctuationValue*baseEnemyData[7][1];//防御
 }

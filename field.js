@@ -23,7 +23,7 @@ var titleConfirmWindow=0,titleConfirmSelect=1,titleConfirmMessage="",titleConfir
 var eventMessageWindow=0,eventMessageWindowMsg="",eventMessageSelectNum=0,procreateMsg="",eventMessageWindowMsgStack=[],eventMessageWindowAni=0;
 var encount_down=0,encount_down_cnt=0;
 var nowShopData,eventShopSelectNum=0,showmoney=0;
-var checkSkillConflict=[],encountEnemyNum=0;
+var checkSkillConflict=[],encountEnemyNum=0,inMsgBattleFlg=0;
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
     if (mypic.length<=drawMypicNum) return 0;
@@ -415,13 +415,19 @@ function trigEvent(trigEventnum,trigEventObj){
     } else if(trigEventnum==5 && !menuSelectFlg){ //ボス戦
 
     } else if(trigEventnum==6 && !menuSelectFlg){
-        eventMessageWindow=1;
-        eventMessageWindowMsgStack=[];
-        eventMessageWindowMsg="+"+eventMsgText[trigEventObj[5]][0];
-        for(var i = 0;i < (eventMsgText[trigEventObj[5]].length-1);i++){
-            eventMessageWindowMsgStack[i]="+"+eventMsgText[trigEventObj[5]][i+1];
+        let tempitemflg=0;
+        for(let i = 0; i < items.length;i++){
+            if(items[i][0] == trigEventObj[6]) tempitemflg=1;
         }
-        eventMessageWindowAni=1;
+        if(!tempitemflg){
+            eventMessageWindow=1;
+            eventMessageWindowMsgStack=[];
+            eventMessageWindowMsg="+"+eventMsgText[trigEventObj[5]][0];
+            for(var i = 0;i < (eventMsgText[trigEventObj[5]].length-1);i++){
+                eventMessageWindowMsgStack[i]="+"+eventMsgText[trigEventObj[5]][i+1];
+            }
+            eventMessageWindowAni=1;    
+        }
     }
     menuSelectFlg=1;
 }
@@ -867,8 +873,8 @@ function fieldMain() {
             menuSortMypicNum=-1;
             menuzflg=1;
         }
-        if (upkey && !eventMessageWindow&& !menuSelectFlg && !menuWindowChildAni && !eventMessageWindow) menuSelectNum--,menuSelectFlg=1;
-        if (downkey && !eventMessageWindow&& !menuSelectFlg && !menuWindowChildAni && !eventMessageWindow) menuSelectNum++,menuSelectFlg=1;
+        if (upkey &&!titleConfirmWindow&& !eventMessageWindow&& !menuSelectFlg && !menuWindowChildAni && !eventMessageWindow) menuSelectNum--,menuSelectFlg=1;
+        if (downkey &&!titleConfirmWindow&& !eventMessageWindow&& !menuSelectFlg && !menuWindowChildAni && !eventMessageWindow) menuSelectNum++,menuSelectFlg=1;
         if (spacekey) menuSelectFlg=0;
         if (upkey && !menuSelectFlg && menuWindowChildAni&& !eventMessageWindow) {  //上キー
             if (menuSelectNum==0 && menuSelectChildNum>=2 && !menuMypicDetailAni){//マイピク
@@ -1244,9 +1250,11 @@ function fieldMain() {
             ctx2d.strokeRect(30-4,400-4,width-60,110);
             ctx2d.strokeRect(30,400,width-60,110);
             ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-            ctx2d.fillText(eventMessageWindowMsg.substr(1,Math.min(41,Math.floor(eventMessageWindowAni/2))),40,430);
-            ctx2d.fillText(eventMessageWindowMsg.substr(42,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-41))),40,460);
-            ctx2d.fillText(eventMessageWindowMsg.substr(83,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-82))),40,490);
+            if(!encount){
+                ctx2d.fillText(eventMessageWindowMsg.substr(1,Math.min(41,Math.floor(eventMessageWindowAni/2))),40,430);
+                ctx2d.fillText(eventMessageWindowMsg.substr(42,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-41))),40,460);
+                ctx2d.fillText(eventMessageWindowMsg.substr(83,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-82))),40,490);    
+            }
             if ((zkey) && !(eventMessageWindow-menuWindowAniSpeed) && !menuSelectFlg){//メッセージの更新処理
                 eventMessageWindowAni=1;
                 if (eventMessageWindowMsgStack.length==0){
@@ -1256,8 +1264,17 @@ function fieldMain() {
                     eventMessageWindowMsg=eventMessageWindowMsgStack[0];
                     eventMessageWindowMsgStack.shift();
                     menuSelectFlg=1;
+                    if(eventMessageWindowMsg.substr(1,1)=="*" && !isNaN(Number(eventMessageWindowMsg.substr(2,3)))){ //バトル勃発の時
+                        //戦闘のときの書式は"+*XXX"
+                        inMsgBattleFlg=1;
+                        encountEnemyNum=Number(eventMessageWindowMsg.substr(2,3));
+                        encount=true;
+                        eventMessageWindowMsg=eventMessageWindowMsgStack[0];
+                        eventMessageWindowMsgStack.shift();
+                        menuSelectFlg=1;
+                    }
                 }
-            } 
+            }
         }else{
             ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
             ctx2d.font="16pt " + mainfontName;

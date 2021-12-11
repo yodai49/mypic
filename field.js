@@ -26,7 +26,7 @@ var nowShopData,eventShopSelectNum=0,showmoney=0;
 var checkSkillConflict=[],encountEnemyNum=0,inMsgBattleFlg=0;
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
-    if (mypic.length<=drawMypicNum) return 0;
+    if (mypic.length<=drawMypicNum && mode==0) return 0;
     ctx2d.lineWidth=1;
     if (dw>50) ctx2d.lineWidth=2;
     if (dw>100) ctx2d.lineWidth=3;
@@ -441,7 +441,7 @@ function trigEvent(trigEventnum,trigEventObj){
 function fieldMain() {
     var menuWindowTrans,menuWindowTransChild;
     const menuWindowAniSpeed=15;
-    const menuWindowTxt =["マイピク","もちもの","マップ","セーブ","タイトル"];
+    const menuWindowTxt =["マイピク","もちもの","そうさ","セーブ","タイトル"];
     /*
     @param なし
     @return なし
@@ -685,6 +685,7 @@ function fieldMain() {
                 ctx2d.fillStyle="rgba(0,0,0,"+0.8*(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8*Math.min(1,eventEggAni/20)+")";
                 ctx2d.fillRect(width/2-135,height/2-110,270,270);
                 //一時的なマイピクの描画
+                ctx2d.lineWidth=5;
                 if (drawMypicStatus && inDrawField){ //始点を描いていたら
                     if (!procdrawMypicMode){ //線
                         ctx2d.beginPath();
@@ -1255,6 +1256,13 @@ function fieldMain() {
             eventMessageWindowAni++;
             ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
             ctx2d.font="16pt " + mainfontName;
+            if(eventMessageWindowMsg.substr(1,1)=="="){ //手紙の時
+                ctx2d.fillStyle="rgba(50,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                ctx2d.font="16pt Klee One";
+            }  else if (eventMessageWindowMsg.substr(1,1) == "~"){
+                ctx2d.fillStyle="rgba(50,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                ctx2d.font="16pt Yomogi";
+            }
             ctx2d.fillRect(30,400,width-60,110);
             ctx2d.strokeStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
             ctx2d.lineWidth=1;
@@ -1262,9 +1270,9 @@ function fieldMain() {
             ctx2d.strokeRect(30,400,width-60,110);
             ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
             if(!encount){
-                ctx2d.fillText(eventMessageWindowMsg.substr(1,Math.min(41,Math.floor(eventMessageWindowAni/2))),40,430);
-                ctx2d.fillText(eventMessageWindowMsg.substr(42,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-41))),40,460);
-                ctx2d.fillText(eventMessageWindowMsg.substr(83,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-82))),40,490);    
+                ctx2d.fillText(eventMessageWindowMsg.substr(1,Math.min(41,Math.floor(eventMessageWindowAni/2))).replace("=","").replace("~",""),40,430);
+                ctx2d.fillText(eventMessageWindowMsg.substr(42,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-41))).replace("=","").replace("~",""),40,460);
+                ctx2d.fillText(eventMessageWindowMsg.substr(83,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-82))).replace("=","").replace("~",""),40,490);
             }
             if ((zkey) && !(eventMessageWindow-menuWindowAniSpeed) && !menuSelectFlg){//メッセージの更新処理
                 eventMessageWindowAni=1;
@@ -1290,7 +1298,7 @@ function fieldMain() {
                         eventMessageWindowMsg=eventMessageWindowMsgStack[0];
                         eventMessageWindowMsgStack.shift();
                         menuSelectFlg=1;
-                    }
+                    } 
                 }
             }
         }else{

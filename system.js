@@ -110,7 +110,7 @@ function changeLevel(chgLev,Num){
         }
     }
    //ステータスアップの処理をここに追加
-   popupMsg.push([mypicstock[mypic[Num]][0] + "のレベルが" + mypicstock[mypic[Num]][12] +"になった！",120,0,0,Num]);
+   popupMsg.push([mypicstock[mypic[Num]][0] + "のレベルが" + mypicstock[mypic[Num]][12] +"になった！",120,0,0,mypic[Num]]);
 }
 
 function changeEXP(chgAmount,Num){

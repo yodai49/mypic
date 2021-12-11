@@ -23,7 +23,7 @@ var titleConfirmWindow=0,titleConfirmSelect=1,titleConfirmMessage="",titleConfir
 var eventMessageWindow=0,eventMessageWindowMsg="",eventMessageSelectNum=0,procreateMsg="",eventMessageWindowMsgStack=[],eventMessageWindowAni=0;
 var encount_down=0,encount_down_cnt=0;
 var nowShopData,eventShopSelectNum=0,showmoney=0;
-var checkSkillConflict=[],encountEnemyNum=0,inMsgBattleFlg=0;
+var checkSkillConflict=[],encountEnemyNum=0,inMsgBattleFlg=0,searchablelg=0;
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
     if (mypic.length<=drawMypicNum && mode==0) return 0;
@@ -44,8 +44,13 @@ function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
             ctx2d.stroke();
         }    
     } else{
+        let tempitemflg=0;
+        for(let i = 0;i < items.length;i++){
+            if(items[i][0] == 50) tempitemflg=1;
+        }
         for(var i = 0;i < mypicstock[drawMypicNum][1].length;i++){
             ctx2d.strokeStyle="rgba(255,255,255,"+trans+")";
+            if(tempitemflg) ctx2d.strokeStyle="rgba("+typeDataCol[mypicstock[drawMypicNum][15]]+","+trans+")";
             ctx2d.beginPath();
             if (mypicstock[drawMypicNum][1][i][0] == 0){ //線
                 ctx2d.moveTo(dx+dw*mypicstock[drawMypicNum][1][i][1]/100,dy+dh*mypicstock[drawMypicNum][1][i][2]/100);
@@ -258,11 +263,13 @@ function checkConflict(dir){
             }
         }
     }
+    searchableflg=0;
     for(let i = 0;i < eventobj[myposworld].length;i++){
         eventflgs[i]=0;
         if (eventobj[myposworld][i][0] < myposx+charasize && eventobj[myposworld][i][0] + eventobj[myposworld][i][2] > myposx){
             if (eventobj[myposworld][i][1] < myposy+charasize && eventobj[myposworld][i][1] + eventobj[myposworld][i][3] > myposy){
                 eventflgs[i]=1;
+                searchableflg=1;
             }
         }    
     }
@@ -901,12 +908,18 @@ function fieldMain() {
             zkeySE.play(); 
         } else if(zkey &&!menuSelectFlg&& menuWindow&&menuWindowChildAni && menuSelectNum==0 && !menuMypicDetailAni && !(menuWindowChildAni-menuWindowAniSpeed) && menuSortMypicNum!=-1){ //マイピクの詳細画面を見る時
             //入れ替え処理
-            var menuTmpSort=mypic[menuSortMypicNum];
-            mypic[menuSortMypicNum]=mypic[menuSelectChildNum];
-            mypic[menuSelectChildNum]=menuTmpSort;
-            menuSortMypicNum=-1;
-            menuzflg=1;
-            zkeySE.play(); 
+            if((menuSelectChildNum == 0 && mypicstock[mypic[menuSortMypicNum]][2]==0) || (menuSortMypicNum == 0 && mypicstock[mypic[menuSelectChildNum]][2]==0)){
+                popupMsg.push(["このマイピクはひんしだ！",120,0,0,-1]);
+                menuzflg=1;
+                menuSelectFlg=1;
+            } else{
+                var menuTmpSort=mypic[menuSortMypicNum];
+                mypic[menuSortMypicNum]=mypic[menuSelectChildNum];
+                mypic[menuSelectChildNum]=menuTmpSort;
+                menuSortMypicNum=-1;
+                menuzflg=1;
+                zkeySE.play(); 
+            }
         }
         if (upkey &&!titleConfirmWindow&& !eventMessageWindow&& !menuSelectFlg && !menuWindowChildAni && !eventMessageWindow) menuSelectNum--,menuSelectFlg=1, crosskeySE.play();
         if (downkey &&!titleConfirmWindow&& !eventMessageWindow&& !menuSelectFlg && !menuWindowChildAni && !eventMessageWindow) menuSelectNum++,menuSelectFlg=1, crosskeySE.play();
@@ -1346,10 +1359,16 @@ function fieldMain() {
             if(eventMessageWindowMsg.substr(1,1)=="="|| eventMessageWindowMsg.substr(1,1) == "~"){
                 ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
             }
+            if (eventMessageWindowMsg.substr(1,1)=="¥"){
+                for(var i = 0;i < 6;i++){
+                    mypicstock[mypic[i]][2]=mypicstock[mypic[i]][3];
+                    mypicstock[mypic[i]][4]=mypicstock[mypic[i]][5];
+                }
+            }
             if(!encount){
-                ctx2d.fillText(eventMessageWindowMsg.substr(1,Math.min(41,Math.floor(eventMessageWindowAni/2))).replace("=","").replace("~",""),40,430);
-                ctx2d.fillText(eventMessageWindowMsg.substr(42,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-41))).replace("=","").replace("~",""),40,460);
-                ctx2d.fillText(eventMessageWindowMsg.substr(83,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-82))).replace("=","").replace("~",""),40,490);
+                ctx2d.fillText(eventMessageWindowMsg.substr(1,Math.min(41,Math.floor(eventMessageWindowAni/2))).replace("=","").replace("~","").replace("¥",""),40,430);
+                ctx2d.fillText(eventMessageWindowMsg.substr(42,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-41))).replace("=","").replace("~","").replace("¥",""),40,460);
+                ctx2d.fillText(eventMessageWindowMsg.substr(83,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-82))).replace("=","").replace("~","").replace("¥",""),40,490);
             }
             ctx2d.font="12pt " + mainfontName;
             ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)*(0.7+0.3*Math.sin(globalTime/8))+")";
@@ -1380,7 +1399,7 @@ function fieldMain() {
                         eventMessageWindowMsg=eventMessageWindowMsgStack[0];
                         eventMessageWindowMsgStack.shift();
                         menuSelectFlg=1;
-                    } 
+                    }  
                 }
             }
         }else{
@@ -1418,6 +1437,15 @@ function fieldMain() {
         if (fieldNameDatabase[myposworld].length) popupMsg.push([fieldNameDatabase[myposworld],120,0,0,-1]);
     } else if(warpAni==20){ //ワープアニメーション終了時
         warpAni=0;
+    }
+    let tempitemflgs=0;
+    for(let i = 0;i < itemflgs.length;i++){
+        if(itemflgs[i]) tempitemflgs=1;
+    }
+    if(tempitemflgs){
+        ctx2d.font="14pt " + mainfontName;
+        ctx2d.fillStyle="rgba(255,255,255," + (Math.sin(globalTime/5)*0.3+0.7)+")";    
+        ctx2d.fillText("Zキーで調べる",800,30);
     }
 }
 

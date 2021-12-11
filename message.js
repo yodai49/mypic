@@ -216,7 +216,8 @@ function battleloop(){
                 popupMsg.push(["ここでは使えないよ!",120,0,0,-1]);
                 BerrorFlg=false;}
             ctx2d.font="18px "+mainfontName;
-            for (let i=0; i < 5; i++){
+            for (let i=0; i < Math.min(items.length, 5); i++){
+                console.log(BtopItem,i);
                 if(!itemdata[items[BtopItem+i][0]][2]) ctx2d.fillStyle=darkgray2;
                 else if(items[BtopItem+i][0] == 14 && moneyUpFlg) ctx2d.fillStyle=darkgray2;
                 else if(items[BtopItem+i][0] == 15 && experienceUpFlg) ctx2d.fillStyle=darkgray2;

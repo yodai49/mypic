@@ -136,19 +136,23 @@ function battleMain() {
             else if(loopmode==3){loopselect=Math.min(mypic.length-1,loopselect+1);}
             else if(loopmode==4){BwhoUse=Math.min(mypic.length-1,BwhoUse+1);}
             else{loopselect=Math.min(3,loopselect+1);}
+            crosskeySE.play();
             downkey=false;}
         else if(upkey){
             if(loopmode==4)BwhoUse=Math.max(0,BwhoUse-1);
             else loopselect=Math.max(0,loopselect-1);
             if(loopmode==2 && loopselect<BtopItem)BtopItem--;
+            crosskeySE.play();
             upkey=false;}
         else if(rightkey){
             if(loopmode==3){loopselect=Math.min(mypic.length-1,loopselect+3);}
             else if(loopmode==4){BwhoUse=Math.min(mypic.length-1,BwhoUse+3);}
+            crosskeySE.play();
             rightkey=false;}
         else if(leftkey){
             if(loopmode==3){loopselect=Math.max(0,loopselect-3);}
             else if(loopmode==4){BwhoUse=Math.max(0,BwhoUse-3);}
+            crosskeySE.play();
             leftkey=false;}
     } else if(battleMode==2){//攻撃選択時の処理
         if(Acount==0 && Acheck){

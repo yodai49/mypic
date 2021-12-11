@@ -38,7 +38,7 @@ const desertFieldBgm=new Howl({
 });
 const normalBattleBgm=new Howl({
     src: 'sound/normalBattle1.mp3',
-    volume: 0.08,
+    volume: 0.24,
     loop: true,
     format: ['mp3'],
 });
@@ -90,37 +90,43 @@ const lastBossBattle1Bgm=new Howl({
 ////     SE      ////
 const zkeySE=new Howl({
     src: 'sound/zkeySE.wav',
-    volume: 0.24,
+    volume: 0.8,
     loop: false,
     format: ['mp3'],
 });
 const zkey2SE=new Howl({
     src: 'sound/zkey2SE.wav',
-    volume: 0.24,
+    volume: 0.8,
     loop: false,
     format: ['mp3'],
 });
 const xkeySE=new Howl({
     src: 'sound/xkeySE.mp3',
-    volume: 0.24,
+    volume: 0.8,
     loop: false,
     format: ['mp3'],
 });
 const ckeySE=new Howl({
     src: 'sound/ckeySE.mp3',
-    volume: 0.24,
+    volume: 0.8,
+    loop: false,
+    format: ['mp3'],
+});
+const crosskeySE=new Howl({
+    src: 'sound/crosskeySE.mp3',
+    volume: 0.8,
     loop: false,
     format: ['mp3'],
 });
 const warpMapSE=new Howl({
     src: 'sound/warpMapSE.mp3',
-    volume: 0.24,
+    volume: 0.8,
     loop: false,
     format: ['mp3'],
 });
 const messageSE=new Howl({
     src: 'sound/messageSE.mp3',
-    volume: 0.24,
+    volume: 0.8,
     loop: false,
     format: ['mp3'],
 });

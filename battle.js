@@ -93,7 +93,7 @@ function battleMain() {
                 battleMode=1, loopmode=0, loopselect=0;}
             else{//逃げてfieldに遷移
                 modeAnimation=1, nextMode=1, battleMode=0, loopmode=0, loopselect=0, lstnum=0, in_lstnum=0;
-                normalBattleBgm.stop();}
+                normalBattleBgm.stop(),playFieldBGM(myposworld);}
         } else if(battleMode==6){
             in_lstnum++;
         } else if(battleMode==7){
@@ -125,6 +125,7 @@ function battleMain() {
                 baseEnemyData[i]=enemyData[encountEnemyNum][i];
             }
             decideEnemyStatis();
+            
             bMemory[0]=mypicstock[mypic[0]][6];
             bMemory[1]=mypicstock[mypic[0]][7];
             bMemory[2]=mypicstock[mypic[0]][3];
@@ -277,10 +278,10 @@ function battleMain() {
                 nextMode=1, modeAnimation=1, battleMode=0, loopmode=0, loopselect=0, lstnum=0,in_lstnum=0;
                 normalBattleBgm.stop();//bgm停止
                 money+=getCurrencyAmount;//獲得金額を追加
-                changeEXP(getExperienceAmount, 0);//獲得経験値を戦闘マイピクに追加
                 mypicstock[mypic[0]][6]=bMemory[0];
                 mypicstock[mypic[0]][7]=bMemory[1];
                 mypicstock[mypic[0]][3]=bMemory[2];
+                changeEXP(getExperienceAmount, 0);//獲得経験値を戦闘マイピクに追加
                 fieldReDrawFlg=1;}}
     } else if(battleMode==7){//戦闘不能
         if(downkey && chgCount==1)loopselect=Math.min(mypic.length-1,loopselect+1), downkey=false;
@@ -413,7 +414,7 @@ function lateEnemyAttack(){
 
 function battleStartAnimation(){
     if(battleAnimationCount==0){
-        if(battleFirstAniCount==0 && battleAnimationTrans==0 && battleTransIncrease)normalBattleBgm.play();
+        if(battleFirstAniCount==0 && battleAnimationTrans==0 && battleTransIncrease) stopFieldBGM(),normalBattleBgm.play();
         if(battleTransIncrease)battleAnimationTrans += 0.1;
         else battleAnimationTrans -= 0.1;
         ctx2d.fillStyle="rgba(0,0,0,"+battleAnimationTrans+")";

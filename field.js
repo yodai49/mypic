@@ -1257,10 +1257,10 @@ function fieldMain() {
             ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
             ctx2d.font="16pt " + mainfontName;
             if(eventMessageWindowMsg.substr(1,1)=="="){ //手紙の時
-                ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                ctx2d.fillStyle="rgba(255,255,255," +0.8*(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
                 ctx2d.font="16pt Klee One";
             }  else if (eventMessageWindowMsg.substr(1,1) == "~"){
-                ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                ctx2d.fillStyle="rgba(255,255,255," +0.8*(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
                 ctx2d.font="16pt Yomogi";
             }
             ctx2d.fillRect(30,400,width-60,110);
@@ -1277,7 +1277,8 @@ function fieldMain() {
                 ctx2d.fillText(eventMessageWindowMsg.substr(42,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-41))).replace("=","").replace("~",""),40,460);
                 ctx2d.fillText(eventMessageWindowMsg.substr(83,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-82))).replace("=","").replace("~",""),40,490);
             }
-            if ((zkey) && !(eventMessageWindow-menuWindowAniSpeed) && !menuSelectFlg){//メッセージの更新処理
+//            console.log(eventMessageWindowAni,eventMessageWindowMsg.length);
+            if (zkey && !(eventMessageWindow-menuWindowAniSpeed) && !menuSelectFlg && (debugMode!=0 || eventMessageWindowAni/2>eventMessageWindowMsg.length)){//メッセージの更新処理
                 eventMessageWindowAni=1;
                 if (eventMessageWindowMsgStack.length==0){
                     eventMessageWindow++,menuSelectFlg=1; //終わりの時

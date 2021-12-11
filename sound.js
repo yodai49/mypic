@@ -130,4 +130,10 @@ const messageSE=new Howl({
     loop: false,
     format: ['mp3'],
 });
+const eventSE=new Howl({
+    src: 'sound/eventSE.mp3',
+    volume: 0.8,
+    loop: false,
+    format: ['mp3'],
+});
 /////////////////////

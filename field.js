@@ -608,7 +608,6 @@ function fieldMain() {
                     }
                 } else if(eventProcreateStep==3){
                     eventWindowAni++,menuSelectFlg=1;
-                    console.log(isFromFirst);
                     if (isFromFirst==2) isFromFirst=0, menuSelectFlg=0,trigEvent(6,[339,286,30,30,6,4,-1]); 
                 }
             } 
@@ -817,7 +816,6 @@ function fieldMain() {
                     fieldItemStatus[myposworld][i][5]--;
                     getItem(fieldItemStatus[myposworld][i][4]);
                     fieldReDrawFlg=1;
-                    console.log(fieldItemStatus);
                 }
             }
         }
@@ -1197,7 +1195,6 @@ function fieldMain() {
                 ctx2d.fillText("MP: "+ mypicstock[mypic[i]][4] + "/" + mypicstock[mypic[i]][5],(width-350)/2+255,height/2-65+30+i*25);
             }
         } else if(eventMessageWindowMsg.substr(0,1) == "@"){//技を忘れさせる場合
-            console.log(mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][14]);
             if (mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][14].length) {
                 if (upkey && !menuSelectFlg) menuSelectFlg=1,eventMessageSelectNum=Math.max(0,eventMessageSelectNum-1);
                 if (downkey && !menuSelectFlg) menuSelectFlg=1,eventMessageSelectNum=Math.min(4,eventMessageSelectNum+1);

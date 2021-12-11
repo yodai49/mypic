@@ -124,7 +124,6 @@ function battleMain() {
             for(var i = 0;i < enemyData[0].length;i++){
                 baseEnemyData[i]=enemyData[encountEnemyNum][i];
             }
-            encountEnemyNum= 32;
             decideEnemyStatis();
             
             bMemory[0]=mypicstock[mypic[0]][6];
@@ -457,27 +456,27 @@ function drawEnemy(){//敵の画像表示
         case 4://lastboss
             enemyImg.src="./imgs/enemyImgs/lastBoss.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,1048,1860,width*65/100,height*5/100,width*20/100,height*36/100);};
+                field2d.drawImage(enemyImg,0,0,1048,1860,width*67/100,height*5/100,width*14/100,height*25*3/2/100);};
             break;
         case 5://forestBoss
             enemyImg.src="./imgs/enemyImgs/forestBoss.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,2000,2200,width*60/100,height*6/100,width*31/100,height*36/100);};
+                field2d.drawImage(enemyImg,0,0,2000,2200,width*64/100,height*6/100,width*22/100,height*24*3/2/100);};
             break;
         case 6://caveBoss
             enemyImg.src="./imgs/enemyImgs/caveBoss.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,2000,2100,width*60/100,height*6/100,width*31/100,height*33/100);};
+                field2d.drawImage(enemyImg,0,0,2000,2100,width*64/100,height*6/100,width*23/100,height*24*3/2/100);};
             break;
         case 7://remainsBoss
             enemyImg.src="./imgs/enemyImgs/remainsBoss.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,1826,1380,width*54/100,height*8/100,width*39/100,height*30/100);};
+                field2d.drawImage(enemyImg,0,0,1826,1380,width*58/100,height*9/100,width*29/100,height*20*3/2/100);};
             break;
         case 8://desertBoss
             enemyImg.src="./imgs/enemyImgs/desertBoss.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,1410,1320,width*57/100,height*5/100,width*36/100,height*34/100);};
+                field2d.drawImage(enemyImg,0,0,1410,1320,width*63/100,height*5/100,width*26/100,height*24*3/2/100);};
             break;
         case 9://normal1
             enemyImg.src="./imgs/enemyImgs/normal1.png";
@@ -597,22 +596,22 @@ function drawEnemy(){//敵の画像表示
         case 32://remainsbase2
             enemyImg.src="./imgs/enemyImgs/remains2.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,800,800,width*63/100,height*3/100,width*25/100,height*25*3/2/100);};
+                field2d.drawImage(enemyImg,0,0,800,800,width*60/100,height*6/100,width*27/100,height*27*3/2/100);};
             break;
         case 33://remainsspeed
             enemyImg.src="./imgs/enemyImgs/remains3.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,800,800,width*63/100,height*3/100,width*25/100,height*25*3/2/100);};
+                field2d.drawImage(enemyImg,0,0,800,800,width*61/100,height*6/100,width*27/100,height*27*3/2/100);};
             break;
         case 34://remainsattack
             enemyImg.src="./imgs/enemyImgs/remains4.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,800,800,width*63/100,height*3/100,width*25/100,height*25*3/2/100);};
+                field2d.drawImage(enemyImg,0,0,800,800,width*61/100,height*2/100,width*25/100,height*25*3/2/100);};
             break;
         case 35://remainstank
             enemyImg.src="./imgs/enemyImgs/remains5.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,696,1140,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,696,1140,width*66/100,height*4/100,width*15/100,height*26*3/2/100);};
             break;
         case 36://remainsrare
             enemyImg.src="./imgs/enemyImgs/remainsRare.png";
@@ -622,7 +621,7 @@ function drawEnemy(){//敵の画像表示
         case 37://remainssuperrare
             enemyImg.src="./imgs/enemyImgs/remainsSuperRare.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,1416,1867,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,1416,1867,width*64/100,height*2/100,width*21/100,height*27*3/2/100);};
             break;
         case 38://remainswater3
             enemyImg.src="./imgs/enemyImgs/waterSuperRare.png";
@@ -642,27 +641,27 @@ function drawEnemy(){//敵の画像表示
         case 41://desertbase1
             enemyImg.src="./imgs/enemyImgs/desert1.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,800,800,width*61/100,height*6/100,width*28/100,height*28*3/2/100);};
             break;
         case 42://desertbase2
             enemyImg.src="./imgs/enemyImgs/desert2.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,1500,1292,width*64/100,height*7/100,width*24/100,height*21*3/2/100);};
             break;
         case 43://desertspeed
             enemyImg.src="./imgs/enemyImgs/desert3.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,1030,806,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,2292,2116,width*63/100,height*6/100,width*25/100,height*23*3/2/100);};
             break;
         case 44://desertdefend
             enemyImg.src="./imgs/enemyImgs/desert4.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,350,350,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,1030,806,width*60/100,height*10/100,width*28/100,height*21*3/2/100);};
             break;
         case 45://deserttank
             enemyImg.src="./imgs/enemyImgs/desert5.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,72,72,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,800,800,width*63/100,height*2/100,width*25/100,height*25*3/2/100);};
             break;
         case 46://desertrare
             enemyImg.src="./imgs/enemyImgs/desertRare.png";
@@ -672,7 +671,7 @@ function drawEnemy(){//敵の画像表示
         case 47://desertsuperrare
             enemyImg.src="./imgs/enemyImgs/desertSuperRare.png";
             enemyImg.onload=function(){
-                field2d.drawImage(enemyImg,0,0,350,350,width*53/100,height*23/100,width*44/100,height*20/100);};
+                field2d.drawImage(enemyImg,0,0,3591,4263,width*64/100,height*4/100,width*20/100,height*24*3/2/100);};
             break;
         case 48://desertwater4
             enemyImg.src="./imgs/enemyImgs/waterSuperRare.png";

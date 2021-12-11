@@ -2,37 +2,37 @@
 ////     BGM     ////
 const homeBgm=new Howl({
     src: 'sound/home.mp3',
-    volume: 0.24,
+    volume: 0.44,
     loop: true,
     format: ['mp3'],
 });
 const streetBgm=new Howl({
     src: 'sound/street.mp3',
-    volume: 0.24,
+    volume: 0.44,
     loop: true,
     format: ['mp3'],
 });
 const forestFieldBgm=new Howl({
     src: 'sound/forestField.mp3',
-    volume: 0.24,
+    volume: 0.44,
     loop: true,
     format: ['mp3'],
 });
 const caveFieldBgm=new Howl({
     src: 'sound/caveField.mp3',
-    volume: 0.24,
+    volume: 0.44,
     loop: true,
     format: ['mp3'],
 });
 const remainsFieldBgm=new Howl({
     src: 'sound/remainsField.mp3',
-    volume: 0.24,
+    volume: 0.44,
     loop: true,
     format: ['mp3'],
 });
 const desertFieldBgm=new Howl({
     src: 'sound/desertField.mp3',
-    volume: 0.24,
+    volume: 0.44,
     loop: true,
     format: ['mp3'],
 });
@@ -120,7 +120,7 @@ const crosskeySE=new Howl({
 });
 const warpMapSE=new Howl({
     src: 'sound/warpMapSE.mp3',
-    volume: 0.8,
+    volume: 0.3,
     loop: false,
     format: ['mp3'],
 });
@@ -132,7 +132,7 @@ const messageSE=new Howl({
 });
 const messageNextSE=new Howl({
     src: 'sound/messageNextSE.mp3',
-    volume: 0.8,
+    volume: 0.1,
     loop: false,
     format: ['mp3'],
 });

@@ -38,7 +38,7 @@ function resetData(){
     mypic=[];
     mypicstock=[
     ]
-    myposx=homposx,myposy=homposy,myposworld=homposworld,money=10000;
+    myposx=homposx,myposy=homposy,myposworld=homposworld,money=100;
     fieldItemStatus=[];
     for(var i = 0;i < itemobj.length;i++){
         fieldItemStatus[i] = itemobj[i];

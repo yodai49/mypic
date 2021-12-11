@@ -37,13 +37,13 @@ const desertFieldBgm=new Howl({
     format: ['mp3'],
 });
 const normalBattleBgm=new Howl({
-    src: 'sound/normalBattle1.mp3',
+    src: 'sound/normalBattle2.mp3',
     volume: 0.24,
     loop: true,
     format: ['mp3'],
 });
 const rareBattleBgm=new Howl({
-    src: 'sound/normalBattle2.mp3',
+    src: 'sound/dungeonBossBattle3.wav',
     volume: 0.24,
     loop: true,
     format: ['mp3'],

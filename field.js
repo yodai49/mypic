@@ -141,6 +141,7 @@ function clickEveDraw(x,y){ //クリックイベント
                 drawMypicTempPos[0] = x;
                 drawMypicTempPos[1]  = y;
                 inDrawField=0;
+                crosskeySE.play();
             } else {
                 if (!procdrawMypicMode){
                     drawMypicTempObj.push([0,(drawMypicTempPos[0]-(width/2-135))/270*100,(drawMypicTempPos[1]-(height/2-110))/270*100,drawFieldX,drawFieldY]);
@@ -148,6 +149,7 @@ function clickEveDraw(x,y){ //クリックイベント
                     drawMypicTempObj.push([1,(drawMypicTempPos[0]-(width/2-135))/270*100,(drawMypicTempPos[1]-(height/2-110))/270*100,drawMypicRadius/270*100]);
                 }
                 drawMypicStatus=0;
+                ckeySE.play();
             }
         }
         if (635 <= x && x <= 715){
@@ -208,7 +210,7 @@ function moveEveDraw(x,y){ //マウスのムーブイベント
 function encount_check(){//敵との遭遇率encount=6*((200−運)/200)
     if (mypic.length==0 || debugMode) return 0;
     var encountRate = (6*((200 - mypicstock[mypic[0]][9],0,100,100),0,100/200));
-    var tempEncRandom=((2000+encount_down*6000)*Math.random());
+    var tempEncRandom=((1500+encount_down*6000)*Math.random());
     if (encountRate>=tempEncRandom && fieldenemyDataSet[fieldenemy[myposworld]].length!=0) {
         encount=true;
         let oddsSum=0,tmpodds=0,encountDice=0;
@@ -701,13 +703,13 @@ function fieldMain() {
                 if (drawMypicStatus && inDrawField){ //始点を描いていたら
                     if (!procdrawMypicMode){ //線
                         ctx2d.beginPath();
-                        ctx2d.strokeStyle="rgba(255,255,255,1)";
+                        ctx2d.strokeStyle="rgba(255,255,255,"+(Math.sin(globalTime/5)*0.3+0.7)+")";
                         ctx2d.moveTo(drawMypicTempPos[0],drawMypicTempPos[1]);
                         ctx2d.lineTo(inFieldX,inFieldY);
                         ctx2d.stroke();    
                     } else { //円
                         ctx2d.beginPath();
-                        ctx2d.strokeStyle="rgba(255,255,255,1)";
+                        ctx2d.strokeStyle="rgba(255,255,255,"+(Math.sin(globalTime/5)*0.3+0.7)+")";
                         ctx2d.arc(drawMypicTempPos[0],drawMypicTempPos[1],drawMypicRadius,0,Math.PI*2);
                         ctx2d.stroke();    
                     }
@@ -889,6 +891,7 @@ function fieldMain() {
                 if (!titleConfirmSelect) {
                     nextMode=0;
                     modeAnimation=1;
+                    playFieldBGM(-1);
                     checkfirstLaunch();
                 }
             }
@@ -1365,8 +1368,8 @@ function fieldMain() {
         ctx2d.fillRect(0,0,width,height);
     }
     if (warpAni==10 && warpFlg){ //ワープする瞬間
+        if(Math.floor(myposworld/10)!=Math.floor(nowWarpObj[4]/10)) playFieldBGM(nowWarpObj[4]);
         myposworld=nowWarpObj[4];
-        if(Math.floor(myposworld/10)!=Math.floor(nowWarpObj[4]/10)) playFieldBGM();
         myposx=nowWarpObj[5];
         myposy=nowWarpObj[6];
         createField();
@@ -1378,15 +1381,17 @@ function fieldMain() {
     }
 }
 
-function playFieldBGM(){
+function playFieldBGM(fieldNum){ //-1でタイトルを流せる
     stopFieldBGM();
-    if (myposworld<=9){
+    if (fieldNum==-1){
+        streetBgm.play();
+    } else if (fieldNum<=9){
         homeBgm.play();
-    } else if(myposworld<=19){
+    } else if(fieldNum<=19){
         forestFieldBgm.play();
-    } else if(myposworld<=29){
+    } else if(fieldNum<=29){
         caveFieldBgm.play();
-    } else if(myposworld<=39){
+    } else if(fieldNum<=39){
         remainsFieldBgm.play();
     } else{
         desertFieldBgm.play();
@@ -1398,4 +1403,5 @@ function stopFieldBGM(){
     caveFieldBgm.stop();
     remainsFieldBgm.stop();
     desertFieldBgm.stop();
+    streetBgm.stop();
 }

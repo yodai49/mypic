@@ -65,7 +65,7 @@ function titleMain() {
        modeAnimation=1;
        selectTitleFlg=1;
        menuWindow=0;
-       playFieldBGM();
+       playFieldBGM(myposworld);
    }
    titleAni++;
 }

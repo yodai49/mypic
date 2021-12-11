@@ -142,4 +142,10 @@ const eventSE=new Howl({
     loop: false,
     format: ['mp3'],
 });
+const buyEventSE=new Howl({
+    src: 'sound/buyÉventSE.mp3',
+    volume: 0.8,
+    loop: false,
+    format: ['mp3'],
+});
 /////////////////////

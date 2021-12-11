@@ -706,12 +706,12 @@ function fieldMain() {
                         ctx2d.strokeStyle="rgba(255,255,255,"+(Math.sin(globalTime/5)*0.3+0.7)+")";
                         ctx2d.moveTo(drawMypicTempPos[0],drawMypicTempPos[1]);
                         ctx2d.lineTo(inFieldX,inFieldY);
-                        ctx2d.stroke();    
+                        ctx2d.stroke();
                     } else { //円
                         ctx2d.beginPath();
                         ctx2d.strokeStyle="rgba(255,255,255,"+(Math.sin(globalTime/5)*0.3+0.7)+")";
                         ctx2d.arc(drawMypicTempPos[0],drawMypicTempPos[1],drawMypicRadius,0,Math.PI*2);
-                        ctx2d.stroke();    
+                        ctx2d.stroke();
                     }
                 }
                 drawMypic(0,width/2-135,height/2-110,270,270,1,1);

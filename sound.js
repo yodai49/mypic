@@ -32,7 +32,7 @@ const remainsFieldBgm=new Howl({
 });
 const desertFieldBgm=new Howl({
     src: 'sound/desertField.mp3',
-    volume: 0.44,
+    volume: 0.14,
     loop: true,
     format: ['mp3'],
 });

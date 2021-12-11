@@ -1045,6 +1045,9 @@ function fieldMain() {
             ctx2d.fillRect(300,height*0.05,2,height*0.7);
             if (menuSelectNum==0){ ////マイピク
                 let mypicOffsetX=0,mypicOffsetY=0;
+                ctx2d.fillStyle="rgba(255,255,255," + (menuWindowTransChild*Math.sin(globalTime/5)*0.3+0.7)+")";
+                ctx2d.font="16px "+mainfontName;
+                if (mypic.length >= 2) ctx2d.fillText("Vキー→Zキーで入れ替え",40,410);
                 for(var i = 0; i < Math.min(6,mypic.length);i++){
                     if (!(i % 2)) mypicOffsetX=320;
                     if (i % 2) mypicOffsetX=560;

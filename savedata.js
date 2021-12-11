@@ -33,7 +33,7 @@ function resetData(){
     //データをリセットする処理 変数に初期値をセットする　初プレイやはじめからを選択したときに使う
     //localStorage.clear();
     items=[];
-    for(var i = 0;i < itemdata.length;i++) items.push([i,50]);
+    if(debugMode) for(var i = 0;i < itemdata.length;i++) items.push([i,50]);
     items.sort(function(a,b){return (a[0]-b[0]);});
     mypic=[0];
     mypicstock=[

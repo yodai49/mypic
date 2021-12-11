@@ -25,7 +25,7 @@ var encount_down=0,encount_down_cnt=0;
 var nowShopData,eventShopSelectNum=0,showmoney=0;
 var checkSkillConflict=[],encountEnemyNum=0,inMsgBattleFlg=0,searchablelg=0;
 
-function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
+function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode,redMode){
     if (mypic.length<=drawMypicNum && mode==0) return 0;
     ctx2d.lineWidth=1;
     if (dw>50) ctx2d.lineWidth=2;
@@ -34,6 +34,7 @@ function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
     if (mode==1){
         for(var i = 0;i < drawMypicTempObj.length;i++){
             ctx2d.strokeStyle="rgba(255,255,255,"+trans+")";
+            if(redMode) ctx2d.strokeStyle="rgba(150,0,0,"+trans+")";
             ctx2d.beginPath();
             if (drawMypicTempObj[i][0] == 0){ //線
                 ctx2d.moveTo(dx+dw*drawMypicTempObj[i][1]/100,dy+dh*drawMypicTempObj[i][2]/100);
@@ -50,6 +51,7 @@ function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode){
         }
         for(var i = 0;i < mypicstock[drawMypicNum][1].length;i++){
             ctx2d.strokeStyle="rgba(255,255,255,"+trans+")";
+            if(redMode) ctx2d.strokeStyle="rgba(150,0,0,"+trans+")";
             if(tempitemflg) ctx2d.strokeStyle="rgba("+typeDataCol[mypicstock[drawMypicNum][15]]+","+trans+")";
             ctx2d.beginPath();
             if (mypicstock[drawMypicNum][1][i][0] == 0){ //線

@@ -1,8 +1,19 @@
 .canvas-wrapper {
     position: relative;
+    height:600px;
 }
 .canvas-wrapper canvas {
     position: absolute;
     top: 0;
     left: 0;
+    right:0;
+    margin:auto;
+}
+body{
+    background-color:black;
+}
+h1{
+    font-size:30px;
+    color:white;
+    margin-left:50px;
 }

@@ -1440,7 +1440,7 @@ function fieldMain() {
     }
     let tempitemflgs=0;
     for(let i = 0;i < itemflgs.length;i++){
-        if(itemflgs[i]) tempitemflgs=1;
+        if(itemflgs[i] && fieldItemStatus[myposworld][i][5]) tempitemflgs=1;
     }
     if(tempitemflgs){
         ctx2d.font="14pt " + mainfontName;

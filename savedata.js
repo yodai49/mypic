@@ -27,6 +27,7 @@ function loadData(){
     mypic=JSON.parse(localStorage.getItem("mypic"));
     mypicstock=JSON.parse(localStorage.getItem("mypicstock"));
     fieldItemStatus=JSON.parse(localStorage.getItem("fieldItemStatus"));
+    eventMessageWindow=0,eventMessageWindowMsg="",eventMessageSelectNum=0,procreateMsg="",eventMessageWindowMsgStack=[],eventMessageWindowAni=0;
 }
 
 function resetData(){
@@ -45,4 +46,5 @@ function resetData(){
     }
     isFromFirst=1;
     nextEventNum=0;
+    eventMessageWindow=0,eventMessageWindowMsg="",eventMessageSelectNum=0,procreateMsg="",eventMessageWindowMsgStack=[],eventMessageWindowAni=0;
 }

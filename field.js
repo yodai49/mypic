@@ -3,7 +3,7 @@ const charasize=35; //キャラクターのサイズ
 const pre_charasize=60; //プリレンダリング用のキャラクターのサイズ
 const fieldwidth=960;//フィールドの幅の最大値
 const fieldheight=540;//フィールドの高さの最大値
-const debugMode=3; //デバッグモード　1ならワープ位置を赤で表示
+const debugMode=0; //デバッグモード　1ならワープ位置を赤で表示
 var walkspeed=3;//歩くスピード
 var menuSelectNum=0,menuSelectFlg=0;
 var menuSelectChildNum=0,menuWindowChildAni=0,itemsScroll=0;
@@ -210,7 +210,7 @@ function moveEveDraw(x,y){ //マウスのムーブイベント
 function encount_check(){//敵との遭遇率encount=6*((200−運)/200)
     if (mypic.length==0 || debugMode) return 0;
     var encountRate = (6*((200 - mypicstock[mypic[0]][9],0,100,100),0,100/200));
-    var tempEncRandom=((1500+encount_down*6000)*Math.random());
+    var tempEncRandom=((1000+encount_down*6000)*Math.random());
     if (encountRate>=tempEncRandom && fieldenemyDataSet[fieldenemy[myposworld]].length!=0) {
         encount=true;
         let oddsSum=0,tmpodds=0,encountDice=0;
@@ -1045,6 +1045,9 @@ function fieldMain() {
             ctx2d.fillRect(300,height*0.05,2,height*0.7);
             if (menuSelectNum==0){ ////マイピク
                 let mypicOffsetX=0,mypicOffsetY=0;
+                ctx2d.fillStyle="rgba(255,255,255," + (menuWindowTransChild*Math.sin(globalTime/5)*0.3+0.7)+")";
+                ctx2d.font="16px "+mainfontName;
+                if (mypic.length >= 2) ctx2d.fillText("Vキー→Zキーで入れ替え",40,410);
                 for(var i = 0; i < Math.min(6,mypic.length);i++){
                     if (!(i % 2)) mypicOffsetX=320;
                     if (i % 2) mypicOffsetX=560;
@@ -1060,6 +1063,7 @@ function fieldMain() {
                     ctx2d.fillText("DP: "+ mypicstock[mypic[i]][4]+ " / " + mypicstock[mypic[i]][5],mypicOffsetX,mypicOffsetY+37);
                     ctx2d.fillText("レベル: "+ mypicstock[mypic[i]][12],mypicOffsetX,mypicOffsetY+57);
                     ctx2d.fillText("けいけん: "+ mypicstock[mypic[i]][13],mypicOffsetX,mypicOffsetY+74);
+                    ctx2d.fillText("LvUpまで"+  (Math.floor(Math.pow(mypicstock[mypic[i]][12]+1,1.5+(1/3*(3-mypicstock[mypic[i]][16]))))-mypicstock[mypic[i]][13]),mypicOffsetX,mypicOffsetY+91);
                     ctx2d.fillStyle="rgba(0,0,0," + menuWindowTransChild*0.8+")";
                     ctx2d.fillRect(mypicOffsetX+100,mypicOffsetY-20,120,120);
                     drawMypic(mypic[i],mypicOffsetX+100,mypicOffsetY-20,120,120,menuWindowTransChild);

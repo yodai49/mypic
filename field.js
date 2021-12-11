@@ -785,7 +785,7 @@ function fieldMain() {
         if (eventWindowAni == 2*menuWindowAniSpeed) eventWindowAni=0,happenedEvent=0; 
         if (spacekey) menuSelectFlg=0;
     } else if(!menuWindow&& !eventMessageWindow){ /////メニューウィンドウが表示されていない時
-        if(ckey) menuWindow++;
+        if(ckey) menuWindow++,menuSelectNum=0,menuWindowChildAni=0;
         if (leftkey) walkdir=0;
         if (rightkey) walkdir=1;
         if (upkey) walkdir=2;

@@ -323,7 +323,7 @@ function battleloop(){
     else if(battleMode==5){//逃げるメッセージ
         if(!attackorder){
             ctx2d.font="26px "+mainfontName;
-            ctx2d.fillText("敵が速くて逃げられない!",25/100,height*75/100);}
+            ctx2d.fillText("敵が速くて逃げられない!",width*25/100,height*75/100);}
         else{
             ctx2d.font="26px "+mainfontName;
             ctx2d.fillText(mypicstock[mypic[0]][0]+" はにげた", width*25/100,height*75/100);}

@@ -130,10 +130,25 @@ function battleloop(){
 
     if (fieldReDrawFlg){ /////背景の再描画処理　戦闘開始時にこのフラグが立つ
         field2d.clearRect(0,0,width,height);
+        //field部分
         field2d.fillStyle=skyblue;
         field2d.fillRect(0,0,width,height);
-        field2d.fillStyle=black;
-        field2d.fillRect(0,height*65/100,width,height*35/100);
+        const mypicFieldBackImg=new Image();//mypicField
+        mypicFieldBackImg.src="./imgs/battleFieldBack.jpg";
+        mypicFieldBackImg.onload=function(){
+            //field2d.drawImage(mypicFieldBackImg,0,0,2413,1347,width*0/100,height*0/100,width,height);
+        }; 
+        const mypicFieldImg=new Image();//mypicField
+        mypicFieldImg.src="./imgs/battleField.png";
+        mypicFieldImg.onload=function(){
+            field2d.drawImage(mypicFieldImg,0,0,2855,1498,width*5/100,height*55/100,width*44/100,height*20/100);
+        }; 
+        const enemyFieldImg=new Image();//enemyField
+        enemyFieldImg.src="./imgs/battleField.png";
+        enemyFieldImg.onload=function(){
+            field2d.drawImage(enemyFieldImg,0,0,2855,1498,width*50/100,height*26/100,width*44/100,height*20/100);
+        }; 
+        //message部分
         const messageImg=new Image();//メッセージウィンドウ
         messageImg.src="./imgs/messageWindow.png";
         messageImg.onload=function(){
@@ -149,6 +164,9 @@ function battleloop(){
         enemyImg.onload=function(){
             field2d.drawImage(enemyImg,0,0,685,179,width*79/100,height*64/100,width*20/100,height*38/100);
         }; 
+        field2d.fillStyle=black;
+        field2d.fillRect(0,height*65/100,width,height*35/100);
+        
         fieldReDrawFlg=0;
     }
 

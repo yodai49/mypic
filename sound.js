@@ -38,7 +38,7 @@ const desertFieldBgm=new Howl({
 });
 const normalBattleBgm=new Howl({
     src: 'sound/normalBattle1.mp3',
-    volume: 0.24,
+    volume: 0.08,
     loop: true,
     format: ['mp3'],
 });

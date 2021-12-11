@@ -376,6 +376,7 @@ function walkeve(){ //歩くときに発生する処理
 }
 function trigEvent(trigEventnum,trigEventObj){
     if (trigEventnum==1) { //マイピク整理のイベント
+        zkeySE.play(); 
         if (mypicstock.length){
             eventWindowAni++;
             eventWindowKind=1;
@@ -387,6 +388,7 @@ function trigEvent(trigEventnum,trigEventObj){
             eventMessageWindow=1;
         }
     }　else if (trigEventnum==2){ //マイピク孵化のイベント
+        zkeySE.play(); 
         //持っている卵のリストを作成
         tempEggList=[];
         for(var i = 0;i < items.length;i++){
@@ -409,6 +411,7 @@ function trigEvent(trigEventnum,trigEventObj){
             eventMessageWindowMsg="かえせるたまごを持っていないようだ！";
         }
     } else if(trigEventnum==3 && !menuSelectFlg){ //お店
+        zkeySE.play(); 
         eventWindowKind=3;
         eventWindowAni++;
         showmoney=money;
@@ -548,8 +551,8 @@ function fieldMain() {
             if (leftkey&& !eventMessageWindow && (stockMypicSelectNum%2) && !menuSelectFlg && !stockMypicChgWindow) stockMypicSelectNum--,menuSelectFlg=1, crosskeySE.play(); 
             if (rightkey&& !eventMessageWindow &&!(stockMypicSelectNum%2) && !menuSelectFlg && !stockMypicChgWindow && mypicstock.length!=1) stockMypicSelectNum++,menuSelectFlg=1, crosskeySE.play(); 
             if (zkey && !menuSelectFlg){
-                zkeySE.play(); 
                 if (!mypic.includes(stockMypicSelectNum) && !stockMypicChgWindow){
+                    zkeySE.play(); 
                     if (mypic.length!=6){
                         mypic.push(stockMypicSelectNum);
                         eventMessageWindow=1;
@@ -565,7 +568,7 @@ function fieldMain() {
                 }
             } 
             if (xkey && !menuSelectFlg){
-                if (stockMypicChgWindow==menuWindowAniSpeed) stockMypicChgWindow++,menuSelectFlg=1;
+                if (stockMypicChgWindow==menuWindowAniSpeed) stockMypicChgWindow++,menuSelectFlg=1,xkeySE.play();
             }
             if (stockMypicChgWindow){
                 ctx2d.fillStyle="rgba(0,0,0,"+ (1-Math.abs(stockMypicChgWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
@@ -589,6 +592,7 @@ function fieldMain() {
             if (xkey && !(eventWindowAni-menuWindowAniSpeed) && !menuSelectFlg) {
                 eventWindowAni++;
                 menuSelectFlg=1;
+                xkeySE.play();
             }    
             if (stockMypicChgWindow && (stockMypicChgWindow-menuWindowAniSpeed)) stockMypicChgWindow++;
             if (stockMypicChgWindow==2*menuWindowAniSpeed) stockMypicChgWindow=0;
@@ -619,9 +623,11 @@ function fieldMain() {
             if(xkey && !menuSelectFlg){
                 if (!eventProcreateStep){
                     eventWindowAni++;
+                    xkeySE.play();
                 } else if(eventProcreateStep!=3){
                     eventProcreateStep--;
                     eventEggAni=0;
+                    xkeySE.play();
                 }
                 menuSelectFlg++;
             }
@@ -780,7 +786,7 @@ function fieldMain() {
             ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
             ctx2d.fillRect(width/2-200+20,height/2-150+260,360,1);
             ctx2d.fillText("おかね　" + showmoney  + " "+currencyName, width/2+180-ctx2d.measureText("おかね　" + money  + " "+currencyName).width,height/2-150+285);
-            if(xkey && !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow) eventWindowAni++,menuSelectFlg=1;
+            if(xkey && !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow) eventWindowAni++,menuSelectFlg=1,xkeySE.play();
             if(upkey && eventShopSelectNum && !(eventWindowAni-menuWindowAniSpeed) && !menuSelectFlg) eventShopSelectNum--,menuSelectFlg=1, crosskeySE.play();
             if(downkey && eventShopSelectNum != nowShopData.length-1&& !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg) eventShopSelectNum++,menuSelectFlg=1, crosskeySE.play();
             if(zkey && !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow) {
@@ -816,7 +822,7 @@ function fieldMain() {
         if (upkey && !checkConflict(2)) myposy-=walkspeed,walkeve();
         if (downkey && !checkConflict(3)) myposy+=walkspeed,walkeve();
         if (zkey && !selectTitleFlg&& !eventMessageWindow) { //アクションキー
-            zkeySE.play();
+            
             for(var i = 0; i < eventobj[myposworld].length;i++){
                 if (eventflgs[i] && !happenedEvent) trigEvent(eventobj[myposworld][i][4],eventobj[myposworld][i]);
             }
@@ -825,6 +831,7 @@ function fieldMain() {
                     popupMsg.push([itemdata[fieldItemStatus[myposworld][i][4]][0]+"をゲットした！",120,0,0,-1]);
                     fieldItemStatus[myposworld][i][5]--;
                     getItem(fieldItemStatus[myposworld][i][4]);
+                    eventSE.play();
                     fieldReDrawFlg=1;
                 }
             }
@@ -832,8 +839,8 @@ function fieldMain() {
         if (zkey && eventWindowAni && !menuSelectFlg) eventWindowAni++, zkeySE.play(); 
         if (!zkey) selectTitleFlg=0;
     } else { /////メニューウィンドウが表示されている時
-        if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni && !titleConfirmWindow && !menuSelectFlg && !eventMessageWindow) menuWindow++;
-        if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni && titleConfirmWindow && !menuSelectFlg && !eventMessageWindow) titleConfirmWindow++,menuSelectFlg=1;
+        if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni && !titleConfirmWindow && !menuSelectFlg && !eventMessageWindow) menuWindow++,xkeySE.play();
+        if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni && titleConfirmWindow && !menuSelectFlg && !eventMessageWindow) titleConfirmWindow++,menuSelectFlg=1,xkeySE.play();
         if(zkey && menuWindow && !menuWindowChildAni && !titleConfirmWindow && !menuSelectFlg && !eventMessageWindow){
             zkeySE.play(); 
             if (menuSelectNum==3){ //セーブ
@@ -1005,8 +1012,8 @@ function fieldMain() {
     if (menuMypicDetailAni && menuMypicDetailAni!=menuWindowAniSpeed) menuMypicDetailAni++;
     if (menuMypicDetailAni == menuWindowAniSpeed*2) menuMypicDetailAni=0;
     if (!zkey) menuzflg=0;
-    if(xkey && !(menuWindowChildAni-menuWindowAniSpeed) && menuWindowChildAni && !menuMypicDetailAni && !eventMessageWindow) menuWindowChildAni++;
-    if(xkey && !(menuWindowChildAni-menuWindowAniSpeed) && menuWindowChildAni && !(menuMypicDetailAni-menuWindowAniSpeed) && !eventMessageWindow) menuMypicDetailAni++;
+    if(xkey && !(menuWindowChildAni-menuWindowAniSpeed) && menuWindowChildAni && !menuMypicDetailAni && !eventMessageWindow) menuWindowChildAni++,xkeySE.play();
+    if(xkey && !(menuWindowChildAni-menuWindowAniSpeed) && menuWindowChildAni && !(menuMypicDetailAni-menuWindowAniSpeed) && !eventMessageWindow) menuMypicDetailAni++,xkeySE.play();
     if(vkey &&  !(menuWindowChildAni-menuWindowAniSpeed) && menuWindowChildAni && !menuMypicDetailAni) menuSortMypicNum=menuSelectChildNum;
     if(menuWindow){    //メニューの描画
         ctx2d.fillStyle="rgba(0,0,0," + menuWindowTrans*0.8+")";
@@ -1198,6 +1205,7 @@ function fieldMain() {
             if (xkey && !menuSelectFlg){
                 menuSelectFlg=1;
                 eventMessageWindow++;
+                xkeySE.play();
             }
             ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
             ctx2d.fillRect((width-400)/2,height/2-100,400,200);
@@ -1274,6 +1282,7 @@ function fieldMain() {
                 }
             }
         }else if(eventMessageWindowMsg.substr(0,1) == "+"){ //連続でメッセージが現れる場合
+            if(!(eventMessageWindowAni%5) && (eventMessageWindowAni/2<eventMessageWindowMsg.length)) messageSE.play();
             eventMessageWindowAni++;
             ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
             ctx2d.font="16pt " + mainfontName;
@@ -1298,9 +1307,11 @@ function fieldMain() {
                 ctx2d.fillText(eventMessageWindowMsg.substr(42,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-41))).replace("=","").replace("~",""),40,460);
                 ctx2d.fillText(eventMessageWindowMsg.substr(83,Math.max(0,Math.min(41,Math.floor(eventMessageWindowAni/2)-82))).replace("=","").replace("~",""),40,490);
             }
-//            console.log(eventMessageWindowAni,eventMessageWindowMsg.length);
+            ctx2d.font="12pt " + mainfontName;
+            ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)*(0.7+0.3*Math.sin(globalTime/8))+")";
+            ctx2d.fillText("Zキーで次へ",38,387);
             if (zkey && !(eventMessageWindow-menuWindowAniSpeed) && !menuSelectFlg && (debugMode!=0 || eventMessageWindowAni/2>eventMessageWindowMsg.length)){//メッセージの更新処理
-                zkeySE.play(); 
+                messageNextSE.play(); 
                 eventMessageWindowAni=1;
                 if (eventMessageWindowMsgStack.length==0){
                     eventMessageWindow++,menuSelectFlg=1; //終わりの時
@@ -1320,6 +1331,7 @@ function fieldMain() {
                     } else if(eventMessageWindowMsg.substr(1,1)=="^" && !isNaN(Number(eventMessageWindowMsg.substr(2,3)))){ //アイテム入手のとき
                         //アイテム入手のときの書式は"+^XXX"
                         getItem(Number(eventMessageWindowMsg.substr(2,3)));
+                        eventSE.play();
                         popupMsg.push([itemdata[Number(eventMessageWindowMsg.substr(2,3))][0] + "を手に入れた！",120,0,0,-1]);
                         eventMessageWindowMsg=eventMessageWindowMsgStack[0];
                         eventMessageWindowMsgStack.shift();

@@ -120,7 +120,7 @@ const crosskeySE=new Howl({
 });
 const warpMapSE=new Howl({
     src: 'sound/warpMapSE.mp3',
-    volume: 0.8,
+    volume: 0.3,
     loop: false,
     format: ['mp3'],
 });
@@ -132,7 +132,7 @@ const messageSE=new Howl({
 });
 const messageNextSE=new Howl({
     src: 'sound/messageNextSE.mp3',
-    volume: 0.8,
+    volume: 0.1,
     loop: false,
     format: ['mp3'],
 });

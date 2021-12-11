@@ -473,6 +473,12 @@ function fieldMain() {
         }
     }
 
+    console.log(isFromFirst);
+    if(isFromFirst){ ////最初に強制的に出すメッセージ
+        trigEvent(6,[339,286,30,30,6,0,-1]); 
+        isFromFirst=0;
+    }
+
     ////////////////////////////////////////////////////////キー入力等処理
     if (eventWindowAni){ //イベントウィンドウが表示されている時
         if (eventWindowKind==1){ //整理イベント
@@ -881,7 +887,7 @@ function fieldMain() {
                 menuSelectChildNum-=2,menuSelectFlg=1;
             } else if (menuSelectNum==1 && menuSelectChildNum&& !menuMypicDetailAni){
                 menuSelectChildNum--,menuSelectFlg=1;
-                if (menuSelectChildNum < itemsScroll && itemsScroll) itemsScroll--;    
+                if (menuSelectChildNum < itemsScroll && itemsScroll) itemsScroll--;
             }
         }
         if (downkey && !menuSelectFlg && menuWindowChildAni && !eventMessageWindow) {//下キー
@@ -898,7 +904,7 @@ function fieldMain() {
             } 
         }
         if (rightkey && !menuSelectFlg && menuWindowChildAni&& !eventMessageWindow) {//右キー
-            if (menuSelectNum==0 && !(menuSelectChildNum%2) && mypic.length != 1 && !menuMypicDetailAni){//マイピク
+            if (menuSelectNum==0 && !(menuSelectChildNum%2) && mypic.length != 1 &&!(mypic.length == 3 && menuSelectChildNum==2)&&!(mypic.length == 5 && menuSelectChildNum==4)&& !menuMypicDetailAni){//マイピク
                 menuSelectChildNum++,menuSelectFlg=1;
             } 
         }

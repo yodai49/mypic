@@ -9,6 +9,7 @@ var shopWindow=0;//ショップウィンドウの表示非表示
 var globalTime=0;//タイム　1ループで1増える
 var titleAni=0;
 var isFirst=localStorage.getItem("xpos");//初回起動時かどうかを確認
+var isFromFirst=0;///はじめからを選択した場合1を格納
 var popupMsg=[];//ポップアップで表示するメッセージを格納 形式[msgの内容、生き残り時間、0、ディレイ、ピクチャ(なにもないなら[]を指定)]
 const modeChangeAniSpeed=30;
 

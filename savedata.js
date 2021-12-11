@@ -42,4 +42,5 @@ function resetData(){
     for(var i = 0;i < itemobj.length;i++){
         fieldItemStatus[i] = itemobj[i];
     }
+    isFromFirst=1;
 }

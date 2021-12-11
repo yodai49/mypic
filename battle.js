@@ -394,6 +394,7 @@ function lateEnemyAttack(){
 
 function battleStartAnimation(){
     if(battleAnimationCount==0){
+        if(battleFirstAniCount==0 && battleAnimationTrans==0 && battleTransIncrease)normalBattleBgm.play();
         if(battleTransIncrease)battleAnimationTrans += 0.1;
         else battleAnimationTrans -= 0.1;
         ctx2d.fillStyle="rgba(0,0,0,"+battleAnimationTrans+")";

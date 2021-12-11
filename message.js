@@ -187,9 +187,6 @@ function battleloop(){
     }
 
 
-    ctx2d.fillStyle=white;
-    ctx2d.fillRect(150,150,100,20);
-
     if(battleMode==1){
         ctx2d.font="25px "+mainfontName;
         ctx2d.fillText("たたかう", width*28.5/100,height*75/100);

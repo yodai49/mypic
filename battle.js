@@ -35,7 +35,10 @@ function battleMain() {
     drawMypic(0,190,130+Math.max(0,Math.sin(globalTime/7)*20-17),180,180,1,0);
     //enemy
     ctx2d.fillStyle=red;
-    ctx2d.fillRect(600,200,50,50);
+    ctx2d.fillRect(width*70/100,height*28/100,width*6/100,height*9/100);
+
+    //ctx2d.fillStyle=white;
+    //ctx2d.fillRect(150,150,100,20);
 
     //zkey入力時に次のメッセージに進む
     if(zkey){
@@ -411,7 +414,7 @@ function lateEnemyAttack(){
 
 function battleStartAnimation(){
     if(battleAnimationCount==0){
-        if(battleFirstAniCount==0 && battleAnimationTrans==0 && battleTransIncrease)dungeonBossBattle4Bgm.play();
+        if(battleFirstAniCount==0 && battleAnimationTrans==0 && battleTransIncrease)normalBattleBgm.play();
         if(battleTransIncrease)battleAnimationTrans += 0.1;
         else battleAnimationTrans -= 0.1;
         ctx2d.fillStyle="rgba(0,0,0,"+battleAnimationTrans+")";

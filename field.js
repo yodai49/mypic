@@ -3,7 +3,7 @@ const charasize=35; //キャラクターのサイズ
 const pre_charasize=60; //プリレンダリング用のキャラクターのサイズ
 const fieldwidth=960;//フィールドの幅の最大値
 const fieldheight=540;//フィールドの高さの最大値
-const debugMode=0; //デバッグモード　1ならワープ位置を赤で表示
+const debugMode=3; //デバッグモード　1ならワープ位置を赤で表示
 var walkspeed=3;//歩くスピード
 var menuSelectNum=0,menuSelectFlg=0;
 var menuSelectChildNum=0,menuWindowChildAni=0,itemsScroll=0;
@@ -446,7 +446,7 @@ function trigEvent(trigEventnum,trigEventObj){
 function fieldMain() {
     var menuWindowTrans,menuWindowTransChild;
     const menuWindowAniSpeed=15;
-    const menuWindowTxt =["マイピク","もちもの","そうさ","セーブ","タイトル"];
+    const menuWindowTxt =["マイピク","もちもの","そうさ等","セーブ","タイトル"];
     /*
     @param なし
     @return なし
@@ -1132,8 +1132,44 @@ function fieldMain() {
                     ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(0,25),360,60+32*10.3);
                     ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(25,25),360,60+32*11);    
                 }
-            } else if(menuSelectNum==2){//////マップ
-
+            } else if(menuSelectNum==2){//////そうさ
+                ctx2d.font="26px "+mainfontName;
+                ctx2d.fillText("フィールド",320,48);
+                ctx2d.fillText("バトル",530,48);
+                ctx2d.fillText("現在地",320,248);
+                ctx2d.font="18px "+mainfontName;
+                ctx2d.fillText("方向キー",335,88);
+                ctx2d.fillText("Zキー",335,123);
+                ctx2d.fillText("Xキー",335,158);
+                ctx2d.fillText("Cキー",335,193);
+                ctx2d.fillText("移動",415,88);
+                ctx2d.fillText("調べる",415,123);
+                ctx2d.fillText("キャンセル",415,158);
+                ctx2d.fillText("メニュー",415,193);
+                ctx2d.fillText("方向キー",545,88);
+                ctx2d.fillText("Zキー",545,123);
+                ctx2d.fillText("Xキー",545,158);
+                ctx2d.fillText("選択",650,88);
+                ctx2d.fillText("決定",650,123);
+                ctx2d.fillText("キャンセル",650,158);
+                ctx2d.fillText(fieldNameDatabase2[myposworld],330,278);
+                ctx2d.lineWidth=1;
+                ctx2d.strokeStyle="rgba(255,255,255,1)";
+                ctx2d.beginPath();
+                ctx2d.moveTo(314,44);
+                ctx2d.lineTo(314,209);
+                ctx2d.lineTo(509,207);
+                ctx2d.stroke();
+                ctx2d.beginPath();
+                ctx2d.moveTo(520,44);
+                ctx2d.lineTo(520,171);
+                ctx2d.lineTo(759,171);
+                ctx2d.stroke();
+                ctx2d.beginPath();
+                ctx2d.moveTo(314,237);
+                ctx2d.lineTo(314,292);
+                ctx2d.lineTo(775,292);
+                ctx2d.stroke(); 
             }
         }
     }

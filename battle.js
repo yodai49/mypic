@@ -36,6 +36,12 @@ function battleMain() {
     //enemy
     drawEnemy();
 
+    //stage名
+    ctx2d.setTransform(1,0,-0.5,1,0,0);
+    ctx2d.fillStyle=black;
+    ctx2d.fillRect(width*0/100,height*5/100,width*30/100,height*10/100);
+    ctx2d.setTransform(1,0,0,1,0,0);
+
     //ctx2d.fillStyle=white;
     //ctx2d.fillRect(150,150,100,20);
 
@@ -74,7 +80,7 @@ function battleMain() {
             else if(gameoverFlg) battleMode=8, chgCount=0, oneMoveFlg=true, gameoverFlg=false;
             else if(Acount==1 && !damageMessageFlg)damageMessageFlg=true, attackMiss=false;
             else if(Acount==1 && damageMessageFlg)Acount++, damageMessageFlg=false;
-            else if(Acount==2 && !damageMessageFlg)damageMessageFlg=true, Acheck=false, attackMiss=false;
+            else if(Acount==2 && !damageMessageFlg)damageMessageFlg=true, attackMiss=false;
             else if(Acount==2 && damageMessageFlg)Acount=99, damageMessageFlg=false;
         } else if(battleMode==3){
             if(unFightFlg) battleMode=7, chgCount=0, loopselect=0, unFightFlg=false;
@@ -125,7 +131,6 @@ function battleMain() {
                 baseEnemyData[i]=enemyData[encountEnemyNum][i];
             }
             decideEnemyStatis();
-            
             bMemory[0]=mypicstock[mypic[0]][6];
             bMemory[1]=mypicstock[mypic[0]][7];
             bMemory[2]=mypicstock[mypic[0]][3];
@@ -168,7 +173,7 @@ function battleMain() {
             firstSkill=skillData[firstSt[8][loopselect]];//技データのリストが取れる
             secondSkill=skillData[secondSt[8][loopselect]];//技データのリストが取れる
         }
-        else if(Acount==1 && Acheck){//先攻
+        else if(Acount==1 && Acheck && damageMessageFlg){//先攻
             Acheck=false;
             if(hitcheck(firstSkill[2], secondSt[9], firstSt[11])){//MPの残り判定も追加しないと意見//
                 attackMiss=false;
@@ -191,7 +196,7 @@ function battleMain() {
             else attackMiss=true;
         }
         //後攻の攻撃
-        if(Acount==2 && Acheck){
+        if(Acount==2 && Acheck && damageMessageFlg){
             Acheck=false;
             lateEnemyAttack();}
         if(Acount==99)battleMode=1, Acount=0, loopmode=0,loopselect=0;//行動選択に戻る

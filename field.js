@@ -956,6 +956,7 @@ function fieldMain() {
                     nextMode=1;
                     modeAnimation=1;
                     myposx=homposx,myposy=homposy,myposworld=homposworld;
+                    playFieldBGM();
                     eventMessageWindow=1;
                     eventMessageWindowMsg=itemdata[items[menuSelectChildNum][0]][0] + "をつかった！";
                     consumeItem(menuSelectChildNum);
@@ -1365,6 +1366,7 @@ function fieldMain() {
     }
     if (warpAni==10 && warpFlg){ //ワープする瞬間
         myposworld=nowWarpObj[4];
+        if(Math.floor(myposworld/10)!=Math.floor(nowWarpObj[4]/10)) playFieldBGM();
         myposx=nowWarpObj[5];
         myposy=nowWarpObj[6];
         createField();
@@ -1374,4 +1376,26 @@ function fieldMain() {
     } else if(warpAni==20){ //ワープアニメーション終了時
         warpAni=0;
     }
+}
+
+function playFieldBGM(){
+    stopFieldBGM();
+    if (myposworld<=9){
+        homeBgm.play();
+    } else if(myposworld<=19){
+        forestFieldBgm.play();
+    } else if(myposworld<=29){
+        caveFieldBgm.play();
+    } else if(myposworld<=39){
+        remainsFieldBgm.play();
+    } else{
+        desertFieldBgm.play();
+    }
+}
+function stopFieldBGM(){
+    homeBgm.stop();
+    forestFieldBgm.stop();
+    caveFieldBgm.stop();
+    remainsFieldBgm.stop();
+    desertFieldBgm.stop();
 }

@@ -43,7 +43,7 @@ const normalBattleBgm=new Howl({
     format: ['mp3'],
 });
 const rareBattleBgm=new Howl({
-    src: 'sound/dungeonBossBattle3.wav',
+    src: 'sound/dungeonBossBattle3.mp3',
     volume: 0.24,
     loop: true,
     format: ['mp3'],

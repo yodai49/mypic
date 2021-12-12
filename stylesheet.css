@@ -11,9 +11,20 @@
 }
 body{
     background-color:black;
+    font-family: 'Stick', cursive;
+    color:white;    
 }
 h1{
-    font-size:30px;
+    font-size:40px;
     color:white;
     margin-left:50px;
+}
+.bo{
+    margin-top:-30px;
+    margin-bottom:30px;
+    margin-left:100px;
+}
+.center{
+    margin-left:0px;
+    margin-right:0px;
 }

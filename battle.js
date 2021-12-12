@@ -74,11 +74,6 @@ function battleMain() {
         ctx2d.fillStyle="rgba(150,0,0,1)";
     }
 
-    //stage名
-    ctx2d.setTransform(1,0,-0.5,1,0,0);
-    ctx2d.fillStyle=black;
-    ctx2d.fillRect(width*0/100,height*5/100,width*30/100,height*10/100);
-    ctx2d.setTransform(1,0,0,1,0,0);
 
     //ctx2d.fillStyle=white;
     //ctx2d.fillRect(150,150,100,20);

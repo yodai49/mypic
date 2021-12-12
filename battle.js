@@ -161,7 +161,6 @@ function battleMain() {
     }
     //////
 
-
     if(battleMode==0){//敵データの保存
         if(oneMoveFlg){
             baseEnemyData=[];

@@ -137,7 +137,7 @@ function battleMain() {
                 battleMode=1, loopmode=0, loopselect=0;}
             else{//逃げてfieldに遷移
                 modeAnimation=1, nextMode=1, battleMode=0, loopmode=0, loopselect=0, lstnum=0, in_lstnum=0;
-                normalBattleBgm.stop(),playFieldBGM(myposworld);}
+                stopBattleBGM(),playFieldBGM(myposworld);}
         } else if(battleMode==6){
             in_lstnum++;
         } else if(battleMode==7){
@@ -321,7 +321,7 @@ function battleMain() {
         else {//onemoveflgでwinmessageが読み込まれるのを待ってから実行
             if(in_lstnum == winMessage.length){ //勝利後、フィールドに戻る時の処理はここに追加
                 nextMode=1, modeAnimation=1, battleMode=0, loopmode=0, loopselect=0, lstnum=0,in_lstnum=0;
-                normalBattleBgm.stop();//bgm停止
+                stopBattleBGM();//bgm停止
                 money+=getCurrencyAmount;//獲得金額を追加
                 mypicstock[mypic[0]][6]=bMemory[0];
                 mypicstock[mypic[0]][7]=bMemory[1];
@@ -350,7 +350,7 @@ function battleMain() {
         if(!oneMoveFlg){//onemoveflgでwinmessageが読み込まれるのを待ってから実行
             if(in_lstnum == loseMessage.length){ //勝利後、フィールドに戻る時の処理はここに追加
                 nextMode=0, modeAnimation=1, battleMode=0, loopmode=0, loopselect=0, lstnum=0, in_lstnum=0;
-                normalBattleBgm.stop();//bgm停止
+                stopBattleBGM();//bgm停止
                 mypicstock[mypic[0]][6]=bMemory[0];
                 mypicstock[mypic[0]][7]=bMemory[1];
                 mypicstock[mypic[0]][3]=bMemory[2];
@@ -466,7 +466,7 @@ function battleStartAnimation(){
     enemyIsDamagedAni=100;
     showMypicHP=mypicstock[mypic[0]][2];
     if(battleAnimationCount==0){
-        if(battleFirstAniCount==0 && battleAnimationTrans==0 && battleTransIncrease) stopFieldBGM(),normalBattleBgm.play();
+        if(battleFirstAniCount==0 && battleAnimationTrans==0 && battleTransIncrease) stopFieldBGM(),playBattleBGM(encountEnemyNum);
         if(battleTransIncrease)battleAnimationTrans += 0.1;
         else battleAnimationTrans -= 0.1;
         ctx2d.fillStyle="rgba(0,0,0,"+battleAnimationTrans+")";

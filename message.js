@@ -115,7 +115,7 @@ function battleloop(){
     ctx2d.fillText(typeDataText[mypicstock[mypic[0]][15]], width*15/100,height*75/100);//属性表示
     ctx2d.fillStyle=white;
     ctx2d.font="16px "+mainfontName;
-    ctx2d.fillText("HP: "+mypicstock[mypic[0]][2]+"/"+mypicstock[mypic[0]][3], width*3/100,height*81/100);
+    ctx2d.fillText("HP: "+Number(mypicstock[mypic[0]][2]).toFixed(0)+"/"+Number(mypicstock[mypic[0]][3]).toFixed(0), width*3/100,height*81/100);
     ctx2d.fillText("DP: "+mypicstock[mypic[0]][4]+"/"+mypicstock[mypic[0]][5], width*3/100,height*85/100);
     ctx2d.fillText("こうげき: "+mypicstock[mypic[0]][6], width*3/100,height*89/100);
     ctx2d.fillText("ぼうぎょ: "+mypicstock[mypic[0]][7], width*3/100,height*93/100);

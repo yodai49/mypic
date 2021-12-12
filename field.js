@@ -1462,6 +1462,8 @@ function fieldMain() {
         ctx2d.fillText("Zキーで調べる",800,30);
     }
     if(creatingFieldFlg){
+        ctx2d.fillStyle="rgba(0,0,0,1)";
+        ctx2d.fillRect(0,0,width,height);
         ctx2d.font="26pt " + mainfontName;
         ctx2d.fillText("Loading" + ".".repeat(Math.floor(globalTime/3)%3),30,500);    
     }

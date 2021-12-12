@@ -96,7 +96,12 @@ function battlemessMain(){
 }
 
 function battleloop(){
-    ctx2d.font="26px "+mainfontName;
+    ctx2d.font="28px "+mainfontName;
+    //////////////////
+    //左上ステージ表示
+    ctx2d.fillStyle=white;
+    ctx2d.fillText(fieldNameDatabase2[myposworld], width*6/100,height*11.5/100);
+    //////////////////
     //////////////////
     //味方ステータス表示
     ctx2d.fillStyle=darkgray;

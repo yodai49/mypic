@@ -380,7 +380,7 @@ function hitcheck(my_hitrate, oppLucky, my_trate){//命中判定: (技の命中�
 
 function calcDamage(myLevel, skillPower, myAttack, oppDefend, fskill, stype){//ダメージ計算: (((レベル∗2/4+2)∗技の威力∗自分の攻撃力/敵の防御力+2)∗タイプ相性∗(乱数0.9−1.1))
 //    return Math.floor(Math.floor(Math.floor(myLevel*2/6+2)* skillPower * myAttack/oppDefend+2) * typeMatch(fskill, stype) * (0.9+(1.1-0.9)*Math.random()));
-    return Math.max(0,Math.floor(((Math.pow(myLevel,0.2)*20/6+2)* skillPower * Math.abs(myAttack,0.5)/oppDefend) * typeMatch(fskill, stype) * (0.9+(1.1-0.9)*Math.random())));
+    return Math.max(0,Math.floor(((Math.pow(myLevel,0.05)/4+2)* skillPower * Math.abs(myAttack,0.8)/oppDefend) * typeMatch(fskill, stype) * (0.9+(1.1-0.9)*Math.random())));
 }
 
 function traitEffect(){//特性によるダメージ変化, 

@@ -190,6 +190,7 @@ function clickEveDraw(x,y){ //クリックイベント
                 } else if (drawMypicTempName.length<6){
                     drawMypicTempName+=keyboarddata[procCharaX][procCharaY];
                 }
+                crosskeySE.play();
             }
         }    
     }

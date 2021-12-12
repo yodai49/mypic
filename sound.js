@@ -37,13 +37,13 @@ const desertFieldBgm=new Howl({
     format: ['mp3'],
 });
 const normalBattleBgm=new Howl({
-    src: 'sound/normalBattle2.mp3',
+    src: 'sound/normalBattle.mp3',
     volume: 0.24,
     loop: true,
     format: ['mp3'],
 });
 const rareBattleBgm=new Howl({
-    src: 'sound/dungeonBossBattle3.mp3',
+    src: 'sound/rareBattle.mp3',
     volume: 0.24,
     loop: true,
     format: ['mp3'],
@@ -61,13 +61,13 @@ const dungeonBossBattle2Bgm=new Howl({//洞窟
     format: ['mp3'],
 });
 const dungeonBossBattle3Bgm=new Howl({//遺跡
-    src: 'sound/addBattle1.mp3',
+    src: 'sound/dungeonBossBattle3.mp3',
     volume: 0.24,
     loop: true,
     format: ['mp3'],
 });
 const dungeonBossBattle4Bgm=new Howl({//砂漠
-    src: 'sound/addBattle2.mp3',
+    src: 'sound/dungeonBossBattle4.mp3',
     volume: 0.24,
     loop: true,
     format: ['mp3'],

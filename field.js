@@ -24,6 +24,7 @@ var eventMessageWindow=0,eventMessageWindowMsg="",eventMessageSelectNum=0,procre
 var encount_down=0,encount_down_cnt=0;
 var nowShopData,eventShopSelectNum=0,showmoney=0;
 var checkSkillConflict=[],encountEnemyNum=0,inMsgBattleFlg=0,searchablelg=0;
+var creatingFieldFlg=0;
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode,redMode){
     if (mypic.length<=drawMypicNum && mode==0) return 0;
@@ -253,6 +254,7 @@ function checkConflict(dir){
     if (dir==2) checkConflictPosx= 0,checkConflictPosy=-walkspeed-1;
     if (dir==3) checkConflictPosx= 0,checkConflictPosy=charasize+walkspeed+1;
     if(battleAnimationFlg) return 1;
+    if(creatingFieldFlg) return 1;
     if (!warpAni){
         for(let i = 0;i < fieldwarpobj[myposworld].length;i++){
             if (fieldwarpobj[myposworld][i][0] < myposx+charasize && fieldwarpobj[myposworld][i][0] + fieldwarpobj[myposworld][i][2] > myposx){
@@ -321,6 +323,7 @@ function checkConflict(dir){
     return 0;
 }
 function createField(){
+    creatingFieldFlg=1;
     fieldcanvas=document.createElement("canvas");
     fieldcanvas.width=fieldwidth, fieldcanvas.height=fieldheight;
     var fieldcanvasctx=fieldcanvas.getContext("2d"); //フィールドは横並びに描画　幅はfieldwidth
@@ -343,7 +346,7 @@ function createField(){
         if (fieldbackdata[myposworld][j][0].substr(0,4) != "rgba"){
             const fieldimg=new Image();
             fieldimg.src="./imgs/fieldobjects/"+fieldbackdata[myposworld][j][0]+".png";
-            fieldimg.onload=function(){fieldbackcanvas.getContext("2d").drawImage(fieldimg,0,0);}
+            fieldimg.onload=function(){fieldbackcanvas.getContext("2d").drawImage(fieldimg,0,0); creatingFieldFlg=0;}
         }
     }
 }
@@ -1457,6 +1460,10 @@ function fieldMain() {
         ctx2d.font="14pt " + mainfontName;
         ctx2d.fillStyle="rgba(255,255,255," + (Math.sin(globalTime/5)*0.3+0.7)+")";    
         ctx2d.fillText("Zキーで調べる",800,30);
+    }
+    if(creatingFieldFlg){
+        ctx2d.font="26pt " + mainfontName;
+        ctx2d.fillText("Loading" + ".".repeat(Math.floor(globalTime/3)%3),30,500);    
     }
 }
 

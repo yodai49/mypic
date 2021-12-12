@@ -61,6 +61,7 @@ function changeHPMP(chgStatus,chgAmount,isEnemy,Num,isSimulate){
             1 - - - HPが0以下になる（なった）、あるいはMPが0未満になる（なった）
             -1  - - その他の異常終了
     */
+   chgAmount=Math.floor(chgAmount);
     if (!isEnemy){ //味方
         if (!isSimulate){ //実際にやるとき
             mypicstock[mypic[Num]][2+2*chgStatus]=Math.min(Math.max(0,mypicstock[mypic[Num]][2+2*chgStatus]+chgAmount),mypicstock[mypic[Num]][3+2*chgStatus]);

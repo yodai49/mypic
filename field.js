@@ -619,6 +619,7 @@ function fieldMain() {
                 } else if(eventProcreateStep==2 && drawMypicTempName.length){ //生まれる時の処理
                     procreateProcess();
                     consumeItem(selectEggItemNum);
+                    eventSE.play();
                     eventProcreateStep++,menuSelectFlg=1,eventEggAni=0;
                     if (mypic.length!=6) {
                         procreateMsg="なかまにくわわった！";
@@ -685,7 +686,7 @@ function fieldMain() {
             } else if(eventProcreateStep==1){ //お絵かき
                 ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*Math.min(1,eventEggAni/20)+")";
                 ctx2d.font="16pt " + mainfontName;
-                ctx2d.fillText("マイピクをマウスでドローしよう！".substr(0,eventEggAni/2),width/2-230,height/2-120);
+                ctx2d.fillText("マイピクをマウスでドローしよう！　Zで決定".substr(0,eventEggAni/2),width/2-230,height/2-120);
                 ctx2d.font="12pt " + mainfontName;
                 ctx2d.fillText("えらんだたまご：" + itemdata[tempEggList[eventEggSelectNum][0]][0],width/2-ctx2d.measureText("えらんだたまご：" + itemdata[tempEggList[eventEggSelectNum][0]][0]).width/2,height/2+183);    
                 ctx2d.font="10pt " + mainfontName;
@@ -730,6 +731,8 @@ function fieldMain() {
                 ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*Math.min(1,eventEggAni/20)+")";
                 ctx2d.font="16pt " + mainfontName;
                 ctx2d.fillText("この子になまえをつけよう！".substr(0,eventEggAni/2),width/2-230,height/2-120);
+                ctx2d.font="12pt " + mainfontName;
+                ctx2d.fillText("マウスで文字をクリック。Zで決定。".substr(0,eventEggAni/2),width/2-230,height/2-100);
                 ctx2d.font="20pt " + mainfontName;
                 ctx2d.fillText(drawMypicTempName,width/2-215,height/2-60);
                 for(var i = 0;i < keyboarddata.length;i++){
@@ -781,6 +784,12 @@ function fieldMain() {
             ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
             ctx2d.font="18pt " + mainfontName;
             ctx2d.fillText("おみせ" , width/2-200+15,height/2-150+30);
+            ctx2d.font="8pt " + mainfontName;
+            if(itemdata[nowShopData[eventShopSelectNum][0]][3].length>30){
+                ctx2d.fillText(itemdata[nowShopData[eventShopSelectNum][0]][3].substr(0,30)+"...", width/2-200+35,height/2-150+55+10*20);
+            } else{
+                ctx2d.fillText(itemdata[nowShopData[eventShopSelectNum][0]][3], width/2-200+35,height/2-150+55+10*20);
+            }
             ctx2d.font="13pt " + mainfontName;
             ctx2d.fillStyle="rgba(105,105,105," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
             for(var i = 0;i < Math.min(10,nowShopData.length);i++){

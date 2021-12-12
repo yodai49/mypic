@@ -47,6 +47,12 @@ function battlemessMain(){
 function battleloop(){
     ctx2d.font="28px "+mainfontName;
     //////////////////
+        //stage名
+        ctx2d.setTransform(1,0,-0.5,1,0,0);
+        ctx2d.fillStyle="rgba(0,0,0,0.6)";
+        ctx2d.fillRect(width*0/100,height*5/100,width*30/100,height*10/100);
+        ctx2d.setTransform(1,0,0,1,0,0);
+    
     //左上ステージ表示
     ctx2d.fillStyle=white;
     ctx2d.fillText(fieldNameDatabase2[myposworld], width*6/100,height*11.5/100);

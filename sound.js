@@ -79,17 +79,10 @@ const lastBossBattle1Bgm=new Howl({//ラスボス
     format: ['mp3'],
 });
 /////////////////////
-
 /////////////////////
 ////     SE      ////
 const zkeySE=new Howl({
     src: 'sound/zkeySE.wav',
-    volume: 0.8,
-    loop: false,
-    format: ['mp3'],
-});
-const zkey2SE=new Howl({
-    src: 'sound/zkey2SE.wav',
     volume: 0.8,
     loop: false,
     format: ['mp3'],

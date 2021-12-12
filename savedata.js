@@ -14,6 +14,7 @@ function saveData(){
     localStorage.setItem("mypicstock",jsonOb);
     jsonOb=JSON.stringify(fieldItemStatus,undefined,1);
     localStorage.setItem("fieldItemStatus",jsonOb);
+    isFirst=0;
 }
 
 function loadData(){

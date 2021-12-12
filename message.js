@@ -171,7 +171,7 @@ function battleloop(){
                 BerrorFlg=false;}
             ctx2d.font="18px "+mainfontName;
             for (let i=0; i < Math.min(items.length, 5); i++){
-                console.log(BtopItem,i);
+                if(debugMode) console.log(BtopItem,i);
                 if(!itemdata[items[BtopItem+i][0]][2]) ctx2d.fillStyle=darkgray2;
                 else if(items[BtopItem+i][0] == 14 && moneyUpFlg) ctx2d.fillStyle=darkgray2;
                 else if(items[BtopItem+i][0] == 15 && experienceUpFlg) ctx2d.fillStyle=darkgray2;
@@ -219,7 +219,7 @@ function battleloop(){
                 else if(attackMiss){
                     ctx2d.fillText(firstSkill[0]+"は当たらなかった...", width*25/100,height*75/100);}
                 else {ctx2d.fillText(secondSt[0]+"に"+damage+"のダメージ!", width*25/100,height*75/100);
-                    console.log(typeMatch(secondSkill[3], firstSt[15]));
+                    if(debugMode) console.log(typeMatch(secondSkill[3], firstSt[15]));
                     if(typeMatch(secondSkill[3], firstSt[15])==1/2)ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
                     else if(typeMatch(secondSkill[3], firstSt[15])==2)ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);}
                 break;

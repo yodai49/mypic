@@ -120,8 +120,7 @@ function init() {
     function tick() { //メイン関数
         //2次元のリセット処理
         ctx2d.clearRect(0,0,width,height);
-
-        if(encount || bkey) battleAnimationFlg=true;
+        if(encount) battleAnimationFlg=true;
         //各モジュールのMain関数を呼び出し
         if (mode == 0){ //タイトル
             titleMain();

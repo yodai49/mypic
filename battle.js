@@ -65,7 +65,7 @@ function battleMain() {
     if(showMypicHP<mypicstock[mypic[0]][2]) showMypicHP++;
     if(showMypicHP>mypicstock[mypic[0]][2]) showMypicHP--;
     
-    drawMypic(0,190,130+Math.max(0,Math.sin(globalTime/7)*20-17),180,180,1,0,(mypicIsDamagedAni<=30&& (Math.floor(mypicIsDamagedAni/4)%2)));
+    drawMypic(mypic[0],190,130+Math.max(0,Math.sin(globalTime/7)*20-17),180,180,1,0,(mypicIsDamagedAni<=30&& (Math.floor(mypicIsDamagedAni/4)%2)));
     mypicIsDamagedAni++;
     enemyIsDamagedAni++;
     //enemy
@@ -422,7 +422,7 @@ function needEx(level){//(レベル)^2.5
 function getCurrency(enemylevel){//戦闘後獲得するお金
     if(moneyUpFlg) var itemBonus=1.5
     else var itemBonus=1;
-    return Math.floor(Math.pow(enemylevel,1.5)*(0.9+(1.1-0.9)*Math.random()*itemBonus));//(level)^1.5*(0.9~1.1)
+    return Math.floor(Math.pow(enemylevel,0.8)*5.5*(0.9+(1.1-0.9)*Math.random()*itemBonus));//(level)^1.5*(0.9~1.1)
 }
 
 function getEx(enemylevel){//戦闘後獲得する経験値

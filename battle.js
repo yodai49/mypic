@@ -147,7 +147,7 @@ function battleMain() {
         } else if(battleMode==8){
             in_lstnum++;
         }
-        zkey2SE.play();
+        zkeySE.play();
         zkey=false;
     }
     //////

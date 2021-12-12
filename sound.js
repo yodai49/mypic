@@ -88,12 +88,6 @@ const zkeySE=new Howl({
     loop: false,
     format: ['mp3'],
 });
-const zkey2SE=new Howl({
-    src: 'sound/zkey2SE.wav',
-    volume: 0.8,
-    loop: false,
-    format: ['mp3'],
-});
 const xkeySE=new Howl({
     src: 'sound/xkeySE.mp3',
     volume: 0.8,

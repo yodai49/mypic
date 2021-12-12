@@ -1475,3 +1475,27 @@ function stopFieldBGM(){
     desertFieldBgm.stop();
     streetBgm.stop();
 }
+
+
+function playBattleBGM(encountEnemyNum){
+    stopBattleBGM();
+    if(encountEnemyNum == 4)lastBossBattle1Bgm.play();//lastboss
+    else if(encountEnemyNum == 5)dungeonBossBattle1Bgm.play();//forestboss
+    else if(encountEnemyNum == 6)dungeonBossBattle2Bgm.play();//caveboss
+    else if(encountEnemyNum == 7)dungeonBossBattle3Bgm.play();//remainsboss
+    else if(encountEnemyNum == 8)dungeonBossBattle4Bgm.play();//desertboss
+    else if((encountEnemyNum>=9 && encountEnemyNum <=15) || (encountEnemyNum>=19 && encountEnemyNum <=25) || (encountEnemyNum>=29 && encountEnemyNum <=35) || (encountEnemyNum>=39 && encountEnemyNum <=45)){
+        normalBattleBgm.play();}//baseEnemy
+    else if((encountEnemyNum>=16 && encountEnemyNum <=18) || (encountEnemyNum>=26 && encountEnemyNum <=28) || (encountEnemyNum>=36 && encountEnemyNum <=38) || (encountEnemyNum>=46 && encountEnemyNum <=48)){
+        rareBattleBgm.play();}//rareEnemy
+}
+
+function stopBattleBGM(){
+    lastBossBattle1Bgm.stop();
+    dungeonBossBattle1Bgm.stop();
+    dungeonBossBattle2Bgm.stop();
+    dungeonBossBattle3Bgm.stop();
+    dungeonBossBattle4Bgm.stop();
+    normalBattleBgm.stop();
+    rareBattleBgm.stop();
+}

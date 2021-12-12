@@ -48,37 +48,31 @@ const rareBattleBgm=new Howl({
     loop: true,
     format: ['mp3'],
 });
-const dungeonBossBattle1Bgm=new Howl({
+const dungeonBossBattle1Bgm=new Howl({//森
     src: 'sound/dungeonBossBattle1.mp3',
     volume: 0.24,
     loop: true,
     format: ['mp3'],
 });
-const dungeonBossBattle2Bgm=new Howl({
+const dungeonBossBattle2Bgm=new Howl({//洞窟
     src: 'sound/dungeonBossBattle2.mp3',
     volume: 0.24,
     loop: true,
     format: ['mp3'],
 });
-const dungeonBossBattle3Bgm=new Howl({
-    src: 'sound/dungeonBossBattle3.wav',
-    volume: 0.24,
-    loop: true,
-    format: ['mp3'],
-});
-const dungeonBossBattle4Bgm=new Howl({
+const dungeonBossBattle3Bgm=new Howl({//遺跡
     src: 'sound/addBattle1.mp3',
     volume: 0.24,
     loop: true,
     format: ['mp3'],
 });
-const dungeonBossBattle5Bgm=new Howl({
+const dungeonBossBattle4Bgm=new Howl({//砂漠
     src: 'sound/addBattle2.mp3',
     volume: 0.24,
     loop: true,
     format: ['mp3'],
 });
-const lastBossBattle1Bgm=new Howl({
+const lastBossBattle1Bgm=new Howl({//ラスボス
     src: 'sound/lastBossBattle.mp3',
     volume: 0.24,
     loop: true,

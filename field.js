@@ -1476,6 +1476,7 @@ function stopFieldBGM(){
     streetBgm.stop();
 }
 
+
 function playBattleBGM(encountEnemyNum){
     stopBattleBGM();
     if(encountEnemyNum == 4)lastBossBattle1Bgm.play();//lastboss

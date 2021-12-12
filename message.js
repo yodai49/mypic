@@ -17,57 +17,6 @@ const popupWindowAniSpeed=15;
 
 function messageMain(){
     if(onMessage){
-        if(mode==1){
-        /*
-        ctx2d.fillStyle=white;
-        ctx2d.font="26px san-serif";
-        //textの表示
-        if(messCheck){
-            ctx2d.fillText(Message[lstnum][in_lstnum][Choicenum], 300,500);
-        }
-        else{ctx2d.fillText(Message[lstnum][in_lstnum], 300,500);}
-        //////
-
-        //選択肢シーン
-        if(Message[lstnum][in_lstnum][0]=="Q"){
-            if(messChoice==0){
-                make_pointer(550,490,520,465,520,515);}
-            else if(messChoice==1){
-                make_pointer(650,490,620,465,620,515);}
-            //選択肢が２つの場合のみ想定
-            if(rightkey && messChoice<1){
-                messChoice+=1;
-                rightkey=false;}
-            else if(leftkey && messChoice>0){
-                messChoice-=1;
-                leftkey=false;}
-        }
-        //////
-
-        //zkey入力時に次のメッセージに進む
-        if(zkey){
-            if(messCheck){
-                if(Choicenum+1==Message[lstnum][in_lstnum].length){
-                    messCheck=false;
-                    in_lstnum+=(2-messChoice);
-                    messChoice=0;}
-                else{Choicenum++;}
-            }//選択後の文章処理
-            else{in_lstnum += 1 + messChoice;}//選択肢がなければ自動的に+1になる。
-            if(Message[lstnum][in_lstnum-(1+messChoice)][0]=="Q"){messCheck=true;}
-            zkey=false;
-        }
-        //////
-
-        if(in_lstnum == Message[lstnum].length){//一連のメッセージ終了時イベント
-            lstnum++;
-            in_lstnum=0;
-        }
-
-        if(lstnum == Message.length){//全てのメッセージ終了
-            onMessage=false;
-        }*/
-        }
         if(mode==2){
             battlemessMain();
         }
@@ -270,6 +219,7 @@ function battleloop(){
                 else if(attackMiss){
                     ctx2d.fillText(firstSkill[0]+"は当たらなかった...", width*25/100,height*75/100);}
                 else {ctx2d.fillText(secondSt[0]+"に"+damage+"のダメージ!", width*25/100,height*75/100);
+                    console.log(typeMatch(secondSkill[3], firstSt[15]));
                     if(typeMatch(secondSkill[3], firstSt[15])==1/2)ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
                     else if(typeMatch(secondSkill[3], firstSt[15])==2)ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);}
                 break;
@@ -283,11 +233,6 @@ function battleloop(){
                 break;
         }
     }
-        //if(compspeed())判定
-        //attackcount()で先攻の回数判定
-        //ctx2d.fillText(InBattleMessage[lstnum], width*45/100,height*75/100);
-        //戦闘終了か判定
-        //false->選択画面に
     
     else if(battleMode==3){//アイテム
         ctx2d.font="26px "+mainfontName;

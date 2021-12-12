@@ -8,7 +8,7 @@ function titleMain() {
    ctx2d.clearRect(0,0,width,height);
    ctx2d.fillStyle="rgba(255,255,255,1)";
    ctx2d.font="26pt " + mainfontName;
-    ctx2d.fillText("Loading" + ".".repeat(Math.floor(globalTime/3)%3),width/2-ctx2d.measureText("Loading" + ".".repeat(Math.floor(globalTime/3)%3)).width/2,height/2-20);
+    ctx2d.fillText("Loading" + ".".repeat(Math.floor(globalTime/3)%3),width/2-ctx2d.measureText("Loading" + ".".repeat(Math.floor(globalTime/3)%3)).width/2,180);
     if (fieldReDrawFlg){
         const fieldimg=new Image();
         fieldimg.src="./imgs/titleimg.png";

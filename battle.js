@@ -31,6 +31,7 @@ var battleFirstAniCount=0;///1個目のアニメーションの回数
 var mypicIsDamagedAni=100;//アニメーション用
 var enemyIsDamagedAni=100;
 var showMypicHP=0,showEnemyHP=0,showMaxEnemyHP=1,showEnemyHPConst=-1;
+var EnemyMoveChoice;//敵の技選択
 
 function battleMain() {
     //character
@@ -242,7 +243,6 @@ function battleMain() {
     } else if(battleMode==3){//アイテム選択時
         //selectmode: 選択しているアイテムのitemでの番号
         //BwhoUse:使用するマイピクのmypicでの番号
-        console.log(itemdata[items[loopselect][0]][0], unFightFlg, itemCount);
         if(oneMoveFlg && itemCount==0){
             //HP,MP回復系
             if(items[loopselect][0] == 0){
@@ -749,7 +749,7 @@ function battleGetItem(){//戦闘後のアイテム入手
 }
 
 function battleEnemyMove(){//敵の攻撃ムーブ
-    var EnemyMoveChoice = Math.floor(100 * Math.random());
+    EnemyMoveChoice = Math.floor(100 * Math.random());
     if(EnemyMoveChoice>=0 && EnemyMoveChoice<=30) return 0
     else if(EnemyMoveChoice> 30 && EnemyMoveChoice<=65) return 1
     else if(EnemyMoveChoice> 65 && EnemyMoveChoice<=90) return 2

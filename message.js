@@ -60,8 +60,8 @@ function battleloop(){
     //////////////////
     //味方ステータス表示
     ctx2d.fillStyle=darkgray;
-    ctx2d.fillRect(width*3/100,height*68/100,35,35);
-    drawMypic(0,width*3/100,height*68/100,35,35,1,0);
+    ctx2d.fillRect(width*3/100,height*69/100,35,35);
+    drawMypic(0,width*3/100,height*69/100,35,35,1,0);
     ctx2d.fillStyle=white;
     ctx2d.font="18px "+mainfontName;
     ctx2d.fillText(mypicstock[mypic[0]][0], width*8/100,height*71/100);
@@ -77,7 +77,10 @@ function battleloop(){
     ctx2d.fillText("すばやさ: "+mypicstock[mypic[0]][10], width*3/100,height*97/100);
     /////////////////
     //敵ステータス表示
-    ctx2d.fillRect(width*82/100,height*68/100,35,35);
+    ctx2d.fillStyle="rgba("+typeDataCol[baseEnemyData[15]]+",1.0)";
+    ctx2d.font="35px "+mainfontName;
+    ctx2d.fillText("E",width*82/100,height*74/100);
+    ctx2d.fillStyle=white;
     ctx2d.font="18px "+mainfontName;
     ctx2d.fillText(baseEnemyData[0], width*86/100,height*71/100);
     ctx2d.fillText("Lv."+baseEnemyData[12], width*86/100,height*75/100);
@@ -188,7 +191,7 @@ function battleloop(){
             ctx2d.fillStyle=white;
             ctx2d.fillRect(width*42/100, height*89/100, width*33/100, 1);
             ctx2d.font="12px "+mainfontName;
-            ctx2d.fillText(itemdata[items[loopselect][0]][3],width*45/100,height*92/100);
+            battleDrawText(itemdata[items[loopselect][0]][3], 26, 43, 92, 3);
             }
             
         else if(loopmode==3){
@@ -225,19 +228,22 @@ function battleloop(){
         ctx2d.font="26px "+mainfontName;
         switch (Acount){
             case 1:
-                if (!damageMessageFlg) ctx2d.fillText(firstSt[0]+" の "+firstSkill[0]+"!", width*25/100,height*75/100);
+                if (!damageMessageFlg) {
+                    ctx2d.fillText(firstSt[0]+" の ", width*25/100,height*75/100);
+                    ctx2d.fillText(firstSkill[0]+" !", width*25/100,height*82/100);}
                 else if(attackMiss){
-                    ctx2d.fillText(firstSkill[0]+"は当たらなかった...", width*25/100,height*75/100);}
-                else {ctx2d.fillText(secondSt[0]+"に"+damage+"のダメージ!", width*25/100,height*75/100);
-                    if(debugMode) console.log(typeMatch(secondSkill[3], firstSt[15]));
-                    if(typeMatch(secondSkill[3], firstSt[15])==1/2)ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
-                    else if(typeMatch(secondSkill[3], firstSt[15])==2)ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);}
+                    ctx2d.fillText(firstSkill[0]+" は当たらなかった...", width*25/100,height*75/100);}
+                else {ctx2d.fillText(secondSt[0]+" に "+damage+" のダメージ!", width*25/100,height*75/100);
+                    if(typeMatch(firstSkill[3], secondSt[15])==1/2)ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
+                    else if(typeMatch(firstSkill[3], secondSt[15])==2)ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);}
                 break;
             case 2:
-                if (!damageMessageFlg) ctx2d.fillText(secondSt[0]+" の "+secondSkill[0]+"!", width*25/100,height*75/100);
+                if (!damageMessageFlg) {
+                    ctx2d.fillText(secondSt[0]+" の ", width*25/100,height*75/100);
+                    ctx2d.fillText(secondSkill[0]+" !", width*25/100,height*82/100);}
                 else if(attackMiss){
-                    ctx2d.fillText(firstSkill[0]+"は当たらなかった...", width*25/100,height*75/100);}
-                else {ctx2d.fillText(firstSt[0]+"に"+damage+"のダメージ!", width*25/100,height*75/100);
+                    ctx2d.fillText(firstSkill[0]+" は当たらなかった...", width*25/100,height*75/100);}
+                else {ctx2d.fillText(firstSt[0]+" に "+damage+" のダメージ!", width*25/100,height*75/100);
                     if(typeMatch(secondSkill[3], firstSt[15])==1/2)ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
                     else if(typeMatch(secondSkill[3], firstSt[15])==2)ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);}
                 break;
@@ -248,15 +254,16 @@ function battleloop(){
         ctx2d.font="26px "+mainfontName;
         switch (itemCount){
             case 0:
-                ctx2d.fillText(itemdata[items[loopselect][0]][0]+"をつかった!", width*25/100,height*75/100);
+                ctx2d.fillText(itemdata[items[loopselect][0]][0]+" をつかった!", width*25/100,height*75/100);
                 break;
             case 1:
-                ctx2d.fillText(baseEnemyData[0]+"の"+secondSkill[0]+"!", width*25/100,height*75/100);
+                ctx2d.fillText(baseEnemyData[0]+" の",width*25/100,height*75/100);
+                ctx2d.fillText(secondSkill[0]+" !", width*25/100,height*82/100);
                 break;
             case 2:
                 if(attackMiss){
-                    ctx2d.fillText(secondSkill[0]+"は当たらなかった...", width*25/100,height*75/100);}
-                else ctx2d.fillText(firstSt[0]+"に"+damage+"のダメージ!", width*25/100,height*75/100);
+                    ctx2d.fillText(secondSkill[0]+" は当たらなかった...", width*25/100,height*75/100);}
+                else ctx2d.fillText(firstSt[0]+" に "+damage+" のダメージ!", width*25/100,height*75/100);
                 break;
             }
     }
@@ -268,12 +275,13 @@ function battleloop(){
                 ctx2d.fillText("ゆけ "+mypicstock[mypic[loopselect]][0]+"!!", width*25/100,height*83/100);
                 break;
             case 1:
-                ctx2d.fillText(baseEnemyData[0]+"の"+secondSkill[0]+"!", width*25/100,height*75/100);
+                ctx2d.fillText(baseEnemyData[0]+" の",width*25/100,height*75/100);
+                ctx2d.fillText(secondSkill[0]+"!", width*25/100,height*82/100);
                 break;
             case 2:
                 if(attackMiss){
                     ctx2d.fillText(secondSkill[0]+" は当たらなかった...", width*25/100,height*75/100);}
-                else {ctx2d.fillText(firstSt[0]+"に"+damage+"のダメージ!", width*25/100,height*75/100);
+                else {ctx2d.fillText(firstSt[0]+" に "+damage+" のダメージ!", width*25/100,height*75/100);
                     if(typeMatch(secondSkill[3], firstSt[15])==1/2)ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
                     else if(typeMatch(secondSkill[3], firstSt[15])==2)ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);
                 }
@@ -358,4 +366,12 @@ function drawPopupMsg(){
             ctx2d.fillText(popupMsg[i][0],42-20+Math.min(1,popupMsg[i][1]/popupWindowAniSpeed,popupMsg[i][2]/popupWindowAniSpeed)*40,43+40*i);
         }
     }
+}
+
+function battleDrawText(message, limitnum, widthRate, heightRate, gap){
+    if(message.length> limitnum){
+        ctx2d.fillText(message.substr(0,limitnum), width*widthRate/100, height*heightRate/100);
+        ctx2d.fillText(message.substr(limitnum), width*widthRate/100, height*(heightRate+gap)/100);
+    }
+    else ctx2d.fillText(message,width*widthRate/100,height*heightRate/100);
 }

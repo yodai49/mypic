@@ -36,7 +36,6 @@ var unEscapeFlg=false;//ボス戦の時に逃げられないように管理す�
 
 function battleMain() {
     //character
-    ctx2d.fillStyle=blue;
     ctx2d.fillStyle="rgba(150,0,0,0.6)";
     ctx2d.fillRect(20,160,140,3);
     if(showMypicHP/mypicstock[mypic[0]][3]<0.2){///味方のHP
@@ -75,10 +74,6 @@ function battleMain() {
     if(!(enemyIsDamagedAni<=30&& (Math.floor(enemyIsDamagedAni/4)%2))){
         ctx2d.fillStyle="rgba(150,0,0,1)";
     }
-
-
-    //ctx2d.fillStyle=white;
-    //ctx2d.fillRect(150,150,100,20);
 
     //zkey入力時に次のメッセージに進む
     if(zkey){

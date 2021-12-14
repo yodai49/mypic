@@ -11,7 +11,7 @@ function titleMain() {
     ctx2d.fillText("Loading" + ".".repeat(Math.floor(globalTime/3)%3),width/2-ctx2d.measureText("Loading" + ".".repeat(Math.floor(globalTime/3)%3)).width/2,180);
     if (fieldReDrawFlg){
         const fieldimg=new Image();
-        fieldimg.src="./imgs/titleimg.png";
+        fieldimg.src="./imgs/titleimg.jpg";
         fieldimg.onload=function(){field2d.drawImage(fieldimg,0,0,width,height);}
         fieldReDrawFlg=0;
     }

@@ -337,7 +337,7 @@ function createField(){
     for(let j = 0; j < fielddata[myposworld].length;j++){
         imgCnt++;
         const fieldimg=new Image();
-        fieldimg.src="./imgs/fieldobjects/fieldobj" + myposworld + "_" + j + ".png";
+        fieldimg.src="./imgs/fieldobjects/fieldobj" + myposworld + "_" + j + ".jpg";
         fieldimg.onload=function(){fieldcanvasctx.drawImage(fieldimg,fielddata[myposworld][j][0],fielddata[myposworld][j][1]);loadedimgCnt++;}
     }
     eventflgs=[];
@@ -346,7 +346,7 @@ function createField(){
     for(let j = 0;j < fieldbackdata[myposworld].length ;j++){
         if (fieldbackdata[myposworld][j][0].substr(0,4) != "rgba"){
             const fieldimg=new Image();
-            fieldimg.src="./imgs/fieldobjects/"+fieldbackdata[myposworld][j][0]+".png";
+            fieldimg.src="./imgs/fieldobjects/"+fieldbackdata[myposworld][j][0]+".jpg";
             fieldimg.onload=function(){fieldbackcanvas.getContext("2d").drawImage(fieldimg,0,0); creatingFieldFlg=0;}
         }
     }

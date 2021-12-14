@@ -247,7 +247,7 @@ function battleloop(){
                 ctx2d.fillText(itemdata[items[loopselect][0]][0]+"をつかった!", width*25/100,height*75/100);
                 break;
             case 1:
-                ctx2d.fillText(baseEnemyData[0]+"の"+skillData[baseEnemyData[8][2]][0]+"!", width*25/100,height*75/100);
+                ctx2d.fillText(baseEnemyData[0]+"の"+secondSkill[0]+"!", width*25/100,height*75/100);
                 break;
             case 2:
                 if(attackMiss){
@@ -264,7 +264,7 @@ function battleloop(){
                 ctx2d.fillText("ゆけ "+mypicstock[mypic[loopselect]][0]+"!!", width*25/100,height*83/100);
                 break;
             case 1:
-                ctx2d.fillText(baseEnemyData[0]+"の"+skillData[baseEnemyData[8][2]][0]+"!", width*25/100,height*75/100);
+                ctx2d.fillText(baseEnemyData[0]+"の"+secondSkill[0]+"!", width*25/100,height*75/100);
                 break;
             case 2:
                 if(attackMiss){

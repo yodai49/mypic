@@ -1,4 +1,4 @@
-var selectTitleFlg=0,selectTitleNum=1,titleLoadingFlg=0;
+var selectTitleFlg=0,selectTitleNum=1,titleLoadingFlg=1;
 const gameTitle="マイピクチャーズ";
 function titleMain() {
     /*　タイトル画面の描画関数
@@ -75,7 +75,7 @@ function titleMain() {
         ctx2d.fillRect(0,0,width,height);
         ctx2d.fillStyle="rgba(255,255,255,1)";
         ctx2d.font="26pt " + mainfontName;
-        ctx2d.fillText("Loading" + ".".repeat(Math.floor(globalTime/10)%3),width/2-ctx2d.measureText("Loading" + ".".repeat(Math.floor(globalTime/10)%3)).width/2,180);
+        ctx2d.fillText("Loading" + ".".repeat(Math.floor(globalTime/10)%3),width/2-ctx2d.measureText("Loading..").width/2,180);
     }
    titleAni++;
 }

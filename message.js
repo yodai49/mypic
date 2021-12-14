@@ -119,12 +119,12 @@ function battleloop(){
         const mypicFieldImg=new Image();//mypicField
         mypicFieldImg.src="./imgs/battleField.png";
         mypicFieldImg.onload=function(){
-            field2d.drawImage(mypicFieldImg,0,0,2855,1100,width*5/100,height*50/100,width*44/100,height*15/100);
+            field2d.drawImage(mypicFieldImg,0,0,250,131,width*5/100,height*50/100,width*44/100,height*15/100);
         }; 
         const enemyFieldImg=new Image();//enemyField
         enemyFieldImg.src="./imgs/battleField.png";
         enemyFieldImg.onload=function(){
-            field2d.drawImage(enemyFieldImg,0,0,2855,1498,width*53/100,height*23/100,width*44/100,height*20/100);
+            field2d.drawImage(enemyFieldImg,0,0,250,131,width*53/100,height*23/100,width*44/100,height*20/100);
         }; 
         field2d.fillStyle=black;
         field2d.fillRect(0,height*65/100,width,height*35/100);

@@ -324,6 +324,7 @@ function checkConflict(dir){
     return 0;
 }
 function createField(){
+    imgCnt=0;
     creatingFieldFlg=1;
     fieldcanvas=document.createElement("canvas");
     fieldcanvas.width=fieldwidth, fieldcanvas.height=fieldheight;
@@ -1462,7 +1463,7 @@ function fieldMain() {
         ctx2d.fillStyle="rgba(255,255,255," + (Math.sin(globalTime/5)*0.3+0.7)+")";    
         ctx2d.fillText("Zキーで調べる",800,30);
     }
-    if(creatingFieldFlg){
+    if(creatingFieldFlg || imgCnt!=loadedimgCnt){
         warpAni=11;
 //        console.log(creatingFieldFlg);
  //       ctx2d.fillRect(0,0,width,height);

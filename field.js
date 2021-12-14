@@ -324,6 +324,7 @@ function checkConflict(dir){
     return 0;
 }
 function createField(){
+    imgCnt=0;
     creatingFieldFlg=1;
     fieldcanvas=document.createElement("canvas");
     fieldcanvas.width=fieldwidth, fieldcanvas.height=fieldheight;
@@ -346,7 +347,7 @@ function createField(){
     for(let j = 0;j < fieldbackdata[myposworld].length ;j++){
         if (fieldbackdata[myposworld][j][0].substr(0,4) != "rgba"){
             const fieldimg=new Image();
-            fieldimg.src="./imgs/fieldobjects/"+fieldbackdata[myposworld][j][0]+".png";
+            fieldimg.src="./imgs/fieldobjects/"+fieldbackdata[myposworld][j][0]+".jpg";
             fieldimg.onload=function(){fieldbackcanvas.getContext("2d").drawImage(fieldimg,0,0); creatingFieldFlg=0;}
         }
     }
@@ -1462,10 +1463,12 @@ function fieldMain() {
         ctx2d.fillStyle="rgba(255,255,255," + (Math.sin(globalTime/5)*0.3+0.7)+")";    
         ctx2d.fillText("Zキーで調べる",800,30);
     }
-    if(creatingFieldFlg){
-        ctx2d.fillStyle="rgba(0,0,0,1)";
-        ctx2d.fillRect(0,0,width,height);
+    if(creatingFieldFlg || imgCnt!=loadedimgCnt){
+        warpAni=11;
+//        console.log(creatingFieldFlg);
+ //       ctx2d.fillRect(0,0,width,height);
         ctx2d.font="26pt " + mainfontName;
+        ctx2d.fillStyle="rgba(255,255,255,1)";
         ctx2d.fillText("Loading" + ".".repeat(Math.floor(globalTime/3)%3),30,500);    
     }
 }

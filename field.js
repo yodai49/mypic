@@ -1466,11 +1466,9 @@ function fieldMain() {
     }
     if(creatingFieldFlg || imgCnt>loadedimgCnt){
         warpAni=11;
-//        console.log(creatingFieldFlg);
- //       ctx2d.fillRect(0,0,width,height);
         ctx2d.font="26pt " + mainfontName;
         ctx2d.fillStyle="rgba(255,255,255,1)";
-        ctx2d.fillText("Loading" + ".".repeat(Math.floor(globalTime/3)%3),30,500);    
+        ctx2d.fillText("Loading" + ".".repeat(Math.floor(globalTime/10)%3),30,500);    
     }
 }
 

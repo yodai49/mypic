@@ -3,8 +3,11 @@ const skyblue="rgba(102,204,204,1.0)";
 const blue="rgba(0,0,255,1.0)";
 const red="rgba(255,0,0,1.0)";
 const white="rgba(255,255,255,1.0)";
+const white_trans1="rgba(255,255,255,0.7)";
+const white_trans2="rgba(255,255,255,0.3)";
 const darkgray="rgba(50,50,50,1.0)";
 const darkgray2="rgba(105,105,105,1.0)";
+const pastleGreen="rgba(100,200,100,1.0)"
 
 function make_pointer(a,b,c,d,e,f){ //図形作成
     //描画コンテキストの取得
@@ -23,8 +26,8 @@ function make_pointer(a,b,c,d,e,f){ //図形作成
         context.closePath();
         //現在のパスを輪郭表示する
         context.stroke();
-        var pastle_green1="rgba(173,255,173,1.0)";
-        ctx2d.fillStyle=pastle_green1;
+        ctx2d.fillStyle="rgba(173,255,173,1.0)";
+        //ctx2d.fillStyle="rgba("+typeDataCol[mypicstock[mypic[0]][15]]+",1.0)";
         ctx2d.fill();
     }
 }

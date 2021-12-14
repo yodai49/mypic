@@ -6,7 +6,7 @@ var endMess2 = [""];
 var BattleMessage = [introMessage, endMess2];
 var winMessage, loseMessage;
 var InBattleMessage = ["敵に１５のダメージ！", "敵の攻撃Z", "自分に３０のダメージ"];
-var onMessage=true;
+var onMessage=false;
 var Messagenum=1;//0:field, 1:battle
 var Bsetcheck=true;
 var messChoice=0;//選択肢シーンでの分岐判定
@@ -47,16 +47,15 @@ function battlemessMain(){
 function battleloop(){
     ctx2d.font="28px "+mainfontName;
     //////////////////
-        //stage名
-        ctx2d.setTransform(1,0,-0.5,1,0,0);
-        ctx2d.fillStyle="rgba(0,0,0,0.6)";
-        ctx2d.fillRect(width*0/100,height*5/100,width*30/100,height*10/100);
-        ctx2d.setTransform(1,0,0,1,0,0);
-    
-    //左上ステージ表示
+    //stage名
+    ctx2d.setTransform(1,0,-0.5,1,0,0);
+    ctx2d.fillStyle="rgba(0,0,0,0.6)";
+    ctx2d.fillRect(width*0/100,height*5/100,width*30/100,height*10/100);
+    ctx2d.setTransform(1,0,0,1,0,0);
     ctx2d.fillStyle=white;
     ctx2d.fillText(fieldNameDatabase2[myposworld], width*6/100,height*11.5/100);
     //////////////////
+
     //////////////////
     //味方ステータス表示
     ctx2d.fillStyle=darkgray;
@@ -148,7 +147,6 @@ function battleloop(){
         
         fieldReDrawFlg=0;
     }
-
 
     if(battleMode==1){
         ctx2d.font="25px "+mainfontName;
@@ -292,7 +290,7 @@ function battleloop(){
     else if(battleMode==5){//逃げるメッセージ
         if(!attackorder){
             ctx2d.font="26px "+mainfontName;
-            if(unEscapeFlg) ctx2d.fillText("このボスからは逃げられない!!",width*25/100,height*75/100);
+            if(unEscapeFlg) ctx2d.fillText("この敵からは逃げられない!!",width*25/100,height*75/100);
             else ctx2d.fillText("敵が速くて逃げられない!",width*25/100,height*75/100);}
         else{
             ctx2d.font="26px "+mainfontName;

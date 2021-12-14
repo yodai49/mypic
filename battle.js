@@ -321,6 +321,7 @@ function battleMain() {
                 mypicstock[mypic[0]][7]=bMemory[1];
                 mypicstock[mypic[0]][3]=bMemory[2];
                 changeEXP(getExperienceAmount, 0);//獲得経験値を戦闘マイピクに追加
+                battleGetItem();
                 fieldReDrawFlg=1;
                 playFieldBGM(myposworld);}}
     } else if(battleMode==7){//戦闘不能
@@ -728,4 +729,16 @@ function drawEnemy(){//敵の画像表示
                 field2d.drawImage(enemyImg,0,0,877,1000,width*64/100,height*3/100,width*20/100,height*26*3/2/100);};
             break;
     }
+}
+
+function battleGetItem(){//戦闘後のアイテム入手
+    //1-3番目のアイテムが獲得できるか確率で決める
+    for (let i=0; i<=2; i++){
+        var battleItemRate = Math.floor(100*Math.random());//0-99
+        if(baseEnemyData[17+i*2] > battleItemRate){//アイテム入手
+            getItem(baseEnemyData[16+(i-1)*2]);
+            popupMsg.push([itemdata[baseEnemyData[16+(i-1)*2]][0]+"を手に入れた!",120,0,0,-1]);//windoemessage
+        }
+    }
+    
 }

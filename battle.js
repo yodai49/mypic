@@ -32,6 +32,7 @@ var mypicIsDamagedAni=100;//アニメーション用
 var enemyIsDamagedAni=100;
 var showMypicHP=0,showEnemyHP=0,showMaxEnemyHP=1,showEnemyHPConst=-1;
 var EnemyMoveChoice;//敵の技選択
+var unEscapeFlg=false;//ボス戦の時に逃げられないように管理するフラグ
 
 function battleMain() {
     //character
@@ -95,7 +96,7 @@ function battleMain() {
             } else if(loopmode==1) {//技実行
                 battleMode=2, Acount=0, Acheck=true;
             } else if(loopmode==2){//アイテム選択
-                if(!itemdata[loopselect][2] || (loopselect==14 && moneyUpFlg) || (loopselect==15 && experienceUpFlg))BerrorFlg=true;
+                if(!itemdata[items[loopselect][0]][2] || (loopselect==14 && moneyUpFlg) || (loopselect==15 && experienceUpFlg))BerrorFlg=true;
                 else if(items[loopselect][0] == 14 || items[loopselect][0] == 15)battleMode=3, oneMoveFlg=true;//金運の知らせか経験値Up
                 else loopmode=4;
             } else if(loopmode==4){
@@ -173,7 +174,7 @@ function battleMain() {
         if(downkey) {
             if (loopmode==2){
                 loopselect=Math.min(items.length-1,loopselect+1);
-                if(loopselect-BtopItem==5)BtopItem++;}
+                if(loopselect-BtopItem==4)BtopItem++;}
             else if(loopmode==3){loopselect=Math.min(mypic.length-1,loopselect+1);}
             else if(loopmode==4){BwhoUse=Math.min(mypic.length-1,BwhoUse+1);}
             else{loopselect=Math.min(3,loopselect+1);}
@@ -361,8 +362,10 @@ function battleMain() {
 function hitorder(){//先攻後攻決め: floor(素早さ*(乱数0.95-1.05))
     var mypicSpeed = Math.floor(mypicstock[mypic[0]][10]*(0.95+(1.05-0.95)*Math.random()));
     var enemySpeed = Math.floor(baseEnemyData[10]*(0.95+(1.05-0.95)*Math.random()));
-    if(mypicSpeed>=enemySpeed) attackorder=true;//味方の方が速い
-    else attackorder=false;
+    if(mypicSpeed>=enemySpeed) {
+        if(encountEnemyNum>=4 && encountEnemyNum<=8) attackorder=false, unEscapeFlg=true;//ボス戦の時は逃げられない
+        else attackorder=true, unEscapeFlg=false;}//味方の方が速い
+    else attackorder=false, unEscapeFlg=false;
 }
 
 function hitcount(){//攻撃回数: Hitcount=((自分の素早さ)/(敵の素早さ)*16/10)
@@ -496,13 +499,13 @@ function decideEnemyStatis(){//敵のランダムステータスを確定させ�
     //HP,攻撃,防御,レベル
     var fluctuationValue=Math.floor(Math.random()*2*baseEnemyData[12][1]) - baseEnemyData[12][1];//変動値決定
     baseEnemyData[12] = baseEnemyData[12][0] + fluctuationValue;//レベル
-    baseEnemyData[3] = baseEnemyData[3][0] + fluctuationValue*baseEnemyData[3][1];//MaxHP
+    baseEnemyData[3] = baseEnemyData[3][0] + fluctuationValue;//MaxHP
     baseEnemyData[2] = baseEnemyData[3];
     showEnemyHP=baseEnemyData[2];
     showEnemyHPConst=baseEnemyData[2];
     showMaxEnemyHP=baseEnemyData[3];
-    baseEnemyData[6] = baseEnemyData[6][0] + fluctuationValue*baseEnemyData[6][1];//攻撃
-    baseEnemyData[7] = baseEnemyData[7][0] + fluctuationValue*baseEnemyData[7][1];//防御
+    baseEnemyData[6] = baseEnemyData[6][0] + fluctuationValue;//攻撃
+    baseEnemyData[7] = baseEnemyData[7][0] + fluctuationValue;//防御
 }
 
 function drawEnemy(){//敵の画像表示

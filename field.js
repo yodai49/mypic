@@ -337,7 +337,7 @@ function createField(){
     for(let j = 0; j < fielddata[myposworld].length;j++){
         imgCnt++;
         const fieldimg=new Image();
-        fieldimg.src="./imgs/fieldobjects/fieldobj" + myposworld + "_" + j + ".jpg";
+        fieldimg.src="./imgs/fieldobjects/fieldobj" + myposworld + "_" + j + ".png";
         fieldimg.onload=function(){fieldcanvasctx.drawImage(fieldimg,fielddata[myposworld][j][0],fielddata[myposworld][j][1]);loadedimgCnt++;}
     }
     eventflgs=[];

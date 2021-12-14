@@ -473,16 +473,41 @@ function battleStartAnimation(){
         else if(battleAnimationTrans<0)battleTransIncrease=true, battleFirstAniCount++;
     }
     if(battleFirstAniCount==2)battleAnimationCount++;//animation2個目への移動
-    if(battleAnimationCount!=0){
+    if(battleAnimationCount!=0 && battleAnimationCount<=122){
         ctx2d.fillStyle=black;
         for(let i=0; i<45; i++){
             if(i%2==0) ctx2d.fillRect(0,12*i,width*battleAnimationCount/60,12);//偶数左から
             else ctx2d.fillRect(width-battleAnimationCount*width/60,12*i,width*battleAnimationCount/60,12);//奇数右から
         } battleAnimationCount++;
+    }
+    else if(battleAnimationCount>122 && battleAnimationCount<=201){//fadein animation
+        ctx2d.fillStyle=pastleGreen;
+        ctx2d.fillRect(0,0,width,height);
+        //円形グラデーション
+        var gradation = ctx2d.createRadialGradient(width/2, height/2, 5, width/2, height/2, 5+8*(battleAnimationCount-122));
+        //色
+        gradation.addColorStop(0, 'white');
+        gradation.addColorStop(0.5, white_trans1);
+        gradation.addColorStop(1, white_trans2);
+        ctx2d.fillStyle = gradation;
+        //円
+        ctx2d.beginPath();
+        ctx2d.arc(width/2, height/2, 5+8*(battleAnimationCount-122), 0, 2 * Math.PI, false);
+        ctx2d.fill();// 描画
 
-        if(battleAnimationCount==72) {
-            nextMode=2, modeAnimation=1, onMessage=true,battleLaunchFlg=1, encount=0, oneMoveFlg=true;}//バトル開始の処理
-        if(battleAnimationCount>121) {
+        //下のメッセージ部分表示
+        ctx2d.fillStyle=black;
+        ctx2d.fillRect(0,height*(100 - Math.min(35, Math.floor((battleAnimationCount-122)/1.2)))/100,width, height*Math.min(35, Math.floor((battleAnimationCount-122)/1.2))/100);
+        //if(battleAnimationCount==152) {
+          //  nextMode=2, modeAnimation=1, onMessage=true,battleLaunchFlg=1, encount=0, oneMoveFlg=true;}//バトル開始の処理
+        battleAnimationCount++;
+        if(battleAnimationCount>201) {
+            mode=2,battleLaunchFlg=1, encount=0, oneMoveFlg=true, onMessage=true;}
+    }
+    else if(battleAnimationCount > 201){
+        ctx2d.fillStyle="rgba(255,255,255,"+((302-battleAnimationCount)/100)+")";
+        ctx2d.fillRect(0,0,width,height*65/100);
+        if(battleAnimationCount==302){
             battleAnimationFlg=false;
             battleAnimationCount=0;
             battleAnimationTrans=0;

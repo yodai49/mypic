@@ -1468,7 +1468,8 @@ function fieldMain() {
         warpAni=11;
         ctx2d.font="26pt " + mainfontName;
         ctx2d.fillStyle="rgba(255,255,255,1)";
-        ctx2d.fillText("Loading" + ".".repeat(Math.floor(globalTime/10)%3),30,500);    
+        ctx2d.fillText("Loading" + ".".repeat(Math.floor(globalTime/10)%3),30,500);
+        if(mypicstock.length) drawMypic(Math.floor(globalTime/120)% mypicstock.length,width-100,height-100+Math.max(0,Math.sin(globalTime/7)*20-17),80,80,1,0,(globalTime<=30&& (Math.floor(globalTime/4)%2)));
     }
 }
 

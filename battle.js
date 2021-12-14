@@ -118,7 +118,8 @@ function battleMain() {
         } else if(battleMode==3){
             if(unFightFlg) battleMode=7, chgCount=0, loopselect=0, unFightFlg=false;
             else if(gameoverFlg) battleMode=8, chgCount=0, oneMoveFlg=true, gameoverFlg=false;
-            else if(itemCount==0 || itemCount==1)itemCount++, oneMoveFlg=true;
+            else if(itemCount==0)itemCount++, oneMoveFlg=true;
+            else if(itemCount==1)itemCount++;
             else if(itemCount==2)battleMode=1, itemCount=0, loopmode=0, loopselect=0, BtopItem=0;;
         } else if(battleMode==4){
             if(unFightFlg) battleMode=7, chgCount=0, loopselect=0, unFightFlg=false;
@@ -155,7 +156,6 @@ function battleMain() {
         xkey=false;
     }
     //////
-
     if(battleMode==0){//敵データの保存
         if(oneMoveFlg){
             baseEnemyData=[];
@@ -198,12 +198,16 @@ function battleMain() {
         if(Acount==0 && Acheck){
             Acount++;
             hitorder();
-            if(attackorder) firstSt=mypicstock[mypic[0]], secondSt=baseEnemyData;
-            else firstSt=baseEnemyData, secondSt=mypicstock[mypic[0]];
-            //先攻後攻のキャラデータが入った
-
-            firstSkill=skillData[firstSt[8][loopselect]];//技データのリストが取れる
-            secondSkill=skillData[secondSt[8][loopselect]];//技データのリストが取れる
+            if(attackorder) {
+                firstSt=mypicstock[mypic[0]], secondSt=baseEnemyData;
+                firstSkill=skillData[firstSt[8][loopselect]];//技データのリストが取れる
+                secondSkill=skillData[secondSt[8][battleEnemyMove()]];//敵技がランダムで入る
+            }
+            else {
+                firstSt=baseEnemyData, secondSt=mypicstock[mypic[0]];
+                firstSkill=skillData[firstSt[8][battleEnemyMove()]];//敵技がランダムで入る
+                secondSkill=skillData[secondSt[8][loopselect]];//技データのリストが取れる
+            } //先攻後攻のキャラデータが入った
         }
         else if(Acount==1 && Acheck && damageMessageFlg){//先攻
             Acheck=false;
@@ -238,6 +242,7 @@ function battleMain() {
     } else if(battleMode==3){//アイテム選択時
         //selectmode: 選択しているアイテムのitemでの番号
         //BwhoUse:使用するマイピクのmypicでの番号
+        console.log(itemdata[items[loopselect][0]][0], unFightFlg, itemCount);
         if(oneMoveFlg && itemCount==0){
             //HP,MP回復系
             if(items[loopselect][0] == 0){
@@ -274,14 +279,14 @@ function battleMain() {
             else if(items[loopselect][0] == 14) moneyUpFlg=true;
             //獲得経験値Up
             else if(items[loopselect][0] == 15) experienceUpFlg=true;
-            consumeItem(loopselect);//アイテム消費
             //itemcount1での処理に必要
             firstSt=mypicstock[mypic[0]], secondSt=baseEnemyData;
-            secondSkill=skillData[secondSt[8][2]];
+            secondSkill=skillData[secondSt[8][battleEnemyMove()]];
             oneMoveFlg=false;
         }
         else if(itemCount==1){
             if(oneMoveFlg){oneMoveFlg=false;
+                consumeItem(loopselect);//アイテム消費
                 lateEnemyAttack();
             }
         }
@@ -297,7 +302,7 @@ function battleMain() {
                 bMemory[1]=mypicstock[mypic[0]][7];
                 bMemory[2]=mypicstock[mypic[0]][3];
                 firstSt=mypicstock[mypic[0]], secondSt=baseEnemyData;
-                secondSkill=skillData[secondSt[8][2]];//技データのリストが取れる
+                secondSkill=skillData[secondSt[8][battleEnemyMove()]];//敵技ランダム
             }
         }
         if(chgCount==2){
@@ -321,6 +326,7 @@ function battleMain() {
                 mypicstock[mypic[0]][7]=bMemory[1];
                 mypicstock[mypic[0]][3]=bMemory[2];
                 changeEXP(getExperienceAmount, 0);//獲得経験値を戦闘マイピクに追加
+                battleGetItem();
                 fieldReDrawFlg=1;
                 playFieldBGM(myposworld);}}
     } else if(battleMode==7){//戦闘不能
@@ -728,4 +734,24 @@ function drawEnemy(){//敵の画像表示
                 field2d.drawImage(enemyImg,0,0,877,1000,width*64/100,height*3/100,width*20/100,height*26*3/2/100);};
             break;
     }
+}
+
+function battleGetItem(){//戦闘後のアイテム入手
+    //1-3番目のアイテムが獲得できるか確率で決める
+    for (let i=0; i<=2; i++){
+        var battleItemRate = Math.floor(100*Math.random());//0-99
+        if(baseEnemyData[17+i*2] > battleItemRate){//アイテム入手
+            getItem(baseEnemyData[16+(i-1)*2]);
+            popupMsg.push([itemdata[baseEnemyData[16+(i-1)*2]][0]+"を手に入れた!",120,0,0,-1]);//windoemessage
+        }
+    }
+    
+}
+
+function battleEnemyMove(){//敵の攻撃ムーブ
+    var EnemyMoveChoice = Math.floor(100 * Math.random());
+    if(EnemyMoveChoice>=0 && EnemyMoveChoice<=30) return 0
+    else if(EnemyMoveChoice> 30 && EnemyMoveChoice<=65) return 1
+    else if(EnemyMoveChoice> 65 && EnemyMoveChoice<=90) return 2
+    else if(EnemyMoveChoice> 90 && EnemyMoveChoice<=100) return 3
 }

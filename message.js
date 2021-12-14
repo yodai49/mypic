@@ -176,15 +176,19 @@ function battleloop(){
                 popupMsg.push(["ここでは使えないよ!",120,0,0,-1]);
                 BerrorFlg=false;}
             ctx2d.font="18px "+mainfontName;
-            for (let i=0; i < Math.min(items.length, 5); i++){
+            for (let i=0; i < Math.min(items.length, 4); i++){
                 if(debugMode) console.log(BtopItem,i);
                 if(!itemdata[items[BtopItem+i][0]][2]) ctx2d.fillStyle=darkgray2;
                 else if(items[BtopItem+i][0] == 14 && moneyUpFlg) ctx2d.fillStyle=darkgray2;
                 else if(items[BtopItem+i][0] == 15 && experienceUpFlg) ctx2d.fillStyle=darkgray2;
                 else ctx2d.fillStyle=white;
-                ctx2d.fillText(itemdata[items[BtopItem+i][0]][0], width*46/100,height*(73+(i*5))/100);
-                ctx2d.fillText("×"+items[BtopItem+i][1], width*71/100,height*(73+(i*5))/100);}
-            make_pointer(width*45/100,height*(72+5*(loopselect-BtopItem))/100,width*43/100,height*(70+5*(loopselect-BtopItem))/100,width*43/100,height*(74+5*(loopselect-BtopItem))/100);
+                ctx2d.fillText(itemdata[items[BtopItem+i][0]][0], width*46/100,height*(73+(i*4.5))/100);
+                ctx2d.fillText("×"+items[BtopItem+i][1], width*71/100,height*(73+(i*4.5))/100);}
+            make_pointer(width*45/100,height*(72+4.5*(loopselect-BtopItem))/100,width*43/100,height*(70+4.5*(loopselect-BtopItem))/100,width*43/100,height*(74+4.5*(loopselect-BtopItem))/100);
+            ctx2d.fillStyle=white;
+            ctx2d.fillRect(width*42/100, height*89/100, width*33/100, 1);
+            ctx2d.font="12px "+mainfontName;
+            ctx2d.fillText(itemdata[items[loopselect][0]][3],width*45/100,height*92/100);
             }
             
         else if(loopmode==3){
@@ -280,7 +284,8 @@ function battleloop(){
     else if(battleMode==5){//逃げるメッセージ
         if(!attackorder){
             ctx2d.font="26px "+mainfontName;
-            ctx2d.fillText("敵が速くて逃げられない!",width*25/100,height*75/100);}
+            if(unEscapeFlg) ctx2d.fillText("このボスからは逃げられない!!",width*25/100,height*75/100);
+            else ctx2d.fillText("敵が速くて逃げられない!",width*25/100,height*75/100);}
         else{
             ctx2d.font="26px "+mainfontName;
             ctx2d.fillText(mypicstock[mypic[0]][0]+" はにげた", width*25/100,height*75/100);}

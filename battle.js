@@ -323,7 +323,7 @@ function battleMain() {
                 mypicstock[mypic[0]][3]=bMemory[2];
                 changeEXP(getExperienceAmount, 0);//獲得経験値を戦闘マイピクに追加
                 battleGetItem();
-                fieldReDrawFlg=1;
+                initiate_field();
                 playFieldBGM(myposworld);}}
     } else if(battleMode==7){//戦闘不能
         if(downkey && chgCount==1)loopselect=Math.min(mypic.length-1,loopselect+1), downkey=false;
@@ -350,7 +350,7 @@ function battleMain() {
                 mypicstock[mypic[0]][6]=bMemory[0];
                 mypicstock[mypic[0]][7]=bMemory[1];
                 mypicstock[mypic[0]][3]=bMemory[2];
-                fieldReDrawFlg=1;}}
+                initiate_field();}}
     }
 }
 

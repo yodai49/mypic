@@ -870,8 +870,8 @@ function fieldMain() {
             ctx2d.font="11pt " + mainfontName;
             ctx2d.fillText(itemdata[itemdata[eventRecipeData[eventShopSelectNum]][5]][0] ,width/2+25,height/2-150+85);
             ctx2d.font="8pt " + mainfontName;
-            ctx2d.fillText(itemdata[itemdata[eventRecipeData[eventShopSelectNum]][5]][3].substr(0,30) ,width/2+15,height/2-150+108);
-            ctx2d.fillText(itemdata[itemdata[eventRecipeData[eventShopSelectNum]][5]][3].substr(31,30) ,width/2+15,height/2-150+120);
+            ctx2d.fillText(itemdata[itemdata[eventRecipeData[eventShopSelectNum]][5]][3].substr(0,25) ,width/2+15,height/2-150+108);
+            ctx2d.fillText(itemdata[itemdata[eventRecipeData[eventShopSelectNum]][5]][3].substr(26,25) ,width/2+15,height/2-150+120);
             ctx2d.font="10pt " + mainfontName;
             ctx2d.fillText(itemdata[eventRecipeData[eventShopSelectNum]][3], width/2-300+35,height/2-150+60+10.5*20);
             ctx2d.fillRect(469.5,164,1,195);
@@ -908,7 +908,7 @@ function fieldMain() {
             if(zkey && isSyntheticable(eventShopSelectNum)&&!menuSelectFlg&& !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow){
                 menuSelectFlg=1;
                 popupMsg.push([itemdata[itemdata[eventRecipeData[eventShopSelectNum]][5]][0]+"を合成した！",120,0,0,"*"+itemdata[eventRecipeData[eventShopSelectNum]][5]]);
-                getItem(itemdata[itemdata[eventRecipeData[eventShopSelectNum]][5]][0]);
+                getItem(itemdata[eventRecipeData[eventShopSelectNum]][5]);
                 for(var i = 0;i <itemdata[eventRecipeData[eventShopSelectNum]][6].length;i++){
                     for(var j = 0;j < itemdata[eventRecipeData[eventShopSelectNum]][6][i][1];j++){
                         for(var k = 0;k < items.length;k++){

@@ -104,6 +104,10 @@ function checkfirstLaunch(){
 //起動時の処理//
 initiate_field();
 checkfirstLaunch();
+for(var i = 0;i < 50;i++ )nowMaterialData[i]=[];
+for(var i = 0;i < 50;i++){
+    lastFieldVisit[i]=-1;
+}
 
 function init() {
     //2Dの処理

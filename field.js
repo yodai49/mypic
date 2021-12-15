@@ -24,7 +24,10 @@ var eventMessageWindow=0,eventMessageWindowMsg="",eventMessageSelectNum=0,procre
 var encount_down=0,encount_down_cnt=0;
 var nowShopData,eventShopSelectNum=0,showmoney=0;
 var checkSkillConflict=[],encountEnemyNum=0,inMsgBattleFlg=0,searchablelg=0;
-var creatingFieldFlg=0;
+var creatingFieldFlg=0, itemRedrawFlg=1;
+
+const itemMenuImg=[];
+for(var i = 0;i < itemdata.length;i++) itemMenuImg[i]=new Image(),itemMenuImg[i].src="./imgs/itemImgs/itemImg" + i + ".png";
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode,redMode){
     if (mypic.length<=drawMypicNum && mode==0) return 0;
@@ -1093,7 +1096,7 @@ function fieldMain() {
                     ctx2d.fillText("DP: "+ mypicstock[mypic[i]][4]+ " / " + mypicstock[mypic[i]][5],mypicOffsetX,mypicOffsetY+37);
                     ctx2d.fillText("レベル: "+ mypicstock[mypic[i]][12],mypicOffsetX,mypicOffsetY+57);
                     ctx2d.fillText("けいけん: "+ mypicstock[mypic[i]][13],mypicOffsetX,mypicOffsetY+74);
-                    ctx2d.fillText("LvUpまで"+ Math.floor(Math.pow(mypicstock[mypic[i]][12],2+(mypicstock[mypic[i]][16])/6) -mypicstock[mypic[i]][13]),mypicOffsetX,mypicOffsetY+91);
+                    ctx2d.fillText("LvUpまで"+ Math.floor(Math.pow(mypicstock[mypic[i]][12],2.25+(mypicstock[mypic[i]][16])/12) -mypicstock[mypic[i]][13]),mypicOffsetX,mypicOffsetY+91);
                     ctx2d.fillStyle="rgba(0,0,0," + menuWindowTransChild*0.8+")";
                     ctx2d.fillRect(mypicOffsetX+100,mypicOffsetY-20,120,120);
                     drawMypic(mypic[i],mypicOffsetX+100,mypicOffsetY-20,120,120,menuWindowTransChild);
@@ -1141,6 +1144,7 @@ function fieldMain() {
                 ctx2d.font="20px "+mainfontName;
                 for(var i = 0;i < Math.min(10,items.length-itemsScroll);i++){
                     if (i != menuSelectChildNum-itemsScroll){
+                        ctx2d.drawImage(itemMenuImg[items[i+itemsScroll][0]],332,72+28*i+2,24,24);
                         ctx2d.fillText(itemdata[items[i+itemsScroll][0]][0],360,90+28*i);
                         ctx2d.fillText("× " + items[i+itemsScroll][1],700,90+28*i);    
                     }
@@ -1158,13 +1162,15 @@ function fieldMain() {
                     ctx2d.font="20px "+mainfontName;
                     ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][0],360,90+28*(menuSelectChildNum-itemsScroll));
                     ctx2d.fillText("× " + items[menuSelectChildNum][1],700,90+28*(menuSelectChildNum-itemsScroll));    
+                    ctx2d.drawImage(itemMenuImg[items[menuSelectChildNum][0]],332,72+28*(menuSelectChildNum-itemsScroll)+2,24,24);
                     ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
                     ctx2d.fillRect(360,60+32*9.5,300,1);
                     ctx2d.font="16px "+mainfontName;
                     ctx2d.fillText("おかね："+ money + currencyName,750-ctx2d.measureText("おかね："+ money + currencyName).width,48);
                     ctx2d.font="16px "+mainfontName;
                     ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(0,25),360,60+32*10.3);
-                    ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(25,25),360,60+32*11);    
+                    ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(25,25),360,60+32*11);
+                    ctx2d.drawImage(itemMenuImg[items[menuSelectChildNum][0]],315.5,376,30,30);
                 }
             } else if(menuSelectNum==2){//////そうさ
                 ctx2d.font="26px "+mainfontName;

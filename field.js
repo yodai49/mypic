@@ -3,7 +3,7 @@ const charasize=35; //キャラクターのサイズ
 const pre_charasize=60; //プリレンダリング用のキャラクターのサイズ
 const fieldwidth=960;//フィールドの幅の最大値
 const fieldheight=540;//フィールドの高さの最大値
-const debugMode=0; //デバッグモード　1ならワープ位置を赤で表示
+const debugMode=3; //デバッグモード　1ならワープ位置を赤で表示
 var walkspeed=3;//歩くスピード
 var menuSelectNum=0,menuSelectFlg=0;
 var menuSelectChildNum=0,menuWindowChildAni=0,itemsScroll=0;
@@ -27,7 +27,7 @@ var checkSkillConflict=[],encountEnemyNum=0,inMsgBattleFlg=0,searchablelg=0;
 var creatingFieldFlg=0, itemRedrawFlg=1;
 
 const itemMenuImg=[];
-for(var i = 0;i < itemdata.length;i++) itemMenuImg[i]=new Image(),itemMenuImg[i].src="./imgs/itemImgs/itemImg" + i + ".png";
+for(var i = 0;i < itemdata.length;i++) if(itemdata[i][0] != "") itemMenuImg[i]=new Image(),itemMenuImg[i].src="./imgs/itemImgs/itemImg" + i + ".png"; //アイテムデータを読み込み
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode,redMode){
     if (mypic.length<=drawMypicNum && mode==0) return 0;
@@ -982,10 +982,7 @@ function fieldMain() {
                 eventMessageWindow=1;
                 eventMessageWindowMsg="ここではつかえない！";
             } else{
-                if (items[menuSelectChildNum][0] >=0 && items[menuSelectChildNum][0] <= 10){
-                    eventMessageWindow=1;
-                    eventMessageWindowMsg="/だれにつかう？";
-                } else if(items[menuSelectChildNum][0] >= 16 && items[menuSelectChildNum][0] <= 18){
+                if ((items[menuSelectChildNum][0] >=0 && items[menuSelectChildNum][0] <= 10)||(items[menuSelectChildNum][0] >= 16 && items[menuSelectChildNum][0] <= 18)|| items[menuSelectChildNum][0]>=200){
                     eventMessageWindow=1;
                     eventMessageWindowMsg="/だれにつかう？";
                 } else if (items[menuSelectChildNum][0] == 19){
@@ -1144,7 +1141,7 @@ function fieldMain() {
                 ctx2d.font="20px "+mainfontName;
                 for(var i = 0;i < Math.min(10,items.length-itemsScroll);i++){
                     if (i != menuSelectChildNum-itemsScroll){
-                        ctx2d.drawImage(itemMenuImg[items[i+itemsScroll][0]],332,72+28*i+2,24,24);
+                        if(!debugMode) ctx2d.drawImage(itemMenuImg[items[i+itemsScroll][0]],332,72+28*i+2,24,24);
                         ctx2d.fillText(itemdata[items[i+itemsScroll][0]][0],360,90+28*i);
                         ctx2d.fillText("× " + items[i+itemsScroll][1],700,90+28*i);    
                     }
@@ -1162,7 +1159,7 @@ function fieldMain() {
                     ctx2d.font="20px "+mainfontName;
                     ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][0],360,90+28*(menuSelectChildNum-itemsScroll));
                     ctx2d.fillText("× " + items[menuSelectChildNum][1],700,90+28*(menuSelectChildNum-itemsScroll));    
-                    ctx2d.drawImage(itemMenuImg[items[menuSelectChildNum][0]],332,72+28*(menuSelectChildNum-itemsScroll)+2,24,24);
+                    if(!debugMode)ctx2d.drawImage(itemMenuImg[items[menuSelectChildNum][0]],332,72+28*(menuSelectChildNum-itemsScroll)+2,24,24);
                     ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
                     ctx2d.fillRect(360,60+32*9.5,300,1);
                     ctx2d.font="16px "+mainfontName;
@@ -1170,7 +1167,7 @@ function fieldMain() {
                     ctx2d.font="16px "+mainfontName;
                     ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(0,25),360,60+32*10.3);
                     ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(25,25),360,60+32*11);
-                    ctx2d.drawImage(itemMenuImg[items[menuSelectChildNum][0]],315.5,376,30,30);
+                    if(!debugMode)ctx2d.drawImage(itemMenuImg[items[menuSelectChildNum][0]],315.5,376,30,30);
                 }
             } else if(menuSelectNum==2){//////そうさ
                 ctx2d.font="26px "+mainfontName;
@@ -1274,6 +1271,9 @@ function fieldMain() {
                     changeEXP(500,eventMessageSelectNum);
                 } else if(items[menuSelectChildNum][0] ==18){
                     changeEXP(1000,eventMessageSelectNum);
+                } else if(items[menuSelectChildNum][0] >=201){ //教え系
+                    checkSkillConflict.push(eventMessageSelectNum);
+                    mypicstock[mypic[eventMessageSelectNum]][14].push(itemdata[items[menuSelectChildNum][0]][5]);
                 }
                 if(!notConsume){
                     eventMessageWindowMsg=itemdata[items[menuSelectChildNum][0]][0]+"を"+mypicstock[mypic[eventMessageSelectNum]][0]+"につかった！"; 

@@ -22,6 +22,7 @@ function loadData(){
     myposx=Number(localStorage.getItem("myposx"));
     myposy=Number(localStorage.getItem("myposy"));
     myposworld=Number(localStorage.getItem("myposworld"));
+    warpAni=11;
     money=Number(localStorage.getItem("money"));
     nextEventNum=Number(localStorage.getItem("nextEventNum"));
     items=JSON.parse(localStorage.getItem("items"));

@@ -233,6 +233,39 @@ function moveEveDraw(x,y){ //マウスのムーブイベント
     drawMypicRadius=Math.sqrt(drawMypicRadius);
 }
 
+function setMaterials(){
+    //マテリアルの処理　ここから
+    if(globalTime-lastFieldVisit[myposworld] > 10*60*30 || lastFieldVisit[myposworld]==-1||lastFieldVisit[myposworld]<10){ //マテリアルの再配置条件　10分以上経過or初訪問
+        nowMaterialData[myposworld]=[];
+        for(var i = 0;i < fieldMaterialDataSet[fieldMaterial[myposworld]].length;i++){
+            for(var j = 0;j < 3;j++){ //最大3こ配置
+                if(Math.random() < fieldMaterialDataSet[fieldMaterial[myposworld]][i][1]/3){//マテリアリ配置条件成立なら
+                    while (true){
+                        let tempColision=0;
+                        materialX=Math.random()*width;
+                        materialY=Math.random()*height;
+                        let checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX,materialY,1,1);
+                        if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
+                        checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX,materialY+material_size,1,1);
+                        if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
+                        checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX+material_size,materialY,1,1);
+                        if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
+                        checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX+material_size,materialY+material_size,1,1);
+                        if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
+                        if(!tempColision) break; //ここに当たり判定条件を追加する
+                    }
+                    nowMaterialData[myposworld].push([materialX,materialY,fieldMaterialDataSet[fieldMaterial[myposworld]][i][0]]);
+                }
+            }
+        }
+    }
+    //マテリアルの描画
+    for(let i = 0;i < nowMaterialData[myposworld].length;i++){
+        const itemimg=new Image();
+        itemimg.src="./imgs/itemImgs/itemImg"+ nowMaterialData[myposworld][i][2]+".png";
+        itemimg.onload=function(){field2d.drawImage(itemimg,nowMaterialData[myposworld][i][0],nowMaterialData[myposworld][i][1],material_size,material_size)}
+    }
+}
 function encount_check(){//敵との遭遇率encount=6*((200−運)/200)
     if (mypic.length==0 || debugMode) return 0;
     var encountRate = (6*((200 - mypicstock[mypic[0]][9],0,100,100),0,100/200));
@@ -1579,37 +1612,7 @@ function fieldMain() {
         warpFlg=0;
         if (fieldNameDatabase[myposworld].length) popupMsg.push([fieldNameDatabase[myposworld],120,0,0,-1]);
     }else if(warpAni==12){//フィールド描画後に一度だけ行う処理
-            //マテリアルの処理　ここから
-        if(globalTime-lastFieldVisit[myposworld] > 10*60*30 || lastFieldVisit[myposworld]==-1){ //マテリアルの再配置条件　10分以上経過or初訪問
-            nowMaterialData[myposworld]=[];
-            for(var i = 0;i < fieldMaterialDataSet[fieldMaterial[myposworld]].length;i++){
-                for(var j = 0;j < 3;j++){ //最大3こ配置
-                    if(Math.random() < fieldMaterialDataSet[fieldMaterial[myposworld]][i][1]/3){//マテリアリ配置条件成立なら
-                        while (true){
-                            let tempColision=0;
-                            materialX=Math.random()*width;
-                            materialY=Math.random()*height;
-                            let checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX,materialY,1,1);
-                            if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
-                            checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX,materialY+material_size,1,1);
-                            if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
-                            checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX+material_size,materialY,1,1);
-                            if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
-                            checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX+material_size,materialY+material_size,1,1);
-                            if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
-                            if(!tempColision) break; //ここに当たり判定条件を追加する
-                        }
-                        nowMaterialData[myposworld].push([materialX,materialY,fieldMaterialDataSet[fieldMaterial[myposworld]][i][0]]);
-                    }
-                }
-            }
-        }
-        //マテリアルの描画
-        for(let i = 0;i < nowMaterialData[myposworld].length;i++){
-            const itemimg=new Image();
-            itemimg.src="./imgs/itemImgs/itemImg"+ nowMaterialData[myposworld][i][2]+".png";
-            itemimg.onload=function(){field2d.drawImage(itemimg,nowMaterialData[myposworld][i][0],nowMaterialData[myposworld][i][1],material_size,material_size)}
-        }
+        setMaterials();
     } else if(warpAni==20){ //ワープアニメーション終了時
         warpAni=0;
     }

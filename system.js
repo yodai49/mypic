@@ -52,7 +52,24 @@ function getItem(getNum){
     items.push([getNum,1]);
     items.sort(function(a,b){return (a[0]-b[0]);});
 }
-
+function countItem(countNum){
+    ////アイテムをカウントする関数 countNumにカウントするアイテムの番号を指定
+    for(var i = 0;i < items.length;i++){
+        if (items[i][0] == countNum){
+            return items[i][1];
+        }
+    }
+    return 0;
+}
+function isSyntheticable(checkNum){
+    // 合成可能かどうか確かめる関数　checkNumはeventRecipeDataの番号　可能なら1、不可能なら0
+    for(var i = 0;i <itemdata[eventRecipeData[eventShopSelectNum]][6].length;i++){
+        if(countItem(itemdata[eventRecipeData[eventShopSelectNum]][6][i][0])<itemdata[eventRecipeData[eventShopSelectNum]][6][i][1]){
+            return 0;
+        } 
+    }
+    return 1;
+}
 function changeHPMP(chgStatus,chgAmount,isEnemy,Num,isSimulate){
     /* HPとかMPを増減させる関数
     @param  chgStatus - - - HPなら0、MPなら1を指定

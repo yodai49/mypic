@@ -22,7 +22,7 @@ var drawMypicRadius=0,drawMypicTempName="",selectEggItemNum=0,selectEggKind=0;
 var titleConfirmWindow=0,titleConfirmSelect=1,titleConfirmMessage="",titleConfirmMessage2="",titleConfirmMode=0;
 var eventMessageWindow=0,eventMessageWindowMsg="",eventMessageSelectNum=0,procreateMsg="",eventMessageWindowMsgStack=[],eventMessageWindowAni=0;
 var encount_down=0,encount_down_cnt=0;
-var nowShopData,eventShopSelectNum=0,showmoney=0;
+var nowShopData,eventShopSelectNum=0,showmoney=0,eventShopScrollNum=0,eventRecipeData=[];
 var checkSkillConflict=[],encountEnemyNum=0,inMsgBattleFlg=0,searchablelg=0;
 var creatingFieldFlg=0, itemRedrawFlg=1;
 
@@ -434,6 +434,7 @@ function trigEvent(trigEventnum,trigEventObj){
         zkeySE.play(); 
         eventWindowKind=3;
         eventWindowAni++;
+        eventShopSelectNum=0;
         showmoney=money;
         nowShopData=shopData[trigEventObj[5]]
     } else if(trigEventnum==5 && !menuSelectFlg){ //ボス戦
@@ -458,6 +459,18 @@ function trigEvent(trigEventnum,trigEventObj){
             eventMessageWindowAni=1;
         }
         if(trigEventObj[7]!=undefined) nextEventNum=trigEventObj[8];
+    } else if(trigEventnum==7 && !menuSelectFlg){ //合成
+        zkeySE.play();  
+        eventWindowKind=7;
+        eventWindowAni++;
+        eventShopSelectNum=0;
+        eventShopScrollNum=0;
+        eventRecipeData=[];
+        for(var i = 0;i < items.length;i++){ //レシピデータの作成
+            if(items[i][0] >= 51 && items[i][0] <= 100){
+                eventRecipeData.push(items[i][0]);
+            }
+        }
     }
     menuSelectFlg=1;
 }
@@ -515,7 +528,7 @@ function fieldMain() {
             ctx2d.fillRect(width/2-250,height/2-200,500,400);
             ctx2d.font="20pt " + mainfontName;
             ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-            ctx2d.fillText("マイピクのおうち",width/2-230,height/2-160);    
+            ctx2d.fillText("マイピクのおうち",width/2-230,height/2-160);
             var stockMypicOffsetX,stockMypicOffsetY;
             for(var i = 0;i < 6;i++){
                 if (mypicstock.length > i+stockMypicScroll){ ////ストックマイピクを描画
@@ -835,6 +848,78 @@ function fieldMain() {
             if(money < showmoney) showmoney-=10;
             if (money > showmoney) showmoney+=10;
             if (Math.abs(showmoney-money)<10) showmoney=money;
+        } else if(eventWindowKind==7){ //合成
+            ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8 + ")";
+            ctx2d.fillRect(width/2-300,height/2-155,600,300);
+            ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
+            ctx2d.font="18pt " + mainfontName;
+            ctx2d.fillText("ごうせい" , width/2-300+15,height/2-150+30);
+            //レシピデータの表示
+            ctx2d.font="13pt " + mainfontName;
+            ctx2d.fillStyle="rgba(105,105,105," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
+            for(var i = 0;i < Math.min(10,eventRecipeData.length);i++){
+                if (i!=eventShopSelectNum){
+                    ctx2d.fillText(itemdata[eventRecipeData[i+eventShopScrollNum]][0], width/2-300+35,height/2-150+60+i*20);
+                }
+            }
+            ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
+            ctx2d.fillText(itemdata[eventRecipeData[eventShopSelectNum]][0], width/2-300+35,height/2-150+60+(eventShopSelectNum-eventShopScrollNum)*20);
+            ctx2d.fillText("できるアイテム" , width/2+5,height/2-150+60);
+            ctx2d.fillText("ひつようなマテリアル" , width/2+5,height/2-150+150);
+            ctx2d.drawImage(itemMenuImg[itemdata[eventRecipeData[eventShopSelectNum]][5]],width/2,height/2-150+70,20,20);
+            ctx2d.font="11pt " + mainfontName;
+            ctx2d.fillText(itemdata[itemdata[eventRecipeData[eventShopSelectNum]][5]][0] ,width/2+25,height/2-150+85);
+            ctx2d.font="8pt " + mainfontName;
+            ctx2d.fillText(itemdata[itemdata[eventRecipeData[eventShopSelectNum]][5]][3].substr(0,30) ,width/2+15,height/2-150+108);
+            ctx2d.fillText(itemdata[itemdata[eventRecipeData[eventShopSelectNum]][5]][3].substr(31,30) ,width/2+15,height/2-150+120);
+            ctx2d.font="10pt " + mainfontName;
+            ctx2d.fillText(itemdata[eventRecipeData[eventShopSelectNum]][3], width/2-300+35,height/2-150+60+10.5*20);
+            ctx2d.fillRect(469.5,164,1,195);
+            ctx2d.font="10pt " + mainfontName;
+            for(var i = 0;i <itemdata[eventRecipeData[eventShopSelectNum]][6].length;i++){
+                if(countItem(itemdata[eventRecipeData[eventShopSelectNum]][6][i][0])<itemdata[eventRecipeData[eventShopSelectNum]][6][i][1]){
+                    ctx2d.fillStyle="rgba(105,105,105," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
+                } else{
+                    ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
+                }
+                ctx2d.fillText(itemdata[itemdata[eventRecipeData[eventShopSelectNum]][6][i][0]][0] , width/2+25,height/2-150+170+i*18);
+                ctx2d.fillText("×" , width/2+175,height/2-150+170+i*18);
+                ctx2d.fillText(itemdata[eventRecipeData[eventShopSelectNum]][6][i][1] , width/2+185,height/2-150+170+i*18);
+                ctx2d.fillText("( /" , width/2+220,height/2-150+170+i*18);
+                ctx2d.fillText(countItem(itemdata[eventRecipeData[eventShopSelectNum]][6][i][0]) ,width/2+240,height/2-150+170+i*18);
+                ctx2d.fillText(")" , width/2+275,height/2-150+170+i*18);
+            }
+            ctx2d.font="13pt " + mainfontName;
+            if (isSyntheticable(eventShopSelectNum)){
+                ctx2d.fillStyle="rgba(255,255,255," +(0.3*Math.sin(globalTime/8)+0.7*(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)) + ")";
+            } else{
+                ctx2d.fillStyle="rgba(105,105,105,1)";
+            }
+            ctx2d.fillText("Zで合成！" , width/2+180,height/2+130);
+            if(xkey && !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow) eventWindowAni++,menuSelectFlg=1,xkeySE.play();
+            if(upkey && eventShopSelectNum && !(eventWindowAni-menuWindowAniSpeed) && !menuSelectFlg){
+                eventShopSelectNum--,menuSelectFlg=1, crosskeySE.play();
+                if(eventShopScrollNum>eventShopSelectNum)eventShopScrollNum=eventShopSelectNum;
+            }
+            if(downkey && eventShopSelectNum != eventRecipeData.length-1&& !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg){
+                eventShopSelectNum++,menuSelectFlg=1, crosskeySE.play();
+                if(eventShopSelectNum>=eventShopScrollNum+10)eventShopScrollNum=eventShopSelectNum-9;
+            } 
+            if(zkey && isSyntheticable(eventShopSelectNum)&&!menuSelectFlg&& !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow){
+                menuSelectFlg=1;
+                popupMsg.push([itemdata[itemdata[eventRecipeData[eventShopSelectNum]][5]][0]+"を合成した！",120,0,0,-1]);
+                getItem(itemdata[itemdata[eventRecipeData[eventShopSelectNum]][5]][0]);
+                for(var i = 0;i <itemdata[eventRecipeData[eventShopSelectNum]][6].length;i++){
+                    for(var j = 0;j < itemdata[eventRecipeData[eventShopSelectNum]][6][i][1];j++){
+                        for(var k = 0;k < items.length;k++){
+                            if(items[k][0] == itemdata[eventRecipeData[eventShopSelectNum]][6][i][0]) consumeItem(k);
+                        }
+                    }
+                }
+            } else if(zkey && !isSyntheticable(eventShopSelectNum)&&!menuSelectFlg&& !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow){
+                popupMsg.push(["マテリアルが足りない！",120,0,0,-1]);
+                menuSelectFlg=1;
+            }
         }
         if (!upkey && !downkey && !zkey && !leftkey && !rightkey && !xkey && !zkey) menuSelectFlg=0;
         if (eventWindowAni && (eventWindowAni-menuWindowAniSpeed)) eventWindowAni++;

@@ -907,7 +907,7 @@ function fieldMain() {
             } 
             if(zkey && isSyntheticable(eventShopSelectNum)&&!menuSelectFlg&& !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow){
                 menuSelectFlg=1;
-                popupMsg.push([itemdata[itemdata[eventRecipeData[eventShopSelectNum]][5]][0]+"を合成した！",120,0,0,-1]);
+                popupMsg.push([itemdata[itemdata[eventRecipeData[eventShopSelectNum]][5]][0]+"を合成した！",120,0,0,"*"+itemdata[eventRecipeData[eventShopSelectNum]][5]]);
                 getItem(itemdata[itemdata[eventRecipeData[eventShopSelectNum]][5]][0]);
                 for(var i = 0;i <itemdata[eventRecipeData[eventShopSelectNum]][6].length;i++){
                     for(var j = 0;j < itemdata[eventRecipeData[eventShopSelectNum]][6][i][1];j++){
@@ -942,7 +942,7 @@ function fieldMain() {
             }
             for(var i = 0;i < itemobj[myposworld].length;i++){
                 if (itemflgs[i] && !menuSelectFlg && fieldItemStatus[myposworld][i][5]){
-                    popupMsg.push([itemdata[fieldItemStatus[myposworld][i][4]][0]+"をゲットした！",120,0,0,-1]);
+                    popupMsg.push([itemdata[fieldItemStatus[myposworld][i][4]][0]+"をゲットした！",120,0,0,"*"+fieldItemStatus[myposworld][i][4]]);
                     fieldItemStatus[myposworld][i][5]--;
                     getItem(fieldItemStatus[myposworld][i][4]);
                     eventSE.play();

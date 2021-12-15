@@ -1,15 +1,16 @@
 var walkanimation=0,walkdir=3; //歩くアニメーション,方向
 const charasize=35; //キャラクターのサイズ
 const pre_charasize=60; //プリレンダリング用のキャラクターのサイズ
+const material_size=20;//マテリアルの描画サイズ
 const fieldwidth=960;//フィールドの幅の最大値
 const fieldheight=540;//フィールドの高さの最大値
-const debugMode=3; //デバッグモード　1ならワープ位置を赤で表示
+const debugMode=0; //デバッグモード　1ならワープ位置を赤で表示
 var walkspeed=3;//歩くスピード
 var menuSelectNum=0,menuSelectFlg=0;
 var menuSelectChildNum=0,menuWindowChildAni=0,itemsScroll=0;
 var menuMypicDetailAni=0,menuSortMypicNum=-1;
 var imgCnt=0,loadedimgCnt=0,warpAni=0;
-var fieldReDrawFlg=0,warpFlg=0,nowWarpObj,eventflgs=[],itemflgs=[];
+var fieldReDrawFlg=0,warpFlg=0,nowWarpObj,eventflgs=[],itemflgs=[],materialflgs=[];
 var menuMypicDetailposX=200,menuMypicDetailposY=100,menuzflg=0,happenedEvent=0;
 var eventWindowAni=0,eventWindowKind=0,stockMypicScroll=0,stockMypicSelectNum=0,stockMypicChgWindow=0,stockMypicChgNum=0,eventProcreateStep=0;
 var tempEggList=[],eventEggScroll=0,eventEggAni=0,procdrawMypicMode=0;
@@ -25,11 +26,22 @@ var encount_down=0,encount_down_cnt=0;
 var nowShopData,eventShopSelectNum=0,showmoney=0,eventShopScrollNum=0,eventRecipeData=[];
 var checkSkillConflict=[],encountEnemyNum=0,inMsgBattleFlg=0,searchablelg=0;
 var creatingFieldFlg=0, itemRedrawFlg=1;
-var nowMaterialData=[]; //[[x,y,番号],[...]]の形式 createFieldごとに変わる
+var nowMaterialData=[]; //[[[x,y,番号],[...]]]の形式 createFieldごとに変わる
 var lastFieldVisit=[]; //最後にフィールドを訪れた時間を格納
 
 const itemMenuImg=[];
-for(var i = 0;i < itemdata.length;i++) if(itemdata[i][0] != "") itemMenuImg[i]=new Image(),itemMenuImg[i].src="./imgs/itemImgs/itemImg" + i + ".png"; //アイテムデータを読み込み
+for(var i = 0;i < itemdata.length;i++) {
+    if(itemdata[i][0] != "") {
+        itemMenuImg[i]=new Image();
+        if(i >= 50 && i <= 100){
+            itemMenuImg[i].src="./imgs/itemImgs/itemImg51.png"; //アイテムデータを読み込み
+        } else{
+            itemMenuImg[i].src="./imgs/itemImgs/itemImg" + i + ".png"; //アイテムデータを読み込み
+        }
+    }
+}
+const itemBagImg=new Image();
+itemBagImg.src="./imgs/item.png";
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode,redMode){
     if (mypic.length<=drawMypicNum && mode==0) return 0;
@@ -314,6 +326,14 @@ function checkConflict(dir){
             }
         }
     }
+    for(let i = 0;i < nowMaterialData[myposworld].length;i++){
+        materialflgs[i]=0;
+        if (nowMaterialData[myposworld][i][0] < myposx+charasize && nowMaterialData[myposworld][i][0] + material_size > myposx){
+            if (nowMaterialData[myposworld][i][1] < myposy+charasize && nowMaterialData[myposworld][i][1] + material_size > myposy){
+                materialflgs[i]=1;
+            }
+        }
+    }
     var tempColision = 0;
     for(let j = 0;j < 10;j++){
         tempColision = 1;
@@ -490,16 +510,12 @@ function fieldMain() {
         //アイテムの描画
         for(let i = 0;i < fieldItemStatus[myposworld].length;i++){
             if(fieldItemStatus[myposworld][i][5]){
-                const itemimg=new Image();
-                itemimg.src="./imgs/item.png";
-                itemimg.onload=function(){field2d.drawImage(itemimg,fieldItemStatus[myposworld][i][0],fieldItemStatus[myposworld][i][1],fieldItemStatus[myposworld][i][2],fieldItemStatus[myposworld][i][3])}    
+                field2d.drawImage(itemBagImg,fieldItemStatus[myposworld][i][0],fieldItemStatus[myposworld][i][1],fieldItemStatus[myposworld][i][2],fieldItemStatus[myposworld][i][3])
             }
         }
         //マテリアルの描画
-        for(let i = 0;i < nowMaterialData.length;i++){
-            const itemimg=new Image();
-            itemimg.src="./imgs/item.png";
-            itemimg.onload=function(){field2d.drawImage(itemimg,nowMaterialData[i][0],nowMaterialData[i][1])}    
+        for(let i = 0;i < nowMaterialData[myposworld].length;i++){
+            field2d.drawImage(itemMenuImg[nowMaterialData[myposworld][i][2]],nowMaterialData[myposworld][i][0],nowMaterialData[myposworld][i][1],material_size,material_size);
         }
     }
     ctx2d.drawImage(characanvas,pre_charasize*Math.floor(walkanimation/15),pre_charasize*walkdir,pre_charasize,pre_charasize,myposx,myposy,charasize,charasize); //キャラクターの描画
@@ -944,7 +960,6 @@ function fieldMain() {
         if (upkey && !checkConflict(2)) myposy-=walkspeed,walkeve();
         if (downkey && !checkConflict(3)) myposy+=walkspeed,walkeve();
         if (zkey && !selectTitleFlg&& !eventMessageWindow) { //アクションキー
-            
             for(var i = 0; i < eventobj[myposworld].length;i++){
                 if (eventflgs[i] && !happenedEvent) trigEvent(eventobj[myposworld][i][4],eventobj[myposworld][i]);
             }
@@ -955,6 +970,17 @@ function fieldMain() {
                     getItem(fieldItemStatus[myposworld][i][4]);
                     eventSE.play();
                     fieldReDrawFlg=1;
+                }
+            }
+            console.log(materialflgs);
+            for(var i = 0;i < nowMaterialData[myposworld].length;i++){
+                if (materialflgs[i] && !menuSelectFlg){
+                    popupMsg.push([itemdata[nowMaterialData[myposworld][i][2]][0]+"をゲットした！",120,0,0,"*"+nowMaterialData[myposworld][i][2]]);
+                    getItem(nowMaterialData[myposworld][i][2]);
+                    nowMaterialData[myposworld].splice(i,1);
+                    eventSE.play();
+                    fieldReDrawFlg=1;
+                    menuSelectFlg=1;
                 }
             }
         }
@@ -1555,21 +1581,34 @@ function fieldMain() {
     }else if(warpAni==12){//フィールド描画後に一度だけ行う処理
             //マテリアルの処理　ここから
         if(globalTime-lastFieldVisit[myposworld] > 10*60*30 || lastFieldVisit[myposworld]==-1){ //マテリアルの再配置条件　10分以上経過or初訪問
-            nowMaterialData=[];   
+            nowMaterialData[myposworld]=[];
             for(var i = 0;i < fieldMaterialDataSet[fieldMaterial[myposworld]].length;i++){
                 for(var j = 0;j < 3;j++){ //最大3こ配置
                     if(Math.random() < fieldMaterialDataSet[fieldMaterial[myposworld]][i][1]/3){//マテリアリ配置条件成立なら
                         while (true){
+                            let tempColision=0;
                             materialX=Math.random()*width;
                             materialY=Math.random()*height;
-                            var checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX,materialY,1,1);
-                            if (!checkimgdata.data[0] && !checkimgdata.data[1]  && !checkimgdata.data[2] && !checkimgdata.data[3]) tempColision=0;
-                            if(true) break; //ここに当たり判定条件を追加する
+                            let checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX,materialY,1,1);
+                            if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
+                            checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX,materialY+material_size,1,1);
+                            if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
+                            checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX+material_size,materialY,1,1);
+                            if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
+                            checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX+material_size,materialY+material_size,1,1);
+                            if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
+                            if(!tempColision) break; //ここに当たり判定条件を追加する
                         }
-                        nowMaterialData.push([materialX,materialY,fieldMaterialDataSet[fieldMaterial[myposworld]][i][0]]);
+                        nowMaterialData[myposworld].push([materialX,materialY,fieldMaterialDataSet[fieldMaterial[myposworld]][i][0]]);
                     }
                 }
             }
+        }
+        //マテリアルの描画
+        for(let i = 0;i < nowMaterialData[myposworld].length;i++){
+            const itemimg=new Image();
+            itemimg.src="./imgs/itemImgs/itemImg"+ nowMaterialData[myposworld][i][2]+".png";
+            itemimg.onload=function(){field2d.drawImage(itemimg,nowMaterialData[myposworld][i][0],nowMaterialData[myposworld][i][1],material_size,material_size)}
         }
     } else if(warpAni==20){ //ワープアニメーション終了時
         warpAni=0;

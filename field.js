@@ -357,22 +357,6 @@ function createField(){
             fieldimg.onload=function(){fieldbackcanvas.getContext("2d").drawImage(fieldimg,0,0); creatingFieldFlg=0;}
         }
     }
-    //マテリアルの処理　ここから
-    if(globalTime-lastFieldVisit[myposworld] > 10*60*30 || lastFieldVisit[myposworld]==-1){ //マテリアルの再配置条件　10分以上経過or初訪問
-        nowMaterialData=[];   
-        for(var i = 0;i < fieldMaterialDataSet[fieldMaterial[myposworld]].length;i++){
-            for(var j = 0;j < 3;j++){ //最大3こ配置
-                if(Math.random() < fieldMaterialDataSet[fieldMaterial[myposworld]][i][1]/3){//マテリアリ配置条件成立なら
-                    while (true){
-                        materialX=Math.random()*width;
-                        materialY=Math.random()*height;
-                        if(true) break; //ここに当たり判定条件を追加する
-                    }
-                    nowMaterialData.push([materialX,materialY,fieldMaterialDataSet[fieldMaterial[myposworld]][i][0]]);
-                }
-            }
-        }
-    }
 }
 function initiate_field(){
     /*　フィールド・キャラクターの初期化処理/////////////////////////////////////////
@@ -1568,6 +1552,25 @@ function fieldMain() {
         fieldReDrawFlg=1;
         warpFlg=0;
         if (fieldNameDatabase[myposworld].length) popupMsg.push([fieldNameDatabase[myposworld],120,0,0,-1]);
+    }else if(warpAni==12){//フィールド描画後に一度だけ行う処理
+            //マテリアルの処理　ここから
+        if(globalTime-lastFieldVisit[myposworld] > 10*60*30 || lastFieldVisit[myposworld]==-1){ //マテリアルの再配置条件　10分以上経過or初訪問
+            nowMaterialData=[];   
+            for(var i = 0;i < fieldMaterialDataSet[fieldMaterial[myposworld]].length;i++){
+                for(var j = 0;j < 3;j++){ //最大3こ配置
+                    if(Math.random() < fieldMaterialDataSet[fieldMaterial[myposworld]][i][1]/3){//マテリアリ配置条件成立なら
+                        while (true){
+                            materialX=Math.random()*width;
+                            materialY=Math.random()*height;
+                            var checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX,materialY,1,1);
+                            if (!checkimgdata.data[0] && !checkimgdata.data[1]  && !checkimgdata.data[2] && !checkimgdata.data[3]) tempColision=0;
+                            if(true) break; //ここに当たり判定条件を追加する
+                        }
+                        nowMaterialData.push([materialX,materialY,fieldMaterialDataSet[fieldMaterial[myposworld]][i][0]]);
+                    }
+                }
+            }
+        }
     } else if(warpAni==20){ //ワープアニメーション終了時
         warpAni=0;
     }

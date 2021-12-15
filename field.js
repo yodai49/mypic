@@ -25,6 +25,8 @@ var encount_down=0,encount_down_cnt=0;
 var nowShopData,eventShopSelectNum=0,showmoney=0,eventShopScrollNum=0,eventRecipeData=[];
 var checkSkillConflict=[],encountEnemyNum=0,inMsgBattleFlg=0,searchablelg=0;
 var creatingFieldFlg=0, itemRedrawFlg=1;
+var nowMaterialData=[]; //[[x,y,番号],[...]]の形式 createFieldごとに変わる
+var lastFieldVisit=[]; //最後にフィールドを訪れた時間を格納
 
 const itemMenuImg=[];
 for(var i = 0;i < itemdata.length;i++) if(itemdata[i][0] != "") itemMenuImg[i]=new Image(),itemMenuImg[i].src="./imgs/itemImgs/itemImg" + i + ".png"; //アイテムデータを読み込み
@@ -355,6 +357,22 @@ function createField(){
             fieldimg.onload=function(){fieldbackcanvas.getContext("2d").drawImage(fieldimg,0,0); creatingFieldFlg=0;}
         }
     }
+    //マテリアルの処理　ここから
+    if(globalTime-lastFieldVisit[myposworld] > 10*60*30 || lastFieldVisit[myposworld]==-1){ //マテリアルの再配置条件　10分以上経過or初訪問
+        nowMaterialData=[];   
+        for(var i = 0;i < fieldMaterialDataSet[fieldMaterial[myposworld]].length;i++){
+            for(var j = 0;j < 3;j++){ //最大3こ配置
+                if(Math.random < fieldMaterialDataSet[fieldMaterial[myposworld]][i][1]/3){//マテリアリ配置条件成立なら
+                    while (true){
+                        materialX=Math.random()*width;
+                        materialY=Math.random()*height;
+                        if(true) break; //ここに当たり判定条件を追加する
+                    }
+                    nowMaterialData.push([materialX,materialY,fieldMaterialDataSet[fieldMaterial[myposworld]][i][0]]);
+                }
+            }
+        }
+    }
 }
 function initiate_field(){
     /*　フィールド・キャラクターの初期化処理/////////////////////////////////////////
@@ -492,6 +510,12 @@ function fieldMain() {
                 itemimg.src="./imgs/item.png";
                 itemimg.onload=function(){field2d.drawImage(itemimg,fieldItemStatus[myposworld][i][0],fieldItemStatus[myposworld][i][1],fieldItemStatus[myposworld][i][2],fieldItemStatus[myposworld][i][3])}    
             }
+        }
+        //マテリアルの描画
+        for(let i = 0;i < nowMaterialData.length;i++){
+            const itemimg=new Image();
+            itemimg.src="./imgs/item.png";
+            itemimg.onload=function(){field2d.drawImage(itemimg,nowMaterialData[i][0],nowMaterialData[i][1])}    
         }
     }
     ctx2d.drawImage(characanvas,pre_charasize*Math.floor(walkanimation/15),pre_charasize*walkdir,pre_charasize,pre_charasize,myposx,myposy,charasize,charasize); //キャラクターの描画
@@ -1535,7 +1559,8 @@ function fieldMain() {
         ctx2d.fillRect(0,0,width,height);
     }
     if (warpAni==10 && warpFlg){ //ワープする瞬間
-        if(Math.floor(myposworld/10)!=Math.floor(nowWarpObj[4]/10)) playFieldBGM(nowWarpObj[4]);
+        if(Math.floor(myposworld/10)!=Math.floor(nowWarpObj[4]/10)) playFieldBGM(nowWarpObj[4]);//違うワールドなら再生
+        lastFieldVisit[myposworld]=globalTime;
         myposworld=nowWarpObj[4];
         myposx=nowWarpObj[5];
         myposy=nowWarpObj[6];

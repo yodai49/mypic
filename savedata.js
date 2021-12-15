@@ -38,6 +38,9 @@ function loadData(){
         }
         getItem(201);
     }
+    for(var i = 0;i < 50;i++){
+        lastFieldVisit[i]=-1;
+    }
 }
 
 function resetData(){

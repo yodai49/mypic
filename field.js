@@ -362,7 +362,7 @@ function createField(){
         nowMaterialData=[];   
         for(var i = 0;i < fieldMaterialDataSet[fieldMaterial[myposworld]].length;i++){
             for(var j = 0;j < 3;j++){ //最大3こ配置
-                if(Math.random < fieldMaterialDataSet[fieldMaterial[myposworld]][i][1]/3){//マテリアリ配置条件成立なら
+                if(Math.random() < fieldMaterialDataSet[fieldMaterial[myposworld]][i][1]/3){//マテリアリ配置条件成立なら
                     while (true){
                         materialX=Math.random()*width;
                         materialY=Math.random()*height;

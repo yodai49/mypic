@@ -473,7 +473,7 @@ function fieldMain() {
         for(let i = 0;i < fieldItemStatus[myposworld].length;i++){
             if(fieldItemStatus[myposworld][i][5]){
                 const itemimg=new Image();
-                itemimg.src="./imgs/itemImgs.png";
+                itemimg.src="./imgs/item.png";
                 itemimg.onload=function(){field2d.drawImage(itemimg,fieldItemStatus[myposworld][i][0],fieldItemStatus[myposworld][i][1],fieldItemStatus[myposworld][i][2],fieldItemStatus[myposworld][i][3])}    
             }
         }

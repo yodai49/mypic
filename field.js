@@ -1356,7 +1356,7 @@ function fieldMain() {
                     changeEXP(500,eventMessageSelectNum);
                 } else if(items[menuSelectChildNum][0] ==18){
                     changeEXP(1000,eventMessageSelectNum);
-                } else if(items[menuSelectChildNum][0] >=201){ //教え系
+                } else if(items[menuSelectChildNum][0] >=201 && items[menuSelectChildNum][0] <=250){ //教え系
                     checkSkillConflict.push(eventMessageSelectNum);
                     mypicstock[mypic[eventMessageSelectNum]][14].push(itemdata[items[menuSelectChildNum][0]][5]);
                 }

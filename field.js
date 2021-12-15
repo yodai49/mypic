@@ -143,7 +143,7 @@ function procreateProcess(){ //卵の孵化処理
             [],neweggData[10],neweggData[11]]
     );
 }
-function clickEveDraw(x,y){ //クリックイベント
+function clickEveDraw(x,y){ //クリックイベント/
     if (debugMode==3) console.log(x,y);
     if (mode==1 && eventWindowKind==2 && eventWindowAni && eventProcreateStep==1){ //マイピクドロー中のみ反応
         if (inDrawField && drawMypicTempObj.length <15){ //ドローフィールドの中なら

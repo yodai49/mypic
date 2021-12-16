@@ -56,7 +56,7 @@ function battleloop(){
     //味方ステータス表示
     ctx2d.fillStyle=darkgray;
     ctx2d.fillRect(width*3/100,height*69/100,35,35);
-    drawMypic(0,width*3/100,height*69/100,35,35,1,0);
+    drawMypic(mypic[0],width*3/100,height*69/100,35,35,1,0);
     ctx2d.fillStyle=white;
     ctx2d.font="18px "+mainfontName;
     ctx2d.fillText(mypicstock[mypic[0]][0], width*8/100,height*71/100);

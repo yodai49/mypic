@@ -92,54 +92,23 @@ function battleloop(){
         //field部分
         const mypicFieldBackImg=new Image();//mypicField
         if(myposworld>=10 && myposworld<=18 || myposworld == 3){
-            mypicFieldBackImg.src="./imgs/battleFieldBackForest.png";
-            mypicFieldBackImg.onload=function(){
-                field2d.drawImage(mypicFieldBackImg,0,138,450,200,width*0/100,height*0/100,width,height*65/100);
-            }; }
-        else if(myposworld>=20 && myposworld<=27){
-            mypicFieldBackImg.src="./imgs/battleFieldBackCave.png";
-            mypicFieldBackImg.onload=function(){
-                field2d.drawImage(mypicFieldBackImg,0,138,450,200,width*0/100,height*0/100,width,height*65/100);
-            }; }
-        else if(myposworld>=30 && myposworld<=36){
-            mypicFieldBackImg.src="./imgs/battleFieldBackRemains.png";
-            mypicFieldBackImg.onload=function(){
-                field2d.drawImage(mypicFieldBackImg,0,138,450,200,width*0/100,height*0/100,width,height*65/100);
-            }; }
-        else if(myposworld>=40 && myposworld<=46){
-            mypicFieldBackImg.src="./imgs/battleFieldBackDesert.png";
-            mypicFieldBackImg.onload=function(){
-                field2d.drawImage(mypicFieldBackImg,0,58,580,386,width*0/100,height*0/100,width,height*65/100);
-            }; }
+            field2d.drawImage(battleBackImg[0],0,138,450,200,width*0/100,height*0/100,width,height*65/100);
+        } else if(myposworld>=20 && myposworld<=27){
+            field2d.drawImage(battleBackImg[1],0,138,450,200,width*0/100,height*0/100,width,height*65/100);
+        } else if(myposworld>=30 && myposworld<=36){
+            field2d.drawImage(battleBackImg[2],0,138,450,200,width*0/100,height*0/100,width,height*65/100);
+        } else if(myposworld>=40 && myposworld<=46){
+            field2d.drawImage(battleBackImg[3],0,58,580,386,width*0/100,height*0/100,width,height*65/100);
+        }
         //////////////
-        const mypicFieldImg=new Image();//mypicField
-        mypicFieldImg.src="./imgs/battleField.png";
-        mypicFieldImg.onload=function(){
-            field2d.drawImage(mypicFieldImg,0,0,250,131,width*5/100,height*50/100,width*44/100,height*15/100);
-        }; 
-        const enemyFieldImg=new Image();//enemyField
-        enemyFieldImg.src="./imgs/battleField.png";
-        enemyFieldImg.onload=function(){
-            field2d.drawImage(enemyFieldImg,0,0,250,131,width*53/100,height*23/100,width*44/100,height*20/100);
-        }; 
+        field2d.drawImage(battleGround,0,0,250,131,width*5/100,height*50/100,width*44/100,height*15/100);
+        field2d.drawImage(battleGround,0,0,250,131,width*53/100,height*23/100,width*44/100,height*20/100);
         field2d.fillStyle=black;
         field2d.fillRect(0,height*65/100,width,height*35/100);
         //message部分
-        const messageImg=new Image();//メッセージウィンドウ
-        messageImg.src="./imgs/messageWindow.png";
-        messageImg.onload=function(){
-            field2d.drawImage(messageImg,0,0,800,200,width*21/100,height*62/100,width*58/100,height*38/100);
-        }; 
-        const charaImg=new Image();//メッセージウィンドウ
-        charaImg.src="./imgs/battleBack2.png";
-        charaImg.onload=function(){
-            field2d.drawImage(charaImg,0,0,685,179,width*1/100,height*64/100,width*20/100,height*38/100);
-        }; 
-        const enemyImg=new Image();//メッセージウィンドウ
-        enemyImg.src="./imgs/battleBack1.png";
-        enemyImg.onload=function(){
-            field2d.drawImage(enemyImg,0,0,685,179,width*79/100,height*64/100,width*20/100,height*38/100);
-        }; 
+        field2d.drawImage(msgWindowImg[0],0,0,800,200,width*21/100,height*62/100,width*58/100,height*38/100);
+        field2d.drawImage(msgWindowImg[1],0,0,685,179,width*1/100,height*64/100,width*20/100,height*38/100);
+        field2d.drawImage(msgWindowImg[2],0,0,685,179,width*79/100,height*64/100,width*20/100,height*38/100);
         
         fieldReDrawFlg=0;
     }

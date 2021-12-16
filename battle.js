@@ -17,7 +17,7 @@ var BerrorFlg=false;
 var BtopItem=0;
 var BwhoUse=0;//アイテムを誰に使用するか
 var moneyUpFlg=false, experienceUpFlg=false;//金運の知らせ使用
-var bMemory=[0,0,0];//0:攻撃,1:防御,2:MaxHP
+var bMemory=[0,0,0,0,0];//0:攻撃,1:防御,2:MaxHP,3:素早さ, 4;命中率
 var unFightFlg=false;//戦闘不能
 var gameoverFlg=false;//敗北
 var damageMessageFlg=false;
@@ -33,6 +33,7 @@ var enemyIsDamagedAni=100;
 var showMypicHP=0,showEnemyHP=0,showMaxEnemyHP=1,showEnemyHPConst=-1;
 var EnemyMoveChoice;//敵の技選択
 var unEscapeFlg=false;//ボス戦の時に逃げられないように管理するフラグ
+var trait9Flg=0;
 
 function battleMain() {
     //character
@@ -111,20 +112,22 @@ function battleMain() {
             else if(Acount==1 && !damageMessageFlg)damageMessageFlg=true, attackMiss=false;
             else if(Acount==1 && damageMessageFlg)Acount++, damageMessageFlg=false;
             else if(Acount==2 && !damageMessageFlg)damageMessageFlg=true, attackMiss=false;
-            else if(Acount==2 && damageMessageFlg)Acount=99, damageMessageFlg=false;
+            else if((Acount==2 && damageMessageFlg && trait9Flg == 0) || Acount==3)battleMode=1, Acount=0, loopmode=0,loopselect=0, damageMessageFlg=false, trait9Flg=0;
+            else Acount=3, oneMoveFlg=true;
         } else if(battleMode==3){
             if(unFightFlg) battleMode=7, chgCount=0, loopselect=0, unFightFlg=false;
             else if(gameoverFlg) battleMode=8, chgCount=0, oneMoveFlg=true, gameoverFlg=false;
             else if(itemCount==0)itemCount++, oneMoveFlg=true;
             else if(itemCount==1)itemCount++;
-            else if(itemCount==2)battleMode=1, itemCount=0, loopmode=0, loopselect=0, BtopItem=0;;
+            else if((itemCount==2 && trait9Flg==0) || itemCount==3)battleMode=1, itemCount=0, loopmode=0, loopselect=0, BtopItem=0, trait9Flg=0;
+            else itemCount=3, oneMoveFlg=true;
         } else if(battleMode==4){
             if(unFightFlg) battleMode=7, chgCount=0, loopselect=0, unFightFlg=false;
             else if(gameoverFlg) battleMode=8, chgCount=0, oneMoveFlg=true, gameoverFlg=false;
             else if(chgCount==0 || chgCount==1)chgCount++, oneMoveFlg=true;
-            else if (chgCount==2){
-                battleMode=1, chgCount=0, loopmode=0, loopselect=0;
-            }
+            else if ((chgCount==2 && trait9Flg == 0) || chgCount==3){
+                battleMode=1, chgCount=0, loopmode=0, loopselect=0, trait9Flg=0;}
+            else chgCount=3, oneMoveFlg=true;
         } else if(battleMode==5){
             if(!attackorder){//逃げれない
                 battleMode=1, loopmode=0, loopselect=0;}
@@ -163,6 +166,7 @@ function battleMain() {
             bMemory[0]=mypicstock[mypic[0]][6];
             bMemory[1]=mypicstock[mypic[0]][7];
             bMemory[2]=mypicstock[mypic[0]][3];
+            bMemory[3]=mypicstock[mypic[0]][10];//speed
             oneMoveFlg=false;
         }
     } else if(battleMode==1){//行動選択(loop)
@@ -211,13 +215,17 @@ function battleMain() {
             if(hitcheck(firstSkill[2], secondSt[9], firstSt[11])){//MPの残り判定も追加しないと意見//
                 attackMiss=false;
                 //命中する　
-                damage = calcDamage(firstSt[12], firstSkill[1], firstSt[6], secondSt[7], firstSkill[3], secondSt[15]);
+                damage = calcDamage(firstSt[12], firstSkill[1], firstSt[6], secondSt[7], firstSkill[3], secondSt[15], firstSt, secondSt);
+                /////   特性ふくつ   /////
+                if(secondSt[11] == 4 && damage >= secondSt[2]) damage = secondSt[2] - 1;
+                ////////////////////////
                 changeHPMP(0, (-1)*damage, attackorder,0, 0);//HP変化
                 if(!attackorder) mypicIsDamagedAni=1;
                 if(attackorder) enemyIsDamagedAni=1;
-                //プレッシャー特性判定
+                //   プレッシャー特性判定   //
                 if(secondSt[11]==1) pressureFlg=2;
                 else pressureFlg=1;
+                //////////////////////////
                 changeHPMP(1, (-1)*pressureFlg*firstSkill[4], !attackorder, 0, 0);//MP消費
                 if(secondSt[2] == 0){//HP=0
                     if(attackorder){//敵が死んだので勝利
@@ -234,7 +242,16 @@ function battleMain() {
         if(Acount==2 && Acheck && damageMessageFlg){
             Acheck=false;
             lateEnemyAttack();}
-        if(Acount==99)battleMode=1, Acount=0, loopmode=0,loopselect=0;//行動選択に戻る
+        else if(Acount==3){//特性おやつもちの効果実行
+            if(oneMoveFlg){
+                if(trait9Flg==1){changeHPMP(0,Math.min(Math.floor(mypicstock[mypic[0]][3]*4/100), 1),0,0,0);}
+                if(trait9Flg==2){changeHPMP(0,Math.min(Math.floor(baseEnemyData[3]*4/100), 1),1,0,0);}
+                if(trait9Flg==3){
+                    changeHPMP(0,Math.min(mypicstock[mypic[0]][3]*4/100, 1),0,0,0);
+                    changeHPMP(0,Math,min(Math.floor(baseEnemyData[3]*4/100), 1),1,0,0);}
+                oneMoveFlg=false;
+            }
+        }
 
     } else if(battleMode==3){//アイテム選択時
         //selectmode: 選択しているアイテムのitemでの番号
@@ -246,7 +263,7 @@ function battleMain() {
             else if(items[loopselect][0] == 1){
                 changeHPMP(0,Math.floor(mypicstock[mypic[BwhoUse]][3]*0.6),0,BwhoUse,0);}
             else if(items[loopselect][0] == 2){
-                changeHPMP(0,mypicstock[mypic[BwhoUse]][3],BwhoUse,0);}
+                changeHPMP(0,mypicstock[mypic[BwhoUse]][3],0,BwhoUse,0);}
             else if(items[loopselect][0] == 3){
                 changeHPMP(0,50,0,BwhoUse,0);}
             else if(items[loopselect][0] == 4){
@@ -286,6 +303,16 @@ function battleMain() {
                 lateEnemyAttack();
             }
         }
+        else if(itemCount==3){
+            if(oneMoveFlg){
+                if(trait9Flg==1){changeHPMP(0,Math.min(Math.floor(mypicstock[mypic[0]][3]*4/100), 1),0,0,0);}
+                if(trait9Flg==2){changeHPMP(0,Math.min(Math.floor(baseEnemyData[3]*4/100), 1),1,0,0);}
+                if(trait9Flg==3){
+                    changeHPMP(0,Math.min(mypicstock[mypic[0]][3]*4/100, 1),0,0,0);
+                    changeHPMP(0,Math,min(Math.floor(baseEnemyData[3]*4/100), 1),1,0,0);}
+                oneMoveFlg=false;
+            }
+        }
     } else if(battleMode==4){//マイピク交代
         //マイピク交代処理
         if(chgCount==1){
@@ -304,6 +331,16 @@ function battleMain() {
         if(chgCount==2){
             if(oneMoveFlg){oneMoveFlg=false;
             lateEnemyAttack();
+            }
+        }
+        else if(chgCount==3){
+            if(oneMoveFlg){
+                if(trait9Flg==1){changeHPMP(0,Math.min(Math.floor(mypicstock[mypic[0]][3]*4/100), 1),0,0,0);}
+                if(trait9Flg==2){changeHPMP(0,Math.min(Math.floor(baseEnemyData[3]*4/100), 1),1,0,0);}
+                if(trait9Flg==3){
+                    changeHPMP(0,Math.min(mypicstock[mypic[0]][3]*4/100, 1),0,0,0);
+                    changeHPMP(0,Math,min(Math.floor(baseEnemyData[3]*4/100), 1),1,0,0);}
+                oneMoveFlg=false;
             }
         }
         //敵の攻撃処理
@@ -355,34 +392,41 @@ function battleMain() {
 }
 
 function hitorder(){//先攻後攻決め: floor(素早さ*(乱数0.95-1.05))
-    var mypicSpeed = Math.floor(mypicstock[mypic[0]][10]*(0.95+(1.05-0.95)*Math.random()));
-    var enemySpeed = Math.floor(baseEnemyData[10]*(0.95+(1.05-0.95)*Math.random()));
+    //     特性しんそく    //////
+    var mypicSpecial=1, enemySpacial=1;
+    if(battleMode==2){
+        if(mypicstock[mypic[0]][11] == 10 && Math.random()<0.3)mypicSpecial=2;
+        else if(baseEnemyData[11] == 10 && Math.random()<0.3)enemySpacial=2;}
+    ///////////////////////////
+    var mypicSpeed = Math.floor(mypicstock[mypic[0]][10]*(0.95+(1.05-0.95)*Math.random())) * mypicSpecial;
+    var enemySpeed = Math.floor(baseEnemyData[10]*(0.95+(1.05-0.95)*Math.random())) * enemySpacial;
     if(mypicSpeed>=enemySpeed) {
         if(encountEnemyNum>=4 && encountEnemyNum<=8) attackorder=false, unEscapeFlg=true;//ボス戦の時は逃げられない
         else attackorder=true, unEscapeFlg=false;}//味方の方が速い
     else attackorder=false, unEscapeFlg=false;
 }
 
-function hitcount(){//攻撃回数: Hitcount=((自分の素早さ)/(敵の素早さ)*16/10)
-    if(attackorder) return Math.floor(mypicstock[mypic[0]][10]/enemySpeed*16/10);
-    else return Math.floor(enemySpeed/mypicstock[mypic[0]][10]*16/10);
-}
-
-function hitcheck(my_hitrate, oppLucky, my_trate){//命中判定: (技の命中率*((200-敵の運)/200)*特性(集中))
-    if(my_trate == 5)concentrateFlg=5/4;
-    else concentrateFlg=1;
-    var hitodds = Math.floor(my_hitrate*((200-infToRange(oppLucky,0,100,30))/200)*concentrateFlg);
+function hitcheck(my_hitrate, oppLucky, trait){//命中判定: (技の命中率*((200-敵の運)/200))  特性集中は先に反映させる
+    //////  特性集中  /////////
+    var traitFlg=1;
+    if(trait == 5 && Math.random() < 0.5) traitFlg=5/4;
+    /////////////////////////
+    var hitodds = Math.floor(my_hitrate*((200-infToRange(oppLucky,0,100,30))/200) * traitFlg);
     if(hitodds>=Math.floor(100*Math.random())) return true;
     else return false;
 }
 
-function calcDamage(myLevel, skillPower, myAttack, oppDefend, fskill, stype){//ダメージ計算: (((レベル∗2/4+2)∗技の威力∗自分の攻撃力/敵の防御力+2)∗タイプ相性∗(乱数0.9−1.1))
-//    return Math.floor(Math.floor(Math.floor(myLevel*2/6+2)* skillPower * myAttack/oppDefend+2) * typeMatch(fskill, stype) * (0.9+(1.1-0.9)*Math.random()));
-    return Math.max(0,Math.floor(((Math.pow(myLevel,0.05)/4+2)/3* skillPower * Math.abs(myAttack,0.8)/oppDefend) * typeMatch(fskill, stype) * (0.9+(1.1-0.9)*Math.random())));
-}
-
-function traitEffect(){//特性によるダメージ変化, 
-
+function calcDamage(myLevel, skillPower, myAttack, oppDefend, fskill, stype, Attack, Defend){//ダメージ計算: (((レベル∗2/4+2)∗技の威力∗自分の攻撃力/敵の防御力+2)∗タイプ相性∗(乱数0.9−1.1))
+    //    特性の効果   ///////
+    var specialAttack=1, specialDefend=1;
+    if(Attack[11] == 2 && attack[2] < attack[3]/5) specialAttack=1.5; //馬鹿力発動
+    else if(Attack[11] == 6 && Math.random()<0.2) specialAttack=1.5; //トリッキー発動
+    else if(Defend[11] == 3 && Defend[2] > Defend[3]*7/10) specialDefend=1.3;//てっぺき
+    else if(Defend[11] == 7 && Defend[2] == Defend[3]) specialDefend=2;//ゆとり
+    else if(Attack[11] == 8 && Defend[2] % 10 == 7) specialDefend=1.8; //こだわり
+    /////////////////////////
+//  return Math.floor(Math.floor(Math.floor(myLevel*2/6+2)* skillPower * myAttack/oppDefend+2) * typeMatch(fskill, stype) * (0.9+(1.1-0.9)*Math.random()));
+    return Math.max(0,Math.floor(((Math.pow(myLevel,0.05)/4+2)/3* skillPower * Math.abs((myAttack * specialAttack),0.8)/(oppDefend * specialDefend)) * typeMatch(fskill, stype) * (0.9+(1.1-0.9)*Math.random())));
 }
 
 function typeMatch(fskill, stype){//引数は技属性番号とタイプ番号
@@ -434,13 +478,17 @@ function lateEnemyAttack(){
     if(hitcheck(secondSkill[2], firstSt[9], secondSt[11])){//MPの残り判定も追加しないと意見//
         attackMiss=false;
         //命中する
-        damage = calcDamage(secondSt[12], secondSkill[1], secondSt[6], firstSt[7], secondSkill[3], firstSt[15]);
+        damage = calcDamage(secondSt[12], secondSkill[1], secondSt[6], firstSt[7], secondSkill[3], firstSt[15], secondSt, firstSt);
+        /////   特性ふくつ   /////
+        if(firstSt[11] == 4 && damage >= firstSt[2]) damage = firstSt[2] - 1;
+        ////////////////////////
         changeHPMP(0, (-1)*damage, !attackorder, 0, 0);//HP変化
         if(!attackorder) mypicIsDamagedAni=1;
         if(attackorder) enemyIsDamagedAni=1;
-        //プレッシャー特性判定
+        //   プレッシャー特性判定    //
         if(firstSt[11]==1) pressureFlg=2;
         else pressureFlg=1;
+        ///////////////////////////
         changeHPMP(1, (-1)*pressureFlg*secondSkill[4], attackorder, 0, 0);//MP消費
         if(firstSt[2] == 0){//HP=0
             if(!attackorder){//敵が死んだので勝利
@@ -457,6 +505,11 @@ function lateEnemyAttack(){
         //攻撃が外れた
         attackMiss=true;
     }
+    /////   特性　おやつもち   /////
+    //  0:両者なし, 1:味方のみ, 2:敵のみ, 3:両方あり
+    if(mypicstock[mypic[0]][11] == 9) trait9Flg++;
+    if(baseEnemyData[11] == 9) trait9Flg +=2;
+    /////////////////////////////
 }
 
 function battleStartAnimation(){

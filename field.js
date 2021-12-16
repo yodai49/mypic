@@ -1,7 +1,7 @@
 var walkanimation=0,walkdir=3; //歩くアニメーション,方向
 const charasize=35; //キャラクターのサイズ
 const pre_charasize=60; //プリレンダリング用のキャラクターのサイズ
-const material_size=20;//マテリアルの描画サイズ
+const material_size=30;//マテリアルの描画サイズ
 const fieldwidth=960;//フィールドの幅の最大値
 const fieldheight=540;//フィールドの高さの最大値
 const debugMode=0; //デバッグモード　1ならワープ位置を赤で表示
@@ -274,12 +274,12 @@ function moveEveDraw(x,y){ //マウスのムーブイベント
 
 function setMaterials(){
     //マテリアルの処理　ここから
-    if(globalTime-lastFieldVisit[myposworld] > 10*60*30 || lastFieldVisit[myposworld]==-1||lastFieldVisit[myposworld]<10){ //マテリアルの再配置条件　10分以上経過or初訪問
+    if(globalTime-lastFieldVisit[myposworld] > 6*60*30 || lastFieldVisit[myposworld]==-1||lastFieldVisit[myposworld]<10){ //マテリアルの再配置条件　6分以上経過or初訪問
         lastFieldVisit[myposworld]=globalTime;
         nowMaterialData[myposworld]=[];
         for(var i = 0;i < fieldMaterialDataSet[fieldMaterial[myposworld]].length;i++){
-            for(var j = 0;j < 3;j++){ //最大3こ配置
-                if(Math.random() < fieldMaterialDataSet[fieldMaterial[myposworld]][i][1]/3){//マテリアリ配置条件成立なら
+            for(var j = 0;j < 5;j++){ //最大5こ配置
+                if(Math.random() < fieldMaterialDataSet[fieldMaterial[myposworld]][i][1]/5){//マテリアリ配置条件成立なら
                     while (true){
                         let tempColision=0;
                         materialX=Math.random()*width;
@@ -924,8 +924,12 @@ function fieldMain() {
             if(upkey && eventShopSelectNum && !(eventWindowAni-menuWindowAniSpeed) && !menuSelectFlg) eventShopSelectNum--,menuSelectFlg=1, crosskeySE.play();
             if(downkey && eventShopSelectNum != nowShopData.length-1&& !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg) eventShopSelectNum++,menuSelectFlg=1, crosskeySE.play();
             if(zkey && !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow) {
-                zkeySE.play(); 
-                if (money >= nowShopData[eventShopSelectNum][1]){
+                zkeySE.play();
+                if(nowShopData[eventShopSelectNum][0]>=51&&nowShopData[eventShopSelectNum][0]<=100&&countItem(nowShopData[eventShopSelectNum][0])){
+                    eventMessageWindow=1;
+                    eventMessageWindowMsg="このレシピは既に持っている！";
+                    menuSelectFlg=1;    
+                } else if (money >= nowShopData[eventShopSelectNum][1]){
                     money-=nowShopData[eventShopSelectNum][1];
                     getItem(nowShopData[eventShopSelectNum][0]);
                     eventMessageWindow=1;

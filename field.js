@@ -42,7 +42,7 @@ for(var i = 0;i < itemdata.length;i++) {
     itemMenuImg[i]=new Image(); //アイテムデータを読み込み
     if(i<=49){
         itemMenuImg[i].src="./imgs/itemImgs/itemImg" + i + ".png";
-    }else if(i >= 100 &&i >= 50){//レシピ
+    }else if(i <= 100 &&i >= 50){//レシピ
         itemMenuImg[i].src="./imgs/itemImgs/itemImg51.png"; 
     } else if(i <= 195){//マテリアル
         itemMenuImg[i].src="./imgs/itemImgs/itemImg"+i+".png";

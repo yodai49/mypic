@@ -301,6 +301,7 @@ function battleMain() {
         else if(itemCount==1){
             if(oneMoveFlg){oneMoveFlg=false;
                 consumeItem(loopselect);//アイテム消費
+                attackorder = true;//後攻に敵が来るように
                 lateEnemyAttack();
             }
         }
@@ -331,6 +332,7 @@ function battleMain() {
         }
         if(chgCount==2){
             if(oneMoveFlg){oneMoveFlg=false;
+            attackorder = true;//後攻に敵が来るように
             lateEnemyAttack();
             }
         }
@@ -364,10 +366,10 @@ function battleMain() {
                 initiate_field();
                 playFieldBGM(myposworld);}}
     } else if(battleMode==7){//戦闘不能
-        if(downkey && chgCount==1)loopselect=Math.min(mypic.length-1,loopselect+1), downkey=false;
-        else if(upkey && chgCount==1)loopselect=Math.max(0,loopselect-1), upkey=false;
-        else if(rightkey && chgCount==1)loopselect=Math.min(mypic.length-1,loopselect+3), rightkey=false;
-        else if(leftkey && chgCount==1)loopselect=Math.max(0,loopselect-3), leftkey=false;
+        if(downkey && chgCount==1)loopselect=Math.min(mypic.length-1,loopselect+1), crosskeySE.play(), downkey=false;
+        else if(upkey && chgCount==1)loopselect=Math.max(0,loopselect-1), crosskeySE.play(), upkey=false;
+        else if(rightkey && chgCount==1)loopselect=Math.min(mypic.length-1,loopselect+3), crosskeySE.play(), rightkey=false;
+        else if(leftkey && chgCount==1)loopselect=Math.max(0,loopselect-3), crosskeySE.play(), leftkey=false;
         if(chgCount==3){
             if(oneMoveFlg) {oneMoveFlg=false;
                 mypicstock[mypic[0]][6]=bMemory[0];

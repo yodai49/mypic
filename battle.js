@@ -33,7 +33,7 @@ var enemyIsDamagedAni=100;
 var showMypicHP=0,showEnemyHP=0,showMaxEnemyHP=1,showEnemyHPConst=-1;
 var EnemyMoveChoice;//敵の技選択
 var unEscapeFlg=false;//ボス戦の時に逃げられないように管理するフラグ
-var trait9Flg=0;
+var trait4Flg=0, trait9Flg=0;//特性フラグ
 var typeMatchFlg;
 
 function battleMain() {
@@ -218,7 +218,8 @@ function battleMain() {
                 //命中する　
                 damage = calcDamage(firstSt[12], firstSkill[1], firstSt[6], secondSt[7], firstSkill[3], secondSt[15], firstSt, secondSt);
                 /////   特性ふくつ   /////
-                if(secondSt[11] == 4 && damage >= secondSt[2]) damage = secondSt[2] - 1;
+                if(secondSt[11] == 4 && secondSt[2] == secondSt[3] && damage >= secondSt[2]) damage = secondSt[2] - 1, trait4Flg=1;
+                else trait4Flg=0;
                 ////////////////////////
                 changeHPMP(0, (-1)*damage, attackorder,0, 0);//HP変化
                 if(!attackorder) mypicIsDamagedAni=1;
@@ -487,7 +488,8 @@ function lateEnemyAttack(){
         //命中する
         damage = calcDamage(secondSt[12], secondSkill[1], secondSt[6], firstSt[7], secondSkill[3], firstSt[15], secondSt, firstSt);
         /////   特性ふくつ   /////
-        if(firstSt[11] == 4 && damage >= firstSt[2]) damage = firstSt[2] - 1;
+        if(firstSt[11] == 4 && firstSt[2] == firstSt[3] && damage >= firstSt[2]) damage = firstSt[2] - 1, trait4Flg=1;
+        else trait4Flg=0;
         ////////////////////////
         changeHPMP(0, (-1)*damage, !attackorder, 0, 0);//HP変化
         if(!attackorder) mypicIsDamagedAni=1;

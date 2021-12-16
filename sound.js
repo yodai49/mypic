@@ -26,7 +26,7 @@ const caveFieldBgm=new Howl({
 });
 const remainsFieldBgm=new Howl({
     src: 'sound/remainsField.mp3',
-    volume: 0.44,
+    volume: 0.14,
     loop: true,
     format: ['mp3'],
 });

@@ -6,11 +6,11 @@ const walkCol = [ //歩ける色のリスト 全フィールド共通
 ]
 const homposx=120,homposy=160,homposworld=0;
 const fieldbackdata=[ //フィールドの背景の長方形データをすべて格納（主に歩ける部分）
-    [["fieldbackobj0"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],[["fieldbackobj1"]],
-    [["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],[["fieldbackobj2"]],
-    [["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj2"]],[["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],[["fieldbackobj3"]],
-    [["fieldbackobj4"]],[["fieldbackobj4"]],[["fieldbackobj4"]],[["fieldbackobj4"]],[["fieldbackobj4"]],[["fieldbackobj4"]],[["fieldbackobj4"]],[["fieldbackobj4"]],[["fieldbackobj4"]],[["fieldbackobj4"]],
-    [["fieldbackobj5"]],[["fieldbackobj5"]],[["fieldbackobj5"]],[["fieldbackobj5"]],[["fieldbackobj5"]],[["fieldbackobj5"]],[["fieldbackobj5"]],[["fieldbackobj5"]],[["fieldbackobj5"]],[["fieldbackobj5"]]
+    0,1,1,1,1,1,1,1,1,1,
+    2,2,2,2,2,2,2,2,2,2,
+    3,3,3,3,3,3,3,3,3,3,
+    4,4,4,4,4,4,4,4,4,4,
+    5,5,5,5,5,5,5,5,5,5
 ]
 const fielddata=[ //フィールドの画像データが全て格納されている //フィールド未実装の場合は[-1]とする
     [0,0],[0,0],[0,0],[0,0],[0,0],[-1],[-1],[-1],[-1],[-1], //フィールド0~9

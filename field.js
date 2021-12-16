@@ -290,7 +290,7 @@ function setMaterials(){
     }
 }
 function encount_check(){//敵との遭遇率encount=6*((200−運)/200)
-    if (mypic.length==0 || debugMode) return 0;
+    if (mypic.length==0 || debugMode || warpAni) return 0;
     var encountRate = (6*((200 - mypicstock[mypic[0]][9],0,100,100),0,100/200));
     var tempEncRandom=((800+encount_down*3000)*Math.random());
     if (encountRate>=tempEncRandom && fieldenemyDataSet[fieldenemy[myposworld]].length!=0) {

@@ -1,7 +1,7 @@
 var walkanimation=0,walkdir=3; //歩くアニメーション,方向
 const charasize=35; //キャラクターのサイズ
 const pre_charasize=60; //プリレンダリング用のキャラクターのサイズ
-const material_size=20;//マテリアルの描画サイズ
+const material_size=30;//マテリアルの描画サイズ
 const fieldwidth=960;//フィールドの幅の最大値
 const fieldheight=540;//フィールドの高さの最大値
 const debugMode=0; //デバッグモード　1ならワープ位置を赤で表示
@@ -274,12 +274,12 @@ function moveEveDraw(x,y){ //マウスのムーブイベント
 
 function setMaterials(){
     //マテリアルの処理　ここから
-    if(globalTime-lastFieldVisit[myposworld] > 10*60*30 || lastFieldVisit[myposworld]==-1||lastFieldVisit[myposworld]<10){ //マテリアルの再配置条件　10分以上経過or初訪問
+    if(globalTime-lastFieldVisit[myposworld] > 6*60*30 || lastFieldVisit[myposworld]==-1||lastFieldVisit[myposworld]<10){ //マテリアルの再配置条件　6分以上経過or初訪問
         lastFieldVisit[myposworld]=globalTime;
         nowMaterialData[myposworld]=[];
         for(var i = 0;i < fieldMaterialDataSet[fieldMaterial[myposworld]].length;i++){
-            for(var j = 0;j < 3;j++){ //最大3こ配置
-                if(Math.random() < fieldMaterialDataSet[fieldMaterial[myposworld]][i][1]/3){//マテリアリ配置条件成立なら
+            for(var j = 0;j < 5;j++){ //最大5こ配置
+                if(Math.random() < fieldMaterialDataSet[fieldMaterial[myposworld]][i][1]/5){//マテリアリ配置条件成立なら
                     while (true){
                         let tempColision=0;
                         materialX=Math.random()*width;
@@ -911,6 +911,7 @@ function fieldMain() {
                     ctx2d.fillText(nowShopData[i][1], width/2+200-105-ctx2d.measureText(nowShopData[i][1]).width,height/2-150+60+i*20);
                     ctx2d.fillText(currencyName, width/2+200-85,height/2-150+60+i*20);
                 }
+                ctx2d.drawImage(itemMenuImg[nowShopData[i][0]],width/2-200+15,height/2-161+58+i*20,16,16);
             }
             ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*(Math.sin(globalTime/6)*0.3+0.7) + ")";
             ctx2d.fillText(itemdata[nowShopData[eventShopSelectNum][0]][0], width/2-200+35,height/2-150+60+eventShopSelectNum*20);
@@ -923,8 +924,12 @@ function fieldMain() {
             if(upkey && eventShopSelectNum && !(eventWindowAni-menuWindowAniSpeed) && !menuSelectFlg) eventShopSelectNum--,menuSelectFlg=1, crosskeySE.play();
             if(downkey && eventShopSelectNum != nowShopData.length-1&& !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg) eventShopSelectNum++,menuSelectFlg=1, crosskeySE.play();
             if(zkey && !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow) {
-                zkeySE.play(); 
-                if (money >= nowShopData[eventShopSelectNum][1]){
+                zkeySE.play();
+                if(nowShopData[eventShopSelectNum][0]>=51&&nowShopData[eventShopSelectNum][0]<=100&&countItem(nowShopData[eventShopSelectNum][0])){
+                    eventMessageWindow=1;
+                    eventMessageWindowMsg="このレシピは既に持っている！";
+                    menuSelectFlg=1;    
+                } else if (money >= nowShopData[eventShopSelectNum][1]){
                     money-=nowShopData[eventShopSelectNum][1];
                     getItem(nowShopData[eventShopSelectNum][0]);
                     eventMessageWindow=1;
@@ -952,6 +957,7 @@ function fieldMain() {
                 if (i!=eventShopSelectNum){
                     ctx2d.fillText(itemdata[eventRecipeData[i+eventShopScrollNum]][0], width/2-300+35,height/2-150+60+i*20);
                 }
+                ctx2d.drawImage(itemMenuImg[eventRecipeData[i+eventShopScrollNum]],width/2-300+13,height/2-150+46+i*20,18,18)
             }
             ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
             ctx2d.fillText(itemdata[eventRecipeData[eventShopSelectNum]][0], width/2-300+35,height/2-150+60+(eventShopSelectNum-eventShopScrollNum)*20);
@@ -973,6 +979,7 @@ function fieldMain() {
                 } else{
                     ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
                 }
+                ctx2d.drawImage(itemMenuImg[itemdata[eventRecipeData[eventShopSelectNum]][6][i][0]],width/2+7,height/2-150+160+i*18,15,15)
                 ctx2d.fillText(itemdata[itemdata[eventRecipeData[eventShopSelectNum]][6][i][0]][0] , width/2+25,height/2-150+170+i*18);
                 ctx2d.fillText("×" , width/2+175,height/2-150+170+i*18);
                 ctx2d.fillText(itemdata[eventRecipeData[eventShopSelectNum]][6][i][1] , width/2+185,height/2-150+170+i*18);

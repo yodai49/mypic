@@ -5,6 +5,17 @@ function titleMain() {
     @param なし
     @return 
     */
+
+   //ロードの確認処理//
+   for(var i = 0; i < 50;i++){
+       if(fielddata[i][0]!=-1){
+        if(!fieldImgComplete[i] && fieldimg[i].complete == true){
+            fieldImgComplete[i]=1;
+            loadedimgCnt++;
+        } 
+       }
+   }
+
    ctx2d.clearRect(0,0,width,height);
     if (fieldReDrawFlg){
         titleLoadingFlg=1;
@@ -52,7 +63,6 @@ function titleMain() {
     ctx2d.font="16pt " + mainfontName;
     ctx2d.fillStyle="rgba(255,255,255,1)";
     ctx2d.fillText("Zキーで決定",(width-ctx2d.measureText("Zキーで決定").width)/2,height/2+200);
-    console.log(imgCnt,loadedimgCnt);
     if(!titleLoadingFlg && imgCnt<=loadedimgCnt){
         if (upkey && !selectTitleFlg && selectTitleNum==1) selectTitleNum=0,selectTitleFlg=1,crosskeySE.play();
         if(downkey && !selectTitleFlg && selectTitleNum==0) selectTitleNum=1,selectTitleFlg=1,crosskeySE.play();
@@ -61,9 +71,9 @@ function titleMain() {
         if (zkey && !selectTitleFlg) { ///ゲームスタートの処理
             zkeySE.play();
             if (!selectTitleNum){//はじめから
-                    resetData();
+                resetData();
             } else{ //つづきから
-                    loadData();
+                loadData();
             }
             nextMode=1;
             modeAnimation=1;
@@ -77,6 +87,7 @@ function titleMain() {
         ctx2d.fillStyle="rgba(255,255,255,1)";
         ctx2d.font="26pt " + mainfontName;
         ctx2d.fillText("Loading" + ".".repeat(Math.floor(globalTime/10)%3),width/2-ctx2d.measureText("Loading..").width/2,180);
+
     }
    titleAni++;
 }

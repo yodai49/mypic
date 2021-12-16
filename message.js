@@ -228,8 +228,8 @@ function battleloop(){
                 else if(attackMiss){
                     ctx2d.fillText(firstSkill[0]+" は当たらなかった...", width*25/100,height*75/100);}
                 else {ctx2d.fillText(secondSt[0]+" に "+damage+" のダメージ!", width*25/100,height*75/100);
-                    if(typeMatch(firstSkill[3], secondSt[15])==1/2)ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
-                    else if(typeMatch(firstSkill[3], secondSt[15])==2)ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);}
+                    if(typeMatchFlg==1/2)ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
+                    else if(typeMatchFlg==2)ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);}
                 break;
             case 2:
                 if (!damageMessageFlg) {
@@ -238,8 +238,8 @@ function battleloop(){
                 else if(attackMiss){
                     ctx2d.fillText(firstSkill[0]+" は当たらなかった...", width*25/100,height*75/100);}
                 else {ctx2d.fillText(firstSt[0]+" に "+damage+" のダメージ!", width*25/100,height*75/100);
-                    if(typeMatch(secondSkill[3], firstSt[15])==1/2)ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
-                    else if(typeMatch(secondSkill[3], firstSt[15])==2)ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);}
+                    if(typeMatchFlg==1/2)ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
+                    else if(typeMatchFlg==2)ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);}
                 break;
             case 3:
                 if(trait9Flg == 1){
@@ -297,8 +297,8 @@ function battleloop(){
                 if(attackMiss){
                     ctx2d.fillText(secondSkill[0]+" は当たらなかった...", width*25/100,height*75/100);}
                 else {ctx2d.fillText(firstSt[0]+" に "+damage+" のダメージ!", width*25/100,height*75/100);
-                    if(typeMatch(secondSkill[3], firstSt[15])==1/2)ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
-                    else if(typeMatch(secondSkill[3], firstSt[15])==2)ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);
+                    if(typeMatchFlg==1/2)ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
+                    else if(typeMatchFlg==2)ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);
                 }
                 break;
             case 3:

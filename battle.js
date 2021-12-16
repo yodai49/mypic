@@ -34,6 +34,7 @@ var showMypicHP=0,showEnemyHP=0,showMaxEnemyHP=1,showEnemyHPConst=-1;
 var EnemyMoveChoice;//敵の技選択
 var unEscapeFlg=false;//ボス戦の時に逃げられないように管理するフラグ
 var trait9Flg=0;
+var typeMatchFlg;
 
 function battleMain() {
     //character
@@ -426,7 +427,8 @@ function calcDamage(myLevel, skillPower, myAttack, oppDefend, fskill, stype, Att
     else if(Attack[11] == 8 && Defend[2] % 10 == 7) specialDefend=1.8; //こだわり
     /////////////////////////
 //  return Math.floor(Math.floor(Math.floor(myLevel*2/6+2)* skillPower * myAttack/oppDefend+2) * typeMatch(fskill, stype) * (0.9+(1.1-0.9)*Math.random()));
-    return Math.max(0,Math.floor(((Math.pow(myLevel,0.05)/4+2)/3* skillPower * Math.abs((myAttack * specialAttack),0.8)/(oppDefend * specialDefend)) * typeMatch(fskill, stype) * (0.9+(1.1-0.9)*Math.random())));
+    typeMatchFlg = typeMatch(fskill, stype);
+    return Math.max(0,Math.floor(((Math.pow(myLevel,0.05)/4+2)/3* skillPower * Math.abs((myAttack * specialAttack),0.8)/(oppDefend * specialDefend)) * typeMatchFlg * (0.9+(1.1-0.9)*Math.random())));
 }
 
 function typeMatch(fskill, stype){//引数は技属性番号とタイプ番号
@@ -437,7 +439,8 @@ function typeMatch(fskill, stype){//引数は技属性番号とタイプ番号
         (fskill == 3 && (stype == 1 || stype == 4)) ||
         (fskill == 4 && stype == 6) ||
         (fskill == 5 && stype == 6)
-    ) return 1/2
+    ) { battleLowDamageSE.play();
+        return 1/2}
     //(1): 0-(0,1,2,3,4,5), 1-(0,1,4,6), 2-(0,2,4,5,6), 3-(0,3,5,6), 4-(0,1,2,4,5), 5-(0,2,3,4,5), 6-(1,2,3)
     else if((fskill == 0 && (stype == 0 || stype == 1 || stype == 2 || stype == 3 || stype == 4 || stype == 5)) || 
             (fskill == 1 && (stype == 0 || stype == 1 || stype == 4 || stype == 6)) || 
@@ -446,7 +449,8 @@ function typeMatch(fskill, stype){//引数は技属性番号とタイプ番号
             (fskill == 4 && (stype == 0 || stype == 1 || stype == 2 || stype == 4 || stype == 5)) ||
             (fskill == 5 && (stype == 0 || stype == 2 || stype == 3 || stype == 4 || stype == 5)) ||
             (fskill == 6 && (stype == 1 || stype == 2 || stype == 3))
-    ) return 1
+    ) { battleMiddleDamageSE.play();
+        return 1}
     //(2): 1-3, 2-1, 3-2, 4-3, 5-1, 6-(0,4,5,6)
     else if((fskill == 1 && stype == 3) ||
             (fskill == 2 && stype == 1) ||
@@ -454,7 +458,8 @@ function typeMatch(fskill, stype){//引数は技属性番号とタイプ番号
             (fskill == 4 && stype == 3) ||
             (fskill == 5 && stype == 1) ||
             (fskill == 6 && (stype == 0 || stype == 4 || stype == 5 || stype == 6))
-    ) return 2
+    ) { battleHighDamageSE.play();
+        return 2}
 }
 
 function needEx(level){//(レベル)^2.5

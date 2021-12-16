@@ -135,4 +135,22 @@ const buyEventSE=new Howl({
     loop: false,
     format: ['mp3'],
 });
+const battleLowDamageSE=new Howl({
+    src: 'sound/battleLowDamageSE.mp3',
+    volume: 0.6,
+    loop: false,
+    format: ['mp3'],
+});
+const battleMiddleDamageSE=new Howl({
+    src: 'sound/battleMiddleDamageSE.mp3',
+    volume: 0.6,
+    loop: false,
+    format: ['mp3'],
+});
+const battleHighDamageSE=new Howl({
+    src: 'sound/battleHighDamageSE.mp3',
+    volume: 0.6,
+    loop: false,
+    format: ['mp3'],
+});
 /////////////////////

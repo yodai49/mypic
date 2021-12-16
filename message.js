@@ -230,12 +230,12 @@ function battleloop(){
                 else {ctx2d.fillText(secondSt[0]+" に "+damage+" のダメージ!", width*25/100,height*75/100);
                     if(typeMatchFlg==1/2){
                         ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
-                        if(trait4Flg)ctx2d.fillText(secondSt[0]+" はふくつの精神でギリギリ耐えた!", width*25/100,height*89/100);}
+                        if(trait4Flg)ctx2d.fillText(secondSt[0]+" はふくつの精神で耐えた!", width*25/100,height*89/100);}
                     else if(typeMatchFlg==2){
                         ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);
-                        if(trait4Flg)ctx2d.fillText(secondSt[0]+" はふくつの精神でギリギリ耐えた!", width*25/100,height*89/100);}
+                        if(trait4Flg)ctx2d.fillText(secondSt[0]+" はふくつの精神で耐えた!", width*25/100,height*89/100);}
                     else {
-                        if(trait4Flg)ctx2d.fillText(secondSt[0]+" はふくつの精神でギリギリ耐えた!", width*25/100,height*82/100);}
+                        if(trait4Flg)ctx2d.fillText(secondSt[0]+" はふくつの精神で耐えた!", width*25/100,height*82/100);}
                 }
                 break;
             case 2:
@@ -243,16 +243,16 @@ function battleloop(){
                     ctx2d.fillText(secondSt[0]+" の ", width*25/100,height*75/100);
                     ctx2d.fillText(secondSkill[0]+" !", width*25/100,height*82/100);}
                 else if(attackMiss){
-                    ctx2d.fillText(firstSkill[0]+" は当たらなかった...", width*25/100,height*75/100);}
+                    ctx2d.fillText(secondSkill[0]+" は当たらなかった...", width*25/100,height*75/100);}
                 else {ctx2d.fillText(firstSt[0]+" に "+damage+" のダメージ!", width*25/100,height*75/100);
                     if(typeMatchFlg==1/2){
                         ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
-                        if(trait4Flg)ctx2d.fillText(firstSt[0]+" はふくつの精神でギリギリ耐えた!", width*25/100,height*89/100);}
+                        if(trait4Flg)ctx2d.fillText(firstSt[0]+" はふくつの精神で耐えた!", width*25/100,height*89/100);}
                     else if(typeMatchFlg==2){
                         ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);
-                        if(trait4Flg)ctx2d.fillText(firstSt[0]+" はふくつの精神でギリギリ耐えた!", width*25/100,height*89/100);}
+                        if(trait4Flg)ctx2d.fillText(firstSt[0]+" はふくつの精神で耐えた!", width*25/100,height*89/100);}
                     else {
-                        if(trait4Flg)ctx2d.fillText(firstSt[0]+" はふくつの精神でギリギリ耐えた!", width*25/100,height*82/100);}
+                        if(trait4Flg)ctx2d.fillText(firstSt[0]+" はふくつの精神で耐えた!", width*25/100,height*82/100);}
                 }
                 break;
             case 3:
@@ -285,12 +285,12 @@ function battleloop(){
                 else {ctx2d.fillText(firstSt[0]+" に "+damage+" のダメージ!", width*25/100,height*75/100);
                     if(typeMatchFlg==1/2){
                         ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
-                        if(trait4Flg)ctx2d.fillText(firstSt[0]+" はふくつの精神でギリギリ耐えた!", width*25/100,height*89/100);}
+                        if(trait4Flg)ctx2d.fillText(firstSt[0]+" はふくつの精神で耐えた!", width*25/100,height*89/100);}
                     else if(typeMatchFlg==2){
                         ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);
-                        if(trait4Flg)ctx2d.fillText(firstSt[0]+" はふくつの精神でギリギリ耐えた!", width*25/100,height*89/100);}
+                        if(trait4Flg)ctx2d.fillText(firstSt[0]+" はふくつの精神で耐えた!", width*25/100,height*89/100);}
                     else {
-                        if(trait4Flg)ctx2d.fillText(firstSt[0]+" はふくつの精神でギリギリ耐えた!", width*25/100,height*82/100);}
+                        if(trait4Flg)ctx2d.fillText(firstSt[0]+" はふくつの精神で耐えた!", width*25/100,height*82/100);}
                 }
                 break;
             case 3:
@@ -322,12 +322,12 @@ function battleloop(){
                 else {ctx2d.fillText(firstSt[0]+" に "+damage+" のダメージ!", width*25/100,height*75/100);
                     if(typeMatchFlg==1/2){
                         ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
-                        if(trait4Flg)ctx2d.fillText(firstSt[0]+" はふくつの精神でギリギリ耐えた!", width*25/100,height*89/100);}
+                        if(trait4Flg)ctx2d.fillText(firstSt[0]+" はふくつの精神で耐えた!", width*25/100,height*89/100);}
                     else if(typeMatchFlg==2){
                         ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);
-                        if(trait4Flg)ctx2d.fillText(firstSt[0]+" はふくつの精神でギリギリ耐えた!", width*25/100,height*89/100);}
+                        if(trait4Flg)ctx2d.fillText(firstSt[0]+" はふくつの精神で耐えた!", width*25/100,height*89/100);}
                     else {
-                        if(trait4Flg)ctx2d.fillText(firstSt[0]+" はふくつの精神でギリギリ耐えた!", width*25/100,height*82/100);}
+                        if(trait4Flg)ctx2d.fillText(firstSt[0]+" はふくつの精神で耐えた!", width*25/100,height*82/100);}
                 }
                 break;
             case 3:

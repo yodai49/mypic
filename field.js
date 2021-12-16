@@ -273,7 +273,7 @@ function setMaterials(){
                             if (fieldwarpobj[myposworld][k][0] + fieldwarpobj[myposworld][k][2] > materialX && fieldwarpobj[myposworld][k][0] < materialX+material_size){
                                 if (fieldwarpobj[myposworld][k][1] + fieldwarpobj[myposworld][k][3] > materialY && fieldwarpobj[myposworld][k][1] < materialY+material_size){
                                     tempColision=1;
-                                }    
+                                }
                             }
                         }
                         let checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX,materialY,1,1);
@@ -284,7 +284,7 @@ function setMaterials(){
                         if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
                         checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX+material_size,materialY+material_size,1,1);
                         if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
-                        let checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX+3,materialY+3,1,1);
+                        checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX+3,materialY+3,1,1);
                         if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
                         checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX+1,materialY+material_size/2,1,1);
                         if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;

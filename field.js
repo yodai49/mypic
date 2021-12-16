@@ -29,8 +29,8 @@ var creatingFieldFlg=0, itemRedrawFlg=1;
 var nowMaterialData=[]; //[[[x,y,番号],[...]]]の形式 createFieldごとに変わる
 var lastFieldVisit=[]; //最後にフィールドを訪れた時間を格納
 var fieldimg=[],fieldbackimg=[];//フィールドのImageオブジェクトをを格納する
+var itemMenuImg=[],battleBackImg=[],battleGround,msgWindowImg=[]; //Imageオブジェクト系
 var fieldImgComplete=[-1];
-const itemMenuImg=[];
 function checkImg(imgSrc){
     let checkImg=new Image();
     checkImg.src=imgSrc;
@@ -46,7 +46,7 @@ for(var i = 0;i < itemdata.length;i++) {
         itemMenuImg[i].src="./imgs/itemImgs/itemImg" + i + ".png"; //アイテムデータを読み込み
     }
 }
-imgCnt=0;
+imgCnt=0; //イメージの総数はここで管理
 loadedimgCnt=0;
 for(var i = 0; i < 50;i++){ //フィールド画像データの読み込み
     fieldImgComplete[i]=0;
@@ -64,6 +64,16 @@ for(var i = 0; i < 6;i++){ //フィールド背景データの読み込み
         loadedimgCnt++;
     }
 }
+battleBackImg[0]=new Image(),battleBackImg[0].src="./imgs/battleFieldBackForest.png";//バトル背景の読み込み
+battleBackImg[1]=new Image(),battleBackImg[1].src="./imgs/battleFieldBackCave.png";
+battleBackImg[2]=new Image(),battleBackImg[2].src="./imgs/battleFieldBackRemains.png";
+battleBackImg[3]=new Image(),battleBackImg[3].src="./imgs/battleFieldBackDesert.png";
+for(var i = 0;i < 4;i++) imgCnt++,battleBackImg[i].onload=function(){loadedimgCnt++};
+imgCnt++,battleGround=new Image(),battleGround.src="./imgs/battleField.png",battleGround.onload=function(){loadedimgCnt++};
+msgWindowImg[0]=new Image(),msgWindowImg[0].src="./imgs/messageWindow.png";//メッセージの画像の読み込み
+msgWindowImg[1]=new Image(),msgWindowImg[1].src="./imgs/battleBack2.png";
+msgWindowImg[2]=new Image(),msgWindowImg[2].src="./imgs/battleBack1.png";
+for(var i = 0;i < 3;i++) imgCnt++,msgWindowImg[i].onload=function(){loadedimgCnt++};
 
 const itemBagImg=new Image();
 itemBagImg.src="./imgs/item.png";

@@ -113,8 +113,8 @@ function changeLevel(chgLev,Num){
     mypicstock[mypic[Num]][12]=Math.min(chgLev,99);
     mypicstock[mypic[Num]][3]+=(1+(Math.pow(mypicstock[mypic[Num]][3],1.004)- mypicstock[mypic[Num]][3])+Math.floor(Math.random()*2.2));
     mypicstock[mypic[Num]][5]+=(1+(Math.pow(mypicstock[mypic[Num]][5],1.004)- mypicstock[mypic[Num]][5])+Math.floor(Math.random()*2.2));
-    mypicstock[mypic[Num]][6]+=(1+(Math.pow(mypicstock[mypic[Num]][6],1.004)- mypicstock[mypic[Num]][6])+Math.floor(Math.random()*1.7));
-    mypicstock[mypic[Num]][7]+=(1+(Math.pow(mypicstock[mypic[Num]][7],1.004)- mypicstock[mypic[Num]][7])+Math.floor(Math.random()*1.7));
+    mypicstock[mypic[Num]][6]+=(1+(Math.pow(mypicstock[mypic[Num]][6],1.004)- mypicstock[mypic[Num]][6])+Math.floor(Math.random()*1.4));
+    mypicstock[mypic[Num]][7]+=(1+(Math.pow(mypicstock[mypic[Num]][7],1.004)- mypicstock[mypic[Num]][7])+Math.floor(Math.random()*1.4));
     mypicstock[mypic[Num]][9]=Math.min(10,mypicstock[mypic[Num]][9]+Math.floor(Math.random()*1.08));
     mypicstock[mypic[Num]][10]=Math.min(200,mypicstock[mypic[Num]][10]+Math.floor(Math.random()*2)+1);
     mypicstock[mypic[Num]][3]=Math.floor(Math.min(999,mypicstock[mypic[Num]][3]));

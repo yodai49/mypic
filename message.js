@@ -1,11 +1,7 @@
-const questionMess = ["おはよう", "Q: 今日は冒険する？　　　はい　　　いいえ", ["冒険に出かけるぞ"], ["今日は家でゆっくりしよう", "おやすみなさい"], "一日が終了した。"];
-const talkMess = ["こんにちは","あなたの名前を入力してください。","設定が完了しました。","ゲームをお楽しみください!!"]
-const Message=[questionMess, talkMess];
 var introMessage = ["", ""];
 var endMess2 = [""];
 var BattleMessage = [introMessage, endMess2];
 var winMessage, loseMessage;
-var InBattleMessage = ["敵に１５のダメージ！", "敵の攻撃Z", "自分に３０のダメージ"];
 var onMessage=false;
 var Messagenum=1;//0:field, 1:battle
 var Bsetcheck=true;
@@ -245,6 +241,17 @@ function battleloop(){
                     if(typeMatch(secondSkill[3], firstSt[15])==1/2)ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
                     else if(typeMatch(secondSkill[3], firstSt[15])==2)ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);}
                 break;
+            case 3:
+                if(trait9Flg == 1){
+                    ctx2d.fillText(mypicstock[mypic[0]][0]+" は手持ちのおやつを食べて少し回復。",width*25/100,height*75/100);
+                }else if(trait9Flg==2){
+                    ctx2d.fillText(baseEnemyData[0]+" は手持ちのおやつを食べて少し回復。",width*25/100,height*75/100);
+                }else if(trait9Flg==3){
+                    ctx2d.fillText(mypicstock[mypic[0]][0]+" は手持ちのおやつを食べて少し回復。",width*25/100,height*75/100);
+                    ctx2d.fillText(baseEnemyData[0]+" は手持ちのおやつを食べて少し回復。",width*25/100,height*82/100);
+                }
+                break;
+            
         }
     }
     
@@ -262,6 +269,16 @@ function battleloop(){
                 if(attackMiss){
                     ctx2d.fillText(secondSkill[0]+" は当たらなかった...", width*25/100,height*75/100);}
                 else ctx2d.fillText(firstSt[0]+" に "+damage+" のダメージ!", width*25/100,height*75/100);
+                break;
+            case 3:
+                if(trait9Flg == 1){
+                    ctx2d.fillText(mypicstock[mypic[0]][0]+" は手持ちのおやつを食べて少し回復。",width*25/100,height*75/100);
+                }else if(trait9Flg==2){
+                    ctx2d.fillText(baseEnemyData[0]+" は手持ちのおやつを食べて少し回復。",width*25/100,height*75/100);
+                }else if(trait9Flg==3){
+                    ctx2d.fillText(mypicstock[mypic[0]][0]+" は手持ちのおやつを食べて少し回復。",width*25/100,height*75/100);
+                    ctx2d.fillText(baseEnemyData[0]+" は手持ちのおやつを食べて少し回復。",width*25/100,height*82/100);
+                }
                 break;
             }
     }
@@ -282,6 +299,16 @@ function battleloop(){
                 else {ctx2d.fillText(firstSt[0]+" に "+damage+" のダメージ!", width*25/100,height*75/100);
                     if(typeMatch(secondSkill[3], firstSt[15])==1/2)ctx2d.fillText("こうかはいまひとつのようだ...", width*25/100,height*82/100);
                     else if(typeMatch(secondSkill[3], firstSt[15])==2)ctx2d.fillText("こうかはばつぐんだ!!", width*25/100,height*82/100);
+                }
+                break;
+            case 3:
+                if(trait9Flg == 1){
+                    ctx2d.fillText(mypicstock[mypic[0]][0]+" は手持ちのおやつを食べて少し回復。",width*25/100,height*75/100);
+                }else if(trait9Flg==2){
+                    ctx2d.fillText(baseEnemyData[0]+" は手持ちのおやつを食べて少し回復。",width*25/100,height*75/100);
+                }else if(trait9Flg==3){
+                    ctx2d.fillText(mypicstock[mypic[0]][0]+" は手持ちのおやつを食べて少し回復。",width*25/100,height*75/100);
+                    ctx2d.fillText(baseEnemyData[0]+" は手持ちのおやつを食べて少し回復。",width*25/100,height*82/100);
                 }
                 break;
         }

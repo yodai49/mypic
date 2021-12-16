@@ -28,7 +28,7 @@ var checkSkillConflict=[],encountEnemyNum=0,inMsgBattleFlg=0,searchablelg=0;
 var creatingFieldFlg=0, itemRedrawFlg=1;
 var nowMaterialData=[]; //[[[x,y,番号],[...]]]の形式 createFieldごとに変わる
 var lastFieldVisit=[]; //最後にフィールドを訪れた時間を格納
-var fieldimg=[];
+var fieldimg=[],fieldbackimg=[];//フィールドのImageオブジェクトをを格納する
 var fieldImgComplete=[-1];
 const itemMenuImg=[];
 function checkImg(imgSrc){
@@ -54,6 +54,14 @@ for(var i = 0; i < 50;i++){ //フィールド画像データの読み込み
         imgCnt++;
         fieldimg[i]=new Image();
         fieldimg[i].src="./imgs/fieldobjects/fieldobj" + i + "_0.png";
+    }
+}
+for(var i = 0; i < 6;i++){ //フィールド背景データの読み込み
+    imgCnt++;
+    fieldbackimg[i]=new Image();
+    fieldbackimg[i].src="./imgs/fieldobjects/fieldbackobj" + i + ".jpg";
+    fieldbackimg[i].onload=function(){
+        loadedimgCnt++;
     }
 }
 
@@ -401,26 +409,14 @@ function createField(){
     fieldcanvas=document.createElement("canvas");
     fieldcanvas.width=fieldwidth, fieldcanvas.height=fieldheight;
     var fieldcanvasctx=fieldcanvas.getContext("2d"); //フィールドは横並びに描画　幅はfieldwidth
-    for(let j = 0;j < fieldbackdata[myposworld].length ;j++){
-        if (fieldbackdata[myposworld][j][0].substr(0,4) == "rgba"){
-            fieldcanvasctx.fillStyle=fieldbackdata[myposworld][j][0];
-            fieldcanvasctx.fillRect(fieldbackdata[myposworld][j][1],fieldbackdata[myposworld][j][2],fieldbackdata[myposworld][j][3],fieldbackdata[myposworld][j][4]);    
-        }
-    }
     fieldcanvasctx.drawImage(fieldimg[myposworld],fielddata[myposworld][0],fielddata[myposworld][1]);
     eventflgs=[];
     fieldbackcanvas=document.createElement("canvas");
     fieldbackcanvas.width=fieldwidth, fieldbackcanvas.height=fieldheight;
-    for(let j = 0;j < fieldbackdata[myposworld].length ;j++){
-        if (fieldbackdata[myposworld][j][0].substr(0,4) != "rgba"){
-            const fieldimg=new Image();
-            fieldimg.src="./imgs/fieldobjects/"+fieldbackdata[myposworld][j][0]+".jpg";
-            fieldimg.onload=function(){fieldbackcanvas.getContext("2d").drawImage(fieldimg,0,0); creatingFieldFlg=0;}
-        }
-    }
+    fieldbackcanvas.getContext("2d").drawImage(fieldbackimg[fieldbackdata[myposworld]],0,0); creatingFieldFlg=0;
 }
 function initiate_field(){
-    /*　フィールド・キャラクターの初期化処理/////////////////////////////////////////
+    /*　フィールド・キャラクターの初期化処理 　呼び出しは一度だけ　////////////////////////
     @param なし
     @return なし
     */

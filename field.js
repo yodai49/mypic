@@ -28,6 +28,7 @@ var checkSkillConflict=[],encountEnemyNum=0,inMsgBattleFlg=0,searchablelg=0;
 var creatingFieldFlg=0, itemRedrawFlg=1;
 var nowMaterialData=[]; //[[[x,y,番号],[...]]]の形式 createFieldごとに変わる
 var lastFieldVisit=[]; //最後にフィールドを訪れた時間を格納
+const fieldimg=[];
 const itemMenuImg=[];
 function checkImg(imgSrc){
     let checkImg=new Image();
@@ -44,6 +45,19 @@ for(var i = 0;i < itemdata.length;i++) {
         itemMenuImg[i].src="./imgs/itemImgs/itemImg" + i + ".png"; //アイテムデータを読み込み
     }
 }
+imgCnt=0;
+loadedimgCnt=0;
+for(var i = 0; i < 50;i++){ //フィールド画像データの読み込み
+    if(fielddata[i][0]!= -1){
+        imgCnt++;
+        fieldimg[i]=new Image();
+        fieldimg[i].src="./imgs/fieldobjects/fieldobj" + i + "_0.png";
+        fieldimg[i].onload=function(){    
+            loadedimgCnt++;
+        }
+    }
+}
+
 const itemBagImg=new Image();
 itemBagImg.src="./imgs/item.png";
 
@@ -384,8 +398,6 @@ function checkConflict(dir){
     return 0;
 }
 function createField(){
-    imgCnt=0;
-    loadedimgCnt=0;
     creatingFieldFlg=1;
     fieldcanvas=document.createElement("canvas");
     fieldcanvas.width=fieldwidth, fieldcanvas.height=fieldheight;
@@ -396,12 +408,7 @@ function createField(){
             fieldcanvasctx.fillRect(fieldbackdata[myposworld][j][1],fieldbackdata[myposworld][j][2],fieldbackdata[myposworld][j][3],fieldbackdata[myposworld][j][4]);    
         }
     }
-    for(let j = 0; j < fielddata[myposworld].length;j++){
-        imgCnt++;
-        const fieldimg=new Image();
-        fieldimg.src="./imgs/fieldobjects/fieldobj" + myposworld + "_" + j + ".png";
-        fieldimg.onload=function(){fieldcanvasctx.drawImage(fieldimg,fielddata[myposworld][j][0],fielddata[myposworld][j][1]);loadedimgCnt++;}
-    }
+    fieldcanvasctx.drawImage(fieldimg[myposworld],fielddata[myposworld][0],fielddata[myposworld][1]);
     eventflgs=[];
     fieldbackcanvas=document.createElement("canvas");
     fieldbackcanvas.width=fieldwidth, fieldbackcanvas.height=fieldheight;
@@ -539,7 +546,7 @@ function fieldMain() {
     @param なし
     @return なし
     */
-    if (fieldReDrawFlg && loadedimgCnt==imgCnt) {
+    if (fieldReDrawFlg) {
         fieldback2d.clearRect(0,0,width,height),fieldback2d.drawImage(fieldbackcanvas,0,0,width,height,0,0,width,height);
         field2d.clearRect(0,0,width,height),field2d.drawImage(fieldcanvas,0,0,width,height,0,0,width,height),fieldReDrawFlg=0, checkConflict(0);//背景の描画
         //アイテムの描画
@@ -1627,7 +1634,7 @@ function fieldMain() {
         ctx2d.fillStyle="rgba(255,255,255," + (Math.sin(globalTime/5)*0.3+0.7)+")";    
         ctx2d.fillText("Zキーで調べる",800,30);
     }
-    if(creatingFieldFlg || imgCnt>loadedimgCnt){
+    if(creatingFieldFlg){
         warpAni=11;
         ctx2d.font="26pt " + mainfontName;
         ctx2d.fillStyle="rgba(255,255,255,1)";

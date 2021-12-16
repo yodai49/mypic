@@ -52,7 +52,8 @@ function titleMain() {
     ctx2d.font="16pt " + mainfontName;
     ctx2d.fillStyle="rgba(255,255,255,1)";
     ctx2d.fillText("Zキーで決定",(width-ctx2d.measureText("Zキーで決定").width)/2,height/2+200);
-    if(!titleLoadingFlg){
+    console.log(imgCnt,loadedimgCnt);
+    if(!titleLoadingFlg && imgCnt<=loadedimgCnt){
         if (upkey && !selectTitleFlg && selectTitleNum==1) selectTitleNum=0,selectTitleFlg=1,crosskeySE.play();
         if(downkey && !selectTitleFlg && selectTitleNum==0) selectTitleNum=1,selectTitleFlg=1,crosskeySE.play();
         if (isFirst) selectTitleNum=0;

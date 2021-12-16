@@ -564,7 +564,7 @@ function battleStartAnimation(){
           //  nextMode=2, modeAnimation=1, onMessage=true,battleLaunchFlg=1, encount=0, oneMoveFlg=true;}//バトル開始の処理
         battleAnimationCount++;
         if(battleAnimationCount>201) {
-            mode=2,battleLaunchFlg=1, encount=0, oneMoveFlg=true, onMessage=true;}
+            mode=2,battleLaunchFlg=1, encount=0, battleMode=0, oneMoveFlg=true, onMessage=true;}
     }
     else if(battleAnimationCount > 201){
         ctx2d.fillStyle="rgba(255,255,255,"+((302-battleAnimationCount)/100)+")";
@@ -582,6 +582,7 @@ function decideEnemyStatis(){//敵のランダムステータスを確定させ�
     var fluctuationValue=Math.floor(Math.random()*2*baseEnemyData[12][1]) - baseEnemyData[12][1];//変動値決定
     baseEnemyData[12] = baseEnemyData[12][0] + fluctuationValue;//レベル
     baseEnemyData[3] = baseEnemyData[3][0] + fluctuationValue;//MaxHP
+    console.log("base2: "+ baseEnemyData[2]+"  3: "+baseEnemyData[3]+"   fluc: "+fluctuationValue);
     baseEnemyData[2] = baseEnemyData[3];
     showEnemyHP=baseEnemyData[2];
     showEnemyHPConst=baseEnemyData[2];

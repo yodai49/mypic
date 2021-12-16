@@ -419,7 +419,7 @@ function hitcheck(my_hitrate, oppLucky, trait){//命中判定: (技の命中率*
 function calcDamage(myLevel, skillPower, myAttack, oppDefend, fskill, stype, Attack, Defend){//ダメージ計算: (((レベル∗2/4+2)∗技の威力∗自分の攻撃力/敵の防御力+2)∗タイプ相性∗(乱数0.9−1.1))
     //    特性の効果   ///////
     var specialAttack=1, specialDefend=1;
-    if(Attack[11] == 2 && attack[2] < attack[3]/5) specialAttack=1.5; //馬鹿力発動
+    if(Attack[11] == 2 && Attack[2] < Attack[3]/5) specialAttack=1.5; //馬鹿力発動
     else if(Attack[11] == 6 && Math.random()<0.2) specialAttack=1.5; //トリッキー発動
     else if(Defend[11] == 3 && Defend[2] > Defend[3]*7/10) specialDefend=1.3;//てっぺき
     else if(Defend[11] == 7 && Defend[2] == Defend[3]) specialDefend=2;//ゆとり

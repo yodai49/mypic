@@ -39,11 +39,15 @@ function checkImg(imgSrc){
     }
 }
 for(var i = 0;i < itemdata.length;i++) {
-    itemMenuImg[i]=new Image();
-    if(i >= 50){
-        itemMenuImg[i].src="./imgs/itemImgs/itemImg51.png"; //アイテムデータを読み込み
-    } else{
-        itemMenuImg[i].src="./imgs/itemImgs/itemImg" + i + ".png"; //アイテムデータを読み込み
+    itemMenuImg[i]=new Image(); //アイテムデータを読み込み
+    if(i<=49){
+        itemMenuImg[i].src="./imgs/itemImgs/itemImg" + i + ".png";
+    }else if(i <= 100 &&i >= 50){//レシピ
+        itemMenuImg[i].src="./imgs/itemImgs/itemImg51.png"; 
+    } else if(i <= 195){//マテリアル
+        itemMenuImg[i].src="./imgs/itemImgs/itemImg"+i+".png";
+    }else{
+        itemMenuImg[i].src="./imgs/itemImgs/itemImg51.png";
     }
 }
 imgCnt=0; //イメージの総数はここで管理
@@ -271,6 +275,7 @@ function moveEveDraw(x,y){ //マウスのムーブイベント
 function setMaterials(){
     //マテリアルの処理　ここから
     if(globalTime-lastFieldVisit[myposworld] > 10*60*30 || lastFieldVisit[myposworld]==-1||lastFieldVisit[myposworld]<10){ //マテリアルの再配置条件　10分以上経過or初訪問
+        lastFieldVisit[myposworld]=globalTime;
         nowMaterialData[myposworld]=[];
         for(var i = 0;i < fieldMaterialDataSet[fieldMaterial[myposworld]].length;i++){
             for(var j = 0;j < 3;j++){ //最大3こ配置
@@ -1631,7 +1636,6 @@ function fieldMain() {
     }
     if (warpAni==10 && warpFlg){ //ワープする瞬間
         if(Math.floor(myposworld/10)!=Math.floor(nowWarpObj[4]/10)) playFieldBGM(nowWarpObj[4]);//違うワールドなら再生
-        lastFieldVisit[myposworld]=globalTime;
         myposworld=nowWarpObj[4];
         myposx=nowWarpObj[5];
         myposy=nowWarpObj[6];

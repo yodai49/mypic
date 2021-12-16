@@ -765,7 +765,7 @@ function battleGetItem(){//戦闘後のアイテム入手
         var battleItemRate = Math.floor(100*Math.random());//0-99
         if(baseEnemyData[17+i*2] > battleItemRate){//アイテム入手
             getItem(baseEnemyData[16+(i-1)*2]);
-            popupMsg.push([itemdata[baseEnemyData[16+(i-1)*2]][0]+"を手に入れた!",120,0,0,-1]);//windoemessage
+            popupMsg.push([itemdata[baseEnemyData[16+(i-1)*2]][0]+"を手に入れた!",120,0,0,"*"+baseEnemyData[16+(i-1)*2]]);//windoemessage
         }
     }
     

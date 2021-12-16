@@ -9,10 +9,11 @@ function titleMain() {
    //ロードの確認処理//
    for(var i = 0; i < 50;i++){
        if(fielddata[i][0]!=-1){
-        if(!fieldImgComplete[i] && fieldimg[i].complete == true){
-            fieldImgComplete[i]=1;
-            loadedimgCnt++;
-        } 
+            if(!fieldImgComplete[i] && fieldimg[i].complete == true){
+                fieldImgComplete[i]=1;
+                loadedimgCnt++;
+                if(loadedimgCnt==imgCnt) playFieldBGM(-1);
+            } 
        }
    }
 
@@ -87,7 +88,10 @@ function titleMain() {
         ctx2d.fillStyle="rgba(255,255,255,1)";
         ctx2d.font="26pt " + mainfontName;
         ctx2d.fillText("Loading" + ".".repeat(Math.floor(globalTime/10)%3),width/2-ctx2d.measureText("Loading..").width/2,180);
-
+        ctx2d.fillText(loadedimgCnt + " / " +imgCnt,width/2-ctx2d.measureText(loadedimgCnt + " / " +imgCnt).width/2,220);
+        ctx2d.fillRect(width/2-200,250,400,3);
+        ctx2d.fillStyle="rgba(200,255,200,1)";
+        ctx2d.fillRect(width/2-200,250,400*loadedimgCnt/imgCnt,3);
     }
    titleAni++;
 }

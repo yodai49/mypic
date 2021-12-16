@@ -110,8 +110,6 @@ function init() {
     ctx2d.width = width,ctx2d.height = height;
     field2d.width=width,field2d.height=height;
 
-    playFieldBGM(-1);
-
     tick();
 
     function tick() { //メイン関数

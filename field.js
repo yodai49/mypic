@@ -28,7 +28,8 @@ var checkSkillConflict=[],encountEnemyNum=0,inMsgBattleFlg=0,searchablelg=0;
 var creatingFieldFlg=0, itemRedrawFlg=1;
 var nowMaterialData=[]; //[[[x,y,番号],[...]]]の形式 createFieldごとに変わる
 var lastFieldVisit=[]; //最後にフィールドを訪れた時間を格納
-const fieldimg=[];
+var fieldimg=[];
+var fieldImgComplete=[-1];
 const itemMenuImg=[];
 function checkImg(imgSrc){
     let checkImg=new Image();
@@ -48,13 +49,11 @@ for(var i = 0;i < itemdata.length;i++) {
 imgCnt=0;
 loadedimgCnt=0;
 for(var i = 0; i < 50;i++){ //フィールド画像データの読み込み
+    fieldImgComplete[i]=0;
     if(fielddata[i][0]!= -1){
         imgCnt++;
         fieldimg[i]=new Image();
         fieldimg[i].src="./imgs/fieldobjects/fieldobj" + i + "_0.png";
-        fieldimg[i].onload=function(){    
-            loadedimgCnt++;
-        }
     }
 }
 
@@ -1316,7 +1315,6 @@ function fieldMain() {
                     } else{
                         ctx2d.fillStyle="rgba(155,155,155," + menuWindowTransChild*(Math.sin(globalTime/6)*0.3+0.7)+")";
                     }
-                    if(vkey) console.log(items[menuSelectChildNum][0],itemMenuImg);
                     ctx2d.font="20px "+mainfontName;
                     ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][0],360,90+28*(menuSelectChildNum-itemsScroll));
                     ctx2d.fillText("× " + items[menuSelectChildNum][1],700,90+28*(menuSelectChildNum-itemsScroll));    

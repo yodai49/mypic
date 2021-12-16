@@ -22,6 +22,7 @@ function loadData(){
     myposx=Number(localStorage.getItem("myposx"));
     myposy=Number(localStorage.getItem("myposy"));
     myposworld=Number(localStorage.getItem("myposworld"));
+    warpAni=11;
     money=Number(localStorage.getItem("money"));
     nextEventNum=Number(localStorage.getItem("nextEventNum"));
     items=JSON.parse(localStorage.getItem("items"));
@@ -29,6 +30,15 @@ function loadData(){
     mypicstock=JSON.parse(localStorage.getItem("mypicstock"));
     fieldItemStatus=JSON.parse(localStorage.getItem("fieldItemStatus"));
     eventMessageWindow=0,eventMessageWindowMsg="",eventMessageSelectNum=0,procreateMsg="",eventMessageWindowMsgStack=[],eventMessageWindowAni=0;
+    if(debugMode){
+        getItem(101);
+        getItem(102);
+        getItem(103);
+        for(var i = 0; i <13;i++){
+            getItem(51+i);
+        }
+        getItem(201);
+    }
 }
 
 function resetData(){

@@ -43,11 +43,11 @@ for(var i = 0;i < itemdata.length;i++) {
     if(i<=50){
         itemMenuImg[i].src="./imgs/itemImgs/itemImg" + i + ".png";
     }else if(i <= 100 &&i >= 51){//レシピ
-        itemMenuImg[i].src="./imgs/itemImgs/itemImg51.png"; 
+        itemMenuImg[i].src="./imgs/itemImgs/itemImgRecipe.png"; 
     } else if(i <= 195){//マテリアル
         itemMenuImg[i].src="./imgs/itemImgs/itemImg"+i+".png";
     }else{
-        itemMenuImg[i].src="./imgs/itemImgs/itemImg51.png";
+        itemMenuImg[i].src="./imgs/itemImgs/itemImgSec.png";
     }
 }
 imgCnt=0; //イメージの総数はここで管理
@@ -1005,7 +1005,7 @@ function fieldMain() {
             } else{
                 ctx2d.fillStyle="rgba(105,105,105,1)";
             }
-            ctx2d.fillText("Zで合成！" , width/2+180,height/2+130);
+            ctx2d.fillText("Zで合成！" , width/2+200,height/2+130);
             if(xkey && !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow) eventWindowAni++,menuSelectFlg=1,xkeySE.play();
             if(upkey && eventShopSelectNum && !(eventWindowAni-menuWindowAniSpeed) && !menuSelectFlg){
                 eventShopSelectNum--,menuSelectFlg=1, crosskeySE.play();
@@ -1697,10 +1697,23 @@ function fieldMain() {
             }
         }else{
             if (eventMessageWindowMsg.substr(0,1)=='`'){ ///アイテム合成の時 "`3`を合成した!"
-                let synItemNum=Number(eventMessageWindowMsg.substr(1,eventMessageWindowMsg.indexOf('`',1)-1));
                 ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
                 ctx2d.font="16pt " + mainfontName;
                 ctx2d.fillRect(width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2-30,height/2-50,(40+ctx2d.measureText(eventMessageWindowMsg).width)+60,100);
+
+                let ItemSynX=4+width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2-30+20+22.5;
+                let ItemSynY=4+height/2-50+20+22.5;
+                let gradationItemSyn = ctx2d.createRadialGradient(ItemSynX, ItemSynY, 3, ItemSynX, ItemSynY, Math.sin(globalTime/12)*4+40);
+                //色
+                gradationItemSyn.addColorStop(0, 'rgba(255,255,255,'+(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+')');
+                gradationItemSyn.addColorStop(1, 'rgba(255,255,255,0)');
+                ctx2d.fillStyle = gradationItemSyn;
+                //円
+                ctx2d.beginPath();
+                ctx2d.arc(ItemSynX, ItemSynY, Math.sin(globalTime/12)*4+40, 0, 2 * Math.PI, false);
+                ctx2d.fill();// 描画    
+
+                let synItemNum=Number(eventMessageWindowMsg.substr(1,eventMessageWindowMsg.indexOf('`',1)-1));
                 ctx2d.strokeStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
                 ctx2d.lineWidth=1;
                 ctx2d.strokeRect(width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2-30,height/2-50,(40+ctx2d.measureText(eventMessageWindowMsg).width)-4+60,100-4);

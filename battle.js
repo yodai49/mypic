@@ -488,7 +488,7 @@ function getEx(enemylevel){//戦闘後獲得する経験値
     if(experienceUpFlg) var itemBonus=1.5
     else var itemBonus=1;
     //bossbonusの判定
-    return Math.floor(Math.floor(5*Math.pow(enemylevel,1.2)*(0.9+(1.1-0.9)*Math.random()))*itemBonus);//*BossBonus
+    return Math.floor(Math.floor(4*Math.pow(enemylevel,1.2)*(0.9+(1.1-0.9)*Math.random()))*itemBonus);//*BossBonus
 }
 
 function lateEnemyAttack(){
@@ -552,7 +552,10 @@ function battleStartAnimation(){
         } battleAnimationCount++;
     }
     else if(battleAnimationCount>122 && battleAnimationCount<=201){//fadein animation
-        ctx2d.fillStyle=pastleGreen;
+        if(myposworld>=10 && myposworld<=18 || myposworld == 3)ctx2d.fillStyle=pastleGreen;
+        else if(myposworld>=20 && myposworld<=27)ctx2d.fillStyle=cavecol;
+        else if(myposworld>=30 && myposworld<=36)ctx2d.fillStyle=remainscol;
+        else if(myposworld>=40 && myposworld<=46)ctx2d.fillStyle=desertcol;
         ctx2d.fillRect(0,0,width,height);
         //円形グラデーション
         var gradation = ctx2d.createRadialGradient(width/2, height/2, 5, width/2, height/2, 5+8*(battleAnimationCount-122));
@@ -578,6 +581,8 @@ function battleStartAnimation(){
     else if(battleAnimationCount > 201){
         ctx2d.fillStyle="rgba(255,255,255,"+((302-battleAnimationCount)/100)+")";
         ctx2d.fillRect(0,0,width,height*65/100);
+        ctx2d.fillStyle="rgba(0,0,0,"+((302-battleAnimationCount)/100)+")";
+        ctx2d.fillRect(0,height*65/100,width,height*35/100);
         if(battleAnimationCount==302){
             battleAnimationFlg=false;
             battleAnimationCount=0;

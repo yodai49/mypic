@@ -30,7 +30,7 @@ var nowMaterialData=[]; //[[[x,y,番号],[...]]]の形式 createFieldごとに�
 var lastFieldVisit=[]; //最後にフィールドを訪れた時間を格納
 var fieldimg=[],fieldbackimg=[];//フィールドのImageオブジェクトをを格納する
 var itemMenuImg=[],battleBackImg=[],battleGround,msgWindowImg=[]; //Imageオブジェクト系
-var fieldImgComplete=[-1],itemKindTxt=["道具","マテリアル","秘伝書"];
+var fieldImgComplete=[-1],itemKindTxt=["道具","マテリアル","秘伝書"],itemSynsAni=0;
 function checkImg(imgSrc){
     let checkImg=new Image();
     checkImg.src=imgSrc;
@@ -966,7 +966,7 @@ function fieldMain() {
             ctx2d.font="13pt " + mainfontName;
             ctx2d.fillStyle="rgba(105,105,105," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
             for(var i = 0;i < Math.min(10,eventRecipeData.length);i++){
-                if (i!=eventShopSelectNum){
+                if (i!=eventShopSelectNum-eventShopScrollNum){
                     ctx2d.fillText(itemdata[eventRecipeData[i+eventShopScrollNum]][0], width/2-300+35,height/2-150+60+i*20);
                 }
                 ctx2d.drawImage(itemMenuImg[eventRecipeData[i+eventShopScrollNum]],width/2-300+13,height/2-150+46+i*20,18,18)
@@ -1020,6 +1020,7 @@ function fieldMain() {
                 eventMessageWindowMsg="`"+itemdata[eventRecipeData[eventShopSelectNum]][5]+"`"+itemdata[itemdata[eventRecipeData[eventShopSelectNum]][5]][0]+"を合成した！";
                 eventMessageWindowAni=1;
                 eventMessageWindow=1;
+                itemSynsAni=1;
                 //popupMsg.push([itemdata[itemdata[eventRecipeData[eventShopSelectNum]][5]][0]+"を合成した！",120,0,0,"*"+itemdata[eventRecipeData[eventShopSelectNum]][5]]);
                 getItem(itemdata[eventRecipeData[eventShopSelectNum]][5]);
                 for(var i = 0;i <itemdata[eventRecipeData[eventShopSelectNum]][6].length;i++){
@@ -1072,7 +1073,13 @@ function fieldMain() {
                 }
             }
         }
-        if (zkey && eventWindowAni && !menuSelectFlg) eventWindowAni++, zkeySE.play(); 
+        if (zkey && eventWindowAni && !menuSelectFlg) {
+            if(eventMessageWindowMsg.substr(0,1)=="`"){
+               if(itemSynsAni>=40)  eventWindowAni++, zkeySE.play(); 
+            } else{
+                eventWindowAni++, zkeySE.play(); 
+            }
+        }
         if (!zkey) selectTitleFlg=0;
     } else { /////メニューウィンドウが表示されている時
         if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni && !titleConfirmWindow && !menuSelectFlg && !eventMessageWindow) menuWindow++,xkeySE.play();
@@ -1408,44 +1415,8 @@ function fieldMain() {
                     }
                     if(!debugMode)ctx2d.drawImage(itemMenuImg[items[menuSelectChildNum][0]],315.5,376,30,30);
                 }
-            } else if(menuSelectNum==2){//////そうさ
-                ctx2d.font="26px "+mainfontName;
-                ctx2d.fillText("フィールド",320,48);
-                ctx2d.fillText("バトル",530,48);
-                ctx2d.fillText("現在地",320,248);
-                ctx2d.font="18px "+mainfontName;
-                ctx2d.fillText("方向キー",335,88);
-                ctx2d.fillText("Zキー",335,123);
-                ctx2d.fillText("Xキー",335,158);
-                ctx2d.fillText("Cキー",335,193);
-                ctx2d.fillText("移動",415,88);
-                ctx2d.fillText("調べる",415,123);
-                ctx2d.fillText("キャンセル",415,158);
-                ctx2d.fillText("メニュー",415,193);
-                ctx2d.fillText("方向キー",545,88);
-                ctx2d.fillText("Zキー",545,123);
-                ctx2d.fillText("Xキー",545,158);
-                ctx2d.fillText("選択",650,88);
-                ctx2d.fillText("決定",650,123);
-                ctx2d.fillText("キャンセル",650,158);
-                ctx2d.fillText(fieldNameDatabase2[myposworld],330,278);
-                ctx2d.lineWidth=1;
-                ctx2d.strokeStyle="rgba(255,255,255,1)";
-                ctx2d.beginPath();
-                ctx2d.moveTo(314,44);
-                ctx2d.lineTo(314,209);
-                ctx2d.lineTo(509,207);
-                ctx2d.stroke();
-                ctx2d.beginPath();
-                ctx2d.moveTo(520,44);
-                ctx2d.lineTo(520,171);
-                ctx2d.lineTo(759,171);
-                ctx2d.stroke();
-                ctx2d.beginPath();
-                ctx2d.moveTo(314,237);
-                ctx2d.lineTo(314,292);
-                ctx2d.lineTo(775,292);
-                ctx2d.stroke(); 
+            } else if(menuSelectNum==2){//////ずかん
+                /////ここに図鑑の処理追加
             }
         }
         if (titleConfirmWindow && (titleConfirmWindow-menuWindowAniSpeed)) titleConfirmWindow++;
@@ -1696,13 +1667,13 @@ function fieldMain() {
                 }
             }
         }else{
-            if (eventMessageWindowMsg.substr(0,1)=='`'){ ///アイテム合成の時 "`3`を合成した!"
+            if (eventMessageWindowMsg.substr(0,1)=='`'){ ///アイテム合成の時 "`hoge`を合成した!"
                 ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
                 ctx2d.font="16pt " + mainfontName;
                 ctx2d.fillRect(width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2-30,height/2-50,(40+ctx2d.measureText(eventMessageWindowMsg).width)+60,100);
 
-                let ItemSynX=4+width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2-30+20+22.5;
-                let ItemSynY=4+height/2-50+20+22.5;
+                let ItemSynX=7+width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2-30+20+22.5;
+                let ItemSynY=7+height/2-50+20+22.5;
                 let gradationItemSyn = ctx2d.createRadialGradient(ItemSynX, ItemSynY, 3, ItemSynX, ItemSynY, Math.sin(globalTime/12)*4+40);
                 //色
                 gradationItemSyn.addColorStop(0, 'rgba(255,255,255,'+(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+')');
@@ -1721,6 +1692,10 @@ function fieldMain() {
                 ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
                 if((eventMessageWindow<=menuWindowAniSpeed)) ctx2d.drawImage(itemMenuImg[synItemNum],width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2-30+20,height/2-50+20,55,55);
                 ctx2d.fillText(eventMessageWindowMsg.substr(eventMessageWindowMsg.indexOf('`',1)+1),(width-ctx2d.measureText(eventMessageWindowMsg.substr(eventMessageWindowMsg.indexOf('`',1)+1)).width)/2+30,height/2+5);    
+                ctx2d.fillStyle="rgba(255,255,255," +Math.max(0,(50-itemSynsAni)/50)*0.8+")";
+                ctx2d.font="16pt " + mainfontName;
+                ctx2d.fillRect(width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2-30,height/2-50,(40+ctx2d.measureText(eventMessageWindowMsg).width)+60,100);
+                itemSynsAni++;
             } else{ //それ以外
                 ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
                 ctx2d.font="16pt " + mainfontName;

@@ -4,7 +4,7 @@ const pre_charasize=60; //プリレンダリング用のキャラクターのサ
 const material_size=30;//マテリアルの描画サイズ
 const fieldwidth=960;//フィールドの幅の最大値
 const fieldheight=540;//フィールドの高さの最大値
-var debugMode=3; //デバッグモード　1ならワープ位置を赤で表示
+var debugMode=0; //デバッグモード　1ならワープ位置を赤で表示
 var walkspeed=3;//歩くスピード
 var menuSelectNum=0,menuSelectFlg=0;
 var menuSelectChildNum=0,menuWindowChildAni=0,itemsScroll=0;

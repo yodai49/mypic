@@ -1442,7 +1442,7 @@ function fieldMain() {
                 ctx2d.strokeRect(625,53,165,250);
                 ctx2d.strokeRect(625-4,53-4,165,250);                
                 ctx2d.fillStyle="rgba(255,255,255,"+menuWindowTransChild+")";
-                ctx2d.drawImage(itemMenuImg[menuSelectChildNum+101],682,63,50,50);
+                ctx2d.drawImage(itemMenuImg[menuSelectChildNum+101],682,68,50,50);
                 ctx2d.fillText(itemdata[menuSelectChildNum+101][0],682+25-ctx2d.measureText(itemdata[menuSelectChildNum+101][0]).width/2,150); 
                 ctx2d.fillText("No.",630+5,180);
                 ctx2d.fillText((menuSelectChildNum+1),690+5,180);
@@ -1454,10 +1454,10 @@ function fieldMain() {
                 ctx2d.fillStyle="rgba(255,255,255,"+menuWindowTransChild+")";
                 ctx2d.font="13px "+mainfontName;
                 ctx2d.fillText((Math.floor(menuSelectChildNum/15)+1)+" / 7 ページ",500,415);
-                if(upkey && !menuSelectFlg && menuSelectChildNum) menuSelectChildNum--,menuSelectFlg=1;
-                if(downkey&&!menuSelectFlg&&menuSelectChildNum!=94)menuSelectChildNum++,menuSelectFlg=1;
-                if(leftkey && !menuSelectFlg)menuSelectChildNum-=15,menuSelectFlg=1;
-                if(rightkey && !menuSelectFlg)menuSelectChildNum+=15,menuSelectFlg=1;
+                if(upkey && !menuSelectFlg && menuSelectChildNum) menuSelectChildNum--,menuSelectFlg=1,zkeySE.play();
+                if(downkey&&!menuSelectFlg&&menuSelectChildNum!=94)menuSelectChildNum++,menuSelectFlg=1,zkeySE.play();
+                if(leftkey && !menuSelectFlg)menuSelectChildNum-=15,menuSelectFlg=1,zkeySE.play();
+                if(rightkey && !menuSelectFlg)menuSelectChildNum+=15,menuSelectFlg=1,zkeySE.play();
                 if(menuSelectChildNum<0) menuSelectChildNum+=15;
                 if(menuSelectChildNum>94)menuSelectChildNum-=15;
             }
@@ -1561,6 +1561,7 @@ function fieldMain() {
                     menuSelectFlg=1;
                     if (menuSelectChildNum>= items.length) menuSelectChildNum=items.length-1;
                 }
+                menuSelectFlg=1;
             }
             if (xkey && !menuSelectFlg){
                 menuSelectFlg=1;

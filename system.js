@@ -45,15 +45,16 @@ function consumeItem(consumeNum){
 }
 function getItem(getNum){
     ////////アイテムをゲットする関数　getNumにゲットするアイテムの番号を指定(itemsでの番号)
+    if(getNum>=101&&getNum<=200) materialVisible[getNum-100]=1;
     for(var i = 0;i < items.length;i++){
         if (items[i][0] == getNum){
             items[i][1]++;
             if(items[i][1]>=100) items[i][1]=99;
+            return 0;
         }
     }
     items.push([getNum,1]);
     items.sort(function(a,b){return (a[0]-b[0]);});
-    if(getNum>=101&&getNum<=200) materialVisible[getNum-100]=1;
 }
 function countItem(countNum){
     ////アイテムをカウントする関数 countNumにカウントするアイテムの番号を指定

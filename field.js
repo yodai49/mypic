@@ -30,7 +30,7 @@ var nowMaterialData=[]; //[[[x,y,番号],[...]]]の形式 createFieldごとに�
 var lastFieldVisit=[]; //最後にフィールドを訪れた時間を格納
 var fieldimg=[],fieldbackimg=[];//フィールドのImageオブジェクトをを格納する
 var itemMenuImg=[],battleBackImg=[],battleGround,msgWindowImg=[]; //Imageオブジェクト系
-var fieldImgComplete=[-1];
+var fieldImgComplete=[-1],itemKindTxt=["道具","マテリアル","秘伝書"],itemSynsAni=0;
 function checkImg(imgSrc){
     let checkImg=new Image();
     checkImg.src=imgSrc;
@@ -40,14 +40,14 @@ function checkImg(imgSrc){
 }
 for(var i = 0;i < itemdata.length;i++) {
     itemMenuImg[i]=new Image(); //アイテムデータを読み込み
-    if(i<=49){
+    if(i<=50){
         itemMenuImg[i].src="./imgs/itemImgs/itemImg" + i + ".png";
-    }else if(i <= 100 &&i >= 50){//レシピ
-        itemMenuImg[i].src="./imgs/itemImgs/itemImg51.png"; 
+    }else if(i <= 100 &&i >= 51){//レシピ
+        itemMenuImg[i].src="./imgs/itemImgs/itemImgRecipe.png"; 
     } else if(i <= 195){//マテリアル
         itemMenuImg[i].src="./imgs/itemImgs/itemImg"+i+".png";
     }else{
-        itemMenuImg[i].src="./imgs/itemImgs/itemImg51.png";
+        itemMenuImg[i].src="./imgs/itemImgs/itemImgSec.png";
     }
 }
 imgCnt=0; //イメージの総数はここで管理
@@ -330,7 +330,7 @@ function setMaterials(){
     }
 }
 function encount_check(){//敵との遭遇率encount=6*((200−運)/200)
-    if (mypic.length==0 || debugMode || warpAni) return 0;
+    if (mypic.length==0 || debugMode || warpAni || eventWindowAni) return 0;
     var encountRate = (6*((200 - mypicstock[mypic[0]][9],0,100,100),0,100/200));
     var tempEncRandom=((800+encount_down*3000)*Math.random());
     if (encountRate>=tempEncRandom && fieldenemyDataSet[fieldenemy[myposworld]].length!=0) {
@@ -576,7 +576,7 @@ function trigEvent(trigEventnum,trigEventObj){
 function fieldMain() {
     var menuWindowTrans,menuWindowTransChild;
     const menuWindowAniSpeed=15;
-    const menuWindowTxt =["マイピク","もちもの","そうさ等","セーブ","タイトル"];
+    const menuWindowTxt =["マイピク","もちもの","ずかん","セーブ","タイトル"];
     /*
     @param なし
     @return なし
@@ -790,17 +790,19 @@ function fieldMain() {
                     eventEggSelectNum++,menuSelectFlg=1;
                     if (eventEggSelectNum-eventEggScroll>=10) eventEggScroll++;
                 } 
-                if(spacekey && !zkey && !xkey) menuSelectFlg=0; 
+                if(spacekey && !zkey && !xkey && !vkey) menuSelectFlg=0; 
                 ctx2d.font="14pt " + mainfontName;
                 ctx2d.fillStyle="rgba(105,105,105,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
                 for(var i = 0;i < Math.min(10,tempEggList.length);i++){
                     if (i != eventEggSelectNum-eventEggScroll){
-                        ctx2d.fillText(itemdata[tempEggList[i+eventEggScroll][0]][0],width/2-230,height/2-80+23*i);  
-                        ctx2d.fillText("× "+tempEggList[i+eventEggScroll][1],width/2+180,height/2-80+23*i);     
+                        ctx2d.fillText(itemdata[tempEggList[i+eventEggScroll][0]][0],width/2-230+30,height/2-80+23*i);  
+                        ctx2d.fillText("× "+tempEggList[i+eventEggScroll][1],width/2+180,height/2-80+23*i); 
+                        ctx2d.drawImage(itemMenuImg[tempEggList[i+eventEggScroll][0]],width/2-230+2,height/2-95+23*i,17,17);
                     }
                 }
                 ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*(Math.sin(globalTime/6)*0.3+0.7)+")";
-                ctx2d.fillText(itemdata[tempEggList[eventEggSelectNum][0]][0],width/2-230,height/2-80+23*(eventEggSelectNum-eventEggScroll));  
+                ctx2d.fillText(itemdata[tempEggList[eventEggSelectNum][0]][0],width/2-230+30,height/2-80+23*(eventEggSelectNum-eventEggScroll));  
+                ctx2d.drawImage(itemMenuImg[tempEggList[eventEggSelectNum][0]],width/2-230+2,height/2-95+23*(eventEggSelectNum-eventEggScroll),17,17);
                 ctx2d.fillText("× "+tempEggList[eventEggSelectNum][1],width/2+180,height/2-80+23*(eventEggSelectNum-eventEggScroll)); 
                 ctx2d.font="12pt " + mainfontName;
                 ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
@@ -829,7 +831,7 @@ function fieldMain() {
                     ctx2d.fillStyle="rgba(200,0,0,"+0.8*(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8*Math.min(1,eventEggAni/20)+")";
                 }
                 ctx2d.fillText("のこり："+(15-drawMypicTempObj.length),width/2+158,height/2+160);    
-                ctx2d.fillStyle="rgba(0,0,0,"+0.8*(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8*Math.min(1,eventEggAni/20)+")";
+                ctx2d.fillStyle="rgba(50,50,50,"+0.8*(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8*Math.min(1,eventEggAni/20)+")";
                 ctx2d.fillRect(width/2-135,height/2-110,270,270);
                 //一時的なマイピクの描画
                 ctx2d.lineWidth=5;
@@ -964,7 +966,7 @@ function fieldMain() {
             ctx2d.font="13pt " + mainfontName;
             ctx2d.fillStyle="rgba(105,105,105," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
             for(var i = 0;i < Math.min(10,eventRecipeData.length);i++){
-                if (i!=eventShopSelectNum){
+                if (i!=eventShopSelectNum-eventShopScrollNum){
                     ctx2d.fillText(itemdata[eventRecipeData[i+eventShopScrollNum]][0], width/2-300+35,height/2-150+60+i*20);
                 }
                 ctx2d.drawImage(itemMenuImg[eventRecipeData[i+eventShopScrollNum]],width/2-300+13,height/2-150+46+i*20,18,18)
@@ -1003,7 +1005,7 @@ function fieldMain() {
             } else{
                 ctx2d.fillStyle="rgba(105,105,105,1)";
             }
-            ctx2d.fillText("Zで合成！" , width/2+180,height/2+130);
+            ctx2d.fillText("Zで合成！" , width/2+200,height/2+130);
             if(xkey && !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow) eventWindowAni++,menuSelectFlg=1,xkeySE.play();
             if(upkey && eventShopSelectNum && !(eventWindowAni-menuWindowAniSpeed) && !menuSelectFlg){
                 eventShopSelectNum--,menuSelectFlg=1, crosskeySE.play();
@@ -1013,9 +1015,13 @@ function fieldMain() {
                 eventShopSelectNum++,menuSelectFlg=1, crosskeySE.play();
                 if(eventShopSelectNum>=eventShopScrollNum+10)eventShopScrollNum=eventShopSelectNum-9;
             } 
-            if(zkey && isSyntheticable(eventShopSelectNum)&&!menuSelectFlg&& !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow){
+            if(zkey && isSyntheticable(eventShopSelectNum)&&!menuSelectFlg&& !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow){//合成のときの処理
                 menuSelectFlg=1;
-                popupMsg.push([itemdata[itemdata[eventRecipeData[eventShopSelectNum]][5]][0]+"を合成した！",120,0,0,"*"+itemdata[eventRecipeData[eventShopSelectNum]][5]]);
+                eventMessageWindowMsg="`"+itemdata[eventRecipeData[eventShopSelectNum]][5]+"`"+itemdata[itemdata[eventRecipeData[eventShopSelectNum]][5]][0]+"を合成した！";
+                eventMessageWindowAni=1;
+                eventMessageWindow=1;
+                itemSynsAni=1;
+                //popupMsg.push([itemdata[itemdata[eventRecipeData[eventShopSelectNum]][5]][0]+"を合成した！",120,0,0,"*"+itemdata[eventRecipeData[eventShopSelectNum]][5]]);
                 getItem(itemdata[eventRecipeData[eventShopSelectNum]][5]);
                 for(var i = 0;i <itemdata[eventRecipeData[eventShopSelectNum]][6].length;i++){
                     for(var j = 0;j < itemdata[eventRecipeData[eventShopSelectNum]][6][i][1];j++){
@@ -1029,7 +1035,7 @@ function fieldMain() {
                 menuSelectFlg=1;
             }
         }
-        if (!upkey && !downkey && !zkey && !leftkey && !rightkey && !xkey && !zkey) menuSelectFlg=0;
+        if (!upkey && !downkey && !zkey && !leftkey && !rightkey && !xkey && !zkey && !vkey) menuSelectFlg=0;
         if (eventWindowAni && (eventWindowAni-menuWindowAniSpeed)) eventWindowAni++;
         if (eventWindowAni == 2*menuWindowAniSpeed) eventWindowAni=0,happenedEvent=0; 
         if (spacekey) menuSelectFlg=0;
@@ -1043,7 +1049,7 @@ function fieldMain() {
         if (rightkey && !checkConflict(1)) myposx+=walkspeed,walkeve();
         if (upkey && !checkConflict(2)) myposy-=walkspeed,walkeve();
         if (downkey && !checkConflict(3)) myposy+=walkspeed,walkeve();
-        if (zkey && !selectTitleFlg&& !eventMessageWindow) { //アクションキー
+        if (zkey && !selectTitleFlg&& !eventMessageWindow && !battleAnimationFlg) { //アクションキー
             for(var i = 0; i < eventobj[myposworld].length;i++){
                 if (eventflgs[i] && !happenedEvent) trigEvent(eventobj[myposworld][i][4],eventobj[myposworld][i]);
             }
@@ -1067,7 +1073,13 @@ function fieldMain() {
                 }
             }
         }
-        if (zkey && eventWindowAni && !menuSelectFlg) eventWindowAni++, zkeySE.play(); 
+        if (zkey && eventWindowAni && !menuSelectFlg) {
+            if(eventMessageWindowMsg.substr(0,1)=="`"){
+               if(itemSynsAni>=40)  eventWindowAni++, zkeySE.play(); 
+            } else{
+                eventWindowAni++, zkeySE.play(); 
+            }
+        }
         if (!zkey) selectTitleFlg=0;
     } else { /////メニューウィンドウが表示されている時
         if(xkey && !(menuWindow-menuWindowAniSpeed) && !menuWindowChildAni && !titleConfirmWindow && !menuSelectFlg && !eventMessageWindow) menuWindow++,xkeySE.play();
@@ -1209,34 +1221,9 @@ function fieldMain() {
             menuSelectFlg=1;
             if (menuSelectChildNum>= items.length) menuSelectChildNum=items.length-1;
         }
-        if (!upkey && !downkey && !leftkey && !rightkey && !zkey && !xkey) menuSelectFlg=0;
+        if (!upkey && !downkey && !leftkey && !rightkey && !zkey && !xkey && !vkey) menuSelectFlg=0;
         if (menuSelectNum<0) menuSelectNum=0;
         if (menuSelectNum >= menuWindowTxt.length) menuSelectNum=menuWindowTxt.length-1;
-        if (titleConfirmWindow && (titleConfirmWindow-menuWindowAniSpeed)) titleConfirmWindow++;
-        if (titleConfirmWindow && (titleConfirmWindow-2*menuWindowAniSpeed)>=0) titleConfirmWindow=0;
-        if (titleConfirmWindow){
-            ctx2d.fillStyle="rgba(0,0,0,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-            ctx2d.fillRect(width/2-200,height/2-60,400,120);
-            ctx2d.font="14pt "+ mainfontName;
-            ctx2d.fillStyle="rgba(255,255,255,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-            ctx2d.fillText(titleConfirmMessage,width/2-180,height/2-20);
-            ctx2d.fillText(titleConfirmMessage2,width/2-180,height/2);
-            if (titleConfirmMode != 5){
-                if (!titleConfirmSelect){
-                    ctx2d.fillStyle="rgba(255,255,255,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)*(0.7+Math.sin(globalTime/6)*0.3)+")";
-                    ctx2d.fillText("はい",(width-ctx2d.measureText("はい").width)/2-80,height/2+35);
-                    ctx2d.fillStyle="rgba(105,105,105,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-                    ctx2d.fillText("いいえ",(width-ctx2d.measureText("いいえ").width)/2+80,height/2+35);        
-                } else{
-                    ctx2d.fillStyle="rgba(105,105,105,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-                    ctx2d.fillText("はい",(width-ctx2d.measureText("はい").width)/2-80,height/2+35);
-                    ctx2d.fillStyle="rgba(255,255,255,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)*(0.7+Math.sin(globalTime/6)*0.3)+")";
-                    ctx2d.fillText("いいえ",(width-ctx2d.measureText("いいえ").width)/2+80,height/2+35);    
-                }
-            }
-            if (leftkey && !menuSelectFlg) titleConfirmSelect=0,menuSelectFlg=1, crosskeySE.play();
-            if (rightkey && !menuSelectFlg) titleConfirmSelect=1,menuSelectFlg=1, crosskeySE.play(); 
-        }
     }
     //メニューの表示処理
     menuWindowTrans=(1-Math.abs(menuWindow-menuWindowAniSpeed)/menuWindowAniSpeed);
@@ -1252,11 +1239,27 @@ function fieldMain() {
     if(xkey && !(menuWindowChildAni-menuWindowAniSpeed) && menuWindowChildAni && !(menuMypicDetailAni-menuWindowAniSpeed) && !eventMessageWindow) menuMypicDetailAni++,xkeySE.play();
     if(vkey &&  !(menuWindowChildAni-menuWindowAniSpeed) && menuWindowChildAni && !menuMypicDetailAni) menuSortMypicNum=menuSelectChildNum;
     if(menuWindow){    //メニューの描画
-        ctx2d.fillStyle="rgba(0,0,0," + menuWindowTrans*0.8+")";
-        ctx2d.fillRect(-300+menuWindowTrans*300,0,300,height*0.8);
+        ctx2d.fillStyle="rgba(0,0,0," + menuWindowTrans*0.4+")";
+        ctx2d.fillRect(0,0,width,height);
+        ctx2d.fillStyle="rgba(0,0,0," + menuWindowTrans*0.7+")";
+        ctx2d.fillRect(-300+menuWindowTrans*300,0,290,height*0.8);
+        ctx2d.lineWidth=2;
+        ctx2d.strokeStyle="rgba(255,255,255," + menuWindowTrans+")";
+        ctx2d.strokeRect(-300+menuWindowTrans*300+3,0+3,290,height*0.8);
+        ctx2d.strokeRect(-300+menuWindowTrans*300+7,0+7,290,height*0.8);
         ctx2d.fillStyle="rgba(255,255,255," + menuWindowTrans+")";
         ctx2d.font="50px "+mainfontName;
         ctx2d.fillText("メニュー",30,70);
+        ctx2d.fillStyle="rgba(0,0,0," + menuWindowTrans*0.7+")";
+        ctx2d.font="20px "+mainfontName;
+        ctx2d.beginPath();
+        ctx2d.moveTo(width,24);
+        ctx2d.lineTo(width-ctx2d.measureText("現在地　"+ fieldNameDatabase2[myposworld]).width-30-10,24)
+        ctx2d.lineTo(width-ctx2d.measureText("現在地　"+ fieldNameDatabase2[myposworld]).width-30-23,37)
+        ctx2d.lineTo(width,37)
+        ctx2d.fill();
+        ctx2d.fillStyle="rgba(255,255,255," + menuWindowTrans+")";
+        ctx2d.fillText("現在地　"+ fieldNameDatabase2[myposworld],width-ctx2d.measureText("現在地　"+ fieldNameDatabase2[myposworld]).width-30,30);
         ctx2d.font="30px "+mainfontName;
         for(let i = 0; i < menuWindowTxt.length;i++){
             if (menuSelectNum==i){
@@ -1273,13 +1276,11 @@ function fieldMain() {
         if (menuWindowChildAni){ //子メニューの描画
             ctx2d.fillStyle="rgba(0,0,0," + menuWindowTransChild*0.8+")";
             ctx2d.fillRect(300,0,500*menuWindowTransChild,height*0.8);
-            ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
-            ctx2d.fillRect(300,height*0.05,2,height*0.7);
             if (menuSelectNum==0){ ////マイピク
                 let mypicOffsetX=0,mypicOffsetY=0;
-                ctx2d.fillStyle="rgba(255,255,255," + (menuWindowTransChild*Math.sin(globalTime/5)*0.3+0.7)+")";
+                ctx2d.fillStyle="rgba(255,255,255,1)";
                 ctx2d.font="16px "+mainfontName;
-                if (mypic.length >= 2) ctx2d.fillText("Vキー→Zキーで入れ替え",40,410);
+                if (mypic.length >= 2) ctx2d.fillText("Vキー→Zキーで入れ替え",30,410);
                 for(var i = 0; i < Math.min(6,mypic.length);i++){
                     if (!(i % 2)) mypicOffsetX=320;
                     if (i % 2) mypicOffsetX=560;
@@ -1361,55 +1362,132 @@ function fieldMain() {
                     ctx2d.font="20px "+mainfontName;
                     ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][0],360,90+28*(menuSelectChildNum-itemsScroll));
                     ctx2d.fillText("× " + items[menuSelectChildNum][1],700,90+28*(menuSelectChildNum-itemsScroll));    
-                    if(!debugMode)ctx2d.drawImage(itemMenuImg[items[menuSelectChildNum][0]],332,72+28*(menuSelectChildNum-itemsScroll)+2,24,24);
+                    ctx2d.drawImage(itemMenuImg[items[menuSelectChildNum][0]],332,72+28*(menuSelectChildNum-itemsScroll)+2,24,24);
                     ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
                     ctx2d.fillRect(360,60+32*9.5,300,1);
                     ctx2d.font="16px "+mainfontName;
+                    ctx2d.fillStyle="rgba(105,105,105," + menuWindowTransChild+")";
+                    if((Math.floor(items[menuSelectChildNum][0]/100))%3==0)  ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild*(Math.sin(globalTime/5)*0.3+0.7)+")";
+                    ctx2d.fillText(itemKindTxt[0],350+0*60,48);
+                    ctx2d.fillStyle="rgba(105,105,105," + menuWindowTransChild+")";
+                    if((Math.floor(items[menuSelectChildNum][0]/100))%3==1)  ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild*(Math.sin(globalTime/5)*0.3+0.7)+")";
+                    ctx2d.fillText(itemKindTxt[1],350+1*60,48);
+                    ctx2d.fillStyle="rgba(105,105,105," + menuWindowTransChild+")";
+                    if((Math.floor(items[menuSelectChildNum][0]/100))%3==2)  ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild*(Math.sin(globalTime/5)*0.3+0.7)+")";
+                    ctx2d.fillText(itemKindTxt[2],350+2*60+50,48);
+                    ctx2d.fillStyle="rgba(255,255,255,1)";
                     ctx2d.fillText("おかね："+ money + currencyName,750-ctx2d.measureText("おかね："+ money + currencyName).width,48);
+                    ctx2d.fillText("左右キーでジャンプ",30,410);
+                    ctx2d.fillText("スペースキーで一気にスクロール",30,390);
                     ctx2d.font="16px "+mainfontName;
+                    ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
                     ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(0,25),360,60+32*10.3);
                     ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(25,25),360,60+32*11);
+                    if(rightkey&&!menuSelectFlg){
+                        if((Math.floor(items[menuSelectChildNum][0]/100))%3==2){ //道具へ行く時
+                        } else {
+                            let tempItemKind=(Math.floor(items[menuSelectChildNum][0]/100)+1)%3;
+                            for(var i = menuSelectChildNum;i<items.length;i++){
+                                menuSelectChildNum=i;
+                                itemsScroll=menuSelectChildNum;
+                                if((Math.floor((items[menuSelectChildNum][0]-1)/100))%3==tempItemKind){
+                                    break;
+                                }
+                            }
+                        }
+                        menuSelectFlg=1;
+                    } else if(leftkey&&!menuSelectFlg){
+                        if((Math.floor(items[menuSelectChildNum][0]/100))%3==0){ //道具へ行く時
+                        }  else if((Math.floor(items[menuSelectChildNum][0]/100))%3==1){ //道具へ行く時
+                            menuSelectChildNum=0;
+                            itemsScroll=0;
+                        } else {
+                            let tempItemKind=(Math.floor(items[menuSelectChildNum][0]/100)+2)%3;
+                            for(var i = 0;i<items.length;i++){
+                                menuSelectChildNum=i;
+                                itemsScroll=menuSelectChildNum;
+                                if((Math.floor((items[menuSelectChildNum][0]-1)/100))%3==tempItemKind){
+                                    break;
+                                }
+                            }
+                        }
+                        menuSelectFlg=1;
+                    }
                     if(!debugMode)ctx2d.drawImage(itemMenuImg[items[menuSelectChildNum][0]],315.5,376,30,30);
                 }
-            } else if(menuSelectNum==2){//////そうさ
+            } else if(menuSelectNum==2){//////ずかん
                 ctx2d.font="26px "+mainfontName;
-                ctx2d.fillText("フィールド",320,48);
-                ctx2d.fillText("バトル",530,48);
-                ctx2d.fillText("現在地",320,248);
-                ctx2d.font="18px "+mainfontName;
-                ctx2d.fillText("方向キー",335,88);
-                ctx2d.fillText("Zキー",335,123);
-                ctx2d.fillText("Xキー",335,158);
-                ctx2d.fillText("Cキー",335,193);
-                ctx2d.fillText("移動",415,88);
-                ctx2d.fillText("調べる",415,123);
-                ctx2d.fillText("キャンセル",415,158);
-                ctx2d.fillText("メニュー",415,193);
-                ctx2d.fillText("方向キー",545,88);
-                ctx2d.fillText("Zキー",545,123);
-                ctx2d.fillText("Xキー",545,158);
-                ctx2d.fillText("選択",650,88);
-                ctx2d.fillText("決定",650,123);
-                ctx2d.fillText("キャンセル",650,158);
-                ctx2d.fillText(fieldNameDatabase2[myposworld],330,278);
+                ctx2d.fillStyle="rgba(255,255,255,"+menuWindowTransChild+")";
+                ctx2d.fillText("マテリアルずかん",320,48);
+                ctx2d.font="16px "+mainfontName;
+                for(var i = 0;i < 15;i++){
+                    ctx2d.fillStyle="rgba(105,105,105,"+menuWindowTransChild+")";
+                    if(i==menuSelectChildNum%15) ctx2d.fillStyle="rgba(255,255,255,"+menuWindowTransChild*(Math.sin(globalTime/6)*0.3+0.7)+")";
+                    if(i+101+Math.floor(menuSelectChildNum/15)*15<=195){
+                        ctx2d.fillText("No." + (1+i+Math.floor(menuSelectChildNum/15)*15),360,80+i*22);
+                        if(materialVisible[i+1+Math.floor(menuSelectChildNum/15)*15]){ //見える時
+                            ctx2d.drawImage(itemMenuImg[i+101+Math.floor(menuSelectChildNum/15)*15],332,63+i*22,22,22)
+                            ctx2d.fillText(itemdata[i+101+Math.floor(menuSelectChildNum/15)*15][0],435,80+i*22);        
+                        } else{ //見えない時（未取得）
+                            ctx2d.drawImage(itemMenuImg[i+101+Math.floor(menuSelectChildNum/15)*15],332,63+i*22,22,22) //！！！！ここをハテナマークのdrawImageにする
+                            ctx2d.fillText("???",435,80+i*22);        
+                        }
+                    }
+                }
+                /////ここから現在のアイテムの描画 ////！！！！未取得のときの処理を追加
+                ctx2d.fillStyle="rgba(50,50,50,"+menuWindowTransChild+")";
+                ctx2d.strokeStyle="rgba(255,255,255,"+menuWindowTransChild+")";
                 ctx2d.lineWidth=1;
-                ctx2d.strokeStyle="rgba(255,255,255,1)";
-                ctx2d.beginPath();
-                ctx2d.moveTo(314,44);
-                ctx2d.lineTo(314,209);
-                ctx2d.lineTo(509,207);
-                ctx2d.stroke();
-                ctx2d.beginPath();
-                ctx2d.moveTo(520,44);
-                ctx2d.lineTo(520,171);
-                ctx2d.lineTo(759,171);
-                ctx2d.stroke();
-                ctx2d.beginPath();
-                ctx2d.moveTo(314,237);
-                ctx2d.lineTo(314,292);
-                ctx2d.lineTo(775,292);
-                ctx2d.stroke(); 
+                ctx2d.fillRect(625,53,165,250);
+                ctx2d.strokeRect(625,53,165,250);
+                ctx2d.strokeRect(625-4,53-4,165,250);                
+                ctx2d.fillStyle="rgba(255,255,255,"+menuWindowTransChild+")";
+                ctx2d.drawImage(itemMenuImg[menuSelectChildNum+101],682,63,50,50);
+                ctx2d.fillText(itemdata[menuSelectChildNum+101][0],682+25-ctx2d.measureText(itemdata[menuSelectChildNum+101][0]).width/2,150); 
+                ctx2d.fillText("No.",630+5,180);
+                ctx2d.fillText((menuSelectChildNum+1),690+5,180);
+                ctx2d.fillText("所持数 ",630+5,200);
+                ctx2d.fillText((countItem(menuSelectChildNum+1)),690+5,200);
+                ctx2d.fillText(itemdata[menuSelectChildNum+101][3].substr(0,9),630+5,230);
+                ctx2d.fillText(itemdata[menuSelectChildNum+101][3].substr(9,9),630+5,250);
+                ctx2d.fillText(itemdata[menuSelectChildNum+101][3].substr(18,9),630+5,270);
+                ctx2d.fillStyle="rgba(255,255,255,"+menuWindowTransChild+")";
+                ctx2d.font="13px "+mainfontName;
+                ctx2d.fillText((Math.floor(menuSelectChildNum/15)+1)+" / 7 ページ",500,415);
+                if(upkey && !menuSelectFlg && menuSelectChildNum) menuSelectChildNum--,menuSelectFlg=1;
+                if(downkey&&!menuSelectFlg&&menuSelectChildNum!=94)menuSelectChildNum++,menuSelectFlg=1;
+                if(leftkey && !menuSelectFlg)menuSelectChildNum-=15,menuSelectFlg=1;
+                if(rightkey && !menuSelectFlg)menuSelectChildNum+=15,menuSelectFlg=1;
+                if(menuSelectChildNum<0) menuSelectChildNum+=15;
+                if(menuSelectChildNum>94)menuSelectChildNum-=15;
             }
+        }
+        if (titleConfirmWindow && (titleConfirmWindow-menuWindowAniSpeed)) titleConfirmWindow++;
+        if (titleConfirmWindow && (titleConfirmWindow-2*menuWindowAniSpeed)>=0) titleConfirmWindow=0;
+        if (titleConfirmWindow){
+            ctx2d.fillStyle="rgba(0,0,0,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+            ctx2d.fillRect(width/2-200,height/2-60,400,120);
+            ctx2d.font="14pt "+ mainfontName;
+            ctx2d.fillStyle="rgba(255,255,255,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+            ctx2d.lineWidth=2;
+            ctx2d.strokeRect(width/2-200,height/2-60,400,120);
+            ctx2d.fillText(titleConfirmMessage,width/2-180,height/2-20);
+            ctx2d.fillText(titleConfirmMessage2,width/2-180,height/2);
+            if (titleConfirmMode != 5){
+                if (!titleConfirmSelect){
+                    ctx2d.fillStyle="rgba(255,255,255,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)*(0.7+Math.sin(globalTime/6)*0.3)+")";
+                    ctx2d.fillText("はい",(width-ctx2d.measureText("はい").width)/2-80,height/2+35);
+                    ctx2d.fillStyle="rgba(105,105,105,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                    ctx2d.fillText("いいえ",(width-ctx2d.measureText("いいえ").width)/2+80,height/2+35);        
+                } else{
+                    ctx2d.fillStyle="rgba(105,105,105,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                    ctx2d.fillText("はい",(width-ctx2d.measureText("はい").width)/2-80,height/2+35);
+                    ctx2d.fillStyle="rgba(255,255,255,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)*(0.7+Math.sin(globalTime/6)*0.3)+")";
+                    ctx2d.fillText("いいえ",(width-ctx2d.measureText("いいえ").width)/2+80,height/2+35);    
+                }
+            }
+            if (leftkey && !menuSelectFlg) titleConfirmSelect=0,menuSelectFlg=1, crosskeySE.play();
+            if (rightkey && !menuSelectFlg) titleConfirmSelect=1,menuSelectFlg=1, crosskeySE.play(); 
         }
     }
     if (checkSkillConflict.length && !eventMessageWindow){
@@ -1491,6 +1569,10 @@ function fieldMain() {
             }
             ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
             ctx2d.fillRect((width-400)/2,height/2-100,400,200);
+            ctx2d.lineWidth=2;
+            ctx2d.strokeStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+            ctx2d.strokeRect((width-400)/2,height/2-100,400,200);
+            ctx2d.strokeRect((width-400)/2+4,height/2-100+4,400,200);
             ctx2d.font="16pt " + mainfontName;
             ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
             ctx2d.fillText(eventMessageWindowMsg.substr(
@@ -1628,22 +1710,53 @@ function fieldMain() {
                 }
             }
         }else{
-            ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-            ctx2d.font="16pt " + mainfontName;
-            ctx2d.fillRect(width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2,height/2-50,(40+ctx2d.measureText(eventMessageWindowMsg).width),100);
-            ctx2d.strokeStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-            ctx2d.lineWidth=1;
-            ctx2d.strokeRect(width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2,height/2-50,(40+ctx2d.measureText(eventMessageWindowMsg).width)-4,100-4);
-            ctx2d.strokeRect(width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2+4,height/2-50+4,(40+ctx2d.measureText(eventMessageWindowMsg).width)-4,100-4);
-            ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-            ctx2d.fillText(eventMessageWindowMsg,(width-ctx2d.measureText(eventMessageWindowMsg).width)/2,height/2+5);    
+            if (eventMessageWindowMsg.substr(0,1)=='`'){ ///アイテム合成の時 "`hoge`を合成した!"
+                ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                ctx2d.font="16pt " + mainfontName;
+                ctx2d.fillRect(width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2-30,height/2-50,(40+ctx2d.measureText(eventMessageWindowMsg).width)+60,100);
+
+                let ItemSynX=7+width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2-30+20+22.5;
+                let ItemSynY=7+height/2-50+20+22.5;
+                let gradationItemSyn = ctx2d.createRadialGradient(ItemSynX, ItemSynY, 3, ItemSynX, ItemSynY, Math.sin(globalTime/12)*4+40);
+                //色
+                gradationItemSyn.addColorStop(0, 'rgba(255,255,255,'+(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+')');
+                gradationItemSyn.addColorStop(1, 'rgba(255,255,255,0)');
+                ctx2d.fillStyle = gradationItemSyn;
+                //円
+                ctx2d.beginPath();
+                ctx2d.arc(ItemSynX, ItemSynY, Math.sin(globalTime/12)*4+40, 0, 2 * Math.PI, false);
+                ctx2d.fill();// 描画    
+
+                let synItemNum=Number(eventMessageWindowMsg.substr(1,eventMessageWindowMsg.indexOf('`',1)-1));
+                ctx2d.strokeStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                ctx2d.lineWidth=1;
+                ctx2d.strokeRect(width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2-30,height/2-50,(40+ctx2d.measureText(eventMessageWindowMsg).width)-4+60,100-4);
+                ctx2d.strokeRect(width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2+4-30,height/2-50+4,(40+ctx2d.measureText(eventMessageWindowMsg).width)-4+60,100-4);
+                ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                if((eventMessageWindow<=menuWindowAniSpeed)) ctx2d.drawImage(itemMenuImg[synItemNum],width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2-30+20,height/2-50+20,55,55);
+                ctx2d.fillText(eventMessageWindowMsg.substr(eventMessageWindowMsg.indexOf('`',1)+1),(width-ctx2d.measureText(eventMessageWindowMsg.substr(eventMessageWindowMsg.indexOf('`',1)+1)).width)/2+30,height/2+5);    
+                ctx2d.fillStyle="rgba(255,255,255," +Math.max(0,(50-itemSynsAni)/50)*0.8+")";
+                ctx2d.font="16pt " + mainfontName;
+                ctx2d.fillRect(width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2-30,height/2-50,(40+ctx2d.measureText(eventMessageWindowMsg).width)+60,100);
+                itemSynsAni++;
+            } else{ //それ以外
+                ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                ctx2d.font="16pt " + mainfontName;
+                ctx2d.fillRect(width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2,height/2-50,(40+ctx2d.measureText(eventMessageWindowMsg).width),100);
+                ctx2d.strokeStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                ctx2d.lineWidth=1;
+                ctx2d.strokeRect(width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2,height/2-50,(40+ctx2d.measureText(eventMessageWindowMsg).width)-4,100-4);
+                ctx2d.strokeRect(width/2-(40+ctx2d.measureText(eventMessageWindowMsg).width)/2+4,height/2-50+4,(40+ctx2d.measureText(eventMessageWindowMsg).width)-4,100-4);
+                ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                ctx2d.fillText(eventMessageWindowMsg,(width-ctx2d.measureText(eventMessageWindowMsg).width)/2,height/2+5);    
+            }
         }
         if (eventMessageWindow-menuWindowAniSpeed) eventMessageWindow++;
         if (!(eventMessageWindow-menuWindowAniSpeed*2)) eventMessageWindow=0;
-        if (!zkey && !xkey && !upkey && !downkey && !leftkey && !rightkey) menuSelectFlg=0;
+        if (!zkey && !xkey && !upkey && !downkey && !leftkey && !rightkey && !vkey) menuSelectFlg=0;
         if ((zkey||xkey) &&eventMessageWindowMsg.substr(0,1) != "+"&& !(eventMessageWindow-menuWindowAniSpeed) && !menuSelectFlg) zkeySE.play(),eventMessageWindow++,menuSelectFlg=1;
     }
-    if (!upkey && !downkey && !zkey && !leftkey && !rightkey && !xkey && !zkey) menuSelectFlg=0;
+    if (!upkey && !downkey && !zkey && !leftkey && !rightkey && !xkey && !zkey && !vkey) menuSelectFlg=0;
 
     if (warpAni) { //ワープの処理 
         if (warpAni==1) warpMapSE.play();

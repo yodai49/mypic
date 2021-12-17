@@ -154,4 +154,16 @@ const battleHighDamageSE=new Howl({
     loop: false,
     format: ['mp3'],
 });
+const compositionSE=new Howl({
+    src: 'sound/compositionSE.mp3',
+    volume: 0.6,
+    loop: false,
+    format: ['mp3'],
+});
+const paySE=new Howl({
+    src: 'sound/paySE.mp3',
+    volume: 0.6,
+    loop: false,
+    format: ['mp3'],
+});
 /////////////////////

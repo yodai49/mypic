@@ -29,7 +29,7 @@ var creatingFieldFlg=0, itemRedrawFlg=1;
 var nowMaterialData=[]; //[[[x,y,番号],[...]]]の形式 createFieldごとに変わる
 var lastFieldVisit=[]; //最後にフィールドを訪れた時間を格納
 var fieldimg=[],fieldbackimg=[];//フィールドのImageオブジェクトをを格納する
-var itemMenuImg=[],battleBackImg=[],battleGround,msgWindowImg=[]; //Imageオブジェクト系
+var itemMenuImg=[],itemKeyImg,battleBackImg=[],battleGround,msgWindowImg=[]; //Imageオブジェクト系
 var fieldImgComplete=[-1],itemKindTxt=["道具","マテリアル","秘伝書"],itemSynsAni=0;
 function checkImg(imgSrc){
     let checkImg=new Image();
@@ -81,6 +81,8 @@ for(var i = 0;i < 3;i++) imgCnt++,msgWindowImg[i].onload=function(){loadedimgCnt
 
 const itemBagImg=new Image();
 itemBagImg.src="./imgs/item.png";
+itemKeyImg=new Image();
+itemKeyImg.src="./imgs/itemImgs/itemImgKey.png";
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode,redMode){
     if (mypic.length<=drawMypicNum && mode==0) return 0;
@@ -1429,7 +1431,7 @@ function fieldMain() {
                             ctx2d.drawImage(itemMenuImg[i+101+Math.floor(menuSelectChildNum/15)*15],332,63+i*22,22,22)
                             ctx2d.fillText(itemdata[i+101+Math.floor(menuSelectChildNum/15)*15][0],435,80+i*22);        
                         } else{ //見えない時（未取得）
-                            ctx2d.drawImage(itemMenuImg[i+101+Math.floor(menuSelectChildNum/15)*15],332,63+i*22,22,22) //！！！！ここをハテナマークのdrawImageにする
+                            ctx2d.drawImage(itemKeyImg,332,63+i*22,22,22);
                             ctx2d.fillText("???",435,80+i*22);        
                         }
                     }
@@ -1442,15 +1444,21 @@ function fieldMain() {
                 ctx2d.strokeRect(625,53,165,250);
                 ctx2d.strokeRect(625-4,53-4,165,250);                
                 ctx2d.fillStyle="rgba(255,255,255,"+menuWindowTransChild+")";
-                ctx2d.drawImage(itemMenuImg[menuSelectChildNum+101],682,68,50,50);
-                ctx2d.fillText(itemdata[menuSelectChildNum+101][0],682+25-ctx2d.measureText(itemdata[menuSelectChildNum+101][0]).width/2,150); 
+                if(materialVisible[menuSelectChildNum+1]){ //見える時
+                    ctx2d.fillText(itemdata[menuSelectChildNum+101][0],682+25-ctx2d.measureText(itemdata[menuSelectChildNum+101][0]).width/2,150); 
+                    ctx2d.drawImage(itemMenuImg[menuSelectChildNum+101],682,68,50,50);
+                    ctx2d.fillText(itemdata[menuSelectChildNum+101][3].substr(0,9),630+5,230);
+                    ctx2d.fillText(itemdata[menuSelectChildNum+101][3].substr(9,9),630+5,250);
+                    ctx2d.fillText(itemdata[menuSelectChildNum+101][3].substr(18,9),630+5,270);    
+                } else{ //見えない時
+                    ctx2d.fillText("???",682+25-ctx2d.measureText("???").width/2,150); 
+                    ctx2d.drawImage(itemKeyImg,682,68,50,50);
+                    ctx2d.fillText("???",630+5,230);
+                }
                 ctx2d.fillText("No.",630+5,180);
                 ctx2d.fillText((menuSelectChildNum+1),690+5,180);
                 ctx2d.fillText("所持数 ",630+5,200);
                 ctx2d.fillText((countItem(menuSelectChildNum+1)),690+5,200);
-                ctx2d.fillText(itemdata[menuSelectChildNum+101][3].substr(0,9),630+5,230);
-                ctx2d.fillText(itemdata[menuSelectChildNum+101][3].substr(9,9),630+5,250);
-                ctx2d.fillText(itemdata[menuSelectChildNum+101][3].substr(18,9),630+5,270);
                 ctx2d.fillStyle="rgba(255,255,255,"+menuWindowTransChild+")";
                 ctx2d.font="13px "+mainfontName;
                 ctx2d.fillText((Math.floor(menuSelectChildNum/15)+1)+" / 7 ページ",500,415);

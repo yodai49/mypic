@@ -501,8 +501,8 @@ function lateEnemyAttack(){
         else trait4Flg=0;
         ////////////////////////
         changeHPMP(0, (-1)*damage, !attackorder, 0, 0);//HP変化
-        if(!attackorder) mypicIsDamagedAni=1;
-        if(attackorder) enemyIsDamagedAni=1;
+        if(attackorder) mypicIsDamagedAni=1;
+        if(!attackorder) enemyIsDamagedAni=1;
         //   プレッシャー特性判定    //
         if(firstSt[11]==1) pressureFlg=2;
         else pressureFlg=1;

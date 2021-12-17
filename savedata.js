@@ -14,6 +14,8 @@ function saveData(){
     localStorage.setItem("mypicstock",jsonOb);
     jsonOb=JSON.stringify(fieldItemStatus,undefined,1);
     localStorage.setItem("fieldItemStatus",jsonOb);
+    jsonOb=JSON.stringify(materialVisible,undefined,1);
+    localStorage.setItem("materialVisible",jsonOb);
     isFirst=0;
 }
 
@@ -29,6 +31,7 @@ function loadData(){
     mypic=JSON.parse(localStorage.getItem("mypic"));
     mypicstock=JSON.parse(localStorage.getItem("mypicstock"));
     fieldItemStatus=JSON.parse(localStorage.getItem("fieldItemStatus"));
+    materialVisible=JSON.parse(localStorage.getItem("materialVisible"));
     eventMessageWindow=0,eventMessageWindowMsg="",eventMessageSelectNum=0,procreateMsg="",eventMessageWindowMsgStack=[],eventMessageWindowAni=0;
     if(debugMode){
         getItem(101);
@@ -39,6 +42,10 @@ function loadData(){
         }
         getItem(201);
     }
+    if(materialVisible==null){
+        materialVisible=[];
+        for(var i = 0;i<101;i++)materialVisible[i]=0;
+    }
 }
 
 function resetData(){
@@ -48,8 +55,8 @@ function resetData(){
     if(debugMode) for(var i = 0;i < itemdata.length;i++) items.push([i,50]);
     items.sort(function(a,b){return (a[0]-b[0]);});
     mypic=[];
-    mypicstock=[
-    ]
+    mypicstock=[];
+    for(var i = 0;i < 100;i++) materialVisible[i]=0;
     myposx=homposx,myposy=homposy,myposworld=homposworld,money=100;
     fieldItemStatus=[];
     for(var i = 0;i < itemobj.length;i++){

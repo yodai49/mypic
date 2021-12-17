@@ -1416,7 +1416,33 @@ function fieldMain() {
                     if(!debugMode)ctx2d.drawImage(itemMenuImg[items[menuSelectChildNum][0]],315.5,376,30,30);
                 }
             } else if(menuSelectNum==2){//////ずかん
-                /////ここに図鑑の処理追加
+                ctx2d.font="26px "+mainfontName;
+                ctx2d.fillStyle="rgba(255,255,255,1)";
+                ctx2d.fillText("マテリアルずかん",320,48);
+                ctx2d.font="16px "+mainfontName;
+                for(var i = 0;i < 15;i++){
+                    ctx2d.fillStyle="rgba(105,105,105,1)";
+                    if(i==menuSelectChildNum%15) ctx2d.fillStyle="rgba(255,255,255,"+(Math.sin(globalTime/6)*0.3+0.7)+")";
+                    if(i+101+Math.floor(menuSelectChildNum/15)*15<=195){
+                        ctx2d.fillText("No." + (1+i+Math.floor(menuSelectChildNum/15)*15),360,80+i*22);
+                        if(materialVisible[i+1+Math.floor(menuSelectChildNum/15)*15]){ //見える時
+                            ctx2d.drawImage(itemMenuImg[i+101+Math.floor(menuSelectChildNum/15)*15],332,63+i*22,22,22)
+                            ctx2d.fillText(itemdata[i+101+Math.floor(menuSelectChildNum/15)*15][0],435,80+i*22);        
+                        } else{ //見えない時（未取得）
+                            //ctx2d.drawImage(itemMenuImg[i+101+Math.floor(menuSelectChildNum/15)*15],332,63+i*22,22,22)
+                            ctx2d.fillText("???",435,80+i*22);        
+                        }
+                    }
+                }
+                ctx2d.fillStyle="rgba(255,255,255,1)";
+                ctx2d.font="13px "+mainfontName;
+                ctx2d.fillText((Math.floor(menuSelectChildNum/15)+1)+" / 7 ページ",500,415);
+                if(upkey && !menuSelectFlg && menuSelectChildNum) menuSelectChildNum--,menuSelectFlg=1;
+                if(downkey&&!menuSelectFlg&&menuSelectChildNum!=94)menuSelectChildNum++,menuSelectFlg=1;
+                if(leftkey && !menuSelectFlg)menuSelectChildNum-=15,menuSelectFlg=1;
+                if(rightkey && !menuSelectFlg)menuSelectChildNum+=15,menuSelectFlg=1;
+                if(menuSelectChildNum<0) menuSelectChildNum+=15;
+                if(menuSelectChildNum>94)menuSelectChildNum-=15;
             }
         }
         if (titleConfirmWindow && (titleConfirmWindow-menuWindowAniSpeed)) titleConfirmWindow++;

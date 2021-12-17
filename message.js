@@ -125,13 +125,16 @@ function battleloop(){
         }
 
         if(loopmode==1){
+            if(shortDpFlg) popupMsg.push(["DPが足りないよ!",120,0,0,-1]), shortDpFlg=false;
             for(let i=0; i<4; i++){
-                changeColor(skillData[mypicstock[mypic[0]][8][i]][3], 1.0);
+                if(mypicstock[mypic[0]][4] < skillData[mypicstock[mypic[0]][8][i]][4]) ctx2d.fillStyle=darkgray;
+                else changeColor(skillData[mypicstock[mypic[0]][8][i]][3], 1.0);
                 ctx2d.font="25px "+mainfontName;
                 ctx2d.fillText(skillData[mypicstock[mypic[0]][8][i]][0], width*47/100,height*(75+6*i)/100);
-                ctx2d.fillStyle=white;
+                if(mypicstock[mypic[0]][4] < skillData[mypicstock[mypic[0]][8][i]][4]) ctx2d.fillStyle=darkgray;
+                else ctx2d.fillStyle=white;
                 ctx2d.font="17px "+mainfontName;
-                ctx2d.fillText("MP:"+skillData[mypicstock[mypic[0]][8][i]][4], width*70/100,height*(74+6*i)/100);
+                ctx2d.fillText("DP:"+skillData[mypicstock[mypic[0]][8][i]][4], width*70/100,height*(74+6*i)/100);
             }
             make_pointer(width*45/100,height*(73+6*loopselect)/100,width*43/100,height*(71+6*loopselect)/100,width*43/100,height*(75+6*loopselect)/100);}
             

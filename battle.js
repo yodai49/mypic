@@ -35,6 +35,7 @@ var EnemyMoveChoice;//敵の技選択
 var unEscapeFlg=false;//ボス戦の時に逃げられないように管理するフラグ
 var trait4Flg=0, trait9Flg=0;//特性フラグ
 var typeMatchFlg;
+var shortDpFlg=false;//Dp枯渇フラグ
 
 function battleMain() {
     //character
@@ -85,13 +86,19 @@ function battleMain() {
                 battleMode=1, in_lstnum=0;}//loopに行く
         } else if(battleMode==1){
             if(loopmode==0) {//No選択
-                if(loopselect==0)loopmode=1;//戦う技選択
+                if(loopselect==0){
+                    if(mypicstock[mypic[0]][4] < Math.min(skillData[mypicstock[mypic[0]][8][0]][4], skillData[mypicstock[mypic[0]][8][1]][4],skillData[mypicstock[mypic[0]][8][2]][4], skillData[mypicstock[mypic[0]][8][3]][4])){
+                        //悪あがき使用
+                        battleMode=2, shortDpFlg=true, Acount=0, Acheck=true, damageMessageFlg=false;}
+                    else loopmode=1;//戦う技選択
+                }
                 else if(loopselect==1)loopmode=2, loopselect=0;//アイテム選択
                 else if(loopselect==2)loopmode=3, loopselect=0;//マイピク選択
                 else if(loopselect==3)battleMode=5;//逃げる
                 else loopmode=loopselect+1, loopselect=0;
             } else if(loopmode==1) {//技実行
-                battleMode=2, Acount=0, Acheck=true;
+                if(mypicstock[mypic[0]][4] < skillData[mypicstock[mypic[0]][8][loopselect]][4]) shortDpFlg=true;//DP不足
+                else battleMode=2, Acount=0, Acheck=true, shortDpFlg=false, damageMessageFlg=false;
             } else if(loopmode==2){//アイテム選択
                 if(!itemdata[items[loopselect][0]][2] || (loopselect==14 && moneyUpFlg) || (loopselect==15 && experienceUpFlg))BerrorFlg=true;
                 else if(items[loopselect][0] == 14 || items[loopselect][0] == 15)battleMode=3, oneMoveFlg=true;//金運の知らせか経験値Up
@@ -202,13 +209,15 @@ function battleMain() {
             hitorder();
             if(attackorder) {
                 firstSt=mypicstock[mypic[0]], secondSt=baseEnemyData;
-                firstSkill=skillData[firstSt[8][loopselect]];//技データのリストが取れる
+                if(shortDpFlg) firstSkill=skillData[74], shortDpFlg=false;
+                else firstSkill=skillData[firstSt[8][loopselect]];//技データのリストが取れる
                 secondSkill=skillData[secondSt[8][battleEnemyMove()]];//敵技がランダムで入る
             }
             else {
                 firstSt=baseEnemyData, secondSt=mypicstock[mypic[0]];
                 firstSkill=skillData[firstSt[8][battleEnemyMove()]];//敵技がランダムで入る
-                secondSkill=skillData[secondSt[8][loopselect]];//技データのリストが取れる
+                if(shortDpFlg) secondSkill = skillData[74], shortDpFlg=false;
+                else secondSkill=skillData[secondSt[8][loopselect]];//技データのリストが取れる
             } //先攻後攻のキャラデータが入った
         }
         else if(Acount==1 && Acheck && damageMessageFlg){//先攻
@@ -472,7 +481,7 @@ function needEx(level){//(レベル)^2.5
 function getCurrency(enemylevel){//戦闘後獲得するお金
     if(moneyUpFlg) var itemBonus=1.5
     else var itemBonus=1;
-    return Math.floor(Math.pow(enemylevel,0.8)*5.5*(0.9+(1.1-0.9)*Math.random()*itemBonus));//(level)^1.5*(0.9~1.1)
+    return Math.floor(Math.pow(enemylevel,0.9)*8*(0.9+(1.1-0.9)*Math.random()*itemBonus));//(level)^0.9*8*(0.9~1.1)
 }
 
 function getEx(enemylevel){//戦闘後獲得する経験値
@@ -582,7 +591,6 @@ function decideEnemyStatis(){//敵のランダムステータスを確定させ�
     var fluctuationValue=Math.floor(Math.random()*2*baseEnemyData[12][1]) - baseEnemyData[12][1];//変動値決定
     baseEnemyData[12] = baseEnemyData[12][0] + fluctuationValue;//レベル
     baseEnemyData[3] = baseEnemyData[3][0] + fluctuationValue;//MaxHP
-    console.log("base2: "+ baseEnemyData[2]+"  3: "+baseEnemyData[3]+"   fluc: "+fluctuationValue);
     baseEnemyData[2] = baseEnemyData[3];
     showEnemyHP=baseEnemyData[2];
     showEnemyHPConst=baseEnemyData[2];

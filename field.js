@@ -4,7 +4,7 @@ const pre_charasize=60; //プリレンダリング用のキャラクターのサ
 const material_size=30;//マテリアルの描画サイズ
 const fieldwidth=960;//フィールドの幅の最大値
 const fieldheight=540;//フィールドの高さの最大値
-const debugMode=0; //デバッグモード　1ならワープ位置を赤で表示
+var debugMode=3; //デバッグモード　1ならワープ位置を赤で表示
 var walkspeed=3;//歩くスピード
 var menuSelectNum=0,menuSelectFlg=0;
 var menuSelectChildNum=0,menuWindowChildAni=0,itemsScroll=0;
@@ -280,13 +280,23 @@ function setMaterials(){
         for(var i = 0;i < fieldMaterialDataSet[fieldMaterial[myposworld]].length;i++){
             for(var j = 0;j < 5;j++){ //最大5こ配置
                 if(Math.random() < fieldMaterialDataSet[fieldMaterial[myposworld]][i][1]/5){//マテリアリ配置条件成立なら
+                    let lCounter=0;
                     while (true){
+                        lCounter++;
+                        if(lCounter>10000) break;
                         let tempColision=0;
                         materialX=Math.random()*width;
                         materialY=Math.random()*height;
                         for(var k = 0; k < fieldwarpobj[myposworld].length;k++){
                             if (fieldwarpobj[myposworld][k][0] + fieldwarpobj[myposworld][k][2] > materialX && fieldwarpobj[myposworld][k][0] < materialX+material_size){
                                 if (fieldwarpobj[myposworld][k][1] + fieldwarpobj[myposworld][k][3] > materialY && fieldwarpobj[myposworld][k][1] < materialY+material_size){
+                                    tempColision=1;
+                                }
+                            }
+                        }
+                        for(var k = 0;k < nowMaterialData[myposworld].length;k++){ //他のアイテムとかぶらないようにする
+                            if (nowMaterialData[myposworld][k][0] + material_size> materialX && nowMaterialData[myposworld][k][0] < materialX+material_size){
+                                if (nowMaterialData[myposworld][k][1] + material_size > materialY && nowMaterialData[myposworld][k][1] < materialY+material_size){
                                     tempColision=1;
                                 }
                             }
@@ -907,16 +917,16 @@ function fieldMain() {
             ctx2d.fillStyle="rgba(105,105,105," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
             for(var i = 0;i < Math.min(10,nowShopData.length);i++){
                 if (i!=eventShopSelectNum){
-                    ctx2d.fillText(itemdata[nowShopData[i][0]][0], width/2-200+35,height/2-150+60+i*20);
-                    ctx2d.fillText(nowShopData[i][1], width/2+200-105-ctx2d.measureText(nowShopData[i][1]).width,height/2-150+60+i*20);
-                    ctx2d.fillText(currencyName, width/2+200-85,height/2-150+60+i*20);
+                    ctx2d.fillText(itemdata[nowShopData[i][0]][0], width/2-200+35,height/2-150+56+i*20);
+                    ctx2d.fillText(nowShopData[i][1], width/2+200-105-ctx2d.measureText(nowShopData[i][1]).width,height/2-150+56+i*20);
+                    ctx2d.fillText(currencyName, width/2+200-85,height/2-150+56+i*20);
                 }
-                ctx2d.drawImage(itemMenuImg[nowShopData[i][0]],width/2-200+15,height/2-161+58+i*20,16,16);
+                ctx2d.drawImage(itemMenuImg[nowShopData[i][0]],width/2-200+15,height/2-161+52+i*20,16,16);
             }
             ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*(Math.sin(globalTime/6)*0.3+0.7) + ")";
-            ctx2d.fillText(itemdata[nowShopData[eventShopSelectNum][0]][0], width/2-200+35,height/2-150+60+eventShopSelectNum*20);
-            ctx2d.fillText(nowShopData[eventShopSelectNum][1], width/2+200-105-ctx2d.measureText(nowShopData[eventShopSelectNum][1]).width,height/2-150+60+eventShopSelectNum*20);
-            ctx2d.fillText(currencyName, width/2+200-85,height/2-150+60+eventShopSelectNum*20);
+            ctx2d.fillText(itemdata[nowShopData[eventShopSelectNum][0]][0], width/2-200+35,height/2-150+56+eventShopSelectNum*20);
+            ctx2d.fillText(nowShopData[eventShopSelectNum][1], width/2+200-105-ctx2d.measureText(nowShopData[eventShopSelectNum][1]).width,height/2-150+56+eventShopSelectNum*20);
+            ctx2d.fillText(currencyName, width/2+200-85,height/2-150+56+eventShopSelectNum*20);
             ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
             ctx2d.fillRect(width/2-200+20,height/2-150+260,360,1);
             ctx2d.fillText("おかね　" + showmoney  + " "+currencyName, width/2+180-ctx2d.measureText("おかね　" + money  + " "+currencyName).width,height/2-150+285);
@@ -1181,7 +1191,7 @@ function fieldMain() {
                     nextMode=1;
                     modeAnimation=1;
                     myposx=homposx,myposy=homposy,myposworld=homposworld;
-                    playFieldBGM();
+                    playFieldBGM(myposworld);
                     eventMessageWindow=1;
                     eventMessageWindowMsg=itemdata[items[menuSelectChildNum][0]][0] + "をつかった！";
                     consumeItem(menuSelectChildNum);

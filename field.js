@@ -30,7 +30,7 @@ var nowMaterialData=[]; //[[[x,y,番号],[...]]]の形式 createFieldごとに�
 var lastFieldVisit=[]; //最後にフィールドを訪れた時間を格納
 var fieldimg=[],fieldbackimg=[];//フィールドのImageオブジェクトをを格納する
 var itemMenuImg=[],battleBackImg=[],battleGround,msgWindowImg=[]; //Imageオブジェクト系
-var fieldImgComplete=[-1];
+var fieldImgComplete=[-1],itemKindTxt=["道具","マテリアル","秘伝書"];
 function checkImg(imgSrc){
     let checkImg=new Image();
     checkImg.src=imgSrc;
@@ -330,7 +330,7 @@ function setMaterials(){
     }
 }
 function encount_check(){//敵との遭遇率encount=6*((200−運)/200)
-    if (mypic.length==0 || debugMode || warpAni) return 0;
+    if (mypic.length==0 || debugMode || warpAni || eventWindowAni) return 0;
     var encountRate = (6*((200 - mypicstock[mypic[0]][9],0,100,100),0,100/200));
     var tempEncRandom=((800+encount_down*3000)*Math.random());
     if (encountRate>=tempEncRandom && fieldenemyDataSet[fieldenemy[myposworld]].length!=0) {
@@ -576,7 +576,7 @@ function trigEvent(trigEventnum,trigEventObj){
 function fieldMain() {
     var menuWindowTrans,menuWindowTransChild;
     const menuWindowAniSpeed=15;
-    const menuWindowTxt =["マイピク","もちもの","そうさ等","セーブ","タイトル"];
+    const menuWindowTxt =["マイピク","もちもの","ずかん","セーブ","タイトル"];
     /*
     @param なし
     @return なし
@@ -790,7 +790,7 @@ function fieldMain() {
                     eventEggSelectNum++,menuSelectFlg=1;
                     if (eventEggSelectNum-eventEggScroll>=10) eventEggScroll++;
                 } 
-                if(spacekey && !zkey && !xkey) menuSelectFlg=0; 
+                if(spacekey && !zkey && !xkey && !vkey) menuSelectFlg=0; 
                 ctx2d.font="14pt " + mainfontName;
                 ctx2d.fillStyle="rgba(105,105,105,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
                 for(var i = 0;i < Math.min(10,tempEggList.length);i++){
@@ -1029,7 +1029,7 @@ function fieldMain() {
                 menuSelectFlg=1;
             }
         }
-        if (!upkey && !downkey && !zkey && !leftkey && !rightkey && !xkey && !zkey) menuSelectFlg=0;
+        if (!upkey && !downkey && !zkey && !leftkey && !rightkey && !xkey && !zkey && !vkey) menuSelectFlg=0;
         if (eventWindowAni && (eventWindowAni-menuWindowAniSpeed)) eventWindowAni++;
         if (eventWindowAni == 2*menuWindowAniSpeed) eventWindowAni=0,happenedEvent=0; 
         if (spacekey) menuSelectFlg=0;
@@ -1043,7 +1043,7 @@ function fieldMain() {
         if (rightkey && !checkConflict(1)) myposx+=walkspeed,walkeve();
         if (upkey && !checkConflict(2)) myposy-=walkspeed,walkeve();
         if (downkey && !checkConflict(3)) myposy+=walkspeed,walkeve();
-        if (zkey && !selectTitleFlg&& !eventMessageWindow) { //アクションキー
+        if (zkey && !selectTitleFlg&& !eventMessageWindow && !battleAnimationFlg) { //アクションキー
             for(var i = 0; i < eventobj[myposworld].length;i++){
                 if (eventflgs[i] && !happenedEvent) trigEvent(eventobj[myposworld][i][4],eventobj[myposworld][i]);
             }
@@ -1209,34 +1209,9 @@ function fieldMain() {
             menuSelectFlg=1;
             if (menuSelectChildNum>= items.length) menuSelectChildNum=items.length-1;
         }
-        if (!upkey && !downkey && !leftkey && !rightkey && !zkey && !xkey) menuSelectFlg=0;
+        if (!upkey && !downkey && !leftkey && !rightkey && !zkey && !xkey && !vkey) menuSelectFlg=0;
         if (menuSelectNum<0) menuSelectNum=0;
         if (menuSelectNum >= menuWindowTxt.length) menuSelectNum=menuWindowTxt.length-1;
-        if (titleConfirmWindow && (titleConfirmWindow-menuWindowAniSpeed)) titleConfirmWindow++;
-        if (titleConfirmWindow && (titleConfirmWindow-2*menuWindowAniSpeed)>=0) titleConfirmWindow=0;
-        if (titleConfirmWindow){
-            ctx2d.fillStyle="rgba(0,0,0,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-            ctx2d.fillRect(width/2-200,height/2-60,400,120);
-            ctx2d.font="14pt "+ mainfontName;
-            ctx2d.fillStyle="rgba(255,255,255,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-            ctx2d.fillText(titleConfirmMessage,width/2-180,height/2-20);
-            ctx2d.fillText(titleConfirmMessage2,width/2-180,height/2);
-            if (titleConfirmMode != 5){
-                if (!titleConfirmSelect){
-                    ctx2d.fillStyle="rgba(255,255,255,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)*(0.7+Math.sin(globalTime/6)*0.3)+")";
-                    ctx2d.fillText("はい",(width-ctx2d.measureText("はい").width)/2-80,height/2+35);
-                    ctx2d.fillStyle="rgba(105,105,105,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-                    ctx2d.fillText("いいえ",(width-ctx2d.measureText("いいえ").width)/2+80,height/2+35);        
-                } else{
-                    ctx2d.fillStyle="rgba(105,105,105,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-                    ctx2d.fillText("はい",(width-ctx2d.measureText("はい").width)/2-80,height/2+35);
-                    ctx2d.fillStyle="rgba(255,255,255,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)*(0.7+Math.sin(globalTime/6)*0.3)+")";
-                    ctx2d.fillText("いいえ",(width-ctx2d.measureText("いいえ").width)/2+80,height/2+35);    
-                }
-            }
-            if (leftkey && !menuSelectFlg) titleConfirmSelect=0,menuSelectFlg=1, crosskeySE.play();
-            if (rightkey && !menuSelectFlg) titleConfirmSelect=1,menuSelectFlg=1, crosskeySE.play(); 
-        }
     }
     //メニューの表示処理
     menuWindowTrans=(1-Math.abs(menuWindow-menuWindowAniSpeed)/menuWindowAniSpeed);
@@ -1252,11 +1227,27 @@ function fieldMain() {
     if(xkey && !(menuWindowChildAni-menuWindowAniSpeed) && menuWindowChildAni && !(menuMypicDetailAni-menuWindowAniSpeed) && !eventMessageWindow) menuMypicDetailAni++,xkeySE.play();
     if(vkey &&  !(menuWindowChildAni-menuWindowAniSpeed) && menuWindowChildAni && !menuMypicDetailAni) menuSortMypicNum=menuSelectChildNum;
     if(menuWindow){    //メニューの描画
-        ctx2d.fillStyle="rgba(0,0,0," + menuWindowTrans*0.8+")";
-        ctx2d.fillRect(-300+menuWindowTrans*300,0,300,height*0.8);
+        ctx2d.fillStyle="rgba(0,0,0," + menuWindowTrans*0.4+")";
+        ctx2d.fillRect(0,0,width,height);
+        ctx2d.fillStyle="rgba(0,0,0," + menuWindowTrans*0.7+")";
+        ctx2d.fillRect(-300+menuWindowTrans*300,0,290,height*0.8);
+        ctx2d.lineWidth=2;
+        ctx2d.strokeStyle="rgba(255,255,255," + menuWindowTrans+")";
+        ctx2d.strokeRect(-300+menuWindowTrans*300+3,0+3,290,height*0.8);
+        ctx2d.strokeRect(-300+menuWindowTrans*300+7,0+7,290,height*0.8);
         ctx2d.fillStyle="rgba(255,255,255," + menuWindowTrans+")";
         ctx2d.font="50px "+mainfontName;
         ctx2d.fillText("メニュー",30,70);
+        ctx2d.fillStyle="rgba(0,0,0," + menuWindowTrans*0.7+")";
+        ctx2d.font="20px "+mainfontName;
+        ctx2d.beginPath();
+        ctx2d.moveTo(width,24);
+        ctx2d.lineTo(width-ctx2d.measureText("現在地　"+ fieldNameDatabase2[myposworld]).width-30-10,24)
+        ctx2d.lineTo(width-ctx2d.measureText("現在地　"+ fieldNameDatabase2[myposworld]).width-30-23,37)
+        ctx2d.lineTo(width,37)
+        ctx2d.fill();
+        ctx2d.fillStyle="rgba(255,255,255," + menuWindowTrans+")";
+        ctx2d.fillText("現在地　"+ fieldNameDatabase2[myposworld],width-ctx2d.measureText("現在地　"+ fieldNameDatabase2[myposworld]).width-30,30);
         ctx2d.font="30px "+mainfontName;
         for(let i = 0; i < menuWindowTxt.length;i++){
             if (menuSelectNum==i){
@@ -1273,13 +1264,11 @@ function fieldMain() {
         if (menuWindowChildAni){ //子メニューの描画
             ctx2d.fillStyle="rgba(0,0,0," + menuWindowTransChild*0.8+")";
             ctx2d.fillRect(300,0,500*menuWindowTransChild,height*0.8);
-            ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
-            ctx2d.fillRect(300,height*0.05,2,height*0.7);
             if (menuSelectNum==0){ ////マイピク
                 let mypicOffsetX=0,mypicOffsetY=0;
-                ctx2d.fillStyle="rgba(255,255,255," + (menuWindowTransChild*Math.sin(globalTime/5)*0.3+0.7)+")";
+                ctx2d.fillStyle="rgba(255,255,255,1)";
                 ctx2d.font="16px "+mainfontName;
-                if (mypic.length >= 2) ctx2d.fillText("Vキー→Zキーで入れ替え",40,410);
+                if (mypic.length >= 2) ctx2d.fillText("Vキー→Zキーで入れ替え",30,410);
                 for(var i = 0; i < Math.min(6,mypic.length);i++){
                     if (!(i % 2)) mypicOffsetX=320;
                     if (i % 2) mypicOffsetX=560;
@@ -1361,14 +1350,57 @@ function fieldMain() {
                     ctx2d.font="20px "+mainfontName;
                     ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][0],360,90+28*(menuSelectChildNum-itemsScroll));
                     ctx2d.fillText("× " + items[menuSelectChildNum][1],700,90+28*(menuSelectChildNum-itemsScroll));    
-                    if(!debugMode)ctx2d.drawImage(itemMenuImg[items[menuSelectChildNum][0]],332,72+28*(menuSelectChildNum-itemsScroll)+2,24,24);
+                    ctx2d.drawImage(itemMenuImg[items[menuSelectChildNum][0]],332,72+28*(menuSelectChildNum-itemsScroll)+2,24,24);
                     ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
                     ctx2d.fillRect(360,60+32*9.5,300,1);
                     ctx2d.font="16px "+mainfontName;
+                    ctx2d.fillStyle="rgba(105,105,105," + menuWindowTransChild+")";
+                    if((Math.floor(items[menuSelectChildNum][0]/100))%3==0)  ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild*(Math.sin(globalTime/5)*0.3+0.7)+")";
+                    ctx2d.fillText(itemKindTxt[0],350+0*60,48);
+                    ctx2d.fillStyle="rgba(105,105,105," + menuWindowTransChild+")";
+                    if((Math.floor(items[menuSelectChildNum][0]/100))%3==1)  ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild*(Math.sin(globalTime/5)*0.3+0.7)+")";
+                    ctx2d.fillText(itemKindTxt[1],350+1*60,48);
+                    ctx2d.fillStyle="rgba(105,105,105," + menuWindowTransChild+")";
+                    if((Math.floor(items[menuSelectChildNum][0]/100))%3==2)  ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild*(Math.sin(globalTime/5)*0.3+0.7)+")";
+                    ctx2d.fillText(itemKindTxt[2],350+2*60+50,48);
+                    ctx2d.fillStyle="rgba(255,255,255,1)";
                     ctx2d.fillText("おかね："+ money + currencyName,750-ctx2d.measureText("おかね："+ money + currencyName).width,48);
+                    ctx2d.fillText("左右キーでジャンプ",30,410);
+                    ctx2d.fillText("スペースキーで一気にスクロール",30,390);
                     ctx2d.font="16px "+mainfontName;
+                    ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
                     ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(0,25),360,60+32*10.3);
                     ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(25,25),360,60+32*11);
+                    if(rightkey&&!menuSelectFlg){
+                        if((Math.floor(items[menuSelectChildNum][0]/100))%3==2){ //道具へ行く時
+                        } else {
+                            let tempItemKind=(Math.floor(items[menuSelectChildNum][0]/100)+1)%3;
+                            for(var i = menuSelectChildNum;i<items.length;i++){
+                                menuSelectChildNum=i;
+                                itemsScroll=menuSelectChildNum;
+                                if((Math.floor((items[menuSelectChildNum][0]-1)/100))%3==tempItemKind){
+                                    break;
+                                }
+                            }
+                        }
+                        menuSelectFlg=1;
+                    } else if(leftkey&&!menuSelectFlg){
+                        if((Math.floor(items[menuSelectChildNum][0]/100))%3==0){ //道具へ行く時
+                        }  else if((Math.floor(items[menuSelectChildNum][0]/100))%3==1){ //道具へ行く時
+                            menuSelectChildNum=0;
+                            itemsScroll=0;
+                        } else {
+                            let tempItemKind=(Math.floor(items[menuSelectChildNum][0]/100)+2)%3;
+                            for(var i = 0;i<items.length;i++){
+                                menuSelectChildNum=i;
+                                itemsScroll=menuSelectChildNum;
+                                if((Math.floor((items[menuSelectChildNum][0]-1)/100))%3==tempItemKind){
+                                    break;
+                                }
+                            }
+                        }
+                        menuSelectFlg=1;
+                    }
                     if(!debugMode)ctx2d.drawImage(itemMenuImg[items[menuSelectChildNum][0]],315.5,376,30,30);
                 }
             } else if(menuSelectNum==2){//////そうさ
@@ -1410,6 +1442,33 @@ function fieldMain() {
                 ctx2d.lineTo(775,292);
                 ctx2d.stroke(); 
             }
+        }
+        if (titleConfirmWindow && (titleConfirmWindow-menuWindowAniSpeed)) titleConfirmWindow++;
+        if (titleConfirmWindow && (titleConfirmWindow-2*menuWindowAniSpeed)>=0) titleConfirmWindow=0;
+        if (titleConfirmWindow){
+            ctx2d.fillStyle="rgba(0,0,0,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+            ctx2d.fillRect(width/2-200,height/2-60,400,120);
+            ctx2d.font="14pt "+ mainfontName;
+            ctx2d.fillStyle="rgba(255,255,255,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+            ctx2d.lineWidth=2;
+            ctx2d.strokeRect(width/2-200,height/2-60,400,120);
+            ctx2d.fillText(titleConfirmMessage,width/2-180,height/2-20);
+            ctx2d.fillText(titleConfirmMessage2,width/2-180,height/2);
+            if (titleConfirmMode != 5){
+                if (!titleConfirmSelect){
+                    ctx2d.fillStyle="rgba(255,255,255,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)*(0.7+Math.sin(globalTime/6)*0.3)+")";
+                    ctx2d.fillText("はい",(width-ctx2d.measureText("はい").width)/2-80,height/2+35);
+                    ctx2d.fillStyle="rgba(105,105,105,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                    ctx2d.fillText("いいえ",(width-ctx2d.measureText("いいえ").width)/2+80,height/2+35);        
+                } else{
+                    ctx2d.fillStyle="rgba(105,105,105,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+                    ctx2d.fillText("はい",(width-ctx2d.measureText("はい").width)/2-80,height/2+35);
+                    ctx2d.fillStyle="rgba(255,255,255,"+ (1-Math.abs(titleConfirmWindow-menuWindowAniSpeed)/menuWindowAniSpeed)*(0.7+Math.sin(globalTime/6)*0.3)+")";
+                    ctx2d.fillText("いいえ",(width-ctx2d.measureText("いいえ").width)/2+80,height/2+35);    
+                }
+            }
+            if (leftkey && !menuSelectFlg) titleConfirmSelect=0,menuSelectFlg=1, crosskeySE.play();
+            if (rightkey && !menuSelectFlg) titleConfirmSelect=1,menuSelectFlg=1, crosskeySE.play(); 
         }
     }
     if (checkSkillConflict.length && !eventMessageWindow){
@@ -1640,10 +1699,10 @@ function fieldMain() {
         }
         if (eventMessageWindow-menuWindowAniSpeed) eventMessageWindow++;
         if (!(eventMessageWindow-menuWindowAniSpeed*2)) eventMessageWindow=0;
-        if (!zkey && !xkey && !upkey && !downkey && !leftkey && !rightkey) menuSelectFlg=0;
+        if (!zkey && !xkey && !upkey && !downkey && !leftkey && !rightkey && !vkey) menuSelectFlg=0;
         if ((zkey||xkey) &&eventMessageWindowMsg.substr(0,1) != "+"&& !(eventMessageWindow-menuWindowAniSpeed) && !menuSelectFlg) zkeySE.play(),eventMessageWindow++,menuSelectFlg=1;
     }
-    if (!upkey && !downkey && !zkey && !leftkey && !rightkey && !xkey && !zkey) menuSelectFlg=0;
+    if (!upkey && !downkey && !zkey && !leftkey && !rightkey && !xkey && !zkey && !vkey) menuSelectFlg=0;
 
     if (warpAni) { //ワープの処理 
         if (warpAni==1) warpMapSE.play();

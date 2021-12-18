@@ -38,7 +38,7 @@ var typeMatchFlg;
 var shortDpFlg=false;//Dp枯渇フラグ
 
 function battleMain() {
-    console.log(battleLaunchFlg);
+ //   console.log(battleLaunchFlg);
     //character
     ctx2d.fillStyle="rgba(150,0,0,0.6)";
     ctx2d.fillRect(20,160,140,3);

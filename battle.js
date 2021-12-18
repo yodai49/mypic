@@ -38,6 +38,7 @@ var typeMatchFlg;
 var shortDpFlg=false;//Dp枯渇フラグ
 
 function battleMain() {
+    console.log(battleLaunchFlg);
     //character
     ctx2d.fillStyle="rgba(150,0,0,0.6)";
     ctx2d.fillRect(20,160,140,3);
@@ -591,7 +592,7 @@ function battleStartAnimation(){
         console.log(oneMoveFlg, globalTime);}
     }
     else if(battleAnimationCount > 201){
-        if(battleAnimationCount==220) mode=2, battleLaunchFlg=1, encount=0, battleMode=0, oneMoveFlg=true, onMessage=true,in_lstnum=0;
+        //if(battleAnimationCount==220) mode=2, battleLaunchFlg=1, encount=0, battleMode=0, oneMoveFlg=true, onMessage=true,in_lstnum=0;
         ctx2d.fillStyle="rgba(255,255,255,"+((302-battleAnimationCount)/100)+")";
         ctx2d.fillRect(0,0,width,height*65/100);
         ctx2d.fillStyle="rgba(0,0,0,"+((302-battleAnimationCount)/100)+")";

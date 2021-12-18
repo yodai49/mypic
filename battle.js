@@ -1,4 +1,4 @@
-var battleMode=0;//バトル状態の状態, 0:intro
+var battleMode=0;//バトル状態の状態, 0:intro, 1;battle選択, 2:攻撃選択時の処理, 3:アイテム選択時, 4: マイピク選択時, 5: 逃げる選択時, 6:勝利した時, 7:味方が一人やられた時, 8:味方が全員やられ負ける時
 var loopmode=0;//battlelMode=1の状態遷移中　0:No選択,1:戦闘,2:アイテム,3:マイピク↓
 var loopselect=0;//loop内での現在選択値(0-3)
 var lstnum=0;//Messageリスト内の扱うリストを指定
@@ -166,6 +166,7 @@ function battleMain() {
     //////
     if(battleMode==0){//敵データの保存
         if(oneMoveFlg){
+            console.log("on oneMoveFlg");
             baseEnemyData=[];
             for(var i = 0;i < enemyData[0].length;i++){
                 baseEnemyData[i]=enemyData[encountEnemyNum][i];
@@ -576,7 +577,9 @@ function battleStartAnimation(){
           //  nextMode=2, modeAnimation=1, onMessage=true,battleLaunchFlg=1, encount=0, oneMoveFlg=true;}//バトル開始の処理
         battleAnimationCount++;
         if(battleAnimationCount>201) {
-            mode=2,battleLaunchFlg=1, encount=0, battleMode=0, oneMoveFlg=true, onMessage=true;}
+            console.log("gameStart!");
+            mode=2, battleLaunchFlg=1, encount=0, battleMode=0, oneMoveFlg=true, onMessage=true;
+        console.log(oneMoveFlg, globalTime);}
     }
     else if(battleAnimationCount > 201){
         ctx2d.fillStyle="rgba(255,255,255,"+((302-battleAnimationCount)/100)+")";

@@ -79,7 +79,7 @@ function battleMain() {
         ctx2d.fillStyle="rgba(150,0,0,1)";
     }
     //zkey入力時に次のメッセージに進む
-    if(zkey && (battleAnimationCount || battleAnimationCount > 210)){
+    if(zkey && (!battleAnimationCount || battleAnimationCount > 210)){
         console.log("86",battleMode);
         if(battleMode==0){
             in_lstnum++;

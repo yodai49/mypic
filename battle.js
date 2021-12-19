@@ -36,10 +36,12 @@ var unEscapeFlg=false;//ボス戦の時に逃げられないように管理す�
 var trait4Flg=0, trait9Flg=0;//特性フラグ
 var typeMatchFlg;
 var shortDpFlg=false;//Dp枯渇フラグ
+var DEBUGcount_oneMove=0,DEBUGcount_fieldDraw=0;
 
 function battleMain() {
  //   console.log(battleLaunchFlg);
     //character
+    if(debugMode==5 && globalTime%6==0) zkey=true;
     ctx2d.fillStyle="rgba(150,0,0,0.6)";
     ctx2d.fillRect(20,160,140,3);
     if(showMypicHP/mypicstock[mypic[0]][3]<0.2){///味方のHP
@@ -50,7 +52,6 @@ function battleMain() {
         ctx2d.fillStyle="rgba(50,200,50,0.9)";
     }
     ctx2d.fillRect(20,160,140*showMypicHP/mypicstock[mypic[0]][3],3);
-
     if(showEnemyHPConst!=-1){
         ctx2d.fillStyle="rgba(150,0,0,0.6)"; ///敵のHP
         ctx2d.fillRect(600,300,140,3);
@@ -66,7 +67,6 @@ function battleMain() {
         if(showEnemyHP>baseEnemyData[2]) showEnemyHP--;
     }
 
-
     if(showMypicHP<mypicstock[mypic[0]][2]) showMypicHP++;
     if(showMypicHP>mypicstock[mypic[0]][2]) showMypicHP--;
     
@@ -78,9 +78,9 @@ function battleMain() {
     if(!(enemyIsDamagedAni<=30&& (Math.floor(enemyIsDamagedAni/4)%2))){
         ctx2d.fillStyle="rgba(150,0,0,1)";
     }
-
     //zkey入力時に次のメッセージに進む
-    if(zkey){
+    if(zkey && (battleAnimationCount || battleAnimationCount > 210)){
+        console.log("86",battleMode);
         if(battleMode==0){
             in_lstnum++;
             if(in_lstnum == BattleMessage[lstnum].length && lstnum==0){
@@ -178,7 +178,7 @@ function battleMain() {
             bMemory[2]=mypicstock[mypic[0]][3];
             bMemory[3]=mypicstock[mypic[0]][10];//speed
             oneMoveFlg=false;
-            console.log("180");
+            DEBUGcount_oneMove++;
         }
     } else if(battleMode==1){//行動選択(loop)
         if(downkey) {
@@ -588,8 +588,8 @@ function battleStartAnimation(){
         battleAnimationCount++;
         if(battleAnimationCount>201) {
             console.log("gameStart!");
-            mode=2, battleLaunchFlg=1, encount=0, battleMode=0, oneMoveFlg=true, onMessage=true,in_lstnum=0;
-        console.log(oneMoveFlg, globalTime);}
+            mode=2, battleLaunchFlg=1, encount=0, battleMode=0, oneMoveFlg=true, onMessage=true;
+        }
     }
     else if(battleAnimationCount > 201){
         //if(battleAnimationCount==220) mode=2, battleLaunchFlg=1, encount=0, battleMode=0, oneMoveFlg=true, onMessage=true,in_lstnum=0;

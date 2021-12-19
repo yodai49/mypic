@@ -332,11 +332,12 @@ function setMaterials(){
     }
 }
 function encount_check(){//敵との遭遇率encount=6*((200−運)/200)
-    if (mypic.length==0 || debugMode || warpAni || eventWindowAni) return 0;
+    if (mypic.length==0 || (debugMode && debugMode!=5) || warpAni || eventWindowAni) return 0;
     var encountRate = (6*((200 - mypicstock[mypic[0]][9],0,100,100),0,100/200));
-    var tempEncRandom=((900+encount_down*3000)*Math.random());
-    if (encountRate>=tempEncRandom && fieldenemyDataSet[fieldenemy[myposworld]].length!=0) {
+    var tempEncRandom=((10+encount_down*3000)*Math.random());
+    if (encountRate>=tempEncRandom && fieldenemyDataSet[fieldenemy[myposworld]].length!=0 || debugMode==5) {
         encount=true;
+        console.log(battleAnimationCount);
         let oddsSum=0,tmpodds=0,encountDice=0;
         encountEnemyNum=0;
         for(let i = 0;i < fieldenemyDataSet[fieldenemy[myposworld]].length;i++){
@@ -583,6 +584,7 @@ function fieldMain() {
     @param なし
     @return なし
     */
+   if(debugMode==5) encount_check();
     if (fieldReDrawFlg) {
         fieldback2d.clearRect(0,0,width,height),fieldback2d.drawImage(fieldbackcanvas,0,0,width,height,0,0,width,height);
         field2d.clearRect(0,0,width,height),field2d.drawImage(fieldcanvas,0,0,width,height,0,0,width,height),fieldReDrawFlg=0, checkConflict(0);//背景の描画

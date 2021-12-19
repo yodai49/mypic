@@ -115,6 +115,7 @@ function init() {
 
     function tick() { //メイン関数
         //2次元のリセット処理
+//        console.log("2:"+oneMoveFlg, globalTime)
         ctx2d.clearRect(0,0,width,height);
         if(encount) battleAnimationFlg=true;
         //各モジュールのMain関数を呼び出し

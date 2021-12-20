@@ -29,7 +29,7 @@ var creatingFieldFlg=0, itemRedrawFlg=1;
 var nowMaterialData=[]; //[[[x,y,番号],[...]]]の形式 createFieldごとに変わる
 var lastFieldVisit=[]; //最後にフィールドを訪れた時間を格納
 var fieldimg=[],fieldbackimg=[];//フィールドのImageオブジェクトをを格納する
-var itemMenuImg=[],itemKeyImg,battleBackImg=[],battleGround,msgWindowImg=[]; //Imageオブジェクト系
+var itemMenuImg=[],itemKeyImg,battleBackImg=[],battleGround,msgWindowImg=[],arrowImgs=[]; //Imageオブジェクト系
 var fieldImgComplete=[-1],itemKindTxt=["道具","マテリアル","秘伝書"],itemSynsAni=0;
 function checkImg(imgSrc){
     let checkImg=new Image();
@@ -83,6 +83,11 @@ const itemBagImg=new Image();
 itemBagImg.src="./imgs/item.png";
 itemKeyImg=new Image();
 itemKeyImg.src="./imgs/itemImgs/itemImgKey.png";
+for(var i = 0;i  < 4;i++) arrowImgs[i]=new Image();
+arrowImgs[0].src="./imgs/arrow_red_right.png"; //赤で右向き
+arrowImgs[1].src="./imgs/arrow_red_down.png"; //赤で下向き
+arrowImgs[2].src="./imgs/arrow_silver_right.png"; //銀で右向き
+arrowImgs[3].src="./imgs/arrow_silver_down.png"; //銀で下向き
 
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode,redMode){
     if (mypic.length<=drawMypicNum && mode==0) return 0;
@@ -530,7 +535,7 @@ function trigEvent(trigEventnum,trigEventObj){
             drawMypicTempName="";
         }  else{
             eventMessageWindow=1;
-            eventMessageWindowMsg="かえせるたまごを持っていないようだ！";
+            eventMessageWindowMsg="かえせるたまごを持っていない！";
         }
     } else if(trigEventnum==3 && !menuSelectFlg){ //お店
         zkeySE.play(); 
@@ -573,6 +578,11 @@ function trigEvent(trigEventnum,trigEventObj){
                 eventRecipeData.push(items[i][0]);
             }
         }
+        if(!eventRecipeData.length){
+            eventWindowAni=0;
+            eventMessageWindow=1;
+            eventMessageWindowMsg="レシピを持っていない！";
+        }
     }
     menuSelectFlg=1;
 }
@@ -599,6 +609,18 @@ function fieldMain() {
             field2d.drawImage(itemMenuImg[nowMaterialData[myposworld][i][2]],nowMaterialData[myposworld][i][0],nowMaterialData[myposworld][i][1],material_size,material_size);
         }
     }
+
+    //イベントガイドの描画
+    for(var i = 0;i < eventobj[myposworld].length;i++){
+        if(eventobj[myposworld][i][4] == 1 || eventobj[myposworld][i][4] == 2||eventobj[myposworld][i][4] == 7){//マイピク整理等
+            if(eventobj[myposworld][i][5]!=undefined) ctx2d.drawImage(arrowImgs[1],eventobj[myposworld][i][5],eventobj[myposworld][i][6]+((Math.floor(globalTime/8)%8<2) && 4*Math.abs(Math.sin(Math.PI*2*globalTime/32))),22,22);
+        } else if(eventobj[myposworld][i][4] == 3){//お店
+            if(eventobj[myposworld][i][6]!=undefined) ctx2d.drawImage(arrowImgs[1],eventobj[myposworld][i][6],eventobj[myposworld][i][7]+((Math.floor(globalTime/8)%8<2) && 4*Math.abs(Math.sin(Math.PI*2*globalTime/32))),22,22);
+        } else if(eventobj[myposworld][i][4] == 6){//メッセージ
+            if(eventobj[myposworld][i][8]!=undefined && !countItem(eventobj[myposworld][i][6])) ctx2d.drawImage(arrowImgs[1],eventobj[myposworld][i][8],eventobj[myposworld][i][9]+((Math.floor(globalTime/8)%8<2) && 4*Math.abs(Math.sin(Math.PI*2*globalTime/32))),22,22);
+        }
+    }
+    
     ctx2d.drawImage(characanvas,pre_charasize*Math.floor(walkanimation/15),pre_charasize*walkdir,pre_charasize,pre_charasize,myposx,myposy,charasize,charasize); //キャラクターの描画
     if (happenedEvent){
         for(var i = 0;i < eventobj[myposworld].length;i++){
@@ -634,6 +656,11 @@ function fieldMain() {
             ctx2d.font="20pt " + mainfontName;
             ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
             ctx2d.fillText("マイピクのおうち",width/2-230,height/2-160);
+            ctx2d.font="12pt " + mainfontName;
+            ctx2d.lineWidth=2;
+            ctx2d.strokeStyle="rgba(155,0,0,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
+            ctx2d.strokeRect(width/2+80,height/2-173,15,15);
+            ctx2d.fillText("手持ちのマイピク",width/2+100,height/2-160);
             var stockMypicOffsetX,stockMypicOffsetY;
             for(var i = 0;i < 6;i++){
                 if (mypicstock.length > i+stockMypicScroll){ ////ストックマイピクを描画
@@ -1011,11 +1038,11 @@ function fieldMain() {
             }
             ctx2d.fillText("Zで合成！" , width/2+200,height/2+130);
             if(xkey && !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow) eventWindowAni++,menuSelectFlg=1,xkeySE.play();
-            if(upkey && eventShopSelectNum && !(eventWindowAni-menuWindowAniSpeed) && !menuSelectFlg){
+            if(!eventMessageWindow&& upkey && eventShopSelectNum && !(eventWindowAni-menuWindowAniSpeed) && !menuSelectFlg){
                 eventShopSelectNum--,menuSelectFlg=1, crosskeySE.play();
                 if(eventShopScrollNum>eventShopSelectNum)eventShopScrollNum=eventShopSelectNum;
             }
-            if(downkey && eventShopSelectNum != eventRecipeData.length-1&& !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg){
+            if(!eventMessageWindow&&downkey && eventShopSelectNum != eventRecipeData.length-1&& !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg){
                 eventShopSelectNum++,menuSelectFlg=1, crosskeySE.play();
                 if(eventShopSelectNum>=eventShopScrollNum+10)eventShopScrollNum=eventShopSelectNum-9;
             } 
@@ -1034,9 +1061,11 @@ function fieldMain() {
                         }
                     }
                 }
+                compositionSE.play();
             } else if(zkey && !isSyntheticable(eventShopSelectNum)&&!menuSelectFlg&& !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow){
                 popupMsg.push(["マテリアルが足りない！",120,0,0,-1]);
                 menuSelectFlg=1;
+                xkeySE.play();
             }
         }
         if (!upkey && !downkey && !zkey && !leftkey && !rightkey && !xkey && !zkey && !vkey) menuSelectFlg=0;
@@ -1382,12 +1411,13 @@ function fieldMain() {
                     ctx2d.fillStyle="rgba(255,255,255,1)";
                     ctx2d.fillText("おかね："+ money + currencyName,750-ctx2d.measureText("おかね："+ money + currencyName).width,48);
                     ctx2d.fillText("左右キーでジャンプ",30,410);
-                    ctx2d.fillText("スペースキーで一気にスクロール",30,390);
+                    ctx2d.fillText("スペースキーで高速スクロール",30,390);
                     ctx2d.font="16px "+mainfontName;
                     ctx2d.fillStyle="rgba(255,255,255," + menuWindowTransChild+")";
                     ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(0,25),360,60+32*10.3);
                     ctx2d.fillText(itemdata[items[menuSelectChildNum][0]][3].substr(25,25),360,60+32*11);
                     if(rightkey&&!menuSelectFlg){
+                        crosskeySE.play();
                         if((Math.floor(items[menuSelectChildNum][0]/100))%3==2){ //道具へ行く時
                         } else {
                             let tempItemKind=(Math.floor(items[menuSelectChildNum][0]/100)+1)%3;
@@ -1401,6 +1431,7 @@ function fieldMain() {
                         }
                         menuSelectFlg=1;
                     } else if(leftkey&&!menuSelectFlg){
+                        crosskeySE.play();
                         if((Math.floor(items[menuSelectChildNum][0]/100))%3==0){ //道具へ行く時
                         }  else if((Math.floor(items[menuSelectChildNum][0]/100))%3==1){ //道具へ行く時
                             menuSelectChildNum=0;
@@ -1425,7 +1456,7 @@ function fieldMain() {
                 ctx2d.fillText("マテリアルずかん",320,48);
                 ctx2d.font="16px "+mainfontName;
                 for(var i = 0;i < 15;i++){
-                    ctx2d.fillStyle="rgba(105,105,105,"+menuWindowTransChild+")";
+                    ctx2d.fillStyle="rgba(155,155,155,"+menuWindowTransChild+")";
                     if(i==menuSelectChildNum%15) ctx2d.fillStyle="rgba(255,255,255,"+menuWindowTransChild*(Math.sin(globalTime/6)*0.3+0.7)+")";
                     if(i+101+Math.floor(menuSelectChildNum/15)*15<=195){
                         ctx2d.fillText("No." + (1+i+Math.floor(menuSelectChildNum/15)*15),360,80+i*22);
@@ -1434,6 +1465,7 @@ function fieldMain() {
                             ctx2d.fillText(itemdata[i+101+Math.floor(menuSelectChildNum/15)*15][0],435,80+i*22);        
                         } else{ //見えない時（未取得）
                             ctx2d.drawImage(itemKeyImg,332,63+i*22,22,22);
+                            ctx2d.fillStyle="rgba(80,80,80,"+menuWindowTransChild+")";
                             ctx2d.fillText("???",435,80+i*22);        
                         }
                     }
@@ -1464,10 +1496,10 @@ function fieldMain() {
                 ctx2d.fillStyle="rgba(255,255,255,"+menuWindowTransChild+")";
                 ctx2d.font="13px "+mainfontName;
                 ctx2d.fillText((Math.floor(menuSelectChildNum/15)+1)+" / 7 ページ",500,415);
-                if(upkey && !menuSelectFlg && menuSelectChildNum) menuSelectChildNum--,menuSelectFlg=1,zkeySE.play();
-                if(downkey&&!menuSelectFlg&&menuSelectChildNum!=94)menuSelectChildNum++,menuSelectFlg=1,zkeySE.play();
-                if(leftkey && !menuSelectFlg)menuSelectChildNum-=15,menuSelectFlg=1,zkeySE.play();
-                if(rightkey && !menuSelectFlg)menuSelectChildNum+=15,menuSelectFlg=1,zkeySE.play();
+                if(upkey && !menuSelectFlg && menuSelectChildNum) menuSelectChildNum--,menuSelectFlg=1,crosskeySE.play();
+                if(downkey&&!menuSelectFlg&&menuSelectChildNum!=94)menuSelectChildNum++,menuSelectFlg=1,crosskeySE.play();
+                if(leftkey && !menuSelectFlg)menuSelectChildNum-=15,menuSelectFlg=1,crosskeySE.play();
+                if(rightkey && !menuSelectFlg)menuSelectChildNum+=15,menuSelectFlg=1,crosskeySE.play();
                 if(menuSelectChildNum<0) menuSelectChildNum+=15;
                 if(menuSelectChildNum>94)menuSelectChildNum-=15;
             }

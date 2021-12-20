@@ -69,7 +69,7 @@ function titleMain() {
         if(downkey && !selectTitleFlg && selectTitleNum==0) selectTitleNum=1,selectTitleFlg=1,crosskeySE.play();
         if (isFirst) selectTitleNum=0;
         if (!upkey &&  !downkey && !zkey) selectTitleFlg=0;
-        if (zkey && !selectTitleFlg) { ///ゲームスタートの処理
+        if (zkey && !selectTitleFlg  && !modeAnimation) { ///ゲームスタートの処理
             zkeySE.play();
             if (!selectTitleNum){//はじめから
                 resetData();

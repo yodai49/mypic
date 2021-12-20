@@ -659,8 +659,10 @@ function fieldMain() {
             ctx2d.font="12pt " + mainfontName;
             ctx2d.lineWidth=2;
             ctx2d.strokeStyle="rgba(155,0,0,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
-            ctx2d.strokeRect(width/2+80,height/2-173,15,15);
-            ctx2d.fillText("手持ちのマイピク",width/2+100,height/2-160);
+            ctx2d.strokeRect(width/2+65,height/2-183,15,15);
+            ctx2d.fillText("手持ちのマイピク",width/2+90,height/2-170);
+            ctx2d.font="10pt " + mainfontName;
+            ctx2d.fillText("Zキーで手持ちと入れ替え",width/2+67,height/2-145);
             var stockMypicOffsetX,stockMypicOffsetY;
             for(var i = 0;i < 6;i++){
                 if (mypicstock.length > i+stockMypicScroll){ ////ストックマイピクを描画
@@ -1088,7 +1090,7 @@ function fieldMain() {
             }
             for(var i = 0;i < itemobj[myposworld].length;i++){
                 if (itemflgs[i] && !menuSelectFlg && fieldItemStatus[myposworld][i][5]){
-                    popupMsg.push([itemdata[fieldItemStatus[myposworld][i][4]][0]+"をゲットした！",120,0,0,"*"+fieldItemStatus[myposworld][i][4]]);
+                    popupMsg.push([itemdata[fieldItemStatus[myposworld][i][4]][0]+"を手に入れた！",120,0,0,"*"+fieldItemStatus[myposworld][i][4]]);
                     fieldItemStatus[myposworld][i][5]--;
                     getItem(fieldItemStatus[myposworld][i][4]);
                     eventSE.play();
@@ -1097,10 +1099,15 @@ function fieldMain() {
             }
             for(var i = 0;i < nowMaterialData[myposworld].length;i++){
                 if (materialflgs[i] && !menuSelectFlg){
-                    popupMsg.push([itemdata[nowMaterialData[myposworld][i][2]][0]+"をゲットした！",120,0,0,"*"+nowMaterialData[myposworld][i][2]]);
+                    if(!materialVisible[nowMaterialData[myposworld][i][2]-100]){
+                        buyEventSE.play();
+                        popupMsg.push([itemdata[nowMaterialData[myposworld][i][2]][0]+"を手に入れた！ NEW！",120,0,0,"*"+nowMaterialData[myposworld][i][2]]);    
+                    } else{
+                        eventSE.play();
+                        popupMsg.push([itemdata[nowMaterialData[myposworld][i][2]][0]+"を手に入れた！",120,0,0,"*"+nowMaterialData[myposworld][i][2]]);    
+                    }
                     getItem(nowMaterialData[myposworld][i][2]);
                     nowMaterialData[myposworld].splice(i,1);
-                    eventSE.play();
                     fieldReDrawFlg=1;
                     menuSelectFlg=1;
                 }

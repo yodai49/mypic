@@ -112,7 +112,6 @@ function battleloop(){
         
         fieldReDrawFlg=0;
         DEBUGcount_fieldDraw++;
-        console.log(DEBUGcount_oneMove,DEBUGcount_fieldDraw/2);
     }
 
     if(battleMode==1){
@@ -331,7 +330,6 @@ function battleloop(){
         if(oneMoveFlg){
             winMessage = [baseEnemyData[0]+" は倒れた。",mypicstock[mypic[0]][0]+" は勝負に勝った!","経験値"+getExperienceAmount+"と"+getCurrencyAmount+"マイルを手にいれた。"];
             oneMoveFlg=false;
-            console.log("332 message")
         }
         ctx2d.fillStyle=white;
         ctx2d.font="26px "+mainfontName;
@@ -365,7 +363,7 @@ function battleloop(){
     else if(battleMode==8){//敗北message
         if(oneMoveFlg){
             loseMessage = [mypicstock[mypic[0]][0]+" は倒れた。","戦える手持ちのマイピクがいない!!","突然意識が遠のき倒れてしまった..."];
-            oneMoveFlg=false; console.log("366 message");}
+            oneMoveFlg=false;}
         ctx2d.fillStyle=white;
         ctx2d.font="26px "+mainfontName;
         ctx2d.fillText(loseMessage[in_lstnum], width*25/100,height*75/100);

@@ -78,12 +78,12 @@ const eventobj=[    //x,y,width,height,eventnum,...（下部参照）
     [],[],[],[],[],[],[],[],[],[]//50
 ]
 const humanObj=[ //人のオブジェクト
-    [{name: "A", dialogs:[[17,1]], speed:1,pos1:{x:10, y:20},dir:0,dis:30,img:0}],[],[],[],[],[],[],[],[],[],
+    [{name: "A", dialogs:17, speed:1.5,pos:{x:720, y:111},dir:0,dis:190,img:0,ani:0,nowPos:0,nowChatting:0}],[],[],[],[],[],[],[],[],[],
     [],[],[],[],[],[],[],[],[],[],
     [],[],[],[],[],[],[],[],[],[],
     [],[],[],[],[],[],[],[],[],[],
     [],[],[],[],[],[],[],[],[],[]
-]; //name:名前（未使用？）　dialogs:セリフ（[番号,確率]の形式　pos1:場所1　dir:移動方向(左右上下の順) dis:移動距離（0なら静止）　imgで画像セットを指定
+]; //name:名前（未使用？）　dialogs:セリフ（[番号,確率]の形式　pos1:場所1　dir:移動方向(左:0 上:2　静止:-1) dis:移動距離（0なら静止）imgで画像セットを指定 AniとnowPosとnowChattingは歩くときに使用（初期値は0をセット）
 //eventnum- - - 1 マイピク整理       x,y,width,height,1,icon_left,icon_top
 //              2 マイピク生み出す    x,y,width,height,2, icon_left,icon_top
 //              3　お店　           x,y,width,height,3,shopNum

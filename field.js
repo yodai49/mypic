@@ -29,8 +29,12 @@ var creatingFieldFlg=0, itemRedrawFlg=1;
 var nowMaterialData=[]; //[[[x,y,番号],[...]]]の形式 createFieldごとに変わる
 var lastFieldVisit=[]; //最後にフィールドを訪れた時間を格納
 var fieldimg=[],fieldbackimg=[];//フィールドのImageオブジェクトをを格納する
-var itemMenuImg=[],itemKeyImg,battleBackImg=[],battleGround,msgWindowImg=[],arrowImgs=[]; //Imageオブジェクト系
+var itemMenuImg=[],itemKeyImg,battleBackImg=[],battleGround,msgWindowImg=[],arrowImgs=[]//Imageオブジェクト系
 var fieldImgComplete=[-1],itemKindTxt=["道具","マテリアル","秘伝書"],itemSynsAni=0;
+const charamap=[3,1,0,2];//Imageオブジェクトのマッピング
+function getFieldCharaX(chara,dir,ani){return ((chara % 5)*32*3+ani*32+2);}
+function getFieldCharaY(chara,dir,ani){return (Math.floor(chara/5)*32*4+300+32*charamap[dir]+2);}
+
 function checkImg(imgSrc){
     let checkImg=new Image();
     checkImg.src=imgSrc;
@@ -375,6 +379,11 @@ function checkConflict(dir){
     if (dir==1) checkConflictPosx= charasize+walkspeed+1,checkConflictPosy=0;
     if (dir==2) checkConflictPosx= 0,checkConflictPosy=-walkspeed-1;
     if (dir==3) checkConflictPosx= 0,checkConflictPosy=charasize+walkspeed+1;
+    var checkConflictPosx2=0,checkConflictPosy2=0;
+    if (dir==0) checkConflictPosx2= -walkspeed-1,checkConflictPosy2=0;
+    if (dir==1) checkConflictPosx2= walkspeed-1,checkConflictPosy2=0;
+    if (dir==2) checkConflictPosx2= 0,checkConflictPosy2=-walkspeed+1;
+    if (dir==3) checkConflictPosx2= 0,checkConflictPosy2=walkspeed+1;
     if(battleAnimationFlg) return 1;
     if(creatingFieldFlg) return 1;
     if (!warpAni){
@@ -398,6 +407,16 @@ function checkConflict(dir){
                 searchableflg=1;
             }
         }    
+    }
+    for(let i = 0;i < fieldCharaStatus[myposworld].length;i++){
+        var charaPosX=fieldCharaStatus[myposworld][i].pos.x;
+        var charaPosY=fieldCharaStatus[myposworld][i].pos.y;
+        if(fieldCharaStatus[myposworld][i].dir<=1) charaPosX+=fieldCharaStatus[myposworld][i].nowPos;
+        if(fieldCharaStatus[myposworld][i].dir>=2) charaPosY+=fieldCharaStatus[myposworld][i].nowPos;
+        //当たり判定
+        if(charaPosX<myposx+checkConflictPosx2+charasize && charaPosX+charasize>myposx+checkConflictPosx2 && charaPosY<myposy+checkConflictPosy2+charasize && charaPosY+charasize>myposy+checkConflictPosy2){
+            return 1;
+        } 
     }
 
     let tmpdirfix=[0,0,0,0];
@@ -475,7 +494,7 @@ function initiate_field(){
    fieldReDrawFlg=1;
 
     characanvas=document.createElement("canvas");
-    characanvas.width=pre_charasize*2, characanvas.height=pre_charasize*4;
+    characanvas.width=pre_charasize*2+480, characanvas.height=pre_charasize*4+600;
     var characanvasctx=characanvas.getContext("2d"); //charaimg1は0,0、charaimg2はその右側に描画
     for(let i = 0;i<4;i++){
         for(let j = 0;j<2;j++){
@@ -483,6 +502,11 @@ function initiate_field(){
             charaimg.src="./imgs/character_field"+i+"_"+j+".png";
             charaimg.onload=function(){characanvasctx.drawImage(charaimg,j*pre_charasize,i*pre_charasize,pre_charasize,pre_charasize)}
         }
+    }
+    const charaimg2=new Image();
+    charaimg2.src="./imgs/character_imgs.png"
+    charaimg2.onload=function(){
+        characanvasctx.drawImage(charaimg2,0,300); //0,300の位置にキャラクターのイメージをまとめて描画
     }
     createField();
 }
@@ -621,7 +645,70 @@ function fieldMain() {
         }
     }
     
-    ctx2d.drawImage(characanvas,pre_charasize*Math.floor(walkanimation/15),pre_charasize*walkdir,pre_charasize,pre_charasize,myposx,myposy,charasize,charasize); //キャラクターの描画
+    //ctx2d.drawImage(characanvas,pre_charasize*Math.floor(walkanimation/15),pre_charasize*walkdir,pre_charasize,pre_charasize,myposx,myposy,charasize,charasize); //キャラクターの描画
+    
+    ctx2d.drawImage(characanvas,getFieldCharaX(1,walkdir,Math.floor(walkanimation/10) % 3),getFieldCharaY(1,walkdir,Math.floor(walkanimation/10) % 3),28,28,myposx,myposy,charasize,charasize); //主人公の描画    
+    
+    //ここからモブキャラの処理
+    for(var i = 0;i < fieldCharaStatus[myposworld].length;i++){
+        if(!eventMessageWindow) fieldCharaStatus[myposworld][i].nowChatting=0;
+        fieldCharaStatus[myposworld][i].ani++;
+        var dirDice=Math.random();
+        if(dirDice<0.008) {
+            if(fieldCharaStatus[myposworld][i].dir >= 0){
+                if(fieldCharaStatus[myposworld][i].dir % 2 == 0){
+                    fieldCharaStatus[myposworld][i].dir++;
+                } else{
+                    fieldCharaStatus[myposworld][i].dir--;
+                }
+                if(dirDice<0.006) fieldCharaStatus[myposworld][i].dir-=4;
+            } else{
+                fieldCharaStatus[myposworld][i].dir+=4;
+            }
+        }
+        if (fieldCharaStatus[myposworld][i].nowPos<0){
+            fieldCharaStatus[myposworld][i].nowPos=0;
+            if(fieldCharaStatus[myposworld][i].dir % 2 == 0) fieldCharaStatus[myposworld][i].dir++;
+        } else if(fieldCharaStatus[myposworld][i].dis < fieldCharaStatus[myposworld][i].nowPos){
+            fieldCharaStatus[myposworld][i].nowPos=fieldCharaStatus[myposworld][i].dis;
+            if(fieldCharaStatus[myposworld][i].dir % 2 == 1) fieldCharaStatus[myposworld][i].dir--;
+        }
+        var nextFieldChara=fieldCharaStatus[myposworld][i].nowPos; //次のポジションの処理
+        if(fieldCharaStatus[myposworld][i].dir%2==0 && fieldCharaStatus[myposworld][i].dir>=0) {
+            nextFieldChara-=fieldCharaStatus[myposworld][i].speed;
+        } 
+        if(fieldCharaStatus[myposworld][i].dir%2==1  && fieldCharaStatus[myposworld][i].dir>=0) {
+            nextFieldChara+=fieldCharaStatus[myposworld][i].speed;
+        }
+        var charaPosX=fieldCharaStatus[myposworld][i].pos.x;
+        var charaPosY=fieldCharaStatus[myposworld][i].pos.y;
+        if(fieldCharaStatus[myposworld][i].dir<=1) charaPosX+=(fieldCharaStatus[myposworld][i].nowPos+1);
+        if(fieldCharaStatus[myposworld][i].dir>=2) charaPosY+=(fieldCharaStatus[myposworld][i].nowPos+1);
+        //当たり判定
+        if(!(charaPosX<myposx+charasize && charaPosX+charasize>myposx && charaPosY<myposy+charasize && charaPosY+charasize>myposy) && !fieldCharaStatus[myposworld][i].nowChatting){
+            fieldCharaStatus[myposworld][i].nowPos=nextFieldChara;
+        }
+        if(charaPosX<myposx+charasize+8 && charaPosX+charasize+8>myposx && charaPosY<myposy+charasize+8 && charaPosY+charasize+8>myposy){
+            if(zkey && !eventMessageWindow){
+                eventMessageWindow=1;
+                eventMessageWindowMsgStack=[];
+                eventMessageWindowMsg="+"+eventMsgText[fieldCharaStatus[myposworld][i].dialogs][0];
+                for(var i = 0;i < (eventMsgText[fieldCharaStatus[myposworld][i].dialogs].length-1);i++){
+                    eventMessageWindowMsgStack[i]="+"+eventMsgText[fieldCharaStatus[myposworld][i].dialogs][i+1];
+                }
+                eventMessageWindowAni=1;
+                fieldCharaStatus[myposworld][i].nowChatting=1;
+            }
+        }
+        if(fieldCharaStatus[myposworld][i].dir>=0){
+            if(fieldCharaStatus[myposworld][i].dir<=1) ctx2d.drawImage(characanvas,getFieldCharaX(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir,Math.floor(fieldCharaStatus[myposworld][i].ani/10)%3),getFieldCharaY(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir,Math.floor(fieldCharaStatus[myposworld][i].ani/10)%3),28,28,charaPosX,charaPosY,charasize,charasize); //キャラクターの描画
+            if(fieldCharaStatus[myposworld][i].dir>=2) ctx2d.drawImage(characanvas,getFieldCharaX(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir,Math.floor(fieldCharaStatus[myposworld][i].ani/10)%3),getFieldCharaY(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir,Math.floor(fieldCharaStatus[myposworld][i].ani/10)%3),28,28,charaPosX,charaPosY,charasize,charasize); //キャラクターの描画    
+        } else{
+            if(fieldCharaStatus[myposworld][i].dir<=1) ctx2d.drawImage(characanvas,getFieldCharaX(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir+4,0),getFieldCharaY(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir+4,0),28,28,charaPosX,charaPosY,charasize,charasize); //キャラクターの描画
+            if(fieldCharaStatus[myposworld][i].dir>=2) ctx2d.drawImage(characanvas,getFieldCharaX(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir+4,0),getFieldCharaY(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir+4,0),28,28,charaPosX,charaPosY,charasize,charasize); //キャラクターの描画
+        }
+    }
+
     if (happenedEvent){
         for(var i = 0;i < eventobj[myposworld].length;i++){
             happenedEvent*=(1-eventflgs[i]);

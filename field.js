@@ -346,7 +346,6 @@ function encount_check(){//敵との遭遇率encount=6*((200−運)/200)
     var tempEncRandom=((900+encount_down*3000)*Math.random());
     if (encountRate>=tempEncRandom && fieldenemyDataSet[fieldenemy[myposworld]].length!=0 || debugMode==5) {
         encount=true;
-        console.log(battleAnimationCount);
         let oddsSum=0,tmpodds=0,encountDice=0;
         encountEnemyNum=0;
         for(let i = 0;i < fieldenemyDataSet[fieldenemy[myposworld]].length;i++){
@@ -496,13 +495,6 @@ function initiate_field(){
     characanvas=document.createElement("canvas");
     characanvas.width=pre_charasize*2+480, characanvas.height=pre_charasize*4+600;
     var characanvasctx=characanvas.getContext("2d"); //charaimg1は0,0、charaimg2はその右側に描画
-    for(let i = 0;i<4;i++){
-        for(let j = 0;j<2;j++){
-            const charaimg=new Image();
-            charaimg.src="./imgs/character_field"+i+"_"+j+".png";
-            charaimg.onload=function(){characanvasctx.drawImage(charaimg,j*pre_charasize,i*pre_charasize,pre_charasize,pre_charasize)}
-        }
-    }
     const charaimg2=new Image();
     charaimg2.src="./imgs/character_imgs.png"
     charaimg2.onload=function(){
@@ -652,9 +644,9 @@ function fieldMain() {
     //ここからモブキャラの処理
     for(var i = 0;i < fieldCharaStatus[myposworld].length;i++){
         if(!eventMessageWindow) fieldCharaStatus[myposworld][i].nowChatting=0;
-        fieldCharaStatus[myposworld][i].ani++;
+        if(fieldCharaStatus[myposworld][i].dis > 0) fieldCharaStatus[myposworld][i].ani++;
         var dirDice=Math.random();
-        if(dirDice<0.008) {
+        if(dirDice<0.008 && fieldCharaStatus[myposworld][i].dis>0) {
             if(fieldCharaStatus[myposworld][i].dir >= 0){
                 if(fieldCharaStatus[myposworld][i].dir % 2 == 0){
                     fieldCharaStatus[myposworld][i].dir++;
@@ -669,7 +661,7 @@ function fieldMain() {
         if (fieldCharaStatus[myposworld][i].nowPos<0){
             fieldCharaStatus[myposworld][i].nowPos=0;
             if(fieldCharaStatus[myposworld][i].dir % 2 == 0) fieldCharaStatus[myposworld][i].dir++;
-        } else if(fieldCharaStatus[myposworld][i].dis < fieldCharaStatus[myposworld][i].nowPos){
+        } else if(fieldCharaStatus[myposworld][i].dis < fieldCharaStatus[myposworld][i].nowPos && fieldCharaStatus[myposworld][i].dis){
             fieldCharaStatus[myposworld][i].nowPos=fieldCharaStatus[myposworld][i].dis;
             if(fieldCharaStatus[myposworld][i].dir % 2 == 1) fieldCharaStatus[myposworld][i].dir--;
         }
@@ -682,10 +674,11 @@ function fieldMain() {
         }
         var charaPosX=fieldCharaStatus[myposworld][i].pos.x;
         var charaPosY=fieldCharaStatus[myposworld][i].pos.y;
+        if(!fieldCharaStatus[myposworld][i].dis && fieldCharaStatus[myposworld][i].dir>=2) charaPosY-=Math.max(0,6*(Math.sin(globalTime/10)-0.5));
         if(fieldCharaStatus[myposworld][i].dir<=1) charaPosX+=(fieldCharaStatus[myposworld][i].nowPos+1);
         if(fieldCharaStatus[myposworld][i].dir>=2) charaPosY+=(fieldCharaStatus[myposworld][i].nowPos+1);
         //当たり判定
-        if(!(charaPosX<myposx+charasize && charaPosX+charasize>myposx && charaPosY<myposy+charasize && charaPosY+charasize>myposy) && !fieldCharaStatus[myposworld][i].nowChatting){
+        if(!(charaPosX<myposx+charasize && charaPosX+charasize>myposx && charaPosY<myposy+charasize && charaPosY+charasize>myposy) && !fieldCharaStatus[myposworld][i].nowChatting && fieldCharaStatus[myposworld][i].dis){
             fieldCharaStatus[myposworld][i].nowPos=nextFieldChara;
         }
         if(charaPosX<myposx+charasize+8 && charaPosX+charasize+8>myposx && charaPosY<myposy+charasize+8 && charaPosY+charasize+8>myposy){

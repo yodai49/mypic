@@ -31,6 +31,7 @@ function loadData(){
     mypic=JSON.parse(localStorage.getItem("mypic"));
     mypicstock=JSON.parse(localStorage.getItem("mypicstock"));
     fieldItemStatus=JSON.parse(localStorage.getItem("fieldItemStatus"));
+    for(var i = 0;i < humanObj.length;i++) fieldCharaStatus[i]=humanObj[i];
     materialVisible=JSON.parse(localStorage.getItem("materialVisible"));
     eventMessageWindow=0,eventMessageWindowMsg="",eventMessageSelectNum=0,procreateMsg="",eventMessageWindowMsgStack=[],eventMessageWindowAni=0;
     if(debugMode){
@@ -62,6 +63,7 @@ function resetData(){
     for(var i = 0;i < itemobj.length;i++){
         fieldItemStatus[i] = itemobj[i];
     }
+    for(var i = 0;i < humanObj.length;i++) fieldCharaStatus[i]=humanObj[i];
     isFromFirst=1;
     nextEventNum=0;
     eventMessageWindow=0,eventMessageWindowMsg="",eventMessageSelectNum=0,procreateMsg="",eventMessageWindowMsgStack=[],eventMessageWindowAni=0;

@@ -654,9 +654,9 @@ function fieldMain() {
                     fieldCharaStatus[myposworld][i].dir--;
                 }
                 if(dirDice<0.006) fieldCharaStatus[myposworld][i].dir-=4;
-            } else{
-                fieldCharaStatus[myposworld][i].dir+=4;
             }
+        } else  if(dirDice<0.002 && fieldCharaStatus[myposworld][i].dis<=0){
+            fieldCharaStatus[myposworld][i].dir+=4;
         }
         if (fieldCharaStatus[myposworld][i].nowPos<0){
             fieldCharaStatus[myposworld][i].nowPos=0;

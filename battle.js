@@ -36,7 +36,7 @@ var unEscapeFlg=false;//ボス戦の時に逃げられないように管理す�
 var trait4Flg=0, trait9Flg=0;//特性フラグ
 var typeMatchFlg;
 var shortDpFlg=false;//Dp枯渇フラグ
-var DEBUGcount_oneMove=0,DEBUGcount_fieldDraw=0;
+var DEBUGcount_oneMove=0,DEBUGcount_fieldDraw=0,battleZkeyFlg=0;
 
 function battleMain() {
     //character
@@ -75,7 +75,7 @@ function battleMain() {
     //enemy
     drawEnemy();
     //zkey入力時に次のメッセージに進む
-    if(zkey && (!battleAnimationCount || battleAnimationCount > 210)){
+    if(zkey &&!modeAnimation&& !battleZkeyFlg && (!battleAnimationCount || battleAnimationCount > 210)){
         if(battleMode==0){
             in_lstnum++;
             if(in_lstnum == BattleMessage[lstnum].length && lstnum==0){
@@ -148,8 +148,10 @@ function battleMain() {
             in_lstnum++;
         }
         zkeySE.play();
-        zkey=false;
+        battleZkeyFlg=1;
     }
+    if(!zkey) battleZkeyFlg=0;
+    
     //////
 
     //xkey入力:キャンセルに使用

@@ -98,6 +98,7 @@ function checkfirstLaunch(){
 //起動時の処理//
 initiate_field();
 checkfirstLaunch();
+battleEffectCreate();
 for(var i = 0;i < 50;i++ )nowMaterialData[i]=[];
 for(var i = 0;i < 50;i++){
     lastFieldVisit[i]=-1;

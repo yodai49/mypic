@@ -37,6 +37,26 @@ var trait4Flg=0, trait9Flg=0;//特性フラグ
 var typeMatchFlg;
 var shortDpFlg=false;//Dp枯渇フラグ
 var DEBUGcount_oneMove=0,DEBUGcount_fieldDraw=0,battleZkeyFlg=0;
+const efWidth=192;
+const efHeight=192;
+var battleEffectCanvas,drawBattleEffects=[],befctx,battleEffectCanvas;//エフェクト系
+var befImg=[];
+function getbefX(efNum,aniNum){return efNum*efWidth*5+efWidth*(aniNum%5)};
+function getbefY(efNum,aniNum){return Math.floor(aniNum/5)*efHeight};
+
+function battleEffectCreate(){
+    battleEffectCanvas=document.createElement("canvas"); //バトルエフェクトの処理
+    battleEffectCanvas.width=efWidth*skillEffect.length*5, battleEffectCanvas.height=efHeight*6;
+    befctx=battleEffectCanvas.getContext("2d"); 
+    for(var i = 0;i < skillEffect.length;i++) {
+        const befImg=new Image();
+        befImg[i]=new Image();
+        befImg[i].src="./imgs/skillEffects/" + i + ".png";
+        befImg[i].onload=function(){
+            befctx.drawImage(befImg[0],efWidth*5*0,0);
+        };
+    }
+}
 
 function battleMain() {
     //character
@@ -74,6 +94,13 @@ function battleMain() {
     enemyIsDamagedAni++;
     //enemy
     drawEnemy();
+    //effects
+    for(var i = 0;i < drawBattleEffects.length;i++){
+        ctx2d.drawImage(battleEffectCanvas,getbefX(drawBattleEffects[i][0],Math.floor(drawBattleEffects[i][3]/skillEffect[drawBattleEffects[i][0]].slow)),getbefY(drawBattleEffects[i][0],Math.floor(drawBattleEffects[i][3]/skillEffect[drawBattleEffects[i][0]].slow)),192,192,drawBattleEffects[i][1],drawBattleEffects[i][2],192,192);
+        drawBattleEffects[i][3]++;
+        if(drawBattleEffects[i][3]>skillEffect[drawBattleEffects[i][0]].max*skillEffect[drawBattleEffects[i][0]].slow) drawBattleEffects.splice(i,1);
+    }
+
     //zkey入力時に次のメッセージに進む
     if(zkey &&!modeAnimation&& !battleZkeyFlg && (!battleAnimationCount || battleAnimationCount > 210)){
         if(battleMode==0){
@@ -230,8 +257,14 @@ function battleMain() {
                 else trait4Flg=0;
                 ////////////////////////
                 changeHPMP(0, (-1)*damage, attackorder,0, 0);//HP変化
-                if(!attackorder) mypicIsDamagedAni=1;
-                if(attackorder) enemyIsDamagedAni=1;
+                console.log([skillData[firstSkill[4]][7],skillData[firstSkill[4]][7].x+500,skillData[firstSkill[4]][7].y+100,0]);
+                if(!attackorder) {
+                    drawBattleEffects.push([skillData[firstSkill[4]][7],skillEffect[skillData[firstSkill[4]][7]].x+80,skillEffect[skillData[firstSkill[4]][7]].y+220,0]); ////////ここ本当か？　放つ技番号はfirstSkill[4]で合ってる？
+                    mypicIsDamagedAni=1;
+                } else if(attackorder) {
+                    drawBattleEffects.push([skillData[firstSkill[4]][7],skillEffect[skillData[firstSkill[4]][7]].x+530,skillEffect[skillData[firstSkill[4]][7]].y+80,0]); ////////ここ本当か？　放つ技番号はfirstSkill[4]で合ってる？
+                    enemyIsDamagedAni=1;
+                }
                 //   プレッシャー特性判定   //
                 if(secondSt[11]==1) pressureFlg=2;
                 else pressureFlg=1;
@@ -500,8 +533,13 @@ function lateEnemyAttack(){
         else trait4Flg=0;
         ////////////////////////
         changeHPMP(0, (-1)*damage, !attackorder, 0, 0);//HP変化
-        if(attackorder) mypicIsDamagedAni=1;
-        if(!attackorder) enemyIsDamagedAni=1;
+        if(attackorder) {
+            drawBattleEffects.push([skillData[firstSkill[4]][7],skillEffect[skillData[firstSkill[4]][7]].x+80,skillEffect[skillData[firstSkill[4]][7]].y+220,0]); ////////ここ本当なんか？　放つ技番号はfirstSkill[4]で合ってる？
+            mypicIsDamagedAni=1;
+        }else if(!attackorder) {
+            drawBattleEffects.push([skillData[firstSkill[4]][7],skillEffect[skillData[firstSkill[4]][7]].x+530,skillEffect[skillData[firstSkill[4]][7]].y+80,0]); ////////ここ本当なんか？　放つ技番号はfirstSkill[4]で合ってる？
+            enemyIsDamagedAni=1;
+        }
         //   プレッシャー特性判定    //
         if(firstSt[11]==1) pressureFlg=2;
         else pressureFlg=1;

@@ -686,8 +686,8 @@ function fieldMain() {
                 eventMessageWindow=1;
                 eventMessageWindowMsgStack=[];
                 eventMessageWindowMsg="+"+eventMsgText[fieldCharaStatus[myposworld][i].dialogs][0];
-                for(var i = 0;i < (eventMsgText[fieldCharaStatus[myposworld][i].dialogs].length-1);i++){
-                    eventMessageWindowMsgStack[i]="+"+eventMsgText[fieldCharaStatus[myposworld][i].dialogs][i+1];
+                for(var j = 0;j < (eventMsgText[fieldCharaStatus[myposworld][i].dialogs].length-1);j++){
+                    eventMessageWindowMsgStack[j]="+"+eventMsgText[fieldCharaStatus[myposworld][i].dialogs][j+1];
                 }
                 eventMessageWindowAni=1;
                 fieldCharaStatus[myposworld][i].nowChatting=1;

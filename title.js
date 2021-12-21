@@ -19,7 +19,7 @@ function titleMain() {
 
    ctx2d.clearRect(0,0,width,height);
     if (fieldReDrawFlg){
-        titleLoadingFlg=1;
+        titleLoadingFlg=1;    
         const fieldimg=new Image();
         fieldimg.src="./imgs/titleimg.jpg";
         fieldimg.onload=function(){field2d.drawImage(fieldimg,0,0,width,height); titleLoadingFlg=0;}

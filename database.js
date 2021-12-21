@@ -83,9 +83,12 @@ const humanObj=[ //人のオブジェクト
     [],[],[],[],[],[],[],[],
     [{name: "D", dialogs:19, speed:1.5,pos:{x:870, y:231},dir:3,dis:0,img:3,ani:0,nowPos:0,nowChatting:0}],
     [],[],[],[],[],[],[],[],[],
-    [],[],[],[],[],[],[],[],[],[],
-    [],[],[],[],[],[],[],[],[],[],
-    [],[],[],[],[],[],[],[],[],[]
+    [{name: "E", dialogs:20, speed:1.5,pos:{x:870, y:231},dir:3,dis:0,img:3,ani:0,nowPos:0,nowChatting:0}],
+    [],[],[],[],[],[],[],[],[],
+    [{name: "D", dialogs:21, speed:1.5,pos:{x:870, y:231},dir:3,dis:0,img:3,ani:0,nowPos:0,nowChatting:0}],
+    [],[],[],[],[],[],[],[],[],
+    [{name: "D", dialogs:22, speed:1.5,pos:{x:870, y:231},dir:3,dis:0,img:3,ani:0,nowPos:0,nowChatting:0}],
+    [],[],[],[],[],[],[],[],[]
 ]; //name:名前（未使用？）　dialogs:セリフ（[番号,確率]の形式　pos1:場所1　dir:移動方向(左:0 上:2) dis:移動距離（0なら静止）imgで画像セットを指定 AniとnowPosとnowChattingは歩くときに使用（初期値は0をセット）
 //eventnum- - - 1 マイピク整理       x,y,width,height,1,icon_left,icon_top
 //              2 マイピク生み出す    x,y,width,height,2, icon_left,icon_top

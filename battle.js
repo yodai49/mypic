@@ -61,7 +61,7 @@ function battleEffectCreate(){
 function battleMain() {
     //character
     if(debugMode==5 && globalTime%6==0) zkey=true;
-    ctx2d.fillStyle="rgba(150,0,0,0.6)";
+    ctx2d.fillStyle="rgba(0,0,0,0.6)";
     ctx2d.fillRect(20,160,140,3);
     if(showMypicHP/mypicstock[mypic[0]][3]<0.2){///味方のHP
         ctx2d.fillStyle="rgba(150,0,0,0.9)";
@@ -72,7 +72,7 @@ function battleMain() {
     }
     ctx2d.fillRect(20,160,140*showMypicHP/mypicstock[mypic[0]][3],3);
     if(showEnemyHPConst!=-1){
-        ctx2d.fillStyle="rgba(150,0,0,0.6)"; ///敵のHP
+        ctx2d.fillStyle="rgba(0,0,0,0.6)"; ///敵のHP
         ctx2d.fillRect(600,300,140,3);
         if(showEnemyHP/showMaxEnemyHP<0.2){
             ctx2d.fillStyle="rgba(150,0,0,0.9)";
@@ -257,12 +257,15 @@ function battleMain() {
                 else trait4Flg=0;
                 ////////////////////////
                 changeHPMP(0, (-1)*damage, attackorder,0, 0);//HP変化
-                console.log([skillData[firstSkill[4]][7],skillData[firstSkill[4]][7].x+500,skillData[firstSkill[4]][7].y+100,0]);
-                if(!attackorder) {
-                    drawBattleEffects.push([skillData[firstSkill[4]][7],skillEffect[skillData[firstSkill[4]][7]].x+80,skillEffect[skillData[firstSkill[4]][7]].y+220,0]); ////////ここ本当か？　放つ技番号はfirstSkill[4]で合ってる？
+                if(!attackorder) { //自分がダメージ食らう
+                    drawBattleEffects.push([firstSkill[7],
+                        skillEffect[firstSkill[7]].x+280-efWidth/2,
+                        skillEffect[firstSkill[7]].y+220-efHeight/2,0]);
                     mypicIsDamagedAni=1;
-                } else if(attackorder) {
-                    drawBattleEffects.push([skillData[firstSkill[4]][7],skillEffect[skillData[firstSkill[4]][7]].x+530,skillEffect[skillData[firstSkill[4]][7]].y+80,0]); ////////ここ本当か？　放つ技番号はfirstSkill[4]で合ってる？
+                } else if(attackorder) {//相手がダメージ食らう
+                    drawBattleEffects.push([firstSkill[7],
+                        skillEffect[firstSkill[7]].x+enemyImagePos[encountEnemyNum][4]+enemyImagePos[encountEnemyNum][6]/2-efWidth/2,
+                        skillEffect[firstSkill[7]].y+enemyImagePos[encountEnemyNum][5]+enemyImagePos[encountEnemyNum][7]/2-efHeight/2,0]);
                     enemyIsDamagedAni=1;
                 }
                 //   プレッシャー特性判定   //
@@ -533,12 +536,16 @@ function lateEnemyAttack(){
         else trait4Flg=0;
         ////////////////////////
         changeHPMP(0, (-1)*damage, !attackorder, 0, 0);//HP変化
-        if(attackorder) {
-            drawBattleEffects.push([skillData[firstSkill[4]][7],skillEffect[skillData[firstSkill[4]][7]].x+80,skillEffect[skillData[firstSkill[4]][7]].y+220,0]); ////////ここ本当なんか？　放つ技番号はfirstSkill[4]で合ってる？
-            mypicIsDamagedAni=1;
-        }else if(!attackorder) {
-            drawBattleEffects.push([skillData[firstSkill[4]][7],skillEffect[skillData[firstSkill[4]][7]].x+530,skillEffect[skillData[firstSkill[4]][7]].y+80,0]); ////////ここ本当なんか？　放つ技番号はfirstSkill[4]で合ってる？
+        if(!attackorder) { //相手がダメージ食らう
+            drawBattleEffects.push([secondSkill[7],
+                skillEffect[secondSkill[7]].x+enemyImagePos[encountEnemyNum][4]+enemyImagePos[encountEnemyNum][6]/2-efWidth/2,
+                skillEffect[secondSkill[7]].y+enemyImagePos[encountEnemyNum][5]+enemyImagePos[encountEnemyNum][7]/2-efHeight/2,0]);
             enemyIsDamagedAni=1;
+        } else if(attackorder) {//自分がダメージ食らう
+            drawBattleEffects.push([secondSkill[7],
+                skillEffect[secondSkill[7]].x+280-efWidth/2,
+                skillEffect[secondSkill[7]].y+220-efHeight/2,0]);
+            mypicIsDamagedAni=1;
         }
         //   プレッシャー特性判定    //
         if(firstSt[11]==1) pressureFlg=2;

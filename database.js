@@ -87,7 +87,7 @@ const humanObj=[ //人のオブジェクト
     [],[],[],[],[],[],[],[],[],
     [{name: "D", dialogs:21, speed:1.5,pos:{x:870, y:231},dir:3,dis:0,img:3,ani:0,nowPos:0,nowChatting:0}],
     [],[],[],[],[],[],[],[],[],
-    [{name: "D", dialogs:22, speed:1.5,pos:{x:870, y:231},dir:3,dis:0,img:3,ani:0,nowPos:0,nowChatting:0}],
+    [{name: "D", dialogs:22, speed:1.5,pos:{x:850, y:227},dir:3,dis:0,img:3,ani:0,nowPos:0,nowChatting:0}],
     [],[],[],[],[],[],[],[],[]
 ]; //name:名前（未使用？）　dialogs:セリフ（[番号,確率]の形式　pos1:場所1　dir:移動方向(左:0 上:2) dis:移動距離（0なら静止）imgで画像セットを指定 AniとnowPosとnowChattingは歩くときに使用（初期値は0をセット）
 //eventnum- - - 1 マイピク整理       x,y,width,height,1,icon_left,icon_top
@@ -666,7 +666,7 @@ const enemyData=[ //0-3
 //dropitem0は何も含まないこと(確率0)
 const enemyImagePos=[
     [],[],[],[],
-    [0,0524,930,960*67/100,540*5/100,960*14/100,540*25*3/2/100,"./imgs/enemyImgs/lastBoss.png"],
+    [0,524,930,960*67/100,540*5/100,960*14/100,540*25*3/2/100,"./imgs/enemyImgs/lastBoss.png"],
     [0,0,1000,1100,960*64/100,540*6/100,960*22/100,540*24*3/2/100,"./imgs/enemyImgs/forestBoss.png"], //5
     [0,0,1000,1050,960*64/100,540*6/100,960*23/100,540*24*3/2/100,"./imgs/enemyImgs/caveBoss.png"],
     [0,0,913,690,960*58/100,540*9/100,960*29/100,540*20*3/2/100,"./imgs/enemyImgs/remainsBoss.png"],

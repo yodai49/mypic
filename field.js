@@ -693,7 +693,6 @@ function fieldMain() {
         }
         
         if(fieldCharaStatus[myposworld][i].dir>=0){
-            if(globalTime%30==0)console.log(fieldCharaStatus[myposworld][i].dir);
             if(fieldCharaStatus[myposworld][i].dir<=1) ctx2d.drawImage(characanvas,getFieldCharaX(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir,Math.floor(fieldCharaStatus[myposworld][i].ani/10)%3),getFieldCharaY(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir,Math.floor(fieldCharaStatus[myposworld][i].ani/10)%3),28,28,charaPosX,charaPosY,charasize,charasize); //キャラクターの描画
             if(fieldCharaStatus[myposworld][i].dir>=2) ctx2d.drawImage(characanvas,getFieldCharaX(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir,Math.floor(fieldCharaStatus[myposworld][i].ani/10)%3),getFieldCharaY(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir,Math.floor(fieldCharaStatus[myposworld][i].ani/10)%3),28,28,charaPosX,charaPosY,charasize,charasize); //キャラクターの描画    
         } else{

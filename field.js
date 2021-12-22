@@ -305,6 +305,20 @@ function setMaterials(){
                                 }
                             }
                         }
+                        for(var k = 0; k < eventobj[myposworld].length;k++){
+                            if (eventobj[myposworld][k][0] + eventobj[myposworld][k][2] > materialX && eventobj[myposworld][k][0] < materialX+material_size){
+                                if (eventobj[myposworld][k][1] + eventobj[myposworld][k][3] > materialY && eventobj[myposworld][k][1] < materialY+material_size){
+                                    tempColision=1;
+                                }
+                            }
+                        }
+                        for(var k = 0; k < humanObj[myposworld].length;k++){
+                            if (humanObj[myposworld][k].pos.x + charasize > materialX && humanObj[myposworld][k].pos.x < materialX+material_size){
+                                if (humanObj[myposworld][k].pos.y + charasize > materialY && humanObj[myposworld][k].pos.y< materialY+material_size){
+                                    tempColision=1;
+                                }
+                            }
+                        }
                         for(var k = 0;k < nowMaterialData[myposworld].length;k++){ //他のアイテムとかぶらないようにする
                             if (nowMaterialData[myposworld][k][0] + material_size> materialX && nowMaterialData[myposworld][k][0] < materialX+material_size){
                                 if (nowMaterialData[myposworld][k][1] + material_size > materialY && nowMaterialData[myposworld][k][1] < materialY+material_size){

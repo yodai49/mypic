@@ -549,62 +549,7 @@ const skillData=[
 /* 　わざエフェクト  */
 ////////////////////
 const skillEffect=[
-    {max:5,x:0,y:0,slow:2}, //0　ピンク爆発     maxはアニメーションの数、xとyは場所調整用、slowは1だと普通、2とかにすると遅くなる
-    {max:7,x:0,y:0,slow:2}, //1
-    {max:10,x:0,y:0,slow:2}, 
-    {max:7,x:0,y:0,slow:2},
-    {max:10,x:0,y:0,slow:2},
-    {max:10,x:0,y:0,slow:2}, //5
-    {max:12,x:0,y:0,slow:2},
-    {max:22,x:0,y:0,slow:2},
-    {max:35,x:0,y:0,slow:2},
-    {max:35,x:0,y:0,slow:2},
-    {max:30,x:0,y:0,slow:2}, //10
-    {max:20,x:0,y:0,slow:2}, //11
-    {max:20,x:0,y:0,slow:2}, 
-    {max:8,x:0,y:0,slow:2},
-    {max:14,x:0,y:0,slow:2},
-    {max:25,x:0,y:0,slow:2},//15
-    {max:19,x:0,y:0,slow:2},
-    {max:22,x:0,y:0,slow:2},
-    {max:30,x:0,y:0,slow:2},
-    {max:9,x:0,y:0,slow:2},
-    {max:6,x:0,y:0,slow:2}, //20
-    {max:7,x:0,y:0,slow:2}, //21
-    {max:8,x:0,y:0,slow:2}, 
-    {max:14,x:0,y:0,slow:2},
-    {max:8,x:0,y:0,slow:2},
-    {max:30,x:0,y:0,slow:2},//25
-    {max:24,x:0,y:0,slow:2},
-    {max:10,x:0,y:0,slow:2},
-    {max:19,x:0,y:0,slow:2},
-    {max:12,x:0,y:0,slow:2},
-    {max:35,x:0,y:0,slow:2}, //30
-    {max:24,x:0,y:0,slow:2}, //31
-    {max:9,x:0,y:0,slow:2}, 
-    {max:15,x:0,y:0,slow:2},
-    {max:19,x:0,y:0,slow:2},
-    {max:15,x:0,y:0,slow:2},//35
-    {max:10,x:0,y:0,slow:2},
-    {max:10,x:0,y:0,slow:2},
-    {max:12,x:0,y:0,slow:2},
-    {max:20,x:0,y:0,slow:2},
-    {max:25,x:0,y:0,slow:2}, //40　
-    {max:12,x:0,y:0,slow:2}, //41
-    {max:23,x:0,y:0,slow:2}, 
-    {max:25,x:0,y:0,slow:2},
-    {max:10,x:0,y:0,slow:2},
-    {max:28,x:0,y:0,slow:2},//45
-    {max:35,x:0,y:0,slow:2},
-    {max:20,x:0,y:0,slow:2},
-    {max:15,x:0,y:0,slow:2},
-    {max:14,x:0,y:0,slow:2},
-    {max:25,x:0,y:0,slow:2}, //50　
-    {max:25,x:0,y:0,slow:2}, //51
-    {max:25,x:0,y:0,slow:2}, 
-    {max:25,x:0,y:0,slow:2},
-    {max:50,x:0,y:0,slow:1},
-    {max:24,x:0,y:0,slow:2},//55
+    {max:15,x:0,y:0,slow:3}, //0　ピンク爆発     maxはアニメーションの数、xとyは場所調整用、slowは1だと普通、2とかにすると遅くなる
 ]
 
 ////////////////////

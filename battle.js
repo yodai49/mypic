@@ -50,10 +50,9 @@ function battleEffectCreate(){
     befctx=battleEffectCanvas.getContext("2d"); 
     for(var i = 0;i < skillEffect.length;i++) {
         const befImg=new Image();
-        befImg[i]=new Image();
-        befImg[i].src="./imgs/skillEffects/" + i + ".png";
-        befImg[i].onload=function(){
-            befctx.drawImage(befImg[0],efWidth*5*0,0);
+        befImg.src="./imgs/skillEffects/" + i + ".png";
+        befImg.onload=function(){
+            befctx.drawImage(befImg,efWidth*5*0,0);
         };
     }
 }
@@ -368,6 +367,7 @@ function battleMain() {
                 mypicstock[mypic[0]][7]=bMemory[1];
                 mypicstock[mypic[0]][3]=bMemory[2];//バフを元に戻す
                 mypic[0]=[mypic[loopselect], mypic[loopselect]=mypic[0]][0]//交換
+                showMypicHP=mypicstock[mypic[0]][2];
                 bMemory[0]=mypicstock[mypic[0]][6];
                 bMemory[1]=mypicstock[mypic[0]][7];
                 bMemory[2]=mypicstock[mypic[0]][3];

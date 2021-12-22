@@ -367,6 +367,7 @@ function battleMain() {
                 mypicstock[mypic[0]][7]=bMemory[1];
                 mypicstock[mypic[0]][3]=bMemory[2];//バフを元に戻す
                 mypic[0]=[mypic[loopselect], mypic[loopselect]=mypic[0]][0]//交換
+                showMypicHP=mypicstock[mypic[0]][2];
                 bMemory[0]=mypicstock[mypic[0]][6];
                 bMemory[1]=mypicstock[mypic[0]][7];
                 bMemory[2]=mypicstock[mypic[0]][3];

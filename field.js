@@ -680,7 +680,7 @@ function fieldMain() {
             fieldCharaStatus[myposworld][i].nowPos=nextFieldChara;
         }
         if(charaPosX<myposx+charasize+8 && charaPosX+charasize+8>myposx && charaPosY<myposy+charasize+8 && charaPosY+charasize+8>myposy){
-            if(zkey && !eventMessageWindow){
+            if(zkey && !eventMessageWindow&&!battleAnimationFlg && !menuWindow){
                 eventMessageWindow=1;
                 eventMessageWindowMsgStack=[];
                 eventMessageWindowMsg="+"+eventMsgText[fieldCharaStatus[myposworld][i].dialogs][0];

@@ -50,10 +50,9 @@ function battleEffectCreate(){
     befctx=battleEffectCanvas.getContext("2d"); 
     for(var i = 0;i < skillEffect.length;i++) {
         const befImg=new Image();
-        befImg[i]=new Image();
-        befImg[i].src="./imgs/skillEffects/" + i + ".png";
-        befImg[i].onload=function(){
-            befctx.drawImage(befImg[0],efWidth*5*0,0);
+        befImg.src="./imgs/skillEffects/" + i + ".png";
+        befImg.onload=function(){
+            befctx.drawImage(befImg,efWidth*5*0,0);
         };
     }
 }

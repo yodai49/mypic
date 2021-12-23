@@ -93,6 +93,15 @@ arrowImgs[1].src="./imgs/arrow_red_down.png"; //赤で下向き
 arrowImgs[2].src="./imgs/arrow_silver_right.png"; //銀で右向き
 arrowImgs[3].src="./imgs/arrow_silver_down.png"; //銀で下向き
 
+function fieldCanvasCreate(){
+    characanvas=document.createElement("canvas");
+    characanvas.width=pre_charasize*2+480, characanvas.height=pre_charasize*4+600;
+    fieldcanvas=document.createElement("canvas");
+    fieldcanvas.width=fieldwidth, fieldcanvas.height=fieldheight;
+    fieldbackcanvas=document.createElement("canvas");
+    fieldbackcanvas.width=fieldwidth, fieldbackcanvas.height=fieldheight;
+}
+
 function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode,redMode){
     if (mypic.length<=drawMypicNum && mode==0) return 0;
     ctx2d.lineWidth=1;
@@ -486,13 +495,11 @@ function checkConflict(dir){
 }
 function createField(){
     creatingFieldFlg=1;
-    fieldcanvas=document.createElement("canvas");
-    fieldcanvas.width=fieldwidth, fieldcanvas.height=fieldheight;
     var fieldcanvasctx=fieldcanvas.getContext("2d"); //フィールドは横並びに描画　幅はfieldwidth
+    fieldcanvasctx.clearRect(0,0,width,height);
     fieldcanvasctx.drawImage(fieldimg[myposworld],fielddata[myposworld][0],fielddata[myposworld][1]);
     eventflgs=[];
-    fieldbackcanvas=document.createElement("canvas");
-    fieldbackcanvas.width=fieldwidth, fieldbackcanvas.height=fieldheight;
+    fieldbackcanvas.getContext("2d").clearRect(0,0,width,height);
     fieldbackcanvas.getContext("2d").drawImage(fieldbackimg[fieldbackdata[myposworld]],0,0); creatingFieldFlg=0;
 }
 function initiate_field(){
@@ -506,9 +513,8 @@ function initiate_field(){
    menuSelectNum=0,menuSelectFlg=0; //選択中のメニュー
    fieldReDrawFlg=1;
 
-    characanvas=document.createElement("canvas");
-    characanvas.width=pre_charasize*2+480, characanvas.height=pre_charasize*4+600;
     var characanvasctx=characanvas.getContext("2d"); //charaimg1は0,0、charaimg2はその右側に描画
+    characanvasctx.clearRect(0,0,width,height);
     const charaimg2=new Image();
     charaimg2.src="./imgs/character_imgs.png"
     charaimg2.onload=function(){

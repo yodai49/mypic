@@ -49,11 +49,12 @@ function battleEffectCreate(){
     battleEffectCanvas.width=efWidth*skillEffect.length*5, battleEffectCanvas.height=efHeight*6;
     befctx=battleEffectCanvas.getContext("2d"); 
     for(var i = 0;i < skillEffect.length;i++) {
-        const befImg=new Image();
-        befImg.src="./imgs/skillEffects/" + i + ".png";
-        befImg.onload=function(){
-            befctx.drawImage(befImg,efWidth*5*0,0);
-        };
+        befImg[i]=new Image();
+        befImg[i].src="./imgs/skillEffects/" + i + ".png";
+        befImg[i].onload=finish(i);
+        function finish(i){
+            return function(){befctx.drawImage(befImg[i],efWidth*5*i,0);}
+        }
     }
 }
 

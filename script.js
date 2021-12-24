@@ -97,7 +97,6 @@ function checkfirstLaunch(){
 
 //起動時の処理//
 checkfirstLaunch();
-battleEffectCreate();
 fieldCanvasCreate();
 initiate_field();
 

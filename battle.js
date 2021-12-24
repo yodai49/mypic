@@ -37,24 +37,30 @@ var trait4Flg=0, trait9Flg=0;//特性フラグ
 var typeMatchFlg;
 var shortDpFlg=false;//Dp枯渇フラグ
 var DEBUGcount_oneMove=0,DEBUGcount_fieldDraw=0,battleZkeyFlg=0;
+var myskillNum=0;
 const efWidth=192;
 const efHeight=192;
 var battleEffectCanvas,drawBattleEffects=[],befctx,battleEffectCanvas;//エフェクト系
-var befImg=[];
-function getbefX(efNum,aniNum){return efNum*efWidth*5+efWidth*(aniNum%5)};
-function getbefY(efNum,aniNum){return Math.floor(aniNum/5)*efHeight};
+var befImg=[],lastEnemySkill;
+function getbefX(efNum,aniNum){return (efNum%4)*efWidth*5+efWidth*(aniNum%5)};
+function getbefY(efNum,aniNum){return Math.floor(aniNum/5)*efHeight+efHeight*7*Math.floor(efNum/4)};
 
 function battleEffectCreate(){
-    battleEffectCanvas=document.createElement("canvas"); //バトルエフェクトの処理
-    battleEffectCanvas.width=efWidth*skillEffect.length*5, battleEffectCanvas.height=efHeight*6;
+    battleEffectCanvas=document.createElement("canvas"); //バトルエフェクトの生成
+    battleEffectCanvas.width=efWidth*5*4, battleEffectCanvas.height=efHeight*2*7;
     befctx=battleEffectCanvas.getContext("2d"); 
     for(var i = 0;i < skillEffect.length;i++) {
+        imgCnt++;
         befImg[i]=new Image();
         befImg[i].src="./imgs/skillEffects/" + i + ".png";
-        befImg[i].onload=finish(i);
-        function finish(i){
-            return function(){befctx.drawImage(befImg[i],efWidth*5*i,0);}
-        }
+        befImg[i].onload=function(){loadedimgCnt++;}
+    }
+}
+function battleEffectRedraw(mySkills,enemySkills){
+    befctx.clearRect(0,0,befctx.width,befctx.height);
+    for(var i = 0; i < 4;i++){
+        befctx.drawImage(befImg[skillData[mySkills[i]][7]],efWidth*5*i,0);
+        befctx.drawImage(befImg[skillData[enemySkills[i]][7]],efWidth*5*i,efHeight*7);
     }
 }
 
@@ -201,7 +207,7 @@ function battleMain() {
             bMemory[2]=mypicstock[mypic[0]][3];
             bMemory[3]=mypicstock[mypic[0]][10];//speed
             oneMoveFlg=false;
-            DEBUGcount_oneMove++;
+            battleEffectRedraw(mypicstock[mypic[0]][8],baseEnemyData[8]);
         }
     } else if(battleMode==1){//行動選択(loop)
         if(downkey) {
@@ -233,6 +239,7 @@ function battleMain() {
         if(Acount==0 && Acheck){
             Acount++;
             hitorder();
+            myskillNum=loopselect;
             if(attackorder) {
                 firstSt=mypicstock[mypic[0]], secondSt=baseEnemyData;
                 if(shortDpFlg) firstSkill=skillData[74], shortDpFlg=false;
@@ -258,12 +265,12 @@ function battleMain() {
                 ////////////////////////
                 changeHPMP(0, (-1)*damage, attackorder,0, 0);//HP変化
                 if(!attackorder) { //自分がダメージ食らう
-                    drawBattleEffects.push([firstSkill[7],
-                        skillEffect[firstSkill[7]].x+280-efWidth/2,
-                        skillEffect[firstSkill[7]].y+220-efHeight/2,0]);
+                    drawBattleEffects.push([lastEnemySkill+4,
+                        skillEffect[baseEnemyData[8][lastEnemySkill]].x+enemyImagePos[encountEnemyNum][4]+enemyImagePos[encountEnemyNum][6]/2-efWidth/2,
+                        skillEffect[baseEnemyData[8][lastEnemySkill]].y+enemyImagePos[encountEnemyNum][5]+enemyImagePos[encountEnemyNum][7]/2-efHeight/2,0]);
                     mypicIsDamagedAni=1;
                 } else if(attackorder) {//相手がダメージ食らう
-                    drawBattleEffects.push([firstSkill[7],
+                    drawBattleEffects.push([myskillNum,
                         skillEffect[firstSkill[7]].x+enemyImagePos[encountEnemyNum][4]+enemyImagePos[encountEnemyNum][6]/2-efWidth/2,
                         skillEffect[firstSkill[7]].y+enemyImagePos[encountEnemyNum][5]+enemyImagePos[encountEnemyNum][7]/2-efHeight/2,0]);
                     enemyIsDamagedAni=1;
@@ -368,6 +375,7 @@ function battleMain() {
                 mypicstock[mypic[0]][7]=bMemory[1];
                 mypicstock[mypic[0]][3]=bMemory[2];//バフを元に戻す
                 mypic[0]=[mypic[loopselect], mypic[loopselect]=mypic[0]][0]//交換
+                battleEffectRedraw(mypicstock[mypic[0]][8],baseEnemyData[8]);//技の画像生成
                 showMypicHP=mypicstock[mypic[0]][2];
                 bMemory[0]=mypicstock[mypic[0]][6];
                 bMemory[1]=mypicstock[mypic[0]][7];
@@ -422,6 +430,7 @@ function battleMain() {
                 mypicstock[mypic[0]][7]=bMemory[1];
                 mypicstock[mypic[0]][3]=bMemory[2];//バフを元に戻す
                 mypic[0]=[mypic[loopselect], mypic[loopselect]=mypic[0]][0]//交換
+                battleEffectRedraw(mypicstock[mypic[0]][8],baseEnemyData[8]);//技の画像生成
                 bMemory[0]=mypicstock[mypic[0]][6];
                 bMemory[1]=mypicstock[mypic[0]][7];
                 bMemory[2]=mypicstock[mypic[0]][3];
@@ -538,14 +547,14 @@ function lateEnemyAttack(){
         ////////////////////////
         changeHPMP(0, (-1)*damage, !attackorder, 0, 0);//HP変化
         if(!attackorder) { //相手がダメージ食らう
-            drawBattleEffects.push([secondSkill[7],
+            drawBattleEffects.push([myskillNum,
                 skillEffect[secondSkill[7]].x+enemyImagePos[encountEnemyNum][4]+enemyImagePos[encountEnemyNum][6]/2-efWidth/2,
                 skillEffect[secondSkill[7]].y+enemyImagePos[encountEnemyNum][5]+enemyImagePos[encountEnemyNum][7]/2-efHeight/2,0]);
             enemyIsDamagedAni=1;
         } else if(attackorder) {//自分がダメージ食らう
-            drawBattleEffects.push([secondSkill[7],
-                skillEffect[secondSkill[7]].x+280-efWidth/2,
-                skillEffect[secondSkill[7]].y+220-efHeight/2,0]);
+            drawBattleEffects.push([lastEnemySkill+4,
+                skillEffect[baseEnemyData[8][lastEnemySkill]].x+190+90,
+                skillEffect[baseEnemyData[8][lastEnemySkill]].y+130+90]);
             mypicIsDamagedAni=1;
         }
         //   プレッシャー特性判定    //
@@ -681,8 +690,11 @@ function battleGetItem(){//戦闘後のアイテム入手
 
 function battleEnemyMove(){//敵の攻撃ムーブ
     EnemyMoveChoice = Math.floor(100 * Math.random());
-    if(EnemyMoveChoice>=0 && EnemyMoveChoice<=30) return 0
-    else if(EnemyMoveChoice> 30 && EnemyMoveChoice<=65) return 1
-    else if(EnemyMoveChoice> 65 && EnemyMoveChoice<=90) return 2
-    else if(EnemyMoveChoice> 90 && EnemyMoveChoice<=100) return 3
+    var tempEnemyMove;
+    if(EnemyMoveChoice>=0 && EnemyMoveChoice<=30) tempEnemyMove= 0
+    else if(EnemyMoveChoice> 30 && EnemyMoveChoice<=65) tempEnemyMove= 1
+    else if(EnemyMoveChoice> 65 && EnemyMoveChoice<=90) tempEnemyMove= 2
+    else if(EnemyMoveChoice> 90 && EnemyMoveChoice<=100) tempEnemyMove= 3
+    lastEnemySkill=tempEnemyMove;
+    return tempEnemyMove;
 }

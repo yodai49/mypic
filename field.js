@@ -72,6 +72,7 @@ for(var i = 0; i < 6;i++){ //フィールド背景データの読み込み
         loadedimgCnt++;
     }
 }
+battleEffectCreate();
 battleBackImg[0]=new Image(),battleBackImg[0].src="./imgs/battleFieldBackForest.png";//バトル背景の読み込み
 battleBackImg[1]=new Image(),battleBackImg[1].src="./imgs/battleFieldBackCave.png";
 battleBackImg[2]=new Image(),battleBackImg[2].src="./imgs/battleFieldBackRemains.png";

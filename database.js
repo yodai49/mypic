@@ -549,7 +549,7 @@ const skillData=[
 /* 　わざエフェクト  */
 ////////////////////
 const skillEffect=[
-    {max:5,x:0,y:0,slow:2}, //0　ピンク爆発 maxはアニメーションの数、xとyは場所調整用、slowは1だと普通、2とかにすると遅くなる
+    {max:5,x:0,y:0,slow:2}, //0maxはアニメーションの数、xとyは場所調整用、slowは1だと普通、2とかにすると遅くなる
     {max:7,x:0,y:0,slow:2}, //1
     {max:10,x:0,y:0,slow:2},
     {max:7,x:0,y:0,slow:2},

@@ -553,8 +553,8 @@ function lateEnemyAttack(){
             enemyIsDamagedAni=1;
         } else if(attackorder) {//自分がダメージ食らう
             drawBattleEffects.push([lastEnemySkill+4,
-                skillEffect[baseEnemyData[8][lastEnemySkill]].x+190+90,
-                skillEffect[baseEnemyData[8][lastEnemySkill]].y+130+90]);
+                skillEffect[baseEnemyData[8][lastEnemySkill]].x+190+90-efWidth/2,
+                skillEffect[baseEnemyData[8][lastEnemySkill]].y+130+90-efHeight/2,0]);
             mypicIsDamagedAni=1;
         }
         //   プレッシャー特性判定    //

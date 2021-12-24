@@ -1,5 +1,6 @@
 var selectTitleFlg=0,selectTitleNum=1,titleLoadingFlg=1;
 const gameTitle="マイピクチャーズ";
+
 function titleMain() {
     /*　タイトル画面の描画関数
     @param なし

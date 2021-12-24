@@ -266,8 +266,8 @@ function battleMain() {
                 changeHPMP(0, (-1)*damage, attackorder,0, 0);//HP変化
                 if(!attackorder) { //自分がダメージ食らう
                     drawBattleEffects.push([lastEnemySkill+4,
-                        skillEffect[baseEnemyData[8][lastEnemySkill]].x+enemyImagePos[encountEnemyNum][4]+enemyImagePos[encountEnemyNum][6]/2-efWidth/2,
-                        skillEffect[baseEnemyData[8][lastEnemySkill]].y+enemyImagePos[encountEnemyNum][5]+enemyImagePos[encountEnemyNum][7]/2-efHeight/2,0]);
+                        skillEffect[baseEnemyData[8][lastEnemySkill]].x+190+90-efWidth/2,
+                        skillEffect[baseEnemyData[8][lastEnemySkill]].y+130+90-efHeight/2,0]);
                     mypicIsDamagedAni=1;
                 } else if(attackorder) {//相手がダメージ食らう
                     drawBattleEffects.push([myskillNum,
@@ -553,8 +553,8 @@ function lateEnemyAttack(){
             enemyIsDamagedAni=1;
         } else if(attackorder) {//自分がダメージ食らう
             drawBattleEffects.push([lastEnemySkill+4,
-                skillEffect[baseEnemyData[8][lastEnemySkill]].x+190+90,
-                skillEffect[baseEnemyData[8][lastEnemySkill]].y+130+90]);
+                skillEffect[baseEnemyData[8][lastEnemySkill]].x+190+90-efWidth/2,
+                skillEffect[baseEnemyData[8][lastEnemySkill]].y+130+90-efHeight/2,0]);
             mypicIsDamagedAni=1;
         }
         //   プレッシャー特性判定    //

@@ -606,10 +606,10 @@ function battleStartAnimation(){
         } battleAnimationCount++;
     }
     else if(battleAnimationCount>122 && battleAnimationCount<=201){//fadein animation
-        if(myposworld>=10 && myposworld<=18 || myposworld == 3)ctx2d.fillStyle=pastleGreen;
-        else if(myposworld>=20 && myposworld<=27)ctx2d.fillStyle=cavecol;
-        else if(myposworld>=30 && myposworld<=36)ctx2d.fillStyle=remainscol;
-        else if(myposworld>=40 && myposworld<=46)ctx2d.fillStyle=desertcol;
+        if(myposworld>=10 && myposworld<=19 || myposworld == 3)ctx2d.fillStyle=pastleGreen;
+        else if(myposworld>=20 && myposworld<=29)ctx2d.fillStyle=cavecol;
+        else if(myposworld>=30 && myposworld<=39)ctx2d.fillStyle=remainscol;
+        else if(myposworld>=40 && myposworld<=49)ctx2d.fillStyle=desertcol;
         ctx2d.fillRect(0,0,width,height);
         //円形グラデーション
         var gradation = ctx2d.createRadialGradient(width/2, height/2, 5, width/2, height/2, 5+8*(battleAnimationCount-122));

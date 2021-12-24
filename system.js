@@ -10,7 +10,7 @@ const darkgray2="rgba(105,105,105,1.0)";
 const pastleGreen="rgba(100,200,100,1.0)";
 const cavecol = "rgba(153,102,51,1.0)";
 const remainscol = "rgba(153,153,153,1.0)";
-const desertcol = "rgba(153,255,153,1.0)";
+const desertcol = "rgba(255,255,204,1.0)";
 
 function make_pointer(a,b,c,d,e,f){ //図形作成
     //描画コンテキストの取得

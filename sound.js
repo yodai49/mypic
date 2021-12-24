@@ -170,149 +170,26 @@ const paySE=new Howl({
 
 /////////////////////
 //    SEskill      //
-const skill0=new Howl({
-    src: 'sound/seSkill/0.mp3',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill1=new Howl({
-    src: 'sound/seSkill/1.mp3',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill2=new Howl({
-    src: 'sound/seSkill/2.mp3',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill3=new Howl({
-    src: 'sound/seSkill/3.mp3',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill4=new Howl({
-    src: 'sound/seSkill/4.mp3',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill5=new Howl({
-    src: 'sound/seSkill/5.mp3',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill6=new Howl({
-    src: 'sound/seSkill/6.mp3',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill7=new Howl({
-    src: 'sound/seSkill/7.mp3',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill8=new Howl({
-    src: 'sound/seSkill/8.mp3',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill9=new Howl({
-    src: 'sound/seSkill/9.mp3',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill10=new Howl({
-    src: 'sound/seSkill/10.mp3',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill11=new Howl({
-    src: 'sound/seSkill/11.mp3',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill12=new Howl({
-    src: 'sound/seSkill/12.mp3',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill13=new Howl({
-    src: 'sound/seSkill/13.mp3',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill14=new Howl({
-    src: 'sound/seSkill/14.mp3',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill15=new Howl({
-    src: 'sound/seSkill/15.mp3',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill16=new Howl({
-    src: 'sound/seSkill/16.mp3',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill17=new Howl({
-    src: 'sound/seSkill/17.mp3',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill18=new Howl({
-    src: 'sound/seSkill/18.mp3',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill19=new Howl({
-    src: 'sound/seSkill/19.mp3',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill20=new Howl({
-    src: 'sound/seSkill/20.wav',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill21=new Howl({
-    src: 'sound/seSkill/21.wav',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill22=new Howl({
-    src: 'sound/seSkill/22.mp3',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-const skill23=new Howl({
-    src: 'sound/seSkill/23.mp3',
-    volume: 0.6,
-    loop: false,
-    format: ['mp3'],
-});
-
+const soundData=[
+    [0.6, 0],
+    [],[],[],[],[],[],[],[],[],
+    [],[],[],[],[],[],[],[],[],[],
+    [],[],[],[],[],[],[],[],[],[],
+    [],[],[],[],[],[],[],[],[],[],
+    [],[],[],[],[],[],[],[],[],[],
+    [],[],[]
+]
+//0:src, 1:volume, 2:loop, 3:format
+var skillSE=[];
+for(var i = 0;i<soundData.length;i++){
+    skillSE[i]=new Howl({
+        src: "./sound/seSkill/" + i + ".mp3",
+        volume: soundData[0][0],
+        loop: soundData[0][1],
+        format: ['mp3'],
+        sprite:{
+            playse: [0,1000],
+        }
+    });
+}
 /////////////////////

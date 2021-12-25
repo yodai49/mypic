@@ -272,7 +272,6 @@ function battleMain() {
                     mypicIsDamagedAni=1;
                 } else if(attackorder) {//相手がダメージ食らう
                     skillSE[mypicstock[mypic[0]][8][myskillNum]].play();
-                    console.log(firstSkill[7]);
                     drawBattleEffects.push([myskillNum,
                         skillEffect[mypicstock[mypic[0]][8][myskillNum]].x+enemyImagePos[encountEnemyNum][4]+enemyImagePos[encountEnemyNum][6]/2-efWidth/2,
                         skillEffect[mypicstock[mypic[0]][8][myskillNum]].y+enemyImagePos[encountEnemyNum][5]+enemyImagePos[encountEnemyNum][7]/2-efHeight/2,0]);
@@ -551,7 +550,6 @@ function lateEnemyAttack(){
         changeHPMP(0, (-1)*damage, !attackorder, 0, 0);//HP変化
         if(!attackorder) { //相手がダメージ食らう
             skillSE[mypicstock[mypic[0]][8][myskillNum]].play();
-            console.log(mypicstock[mypic[0]][8][myskillNum]);
             drawBattleEffects.push([myskillNum,
                 skillEffect[mypicstock[mypic[0]][8][myskillNum]].x+enemyImagePos[encountEnemyNum][4]+enemyImagePos[encountEnemyNum][6]/2-efWidth/2,
                 skillEffect[mypicstock[mypic[0]][8][myskillNum]].y+enemyImagePos[encountEnemyNum][5]+enemyImagePos[encountEnemyNum][7]/2-efHeight/2,0]);

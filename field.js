@@ -1069,21 +1069,23 @@ function fieldMain() {
             if(upkey && eventShopSelectNum && !(eventWindowAni-menuWindowAniSpeed) && !menuSelectFlg) eventShopSelectNum--,menuSelectFlg=1, crosskeySE.play();
             if(downkey && eventShopSelectNum != nowShopData.length-1&& !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg) eventShopSelectNum++,menuSelectFlg=1, crosskeySE.play();
             if(zkey && !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow) {
-                zkeySE.play();
                 if(nowShopData[eventShopSelectNum][0]>=51&&nowShopData[eventShopSelectNum][0]<=100&&countItem(nowShopData[eventShopSelectNum][0])){
                     eventMessageWindow=1;
                     eventMessageWindowMsg="このレシピは既に持っている！";
                     menuSelectFlg=1;    
+                    zkeySE.play();
                 } else if (money >= nowShopData[eventShopSelectNum][1]){
                     money-=nowShopData[eventShopSelectNum][1];
                     getItem(nowShopData[eventShopSelectNum][0]);
                     eventMessageWindow=1;
                     eventMessageWindowMsg=itemdata[nowShopData[eventShopSelectNum][0]][0]+"を買った！";
-                    menuSelectFlg=1;    
+                    menuSelectFlg=1;
+                    buyEventSE.play();
                 } else {
                     eventMessageWindow=1;
                     eventMessageWindowMsg="お金が足りない！";
-                    menuSelectFlg=1;    
+                    menuSelectFlg=1;
+                    zkeySE.play();
                 }
             }
             if(money < showmoney) showmoney-=10;

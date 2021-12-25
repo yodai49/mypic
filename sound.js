@@ -171,7 +171,7 @@ const paySE=new Howl({
 /////////////////////
 //    SEskill      //
 const soundData=[
-    [0.6, 0],
+    [1, 0],
     [],[],[],[],[],[],[],[],[],
     [],[],[],[],[],[],[],[],[],[],
     [],[],[],[],[],[],[],[],[],[],
@@ -187,9 +187,10 @@ for(var i = 0;i<soundData.length;i++){
         volume: soundData[0][0],
         loop: soundData[0][1],
         format: ['mp3'],
+        /*
         sprite:{
             playse: [0,1000],
-        }
+        }*/
     });
 }
 /////////////////////

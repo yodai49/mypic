@@ -166,6 +166,12 @@ const paySE=new Howl({
     loop: false,
     format: ['mp3'],
 });
+const playerDownSE = new Howl({
+    src: 'sound/playerDownSE.mp3',
+    volume: 0.6,
+    loop: false,
+    format: ['mp3'],
+});
 /////////////////////
 
 /////////////////////

@@ -1,23 +1,26 @@
 .canvas-wrapper {
     position: relative;
-    height:600px;
+    height:540px;
 }
 .canvas-wrapper canvas {
     position: absolute;
     top: 0;
     left: 0;
     right:0;
-    margin:auto;
+    margin-left:auto;
+    margin-right:auto;
 }
 body{
-    background-color:black;
+    background-image:url("./imgs/webpage_back.png");
+    background-attachment:fixed;
     font-family: 'Stick', cursive;
-    color:white;    
+    color:white;
+    margin:0;
 }
 h1{
     font-size:40px;
     color:white;
-    margin-left:50px;
+    margin-left:30px;
 }
 .bo{
     margin-top:-30px;
@@ -25,6 +28,37 @@ h1{
     margin-left:100px;
 }
 .center{
-    margin-left:0px;
-    margin-right:0px;
+    position:relative;
+    width:960px;
+    margin-left:auto;
+    margin-right:auto;
+    padding:0;
+    padding-bottom:30px;
+    margin-top:50px;
+    margin-bottom:0;
+    background-color:rgba(0,0,0,0.74);
 }
+
+.kakomi-triple1 {
+    position: relative;
+    border: 1px solid #ffffff; /*左枠線*/
+    width: 30%;
+    min-width:400px;
+    padding: 10px 5px 5px 10px;
+    margin-bottom:40px;
+    z-index: 0;
+   }
+   .kakomi-triple1::before,
+   .kakomi-triple1::after {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+   }
+   .kakomi-triple1::before {
+    border: 1px solid #ffffff; /*中枠線*/
+    bottom: -4px;
+    right: -4px;
+    z-index: 1;
+   }
+   

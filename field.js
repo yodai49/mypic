@@ -409,7 +409,7 @@ function checkConflict(dir){
     if (dir==3) checkConflictPosx2= 0,checkConflictPosy2=walkspeed+1;
     if(battleAnimationFlg) return 1;
     if(creatingFieldFlg) return 1;
-    if (!warpAni){
+    if (!warpAni){ //ワープのチェック
         for(let i = 0;i < fieldwarpobj[myposworld].length;i++){
             if (fieldwarpobj[myposworld][i][0] < myposx+charasize && fieldwarpobj[myposworld][i][0] + fieldwarpobj[myposworld][i][2] > myposx){
                 if (fieldwarpobj[myposworld][i][1] < myposy+charasize && fieldwarpobj[myposworld][i][1] + fieldwarpobj[myposworld][i][3] > myposy){
@@ -422,7 +422,7 @@ function checkConflict(dir){
         }
     }
     searchableflg=0;
-    for(let i = 0;i < eventobj[myposworld].length;i++){
+    for(let i = 0;i < eventobj[myposworld].length;i++){//イベントのチェック
         eventflgs[i]=0;
         if (eventobj[myposworld][i][0] < myposx+charasize && eventobj[myposworld][i][0] + eventobj[myposworld][i][2] > myposx){
             if (eventobj[myposworld][i][1] < myposy+charasize && eventobj[myposworld][i][1] + eventobj[myposworld][i][3] > myposy){
@@ -431,12 +431,11 @@ function checkConflict(dir){
             }
         }    
     }
-    for(let i = 0;i < fieldCharaStatus[myposworld].length;i++){
+    for(let i = 0;i < fieldCharaStatus[myposworld].length;i++){//モブキャラとの当たり判定
         var charaPosX=fieldCharaStatus[myposworld][i].pos.x;
         var charaPosY=fieldCharaStatus[myposworld][i].pos.y;
         if(fieldCharaStatus[myposworld][i].dir<=1) charaPosX+=fieldCharaStatus[myposworld][i].nowPos;
         if(fieldCharaStatus[myposworld][i].dir>=2) charaPosY+=fieldCharaStatus[myposworld][i].nowPos;
-        //当たり判定
         if(charaPosX<myposx+checkConflictPosx2+charasize && charaPosX+charasize>myposx+checkConflictPosx2 && charaPosY<myposy+checkConflictPosy2+charasize && charaPosY+charasize>myposy+checkConflictPosy2){
             return 1;
         } 
@@ -445,7 +444,7 @@ function checkConflict(dir){
     let tmpdirfix=[0,0,0,0];
     tmpdirfix[dir]=5;
 
-    for(let i = 0;i  < eventobj[myposworld].length;i++){
+    for(let i = 0;i  < eventobj[myposworld].length;i++){ 
         if (eventobj[myposworld][i][4] == 4){
             eventflgs[i]=0;
             if (eventobj[myposworld][i][0] < myposx+charasize+tmpdirfix[1]-tmpdirfix[0] && eventobj[myposworld][i][0] + eventobj[myposworld][i][2] > myposx+tmpdirfix[1]-tmpdirfix[0]){
@@ -480,17 +479,40 @@ function checkConflict(dir){
             }
         }
     }
-    var tempColision = 0;
-    for(let j = 0;j < 10;j++){
-        tempColision = 1;
-        var checkimgdata=fieldcanvas.getContext("2d").getImageData(myposx+checkConflictPosx,myposy+checkConflictPosy,1,1);
-        for(let i = 0;i < walkCol.length;i++){
-            if (checkimgdata.data[0] == walkCol[i][0] && checkimgdata.data[1] == walkCol[i][1] && checkimgdata.data[2] == walkCol[i][2]) tempColision=0;
-            if (!checkimgdata.data[0] && !checkimgdata.data[1]  && !checkimgdata.data[2] && !checkimgdata.data[3]) tempColision=0;
-        }
+    checkConflictPosx=0,checkConflictPosy=0;
+    if (dir==0) checkConflictPosx= -walkspeed-1,checkConflictPosy=0;
+    if (dir==1) checkConflictPosx= charasize+walkspeed+1,checkConflictPosy=0;
+    if (dir==2) checkConflictPosx= 0,checkConflictPosy=-walkspeed-1;
+    if (dir==3) checkConflictPosx= 0,checkConflictPosy=charasize+walkspeed+1;
+    for(let j = 0;j < 10;j++){ //障害物との当たり判定
+        if(checkObjectsConflict(checkConflictPosx,checkConflictPosy)) return 1;
         if (dir==2 || dir == 3) checkConflictPosx+=(charasize/10);
         if (dir==0 || dir == 1) checkConflictPosy+=(charasize/10);
-        if (tempColision) return 1;
+    }/*
+    checkConflictPosx=0,checkConflictPosy=0; //動いた後に移動できなければ衝突判定にする（ハマるの防止）
+    dir=1-dir; //dirを0,1　2,3のペアで入れ替え
+    if(dir==-1) dir=3;
+    if(dir==-2) dir=2;
+    if (dir==0) checkConflictPosx= -walkspeed-1,checkConflictPosy=0,checkConflictPosx+=walkspeed;
+    if (dir==1) checkConflictPosx= charasize+walkspeed+1,checkConflictPosy=0,checkConflictPosx-=walkspeed;
+    if (dir==2) checkConflictPosx= 0,checkConflictPosy=-walkspeed-1,checkConflictPosy+=walkspeed;
+    if (dir==3) checkConflictPosx= 0,checkConflictPosy=charasize+walkspeed+1,checkConflictPosy-=walkspeed;
+    for(let j = 0;j < 10;j++){ //障害物との当たり判定
+        if(checkObjectsConflict(checkConflictPosx,checkConflictPosy)) return 1;
+        if (dir==2 || dir == 3) checkConflictPosx+=(charasize/10);
+        if (dir==0 || dir == 1) checkConflictPosy+=(charasize/10);
+    }*/
+    return 0;
+}
+function checkObjectsConflict(dx,dy){
+    //障害物との当たり判定を行う関数　dxとdyはズレ
+    var tempColision = 0;
+    var checkimgdata;
+    for(let i = 0;i < walkCol.length;i++){
+        tempColision=1;
+        checkimgdata=fieldcanvas.getContext("2d").getImageData(myposx+dx,myposy+dy,1,1);
+        if (!checkimgdata.data[0] && !checkimgdata.data[1]  && !checkimgdata.data[2] && !checkimgdata.data[3]) tempColision=0;
+        if(tempColision) return 1;
     }
     return 0;
 }
@@ -1069,21 +1091,23 @@ function fieldMain() {
             if(upkey && eventShopSelectNum && !(eventWindowAni-menuWindowAniSpeed) && !menuSelectFlg) eventShopSelectNum--,menuSelectFlg=1, crosskeySE.play();
             if(downkey && eventShopSelectNum != nowShopData.length-1&& !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg) eventShopSelectNum++,menuSelectFlg=1, crosskeySE.play();
             if(zkey && !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow) {
-                zkeySE.play();
                 if(nowShopData[eventShopSelectNum][0]>=51&&nowShopData[eventShopSelectNum][0]<=100&&countItem(nowShopData[eventShopSelectNum][0])){
                     eventMessageWindow=1;
                     eventMessageWindowMsg="このレシピは既に持っている！";
                     menuSelectFlg=1;    
+                    zkeySE.play();
                 } else if (money >= nowShopData[eventShopSelectNum][1]){
                     money-=nowShopData[eventShopSelectNum][1];
                     getItem(nowShopData[eventShopSelectNum][0]);
                     eventMessageWindow=1;
                     eventMessageWindowMsg=itemdata[nowShopData[eventShopSelectNum][0]][0]+"を買った！";
-                    menuSelectFlg=1;    
+                    menuSelectFlg=1;
+                    buyEventSE.play();
                 } else {
                     eventMessageWindow=1;
                     eventMessageWindowMsg="お金が足りない！";
-                    menuSelectFlg=1;    
+                    menuSelectFlg=1;
+                    zkeySE.play();
                 }
             }
             if(money < showmoney) showmoney-=10;
@@ -1189,7 +1213,7 @@ function fieldMain() {
                 if (eventflgs[i] && !happenedEvent) trigEvent(eventobj[myposworld][i][4],eventobj[myposworld][i]);
             }
             for(var i = 0;i < itemobj[myposworld].length;i++){
-                if (itemflgs[i] && !menuSelectFlg && fieldItemStatus[myposworld][i][5]){
+                if (itemflgs[i]  && fieldItemStatus[myposworld][i][5]){
                     popupMsg.push([itemdata[fieldItemStatus[myposworld][i][4]][0]+"を手に入れた！",120,0,0,"*"+fieldItemStatus[myposworld][i][4]]);
                     fieldItemStatus[myposworld][i][5]--;
                     getItem(fieldItemStatus[myposworld][i][4]);
@@ -1198,7 +1222,7 @@ function fieldMain() {
                 }
             }
             for(var i = 0;i < nowMaterialData[myposworld].length;i++){
-                if (materialflgs[i] && !menuSelectFlg){
+                if (materialflgs[i]){
                     if(!materialVisible[nowMaterialData[myposworld][i][2]-100]){
                         buyEventSE.play();
                         popupMsg.push([itemdata[nowMaterialData[myposworld][i][2]][0]+"を手に入れた！ NEW！",120,0,0,"*"+nowMaterialData[myposworld][i][2]]);    
@@ -1232,9 +1256,11 @@ function fieldMain() {
                 titleConfirmMessage="セーブしますか？";
                 titleConfirmMessage2="";
                 titleConfirmMode=3;
+                titleConfirmSelect=0;
             } else if(menuSelectNum==4){ //タイトル
                 titleConfirmWindow=1;
                 menuSelectFlg=1;
+                titleConfirmSelect=1;
                 titleConfirmMessage="ほんとうにタイトルにもどりますか？";
                 titleConfirmMessage2="セーブしていないデータはうしなわれます";
                 titleConfirmMode=3;

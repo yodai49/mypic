@@ -57,10 +57,12 @@ function battleEffectCreate(){
     }
 }
 function battleEffectRedraw(mySkills,enemySkills){
-    befctx.clearRect(0,0,befctx.width,befctx.height);
+    befctx.clearRect(0,0,25*efWidth,14*efHeight);
+    console.log("cleared");
     for(var i = 0; i < 4;i++){
         befctx.drawImage(befImg[skillData[mySkills[i]][7]],efWidth*5*i,0);
         befctx.drawImage(befImg[skillData[enemySkills[i]][7]],efWidth*5*i,efHeight*7);
+        console.log("drawed " + i);
     }
 }
 
@@ -265,14 +267,16 @@ function battleMain() {
                 ////////////////////////
                 changeHPMP(0, (-1)*damage, attackorder,0, 0);//HP変化
                 if(!attackorder) { //自分がダメージ食らう
+                    skillSE[baseEnemyData[8][lastEnemySkill]].play("playse");
                     drawBattleEffects.push([lastEnemySkill+4,
                         skillEffect[baseEnemyData[8][lastEnemySkill]].x+190+90-efWidth/2,
                         skillEffect[baseEnemyData[8][lastEnemySkill]].y+130+90-efHeight/2,0]);
                     mypicIsDamagedAni=1;
                 } else if(attackorder) {//相手がダメージ食らう
+                    skillSE[mypicstock[mypic[0]][8][myskillNum]].play("playse");
                     drawBattleEffects.push([myskillNum,
-                        skillEffect[firstSkill[7]].x+enemyImagePos[encountEnemyNum][4]+enemyImagePos[encountEnemyNum][6]/2-efWidth/2,
-                        skillEffect[firstSkill[7]].y+enemyImagePos[encountEnemyNum][5]+enemyImagePos[encountEnemyNum][7]/2-efHeight/2,0]);
+                        skillEffect[mypicstock[mypic[0]][8][myskillNum]].x+enemyImagePos[encountEnemyNum][4]+enemyImagePos[encountEnemyNum][6]/2-efWidth/2,
+                        skillEffect[mypicstock[mypic[0]][8][myskillNum]].y+enemyImagePos[encountEnemyNum][5]+enemyImagePos[encountEnemyNum][7]/2-efHeight/2,0]);
                     enemyIsDamagedAni=1;
                 }
                 //   プレッシャー特性判定   //
@@ -496,7 +500,7 @@ function typeMatch(fskill, stype){//引数は技属性番号とタイプ番号
         (fskill == 3 && (stype == 1 || stype == 4)) ||
         (fskill == 4 && stype == 6) ||
         (fskill == 5 && stype == 6)
-    ) { battleLowDamageSE.play();
+    ) { ;
         return 1/2}
     //(1): 0-(0,1,2,3,4,5), 1-(0,1,4,6), 2-(0,2,4,5,6), 3-(0,3,5,6), 4-(0,1,2,4,5), 5-(0,2,3,4,5), 6-(1,2,3)
     else if((fskill == 0 && (stype == 0 || stype == 1 || stype == 2 || stype == 3 || stype == 4 || stype == 5)) || 
@@ -506,7 +510,7 @@ function typeMatch(fskill, stype){//引数は技属性番号とタイプ番号
             (fskill == 4 && (stype == 0 || stype == 1 || stype == 2 || stype == 4 || stype == 5)) ||
             (fskill == 5 && (stype == 0 || stype == 2 || stype == 3 || stype == 4 || stype == 5)) ||
             (fskill == 6 && (stype == 1 || stype == 2 || stype == 3))
-    ) { battleMiddleDamageSE.play();
+    ) { ;
         return 1}
     //(2): 1-3, 2-1, 3-2, 4-3, 5-1, 6-(0,4,5,6)
     else if((fskill == 1 && stype == 3) ||
@@ -515,7 +519,7 @@ function typeMatch(fskill, stype){//引数は技属性番号とタイプ番号
             (fskill == 4 && stype == 3) ||
             (fskill == 5 && stype == 1) ||
             (fskill == 6 && (stype == 0 || stype == 4 || stype == 5 || stype == 6))
-    ) { battleHighDamageSE.play();
+    ) {;
         return 2}
 }
 
@@ -547,11 +551,13 @@ function lateEnemyAttack(){
         ////////////////////////
         changeHPMP(0, (-1)*damage, !attackorder, 0, 0);//HP変化
         if(!attackorder) { //相手がダメージ食らう
+            skillSE[mypicstock[mypic[0]][8][myskillNum]].play("playse");
             drawBattleEffects.push([myskillNum,
-                skillEffect[secondSkill[7]].x+enemyImagePos[encountEnemyNum][4]+enemyImagePos[encountEnemyNum][6]/2-efWidth/2,
-                skillEffect[secondSkill[7]].y+enemyImagePos[encountEnemyNum][5]+enemyImagePos[encountEnemyNum][7]/2-efHeight/2,0]);
+                skillEffect[mypicstock[mypic[0]][8][myskillNum]].x+enemyImagePos[encountEnemyNum][4]+enemyImagePos[encountEnemyNum][6]/2-efWidth/2,
+                skillEffect[mypicstock[mypic[0]][8][myskillNum]].y+enemyImagePos[encountEnemyNum][5]+enemyImagePos[encountEnemyNum][7]/2-efHeight/2,0]);
             enemyIsDamagedAni=1;
         } else if(attackorder) {//自分がダメージ食らう
+            skillSE[baseEnemyData[8][lastEnemySkill]].play("playse");
             drawBattleEffects.push([lastEnemySkill+4,
                 skillEffect[baseEnemyData[8][lastEnemySkill]].x+190+90-efWidth/2,
                 skillEffect[baseEnemyData[8][lastEnemySkill]].y+130+90-efHeight/2,0]);

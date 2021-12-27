@@ -78,11 +78,19 @@ const eventobj=[    //x,y,width,height,eventnum,...（下部参照）
     [],[],[],[],[],[],[],[],[],[]//50
 ]
 const humanObj=[ //人のオブジェクト
-    [{name: "A", dialogs:17, speed:1.5,pos:{x:720, y:111},dir:3,dis:0,img:3,ani:0,nowPos:0,nowChatting:0}],//0
-    [{name: "B", dialogs:18, speed:1,pos:{x:620, y:211},dir:1,dis:40,img:2,ani:0,nowPos:0,nowChatting:0}],//1
-    [{name: "D", dialogs:28, speed:1.5,pos:{x:450, y:20},dir:3,dis:0,img:0,ani:0,nowPos:0,nowChatting:0}],//2
-    [],[],[],[],[],[],[],
-    [{name: "D", dialogs:19, speed:1.5,pos:{x:870, y:231},dir:3,dis:0,img:3,ani:0,nowPos:0,nowChatting:0}],//10
+    [],//0
+    [{name: "B", dialogs:18, speed:1,pos:{x:620, y:211},dir:1,dis:140,img:2,ani:0,nowPos:0,nowChatting:0},
+     {name: "B", dialogs:30, speed:1,pos:{x:400, y:311},dir:3,dis:0,img:2,ani:0,nowPos:0,nowChatting:0},
+     {name: "D", dialogs:35, speed:1,pos:{x:190, y:240},dir:2,dis:80,img:0,ani:0,nowPos:0,nowChatting:0}],//1
+    [{name: "D", dialogs:28, speed:1.5,pos:{x:450, y:20},dir:3,dis:0,img:0,ani:0,nowPos:0,nowChatting:0},
+     {name: "D", dialogs:36, speed:1.5,pos:{x:650, y:150},dir:3,dis:0,img:0,ani:0,nowPos:0,nowChatting:0}],//2
+    [],
+    [{name: "D", dialogs:31, speed:1.5,pos:{x:300, y:310},dir:3,dis:0,img:0,ani:0,nowPos:0,nowChatting:0},
+     {name: "D", dialogs:32, speed:1.5,pos:{x:550, y:190},dir:3,dis:0,img:0,ani:0,nowPos:0,nowChatting:0},
+     {name: "D", dialogs:33, speed:1.3,pos:{x:240, y:150},dir:1,dis:110,img:5,ani:0,nowPos:0,nowChatting:0},
+     {name: "D", dialogs:34, speed:1.5,pos:{x:610, y:320},dir:3,dis:60,img:4,ani:0,nowPos:0,nowChatting:0}],//4
+    [],[],[],[],[],
+    [{name: "D", dialogs:19, speed:1.5,pos:{x:870, y:231},dir:3,dis:0,img:3,ani:0,nowPos:0,nowChatting:0},],//10
     [],[],[],[],
     [{name: "D", dialogs:25, speed:1.5,pos:{x:425, y:317},dir:3,dis:0,img:3,ani:0,nowPos:0,nowChatting:0}],//15
     [],[],[],[],
@@ -95,7 +103,8 @@ const humanObj=[ //人のオブジェクト
     [],[],
     [{name: "D", dialogs:26, speed:1.5,pos:{x:750, y:68},dir:3,dis:0,img:3,ani:0,nowPos:0,nowChatting:0}],//33
     [],[],[],[],[],[],
-    [{name: "D", dialogs:22, speed:1.5,pos:{x:518, y:475},dir:0,dis:0,img:3,ani:0,nowPos:0,nowChatting:0}],//40
+    [{name: "D", dialogs:22, speed:1.5,pos:{x:518, y:475},dir:0,dis:0,img:3,ani:0,nowPos:0,nowChatting:0},
+     {name: "D", dialogs:29, speed:1.5,pos:{x:658, y:210},dir:3,dis:0,img:6,ani:0,nowPos:0,nowChatting:0}],//40
     [],[],[],[],
     [{name: "D", dialogs:27, speed:1.5,pos:{x:418, y:305},dir:3,dis:0,img:5,ani:0,nowPos:0,nowChatting:0}],//45
     [],[],[],[]
@@ -942,7 +951,7 @@ const eventMsgText=[ /////戦闘が始まる時は "*XXX"　の書式（XXXは�
         "化身となった父親を倒すと、マイピクたちに色が戻った。",
         "マイピクたちはその変化に喜んでいる。",
         "この街に平和が戻った..."],
-    [   "私があんたのままザマス"],//17
+    [   "   "],//17
     [   "今日はいい天気だわね!"],//18
     [   "ここからは道が荒れた森。色々な敵が出てきます",
         "体力が少なくなったら回復のアイテムを使用してね!"],//19
@@ -962,7 +971,19 @@ const eventMsgText=[ /////戦闘が始まる時は "*XXX"　の書式（XXXは�
     [   "...いいものあるよ...."],//26
     [   "いらっしゃいませ！　今お安くしていますよ！"],//27
     [   "この先は数年前の争いののちに葬られた石碑がある.....",
-        "それが万が一元に戻った時、それは禍をもたらすだろう..."]//28
+        "それが万が一元に戻った時、それは禍をもたらすだろう..."],//28
+    [   "あーあ、今日もあんまり人がこないなあ..."],//29
+    [   "いらっしゃいませ！"],//30
+    [   "今日はいい品物が入りましたよ〜、見ていってください！"],//31
+    [   "最近人の入りが多くてもうかってるんだわ。",
+        "あなたも買っていかない？"],//32
+    [   "今日もいい天気ですね！"],//33
+    [   "この街もあの事件があってからは平和になったものだ。",
+        "あんなひどい事件はもう見たくない..."],//34
+    [   "あなたはここの住人？",
+        "私は最近こっちに引っ越した人です！　よろしくね！"],//35
+    [   "この先には木のモンスターが多く出る深い森と岩のモンスターが多く出る長い洞窟があるって噂だ",
+        "ちゃんと準備してから行かないとひどい目に遭うぞ......"],//36
 ]
 
 

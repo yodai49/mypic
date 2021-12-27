@@ -689,14 +689,18 @@ function fieldMain() {
         if(!eventMessageWindow) fieldCharaStatus[myposworld][i].nowChatting=0;
         if(fieldCharaStatus[myposworld][i].dis > 0) fieldCharaStatus[myposworld][i].ani++;
         var dirDice=Math.random();
-        if(dirDice<0.008 && fieldCharaStatus[myposworld][i].dis>0) {
+        if(dirDice<0.004 && fieldCharaStatus[myposworld][i].dis>0) {
             if(fieldCharaStatus[myposworld][i].dir >= 0){
                 if(fieldCharaStatus[myposworld][i].dir % 2 == 0){
                     fieldCharaStatus[myposworld][i].dir++;
                 } else{
                     fieldCharaStatus[myposworld][i].dir--;
                 }
-                if(dirDice<0.006) fieldCharaStatus[myposworld][i].dir-=4;
+                if(dirDice<0.003) {
+                    fieldCharaStatus[myposworld][i].dir-=4;
+                }
+            } else {
+                fieldCharaStatus[myposworld][i].dir+=4;
             }
         } 
         if (fieldCharaStatus[myposworld][i].nowPos<0){
@@ -739,8 +743,8 @@ function fieldMain() {
             if(fieldCharaStatus[myposworld][i].dir<=1) ctx2d.drawImage(characanvas,getFieldCharaX(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir,Math.floor(fieldCharaStatus[myposworld][i].ani/10)%3),getFieldCharaY(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir,Math.floor(fieldCharaStatus[myposworld][i].ani/10)%3),28,28,charaPosX,charaPosY,charasize,charasize); //キャラクターの描画
             if(fieldCharaStatus[myposworld][i].dir>=2) ctx2d.drawImage(characanvas,getFieldCharaX(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir,Math.floor(fieldCharaStatus[myposworld][i].ani/10)%3),getFieldCharaY(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir,Math.floor(fieldCharaStatus[myposworld][i].ani/10)%3),28,28,charaPosX,charaPosY,charasize,charasize); //キャラクターの描画    
         } else{
-            if(fieldCharaStatus[myposworld][i].dir<=1) ctx2d.drawImage(characanvas,getFieldCharaX(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir+4,0),getFieldCharaY(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir+4,0),28,28,charaPosX,charaPosY,charasize,charasize); //キャラクターの描画
-            if(fieldCharaStatus[myposworld][i].dir>=2) ctx2d.drawImage(characanvas,getFieldCharaX(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir+4,0),getFieldCharaY(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir+4,0),28,28,charaPosX,charaPosY,charasize,charasize); //キャラクターの描画
+            if(fieldCharaStatus[myposworld][i].dir<=1) ctx2d.drawImage(characanvas,getFieldCharaX(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir+4,1),getFieldCharaY(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir+4,1),28,28,charaPosX,charaPosY,charasize,charasize); //キャラクターの描画
+            if(fieldCharaStatus[myposworld][i].dir>=2) ctx2d.drawImage(characanvas,getFieldCharaX(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir+4,1),getFieldCharaY(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir+4,1),28,28,charaPosX,charaPosY,charasize,charasize); //キャラクターの描画
         }
     }
 

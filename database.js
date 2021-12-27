@@ -79,14 +79,21 @@ const eventobj=[    //x,y,width,height,eventnum,...（下部参照）
 ]
 const humanObj=[ //人のオブジェクト
     [{name: "A", dialogs:17, speed:1.5,pos:{x:720, y:111},dir:3,dis:0,img:3,ani:0,nowPos:0,nowChatting:0}],//0
-    [{name: "B", dialogs:18, speed:1,pos:{x:620, y:211},dir:1,dis:40,img:2,ani:0,nowPos:0,nowChatting:0}],//1
-    [{name: "D", dialogs:28, speed:1.5,pos:{x:450, y:20},dir:3,dis:0,img:0,ani:0,nowPos:0,nowChatting:0}],//2
-    [],[],
-    [{name: "裏案内", dialogs:29, speed:1.5,pos:{x:451, y:120},dir:2,dis:0,img:5,ani:0,nowPos:0,nowChatting:0},
-    {name: "裏1", dialogs:30, speed:1.5,pos:{x:239, y:279},dir:1,dis:0,img:6,ani:0,nowPos:0,nowChatting:0},
-    {name: "裏2", dialogs:31, speed:1.5,pos:{x:697, y:316},dir:0,dis:0,img:7,ani:0,nowPos:0,nowChatting:0},
-    {name: "裏3", dialogs:32, speed:1.5,pos:{x:454, y:464},dir:2,dis:0,img:8,ani:0,nowPos:0,nowChatting:0},
-    {name: "裏4", dialogs:33, speed:1.5,pos:{x:447, y:256},dir:3,dis:0,img:9,ani:0,nowPos:0,nowChatting:0}], //5
+    [{name: "B", dialogs:18, speed:1,pos:{x:620, y:211},dir:1,dis:140,img:2,ani:0,nowPos:0,nowChatting:0},
+     {name: "B", dialogs:30, speed:1,pos:{x:400, y:311},dir:3,dis:0,img:2,ani:0,nowPos:0,nowChatting:0},
+     {name: "D", dialogs:35, speed:1,pos:{x:190, y:240},dir:2,dis:80,img:0,ani:0,nowPos:0,nowChatting:0}],//1
+    [{name: "D", dialogs:28, speed:1.5,pos:{x:450, y:20},dir:3,dis:0,img:0,ani:0,nowPos:0,nowChatting:0},
+     {name: "D", dialogs:36, speed:1.5,pos:{x:650, y:150},dir:3,dis:0,img:0,ani:0,nowPos:0,nowChatting:0}],//2
+    [],
+    [{name: "D", dialogs:31, speed:1.5,pos:{x:300, y:310},dir:3,dis:0,img:0,ani:0,nowPos:0,nowChatting:0},
+     {name: "D", dialogs:32, speed:1.5,pos:{x:550, y:190},dir:3,dis:0,img:0,ani:0,nowPos:0,nowChatting:0},
+     {name: "D", dialogs:33, speed:1.3,pos:{x:240, y:150},dir:1,dis:110,img:5,ani:0,nowPos:0,nowChatting:0},
+     {name: "D", dialogs:34, speed:1.5,pos:{x:610, y:320},dir:3,dis:60,img:4,ani:0,nowPos:0,nowChatting:0}],//4
+    [{name: "裏案内", dialogs:37, speed:1.5,pos:{x:451, y:120},dir:2,dis:0,img:5,ani:0,nowPos:0,nowChatting:0},
+    {name: "裏1", dialogs:38, speed:1.5,pos:{x:239, y:279},dir:1,dis:0,img:6,ani:0,nowPos:0,nowChatting:0},
+    {name: "裏2", dialogs:39, speed:1.5,pos:{x:697, y:316},dir:0,dis:0,img:7,ani:0,nowPos:0,nowChatting:0},
+    {name: "裏3", dialogs:40, speed:1.5,pos:{x:454, y:464},dir:2,dis:0,img:8,ani:0,nowPos:0,nowChatting:0},
+    {name: "裏4", dialogs:41, speed:1.5,pos:{x:447, y:256},dir:3,dis:0,img:9,ani:0,nowPos:0,nowChatting:0}], //5
     [],[],[],[],
     [{name: "D", dialogs:19, speed:1.5,pos:{x:870, y:231},dir:3,dis:0,img:3,ani:0,nowPos:0,nowChatting:0}],//10
     [],[],[],[],
@@ -101,7 +108,8 @@ const humanObj=[ //人のオブジェクト
     [],[],
     [{name: "D", dialogs:26, speed:1.5,pos:{x:750, y:68},dir:3,dis:0,img:3,ani:0,nowPos:0,nowChatting:0}],//33
     [],[],[],[],[],[],
-    [{name: "D", dialogs:22, speed:1.5,pos:{x:518, y:475},dir:0,dis:0,img:3,ani:0,nowPos:0,nowChatting:0}],//40
+    [{name: "D", dialogs:22, speed:1.5,pos:{x:518, y:475},dir:0,dis:0,img:3,ani:0,nowPos:0,nowChatting:0},
+     {name: "D", dialogs:29, speed:1.5,pos:{x:658, y:210},dir:3,dis:0,img:6,ani:0,nowPos:0,nowChatting:0}],//40
     [],[],[],[],
     [{name: "D", dialogs:27, speed:1.5,pos:{x:418, y:305},dir:3,dis:0,img:5,ani:0,nowPos:0,nowChatting:0}],//45
     [],[],[],[]
@@ -948,7 +956,7 @@ const eventMsgText=[ /////戦闘が始まる時は "*XXX"　の書式（XXXは�
         "化身となった父親を倒すと、マイピクたちに色が戻った。",
         "マイピクたちはその変化に喜んでいる。",
         "この街に平和が戻った..."],
-    [   "私があんたのままザマス"],//17
+    [   "   "],//17
     [   "今日はいい天気だわね!"],//18
     [   "ここからは道が荒れた森。色々な敵が出てきます",
         "体力が少なくなったら回復のアイテムを使用してね!"],//19
@@ -969,29 +977,41 @@ const eventMsgText=[ /////戦闘が始まる時は "*XXX"　の書式（XXXは�
     [   "いらっしゃいませ！　今お安くしていますよ！"],//27
     [   "この先は数年前の争いののちに葬られた石碑がある.....",
         "それが万が一元に戻った時、それは禍をもたらすだろう..."],//28
+    [   "あーあ、今日もあんまり人がこないなあ..."],//29
+    [   "いらっしゃいませ！"],//30
+    [   "今日はいい品物が入りましたよ〜、見ていってください！"],//31
+    [   "最近人の入りが多くてもうかってるんだわ。",
+        "あなたも買っていかない？"],//32
+    [   "今日もいい天気ですね！"],//33
+    [   "この街もあの事件があってからは平和になったものだ。",
+        "あんなひどい事件はもう見たくない..."],//34
+    [   "あなたはここの住人？",
+        "私は最近こっちに引っ越した人です！　よろしくね！"],//35
+    [   "この先には木のモンスターが多く出る深い森と岩のモンスターが多く出る長い洞窟があるって噂だ",
+        "ちゃんと準備してから行かないとひどい目に遭うぞ......"],//36
     [   "ここは最強のマイピクだけが入ることを許された不思議な場所",
         "世界でも名の知れた強力なマイピクたちと戦うことができるわ",
-        "必ずセーブして、心してかかるのよ"],//29
+        "必ずセーブして、心してかかるのよ"],//37
     [   "いい度胸してるね",
         "*012",
         "あんた、なかなかやるじゃない",
         "^096",//商品ゲット
-        "ぱおん"],//30
+        "ぱおん"],//38
     [   "いい度胸してるね",
         "*006",
         "あんた、なかなかやるじゃない",
         "^097",//商品ゲット
-        "ぱおん"],//31
+        "ぱおん"],//39
     [   "いい度胸してるね",
         "*007",
         "あんた、なかなかやるじゃない",
         "^098",//商品ゲット
-        "ぱおん"],//32
+        "ぱおん"],//40
     [   "いい度胸してるね",
         "*008",
         "あんた、なかなかやるじゃない",
         "^099",//商品ゲット
-        "ぱおん"],//33
+        "ぱおん"],//41
 ]
 
 

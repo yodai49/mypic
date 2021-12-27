@@ -1069,21 +1069,23 @@ function fieldMain() {
             if(upkey && eventShopSelectNum && !(eventWindowAni-menuWindowAniSpeed) && !menuSelectFlg) eventShopSelectNum--,menuSelectFlg=1, crosskeySE.play();
             if(downkey && eventShopSelectNum != nowShopData.length-1&& !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg) eventShopSelectNum++,menuSelectFlg=1, crosskeySE.play();
             if(zkey && !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow) {
-                zkeySE.play();
                 if(nowShopData[eventShopSelectNum][0]>=51&&nowShopData[eventShopSelectNum][0]<=100&&countItem(nowShopData[eventShopSelectNum][0])){
                     eventMessageWindow=1;
                     eventMessageWindowMsg="このレシピは既に持っている！";
                     menuSelectFlg=1;    
+                    zkeySE.play();
                 } else if (money >= nowShopData[eventShopSelectNum][1]){
                     money-=nowShopData[eventShopSelectNum][1];
                     getItem(nowShopData[eventShopSelectNum][0]);
                     eventMessageWindow=1;
                     eventMessageWindowMsg=itemdata[nowShopData[eventShopSelectNum][0]][0]+"を買った！";
-                    menuSelectFlg=1;    
+                    menuSelectFlg=1;
+                    buyEventSE.play();
                 } else {
                     eventMessageWindow=1;
                     eventMessageWindowMsg="お金が足りない！";
-                    menuSelectFlg=1;    
+                    menuSelectFlg=1;
+                    zkeySE.play();
                 }
             }
             if(money < showmoney) showmoney-=10;
@@ -1189,7 +1191,7 @@ function fieldMain() {
                 if (eventflgs[i] && !happenedEvent) trigEvent(eventobj[myposworld][i][4],eventobj[myposworld][i]);
             }
             for(var i = 0;i < itemobj[myposworld].length;i++){
-                if (itemflgs[i] && !menuSelectFlg && fieldItemStatus[myposworld][i][5]){
+                if (itemflgs[i]  && fieldItemStatus[myposworld][i][5]){
                     popupMsg.push([itemdata[fieldItemStatus[myposworld][i][4]][0]+"を手に入れた！",120,0,0,"*"+fieldItemStatus[myposworld][i][4]]);
                     fieldItemStatus[myposworld][i][5]--;
                     getItem(fieldItemStatus[myposworld][i][4]);
@@ -1198,7 +1200,7 @@ function fieldMain() {
                 }
             }
             for(var i = 0;i < nowMaterialData[myposworld].length;i++){
-                if (materialflgs[i] && !menuSelectFlg){
+                if (materialflgs[i]){
                     if(!materialVisible[nowMaterialData[myposworld][i][2]-100]){
                         buyEventSE.play();
                         popupMsg.push([itemdata[nowMaterialData[myposworld][i][2]][0]+"を手に入れた！ NEW！",120,0,0,"*"+nowMaterialData[myposworld][i][2]]);    

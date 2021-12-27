@@ -1191,7 +1191,7 @@ function fieldMain() {
                 if (eventflgs[i] && !happenedEvent) trigEvent(eventobj[myposworld][i][4],eventobj[myposworld][i]);
             }
             for(var i = 0;i < itemobj[myposworld].length;i++){
-                if (itemflgs[i] && !menuSelectFlg && fieldItemStatus[myposworld][i][5]){
+                if (itemflgs[i]  && fieldItemStatus[myposworld][i][5]){
                     popupMsg.push([itemdata[fieldItemStatus[myposworld][i][4]][0]+"を手に入れた！",120,0,0,"*"+fieldItemStatus[myposworld][i][4]]);
                     fieldItemStatus[myposworld][i][5]--;
                     getItem(fieldItemStatus[myposworld][i][4]);
@@ -1200,7 +1200,7 @@ function fieldMain() {
                 }
             }
             for(var i = 0;i < nowMaterialData[myposworld].length;i++){
-                if (materialflgs[i] && !menuSelectFlg){
+                if (materialflgs[i]){
                     if(!materialVisible[nowMaterialData[myposworld][i][2]-100]){
                         buyEventSE.play();
                         popupMsg.push([itemdata[nowMaterialData[myposworld][i][2]][0]+"を手に入れた！ NEW！",120,0,0,"*"+nowMaterialData[myposworld][i][2]]);    

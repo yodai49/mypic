@@ -57,10 +57,12 @@ function battleEffectCreate(){
     }
 }
 function battleEffectRedraw(mySkills,enemySkills){
-    befctx.clearRect(0,0,befctx.width,befctx.height);
+    befctx.clearRect(0,0,25*efWidth,14*efHeight);
+    console.log("cleared");
     for(var i = 0; i < 4;i++){
         befctx.drawImage(befImg[skillData[mySkills[i]][7]],efWidth*5*i,0);
         befctx.drawImage(befImg[skillData[enemySkills[i]][7]],efWidth*5*i,efHeight*7);
+        console.log("drawed " + i);
     }
 }
 
@@ -265,13 +267,13 @@ function battleMain() {
                 ////////////////////////
                 changeHPMP(0, (-1)*damage, attackorder,0, 0);//HP変化
                 if(!attackorder) { //自分がダメージ食らう
-                    skillSE[baseEnemyData[8][lastEnemySkill]].play();
+                    skillSE[baseEnemyData[8][lastEnemySkill]].play("playse");
                     drawBattleEffects.push([lastEnemySkill+4,
                         skillEffect[baseEnemyData[8][lastEnemySkill]].x+190+90-efWidth/2,
                         skillEffect[baseEnemyData[8][lastEnemySkill]].y+130+90-efHeight/2,0]);
                     mypicIsDamagedAni=1;
                 } else if(attackorder) {//相手がダメージ食らう
-                    skillSE[mypicstock[mypic[0]][8][myskillNum]].play();
+                    skillSE[mypicstock[mypic[0]][8][myskillNum]].play("playse");
                     drawBattleEffects.push([myskillNum,
                         skillEffect[mypicstock[mypic[0]][8][myskillNum]].x+enemyImagePos[encountEnemyNum][4]+enemyImagePos[encountEnemyNum][6]/2-efWidth/2,
                         skillEffect[mypicstock[mypic[0]][8][myskillNum]].y+enemyImagePos[encountEnemyNum][5]+enemyImagePos[encountEnemyNum][7]/2-efHeight/2,0]);
@@ -549,13 +551,13 @@ function lateEnemyAttack(){
         ////////////////////////
         changeHPMP(0, (-1)*damage, !attackorder, 0, 0);//HP変化
         if(!attackorder) { //相手がダメージ食らう
-            skillSE[mypicstock[mypic[0]][8][myskillNum]].play();
+            skillSE[mypicstock[mypic[0]][8][myskillNum]].play("playse");
             drawBattleEffects.push([myskillNum,
                 skillEffect[mypicstock[mypic[0]][8][myskillNum]].x+enemyImagePos[encountEnemyNum][4]+enemyImagePos[encountEnemyNum][6]/2-efWidth/2,
                 skillEffect[mypicstock[mypic[0]][8][myskillNum]].y+enemyImagePos[encountEnemyNum][5]+enemyImagePos[encountEnemyNum][7]/2-efHeight/2,0]);
             enemyIsDamagedAni=1;
         } else if(attackorder) {//自分がダメージ食らう
-            skillSE[baseEnemyData[8][lastEnemySkill]].play();
+            skillSE[baseEnemyData[8][lastEnemySkill]].play("playse");
             drawBattleEffects.push([lastEnemySkill+4,
                 skillEffect[baseEnemyData[8][lastEnemySkill]].x+190+90-efWidth/2,
                 skillEffect[baseEnemyData[8][lastEnemySkill]].y+130+90-efHeight/2,0]);

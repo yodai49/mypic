@@ -23,7 +23,8 @@ function battlemessMain(){
         ctx2d.fillStyle=white;
         ctx2d.font="26px "+mainfontName;
         if(Bsetcheck){
-            introMessage[0]="野生の "+baseEnemyData[0]+" があらわれた！";
+            if(encountEnemyNum >= 4 && encountEnemyNum <= 8)introMessage[0] = baseEnemyData[0]+" があらわれた！";
+            else introMessage[0]="野生の "+baseEnemyData[0]+" があらわれた！";
             introMessage[1]="勝負だ、 "+mypicstock[mypic[0]][0]+" !";
             endMess2[0]=mypicstock[mypic[0]][0]+"はにげた。";}
         if(!modeAnimation) ctx2d.fillText(introMessage[in_lstnum], width*25/100,height*75/100);

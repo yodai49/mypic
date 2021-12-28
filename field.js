@@ -48,7 +48,7 @@ for(var i = 0;i < itemdata.length;i++) {
         itemMenuImg[i].src="./imgs/itemImgs/itemImg" + i + ".png";
     }else if(i <= 100 &&i >= 51){//レシピ
         itemMenuImg[i].src="./imgs/itemImgs/itemImgRecipe.png"; 
-    } else if(i <= 195){//マテリアル
+    } else if(i <= 199){//マテリアル
         itemMenuImg[i].src="./imgs/itemImgs/itemImg"+i+".png";
     }else{
         itemMenuImg[i].src="./imgs/itemImgs/itemImgSec.png";
@@ -720,8 +720,8 @@ function fieldMain() {
         var charaPosX=fieldCharaStatus[myposworld][i].pos.x;
         var charaPosY=fieldCharaStatus[myposworld][i].pos.y;
         if(!fieldCharaStatus[myposworld][i].dis && fieldCharaStatus[myposworld][i].dir>=2) charaPosY-=Math.max(0,6*(Math.sin(globalTime/10)-0.5));
-        if(fieldCharaStatus[myposworld][i].dir<=1) charaPosX+=(fieldCharaStatus[myposworld][i].nowPos+1);
-        if(fieldCharaStatus[myposworld][i].dir>=2) charaPosY+=(fieldCharaStatus[myposworld][i].nowPos+1);
+        if((fieldCharaStatus[myposworld][i].dir+8)%4<=1) charaPosX+=(fieldCharaStatus[myposworld][i].nowPos+1);
+        if((fieldCharaStatus[myposworld][i].dir+8)%4>=2) charaPosY+=(fieldCharaStatus[myposworld][i].nowPos+1);
         //当たり判定
         if(!(charaPosX<myposx+charasize && charaPosX+charasize>myposx && charaPosY<myposy+charasize && charaPosY+charasize>myposy) && !fieldCharaStatus[myposworld][i].nowChatting && fieldCharaStatus[myposworld][i].dis){
             fieldCharaStatus[myposworld][i].nowPos=nextFieldChara;
@@ -730,9 +730,17 @@ function fieldMain() {
             if(zkey && !eventMessageWindow&&!battleAnimationFlg && !menuWindow){
                 eventMessageWindow=1;
                 eventMessageWindowMsgStack=[];
-                eventMessageWindowMsg="+"+eventMsgText[fieldCharaStatus[myposworld][i].dialogs][0];
-                for(var j = 0;j < (eventMsgText[fieldCharaStatus[myposworld][i].dialogs].length-1);j++){
-                    eventMessageWindowMsgStack[j]="+"+eventMsgText[fieldCharaStatus[myposworld][i].dialogs][j+1];
+                if(fieldHumanStatus[myposworld*10+i] && fieldCharaStatus[myposworld][i].dialogs2!=undefined){ //２回目以降
+                    eventMessageWindowMsg="+"+eventMsgText[fieldCharaStatus[myposworld][i].dialogs2][0];
+                    for(var j = 0;j < (eventMsgText[fieldCharaStatus[myposworld][i].dialogs2].length-1);j++){
+                        eventMessageWindowMsgStack[j]="+"+eventMsgText[fieldCharaStatus[myposworld][i].dialogs2][j+1];
+                    }    
+                } else{ //初回の話しかける時
+                    fieldHumanStatus[myposworld*10+i]=1;
+                    eventMessageWindowMsg="+"+eventMsgText[fieldCharaStatus[myposworld][i].dialogs][0];
+                    for(var j = 0;j < (eventMsgText[fieldCharaStatus[myposworld][i].dialogs].length-1);j++){
+                        eventMessageWindowMsgStack[j]="+"+eventMsgText[fieldCharaStatus[myposworld][i].dialogs][j+1];
+                    }    
                 }
                 eventMessageWindowAni=1;
                 fieldCharaStatus[myposworld][i].nowChatting=1;
@@ -743,8 +751,8 @@ function fieldMain() {
             if(fieldCharaStatus[myposworld][i].dir<=1) ctx2d.drawImage(characanvas,getFieldCharaX(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir,Math.floor(fieldCharaStatus[myposworld][i].ani/10)%3),getFieldCharaY(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir,Math.floor(fieldCharaStatus[myposworld][i].ani/10)%3),28,28,charaPosX,charaPosY,charasize,charasize); //キャラクターの描画
             if(fieldCharaStatus[myposworld][i].dir>=2) ctx2d.drawImage(characanvas,getFieldCharaX(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir,Math.floor(fieldCharaStatus[myposworld][i].ani/10)%3),getFieldCharaY(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir,Math.floor(fieldCharaStatus[myposworld][i].ani/10)%3),28,28,charaPosX,charaPosY,charasize,charasize); //キャラクターの描画    
         } else{
-            if(fieldCharaStatus[myposworld][i].dir<=1) ctx2d.drawImage(characanvas,getFieldCharaX(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir+4,1),getFieldCharaY(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir+4,1),28,28,charaPosX,charaPosY,charasize,charasize); //キャラクターの描画
-            if(fieldCharaStatus[myposworld][i].dir>=2) ctx2d.drawImage(characanvas,getFieldCharaX(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir+4,1),getFieldCharaY(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir+4,1),28,28,charaPosX,charaPosY,charasize,charasize); //キャラクターの描画
+            if(fieldCharaStatus[myposworld][i].dir<=-3) ctx2d.drawImage(characanvas,getFieldCharaX(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir+4,1),getFieldCharaY(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir+4,1),28,28,charaPosX,charaPosY,charasize,charasize); //キャラクターの描画
+            if(fieldCharaStatus[myposworld][i].dir>=-2) ctx2d.drawImage(characanvas,getFieldCharaX(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir+4,1),getFieldCharaY(fieldCharaStatus[myposworld][i].img,fieldCharaStatus[myposworld][i].dir+4,1),28,28,charaPosX,charaPosY,charasize,charasize); //キャラクターの描画
         }
     }
 
@@ -1075,8 +1083,13 @@ function fieldMain() {
                 ctx2d.fillText(itemdata[nowShopData[eventShopSelectNum][0]][3], width/2-200+35,height/2-150+55+10*20);
             }
             ctx2d.font="13pt " + mainfontName;
-            ctx2d.fillStyle="rgba(105,105,105," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
             for(var i = 0;i < Math.min(10,nowShopData.length);i++){
+                if(nowShopData[i][0]>=51 && nowShopData[i][0]<=100 && countItem(nowShopData[i][0])){
+                    ctx2d.fillStyle="rgba(80,80,80," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
+                } else{
+                    ctx2d.fillStyle="rgba(135,135,135," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
+                }
+    
                 if (i!=eventShopSelectNum){
                     ctx2d.fillText(itemdata[nowShopData[i][0]][0], width/2-200+35,height/2-150+56+i*20);
                     ctx2d.fillText(nowShopData[i][1], width/2+200-105-ctx2d.measureText(nowShopData[i][1]).width,height/2-150+56+i*20);
@@ -1084,7 +1097,11 @@ function fieldMain() {
                 }
                 ctx2d.drawImage(itemMenuImg[nowShopData[i][0]],width/2-200+15,height/2-161+52+i*20,16,16);
             }
-            ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*(Math.sin(globalTime/6)*0.3+0.7) + ")";
+            if(nowShopData[eventShopSelectNum][0]>=51 && nowShopData[eventShopSelectNum][0]<=100 && countItem( nowShopData[eventShopSelectNum][0])){
+                ctx2d.fillStyle="rgba(80,80,80," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*(Math.sin(globalTime/6)*0.3+0.7) + ")";
+            } else{
+                ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*(Math.sin(globalTime/6)*0.3+0.7) + ")";
+            }
             ctx2d.fillText(itemdata[nowShopData[eventShopSelectNum][0]][0], width/2-200+35,height/2-150+56+eventShopSelectNum*20);
             ctx2d.fillText(nowShopData[eventShopSelectNum][1], width/2+200-105-ctx2d.measureText(nowShopData[eventShopSelectNum][1]).width,height/2-150+56+eventShopSelectNum*20);
             ctx2d.fillText(currencyName, width/2+200-85,height/2-150+56+eventShopSelectNum*20);
@@ -1860,7 +1877,7 @@ function fieldMain() {
             ctx2d.font="12pt " + mainfontName;
             ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)*(0.7+0.3*Math.sin(globalTime/8))+")";
             ctx2d.fillText("Zキーで次へ",38,387);
-            if (zkey && !(eventMessageWindow-menuWindowAniSpeed) && !menuSelectFlg && (debugMode!=0 || eventMessageWindowAni/2>eventMessageWindowMsg.length)){//メッセージの更新処理
+            if (zkey && !(eventMessageWindow-menuWindowAniSpeed) && !menuSelectFlg && (debugMode!=0 || eventMessageWindowAni/2>eventMessageWindowMsg.length) && !battleAnimationFlg){//メッセージの更新処理
                 messageNextSE.play(); 
                 eventMessageWindowAni=1;
                 if (eventMessageWindowMsgStack.length==0){
@@ -1882,7 +1899,7 @@ function fieldMain() {
                         //アイテム入手のときの書式は"+^XXX"
                         getItem(Number(eventMessageWindowMsg.substr(2,3)));
                         eventSE.play();
-                        popupMsg.push([itemdata[Number(eventMessageWindowMsg.substr(2,3))][0] + "を手に入れた！",120,0,0,-1]);
+                        popupMsg.push([itemdata[Number(eventMessageWindowMsg.substr(2,3))][0] + "を手に入れた！",120,0,0,"*"+Number(eventMessageWindowMsg.substr(2,3))]);
                         eventMessageWindowMsg=eventMessageWindowMsgStack[0];
                         eventMessageWindowMsgStack.shift();
                         menuSelectFlg=1;

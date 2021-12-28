@@ -114,9 +114,19 @@ const humanObj=[ //人のオブジェクト
     [{name: "x", dialogs:24, speed:1.5,pos:{x:280, y:160},dir:1,dis:0,img:0,ani:0,nowPos:0,nowChatting:0}],//25
     [],[],[],[],
     [{name: "D", dialogs:21, speed:1.5,pos:{x:30, y:321},dir:2,dis:0,img:3,ani:0,nowPos:0,nowChatting:0}],//30
-    [],[],
-    [{name: "D", dialogs:26, speed:1.5,pos:{x:750, y:68},dir:3,dis:0,img:3,ani:0,nowPos:0,nowChatting:0}],//33
-    [],[],[],[],[],[],
+    [],
+    [{name: "D", dialogs:49, speed:1.5,pos:{x:332, y:143},dir:1,dis:80,img:2,ani:0,nowPos:0,nowChatting:0},
+    {name: "D", dialogs:50, speed:1.5,pos:{x:90, y:409},dir:1,dis:70,img:3,ani:0,nowPos:0,nowChatting:0},
+    {name: "D", dialogs:51,dialogs2:54, speed:1.5,pos:{x:661, y:195},dir:1,dis:60,img:3,ani:0,nowPos:0,nowChatting:0}],//32
+    [{name: "D", dialogs:26, speed:1.5,pos:{x:770, y:68},dir:3,dis:0,img:4,ani:0,nowPos:0,nowChatting:0}],//33
+    [],
+    [{name: "D", dialogs:48, speed:1.5,pos:{x:91, y:140},dir:1,dis:80,img:6,ani:0,nowPos:0,nowChatting:0},
+    {name: "D", dialogs:47, speed:1.5,pos:{x:686, y:218},dir:3,dis:100,img:7,ani:0,nowPos:0,nowChatting:0},
+    {name: "D", dialogs:46,dialogs2:53, speed:1.5,pos:{x:190, y:365},dir:1,dis:100,img:0,ani:0,nowPos:0,nowChatting:0}],//35
+    [{name: "D", dialogs:55, speed:1.5,pos:{x:196, y:138},dir:3,dis:0,img:0,ani:0,nowPos:0,nowChatting:0},
+    {name: "D", dialogs:56, speed:1.5,pos:{x:653, y:134},dir:3,dis:0,img:3,ani:0,nowPos:0,nowChatting:0},
+    {name: "D", dialogs:57, speed:1.5,pos:{x:468, y:327},dir:3,dis:0,img:4,ani:0,nowPos:0,nowChatting:0}], //36
+    [],[],[],
     [{name: "D", dialogs:22, speed:1.5,pos:{x:518, y:475},dir:0,dis:0,img:3,ani:0,nowPos:0,nowChatting:0},
      {name: "D", dialogs:29, speed:1.5,pos:{x:658, y:210},dir:3,dis:0,img:6,ani:0,nowPos:0,nowChatting:0}],//40
     [],[],[],[],
@@ -975,7 +985,7 @@ const eventMsgText=[ /////戦闘が始まる時は "*XXX"　の書式（XXXは�
     [   "ガゥウルルルッ！", //10
         "*007",
         "ん？何やらものが落ちてるぞ？",
-        "memo3には何が書いてあるんだろう...",
+        "メモには何が書いてあるんだろう...",
         "~20XX年12月17日、",
         "~ようやく完成した。",
         "~過剰反応を抑えながらエネルギー放出を行える薬は史上初だ。",
@@ -1000,7 +1010,7 @@ const eventMsgText=[ /////戦闘が始まる時は "*XXX"　の書式（XXXは�
     [   "その先には...イカセンゾ...", //13
         "*008",
         "ん？何やらものが落ちてるぞ？",
-        "memo4には何が書いてあるんだろう...",
+        "紙切れには何が書いてあるんだろう...",
         "=ごめんなさい。",
         "=許せない過ちを犯してしまった。",
         "=あの後彼と揉みあいになった挙句、開発したばかりの薬を投げつけてしまった。",
@@ -1088,7 +1098,24 @@ const eventMsgText=[ /////戦闘が始まる時は "*XXX"　の書式（XXXは�
     [   "あんたにはこりごりよ"],//42
     [    "あなたが世界最強ね"],//43
     [    "なんて可愛いマイピクなのかしら"],//44
-    [    "あなた、強いのね"]//45
+    [    "あなた、強いのね"],//45
+    [    "おっ、強そうな見た目だな",
+        "^201",
+        "なんだかわからないけど、こんな秘伝書をもらったんだ",
+        "俺には使えそうにないから、大事につかってくれよ"],//46 大通りモブ
+    [   "廃墟の奥にお墓があった気がするわ"],//47
+    [   "選択画面で上下キーとスペースキーを押すと高速でスクロールできるのよ！"],//48
+    [   "うまいマイピクが描けたら見せてくれよな！"],//49
+    [   "そういえば石碑の裏には最強のマイピクがいるとか聞いたことが..."],//50
+    [   "そういえば、レアな火の卵を拾ったのよ",
+        "^30",
+        "大切に育ててね"],//51
+    [   "水のほとりにはサンゴがいっぱい落ちているっていう噂はほんとうなのかしら"],//52
+    [   "マイピクは秘伝書で強い技を覚えられるぞ"],//53
+    [   "マイピクは描いた絵の特徴によってステータスや攻撃力が変化するのよ！"],//54
+    [   "色んなレシピを取り揃えてるよ！"],//55
+    [   "貴重なマテリアルがお買い得だよ"],//56
+    [   "レアなレシピはうちにおまかせ！"]//57
 ]
 
 

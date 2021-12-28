@@ -432,12 +432,20 @@ function checkConflict(dir){
             }
         }    
     }
+    var Tmyposx=myposx;
+    var Tmyposy=myposy;
+    var Tmyposh=charasize;
+    var Tmyposw=charasize;
+    if(dir==0) Tmyposw=3;
+    if (dir==1) Tmyposw=3,Tmyposx+=charasize-3;
+    if (dir==2) Tmyposh=3;
+    if(dir==3) Tmyposh=3,Tmyposy+=charasize-3;
     for(let i = 0;i < fieldCharaStatus[myposworld].length;i++){//モブキャラとの当たり判定
         var charaPosX=fieldCharaStatus[myposworld][i].pos.x;
         var charaPosY=fieldCharaStatus[myposworld][i].pos.y;
         if(fieldCharaStatus[myposworld][i].dir<=1) charaPosX+=fieldCharaStatus[myposworld][i].nowPos;
         if(fieldCharaStatus[myposworld][i].dir>=2) charaPosY+=fieldCharaStatus[myposworld][i].nowPos;
-        if(charaPosX<myposx+checkConflictPosx2+charasize && charaPosX+charasize>myposx+checkConflictPosx2 && charaPosY<myposy+checkConflictPosy2+charasize && charaPosY+charasize>myposy+checkConflictPosy2){
+        if(charaPosX<Tmyposx+checkConflictPosx2+Tmyposw && charaPosX+charasize>Tmyposx+checkConflictPosx2 && charaPosY<Tmyposy+checkConflictPosy2+Tmyposh && charaPosY+charasize>Tmyposy+checkConflictPosy2){
             return 1;
         } 
     }

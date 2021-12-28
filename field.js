@@ -113,6 +113,7 @@ function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode,redMode){
         for(var i = 0;i < drawMypicTempObj.length;i++){
             ctx2d.strokeStyle="rgba(255,255,255,"+trans+")";
             if(redMode) ctx2d.strokeStyle="rgba(150,0,0,"+trans+")";
+            if(isNaN(redMode))ctx2d.strokeStyle=redMode;
             ctx2d.beginPath();
             if (drawMypicTempObj[i][0] == 0){ //線
                 ctx2d.moveTo(dx+dw*drawMypicTempObj[i][1]/100,dy+dh*drawMypicTempObj[i][2]/100);

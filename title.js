@@ -69,13 +69,13 @@ function titleMain() {
     var titleMypicSin=Math.max(0,5*Math.sin(globalTime/5));//ピクピク
     drawMypicTempObj=titleMypicImg[Math.floor(globalTime/120)%4];
     if(Math.floor(globalTime/120)%4==0){
-        drawMypic(0,50,titleMypicSin+Math.min(0,-200/1800*titleMypicAni*(titleMypicAni-120)-200),200,200,1,1,0);
+        drawMypic(0,50,titleMypicSin+Math.min(0,-200/1800*titleMypicAni*(titleMypicAni-120)-200),200,200,1,1,"rgba("+typeDataCol[1]+",1)");
     } else if(Math.floor(globalTime/120)%4==1){
-        drawMypic(0,710,titleMypicSin+340-Math.min(0,-200/1800*titleMypicAni*(titleMypicAni-120)-200),200,200,1,1,0);
+        drawMypic(0,710,titleMypicSin+340-Math.min(0,-200/1800*titleMypicAni*(titleMypicAni-120)-200),200,200,1,1,"rgba("+typeDataCol[2]+",1)");
     }else if(Math.floor(globalTime/120)%4==2){
-        drawMypic(0,710-Math.min(0,-200/1800*titleMypicAni*(titleMypicAni-120)-200),titleMypicSin,200,200,1,1,0);
+        drawMypic(0,710-Math.min(0,-200/1800*titleMypicAni*(titleMypicAni-120)-200),titleMypicSin,200,200,1,1,"rgba("+typeDataCol[5]+",1)");
     }else if(Math.floor(globalTime/120)%4==3){
-        drawMypic(0,Math.min(0,-200/1800*titleMypicAni*(titleMypicAni-120)-200),titleMypicSin+290,200,200,1,1,0);
+        drawMypic(0,Math.min(0,-200/1800*titleMypicAni*(titleMypicAni-120)-200),titleMypicSin+290,200,200,1,1,"rgba("+typeDataCol[4]+",1)");
     }
     if(!titleLoadingFlg && imgCnt<=loadedimgCnt){
         if (upkey && !selectTitleFlg && selectTitleNum==1) selectTitleNum=0,selectTitleFlg=1,crosskeySE.play();

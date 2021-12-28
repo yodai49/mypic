@@ -305,7 +305,7 @@ function setMaterials(){
                     let lCounter=0;
                     while (true){
                         lCounter++;
-                        if(lCounter>10000) break;
+                        if(lCounter>1000) break;
                         let tempColision=0;
                         materialX=Math.random()*width;
                         materialY=Math.random()*height;
@@ -353,7 +353,7 @@ function setMaterials(){
                         if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
                         checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX+1+material_size/2,materialY+material_size/2,1,1);
                         if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
-                        if(!tempColision) break; //ここに当たり判定条件を追加する
+                        if(!tempColision) break; 
                     }
                     nowMaterialData[myposworld].push([materialX,materialY,fieldMaterialDataSet[fieldMaterial[myposworld]][i][0]]);
                 }

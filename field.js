@@ -1610,6 +1610,8 @@ function fieldMain() {
                 ctx2d.fillStyle="rgba(255,255,255,"+menuWindowTransChild+")";
                 ctx2d.fillText("マテリアルずかん",320,48);
                 ctx2d.font="16px "+mainfontName;
+                ctx2d.fillText("左右キーでページをめくる",30,410);
+                ctx2d.fillText("スペースキーで高速スクロール",30,390);
                 for(var i = 0;i < 15;i++){
                     ctx2d.fillStyle="rgba(155,155,155,"+menuWindowTransChild+")";
                     if(i==menuSelectChildNum%15) ctx2d.fillStyle="rgba(255,255,255,"+menuWindowTransChild*(Math.sin(globalTime/6)*0.3+0.7)+")";

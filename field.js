@@ -131,6 +131,7 @@ function drawMypic(drawMypicNum,dx,dy,dw,dh,trans,mode,redMode){
             ctx2d.strokeStyle="rgba(255,255,255,"+trans+")";
             if(redMode) ctx2d.strokeStyle="rgba(150,0,0,"+trans+")";
             if(tempitemflg) ctx2d.strokeStyle="rgba("+typeDataCol[mypicstock[drawMypicNum][15]]+","+trans+")";
+            if(redMode) ctx2d.strokeStyle="rgba(150,0,0,"+trans+")";
             ctx2d.beginPath();
             if (mypicstock[drawMypicNum][1][i][0] == 0){ //線
                 ctx2d.moveTo(dx+dw*mypicstock[drawMypicNum][1][i][1]/100,dy+dh*mypicstock[drawMypicNum][1][i][2]/100);
@@ -719,7 +720,7 @@ function fieldMain() {
         }
         var charaPosX=fieldCharaStatus[myposworld][i].pos.x;
         var charaPosY=fieldCharaStatus[myposworld][i].pos.y;
-        if(!fieldCharaStatus[myposworld][i].dis && fieldCharaStatus[myposworld][i].dir>=2) charaPosY-=Math.max(0,6*(Math.sin(globalTime/10)-0.5));
+        if(!fieldCharaStatus[myposworld][i].dis) charaPosY-=Math.max(0,6*(Math.sin(globalTime/10)-0.5));
         if((fieldCharaStatus[myposworld][i].dir+8)%4<=1) charaPosX+=(fieldCharaStatus[myposworld][i].nowPos+1);
         if((fieldCharaStatus[myposworld][i].dir+8)%4>=2) charaPosY+=(fieldCharaStatus[myposworld][i].nowPos+1);
         //当たり判定

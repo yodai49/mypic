@@ -100,6 +100,8 @@ function battleloop(){
             field2d.drawImage(battleBackImg[2],0,138,450,200,width*0/100,height*0/100,width,height*65/100);
         } else if(myposworld>=40 && myposworld<=46){
             field2d.drawImage(battleBackImg[3],0,58,580,386,width*0/100,height*0/100,width,height*65/100);
+        } else if(myposworld<10){
+            field2d.drawImage(battleBackImg[2],0,138,450,200,width*0/100,height*0/100,width,height*65/100);
         }
         //////////////
         field2d.drawImage(battleGround,0,0,250,131,width*5/100,height*50/100,width*44/100,height*15/100);

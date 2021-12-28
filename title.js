@@ -65,6 +65,18 @@ function titleMain() {
     ctx2d.font="16pt " + mainfontName;
     ctx2d.fillStyle="rgba(255,255,255,1)";
     ctx2d.fillText("Zキーで決定",(width-ctx2d.measureText("Zキーで決定").width)/2,height/2+200);
+    var titleMypicAni=globalTime%120;
+    var titleMypicSin=Math.max(0,5*Math.sin(globalTime/5));//ピクピク
+    drawMypicTempObj=titleMypicImg[Math.floor(globalTime/120)%4];
+    if(Math.floor(globalTime/120)%4==0){
+        drawMypic(0,50,titleMypicSin+Math.min(0,-200/1800*titleMypicAni*(titleMypicAni-120)-200),200,200,1,1,0);
+    } else if(Math.floor(globalTime/120)%4==1){
+        drawMypic(0,710,titleMypicSin+340-Math.min(0,-200/1800*titleMypicAni*(titleMypicAni-120)-200),200,200,1,1,0);
+    }else if(Math.floor(globalTime/120)%4==2){
+        drawMypic(0,710-Math.min(0,-200/1800*titleMypicAni*(titleMypicAni-120)-200),titleMypicSin,200,200,1,1,0);
+    }else if(Math.floor(globalTime/120)%4==3){
+        drawMypic(0,Math.min(100,-300/1800*titleMypicAni*(titleMypicAni-120)-200),titleMypicSin+290,200,200,1,1,0);
+    }
     if(!titleLoadingFlg && imgCnt<=loadedimgCnt){
         if (upkey && !selectTitleFlg && selectTitleNum==1) selectTitleNum=0,selectTitleFlg=1,crosskeySE.play();
         if(downkey && !selectTitleFlg && selectTitleNum==0) selectTitleNum=1,selectTitleFlg=1,crosskeySE.play();

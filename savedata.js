@@ -14,6 +14,8 @@ function saveData(){
     localStorage.setItem("mypicstock",jsonOb);
     jsonOb=JSON.stringify(fieldItemStatus,undefined,1);
     localStorage.setItem("fieldItemStatus",jsonOb);
+    jsonOb=JSON.stringify(fieldHumanStatus,undefined,1);
+    localStorage.setItem("fieldHumanStatus",jsonOb);
     jsonOb=JSON.stringify(materialVisible,undefined,1);
     localStorage.setItem("materialVisible",jsonOb);
     isFirst=0;
@@ -31,6 +33,7 @@ function loadData(){
     mypic=JSON.parse(localStorage.getItem("mypic"));
     mypicstock=JSON.parse(localStorage.getItem("mypicstock"));
     fieldItemStatus=JSON.parse(localStorage.getItem("fieldItemStatus"));
+    fieldHumanStatus=JSON.parse(localStorage.getItem("fieldHumanStatus"));
     for(var i = 0;i < humanObj.length;i++) fieldCharaStatus[i]=humanObj[i];
     materialVisible=JSON.parse(localStorage.getItem("materialVisible"));
     eventMessageWindow=0,eventMessageWindowMsg="",eventMessageSelectNum=0,procreateMsg="",eventMessageWindowMsgStack=[],eventMessageWindowAni=0;
@@ -47,6 +50,7 @@ function loadData(){
         materialVisible=[];
         for(var i = 0;i<101;i++)materialVisible[i]=0;
     }
+    if(fieldHumanStatus==null) fieldHumanStatus=[];
 }
 
 function resetData(){
@@ -63,6 +67,8 @@ function resetData(){
     for(var i = 0;i < itemobj.length;i++){
         fieldItemStatus[i] = itemobj[i];
     }
+    fieldHumanStatus=[];
+    for(var i = 0;i < humanObj.length;i++) fieldHumanStatus[i] = 0;
     for(var i = 0;i < humanObj.length;i++) fieldCharaStatus[i]=humanObj[i];
     isFromFirst=1;
     nextEventNum=0;

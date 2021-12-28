@@ -1,6 +1,15 @@
 var selectTitleFlg=0,selectTitleNum=1,titleLoadingFlg=1;
 const gameTitle="マイピクチャーズ";
-
+const titleCol=[
+    "rgba(235,150,150,1)",
+    "rgba(150,235,150,1)",
+    "rgba(150,150,235,1)",
+    "rgba(240,240,150,1)",
+    "rgba(230,150,230,1)",
+    "rgba(235,150,150,1)",
+    "rgba(150,235,150,1)",
+    "rgba(150,150,235,1)",
+]
 function titleMain() {
     /*　タイトル画面の描画関数
     @param なし
@@ -30,11 +39,7 @@ function titleMain() {
     ctx2d.fillStyle="rgba(255,255,255,1)";
     ctx2d.font="50pt " + mainfontName;
     for(var i = 0; i < gameTitle.length;i++){
-       if(i ==0 || i == 1){
-            ctx2d.fillStyle="rgba(255,200,200,1)";
-       } else{
-            ctx2d.fillStyle="rgba(255,255,255,1)";           
-       }
+       ctx2d.fillStyle=titleCol[i];
        var titleAniX=0,titleAniY=0;
        if (i % 4 == 0) titleAniX=1;
        if (i % 4 == 1) titleAniX=-1;

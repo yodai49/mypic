@@ -75,7 +75,7 @@ function titleMain() {
     }else if(Math.floor(globalTime/120)%4==2){
         drawMypic(0,710-Math.min(0,-200/1800*titleMypicAni*(titleMypicAni-120)-200),titleMypicSin,200,200,1,1,0);
     }else if(Math.floor(globalTime/120)%4==3){
-        drawMypic(0,Math.min(100,-300/1800*titleMypicAni*(titleMypicAni-120)-200),titleMypicSin+290,200,200,1,1,0);
+        drawMypic(0,Math.min(0,-200/1800*titleMypicAni*(titleMypicAni-120)-200),titleMypicSin+290,200,200,1,1,0);
     }
     if(!titleLoadingFlg && imgCnt<=loadedimgCnt){
         if (upkey && !selectTitleFlg && selectTitleNum==1) selectTitleNum=0,selectTitleFlg=1,crosskeySE.play();

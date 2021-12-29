@@ -1926,6 +1926,28 @@ function fieldMain() {
         ctx2d.fillText("Loading" + ".".repeat(Math.floor(globalTime/10)%3),30,500);
         if(mypicstock.length) drawMypic(Math.floor(globalTime/120)% mypicstock.length,width-100,height-100+Math.max(0,Math.sin(globalTime/7)*20-17),80,80,1,0,(globalTime<=30&& (Math.floor(globalTime/4)%2)));
     }
+    if(debugMode==6){ //アニメーション録画用モード
+        ctx2d.fillStyle="rgba(0,0,0,1)";
+        ctx2d.fillRect(0,0,width,height);
+        var dMA6=(globalTime%250)/250*150,dMA6l=0,dMA6t=0,dMA6s;
+        var k1=1.05,k2=0.65;
+        if(dMA6<20){ //スライドイン
+            dMA6s=200;
+            dMA6l=(width-dMA6s*k1)/2-(Math.pow(dMA6,2)-Math.pow(20,2));
+            dMA6t=(height-dMA6s*k2)/2;
+        } else if(dMA6<50){ //停止
+            dMA6s=200;
+            dMA6l=(width-dMA6s*k1)/2;
+            dMA6t=(height-dMA6s*k2)/2;
+            if(dMA6<36)dMA6t+=Math.max(0,Math.sin(dMA6/3)*10);
+        } else{ //拡大
+            dMA6s=200+Math.pow(dMA6-50,2)*5;
+            dMA6l=(width-dMA6s*k1)/2;
+            dMA6t=(height-dMA6s*k2)/2;
+        }
+        drawMypicTempObj=titleMypicImg[0];
+        drawMypic(0,dMA6l,dMA6t,dMA6s,dMA6s,1,1,"rgba(255,255,255,1)");
+    }
 }
 
 function playFieldBGM(fieldNum){ //-1でタイトルを流せる

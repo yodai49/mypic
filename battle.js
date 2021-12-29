@@ -38,24 +38,10 @@ var typeMatchFlg;
 var shortDpFlg=false;//Dp枯渇フラグ
 var DEBUGcount_oneMove=0,DEBUGcount_fieldDraw=0,battleZkeyFlg=0;
 var myskillNum=0;
-const efWidth=192;
-const efHeight=192;
 var battleEffectCanvas,drawBattleEffects=[],befctx,battleEffectCanvas;//エフェクト系
-var befImg=[],lastEnemySkill;
 function getbefX(efNum,aniNum){return (efNum%4)*efWidth*5+efWidth*(aniNum%5)};
 function getbefY(efNum,aniNum){return Math.floor(aniNum/5)*efHeight+efHeight*7*Math.floor(efNum/4)};
 
-function battleEffectCreate(){
-    battleEffectCanvas=document.createElement("canvas"); //バトルエフェクトの生成
-    battleEffectCanvas.width=efWidth*5*4, battleEffectCanvas.height=efHeight*2*7;
-    befctx=battleEffectCanvas.getContext("2d"); 
-    for(var i = 0;i < skillEffect.length;i++) {
-        imgCnt++;
-        befImg[i]=new Image();
-        befImg[i].src="./imgs/skillEffects/" + i + ".png";
-        befImg[i].onload=function(){loadedimgCnt++;}
-    }
-}
 function battleEffectRedraw(mySkills,enemySkills){
     befctx.clearRect(0,0,25*efWidth,14*efHeight);
     for(var i = 0; i < 4;i++){

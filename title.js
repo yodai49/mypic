@@ -15,21 +15,16 @@ function titleMain() {
     @param なし
     @return 
     */
-
-   //ロードの確認処理//
-   for(var i = 0; i < 50;i++){
-       if(fielddata[i][0]!=-1){
-            if(!fieldImgComplete[i] && fieldimg[i].complete == true){
-                fieldImgComplete[i]=1;
-                loadedimgCnt++;
-                if(loadedimgCnt==imgCnt) playFieldBGM(-1);
-            } 
+   if(titleLoadingFlg){
+       if(loadedimgCnt==imgCnt){
+           titleLoadingFlg=0;
+           playFieldBGM(-1);
        }
    }
 
    ctx2d.clearRect(0,0,width,height);
     if (fieldReDrawFlg){
-        titleLoadingFlg=1;    
+        titleLoadingFlg=1;
         const fieldimg=new Image();
         fieldimg.src="./imgs/titleimg.jpg";
         fieldimg.onload=function(){field2d.drawImage(fieldimg,0,0,width,height); titleLoadingFlg=0;}

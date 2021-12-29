@@ -29,7 +29,6 @@ function titleMain() {
         fieldimg.src="./imgs/titleimg.jpg";
         fieldimg.onload=function(){
             field2d.drawImage(fieldimg,0,0,width,height); titleLoadingFlg=0;
-            console.log("title loaded");
         }
         fieldReDrawFlg=0;
     }
@@ -80,7 +79,7 @@ function titleMain() {
     }else if(Math.floor(globalTime/120)%4==3){
         drawMypic(0,Math.min(0,-200/1800*titleMypicAni*(titleMypicAni-120)-200),titleMypicSin+290,200,200,1,1,"rgba("+typeDataCol[4]+",1)");
     }
-    if(!titleLoadingFlg && imgCnt<=loadedimgCnt){
+    if(!(titleLoadingFlg || imgCnt>loadedimgCnt)){ //ロード後
         if (upkey && !selectTitleFlg && selectTitleNum==1) selectTitleNum=0,selectTitleFlg=1,crosskeySE.play();
         if(downkey && !selectTitleFlg && selectTitleNum==0) selectTitleNum=1,selectTitleFlg=1,crosskeySE.play();
         if (isFirst) selectTitleNum=0;

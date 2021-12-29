@@ -13,12 +13,38 @@ var isFromFirst=0;///はじめからを選択した場合1を格納
 var materialVisible=[];//マテリアルをゲットしたことがあれば1
 var popupMsg=[];//ポップアップで表示するメッセージを格納 形式[msgの内容、生き残り時間、0、ディレイ、ピクチャ(なにもないなら[]を指定)]
 const modeChangeAniSpeed=30;
+const charasize=35; //キャラクターのサイズ
+const pre_charasize=60; //プリレンダリング用のキャラクターのサイズ
+const material_size=30;//マテリアルの描画サイズ
+const fieldwidth=960;//フィールドの幅の最大値
+const fieldheight=540;//フィールドの高さの最大値
+var debugMode=0; //デバッグモード　1ならワープ位置を赤で表示
 
 //フィールド系
 var myposx=0,myposy=0, myposworld=0;//キャラクターの位置　x：横　y:縦　world:ワールド番号
 var fieldItemStatus,nextEventNum=0,fieldCharaStatus=[];
 var fieldHumanStatus;
 const fieldnum=5;//フィールドの数
+function initiate_field(){
+    /*　フィールド・キャラクターの初期化処理 　呼び出しは一度だけ　////////////////////////
+    @param なし
+    @return なし
+    */
+   //////DEBUG MODE
+   if(debugMode) walkspeed=12;
+   //////
+   menuSelectNum=0,menuSelectFlg=0; //選択中のメニュー
+   fieldReDrawFlg=1;
+
+    var characanvasctx=characanvas.getContext("2d"); //charaimg1は0,0、charaimg2はその右側に描画
+    characanvasctx.clearRect(0,0,width,height);
+    const charaimg2=new Image();
+    charaimg2.src="./imgs/character_imgs.png"
+    charaimg2.onload=function(){
+        characanvasctx.drawImage(charaimg2,0,300); //0,300の位置にキャラクターのイメージをまとめて描画
+    }
+    createField();
+}
 
 //描画系　コンフィグはここ
 const width = 960, height = 540; //ウィンドウのサイズ
@@ -29,7 +55,6 @@ var field2d;//フィールドキャンバスのコンテキスト
 var fieldback2d;//フィールドの背景キャンバスのコンテキスト　当たり判定なし
 var spacekey=false, leftkey=false, upkey=false, rightkey=false, downkey=false;
 var zkey=0,xkey=0,ckey=0,vkey=0, bkey=0;
-var characanvas,fieldPreCanvas,fieldcanvas,fieldbackcanvas; //プリレンダリング用のキャンバス fieldcanvasは前景、fieldbackcanvasは背景（当たり判定なし）
 var items=[[0,39],[1,39],[2,3],[3,4],[4,2],[5,1],[6,30],[7,50],[8,5],[9,33],[10,2],[23,7],[24,7],[26,7],[27,7],[28,7],[29,2],[31,3],[32,4],[33,7],[35,7],[36,1]];
 var money=0;
 var mypic=[0,1,2,3,4,5];//ストックでの管理番号

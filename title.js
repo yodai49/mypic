@@ -27,7 +27,10 @@ function titleMain() {
         titleLoadingFlg=1;
         const fieldimg=new Image();
         fieldimg.src="./imgs/titleimg.jpg";
-        fieldimg.onload=function(){field2d.drawImage(fieldimg,0,0,width,height); titleLoadingFlg=0;}
+        fieldimg.onload=function(){
+            field2d.drawImage(fieldimg,0,0,width,height); titleLoadingFlg=0;
+            console.log("title loaded");
+        }
         fieldReDrawFlg=0;
     }
     ctx2d.clearRect(0,0,width,height);

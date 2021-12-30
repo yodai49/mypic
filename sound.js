@@ -1,82 +1,135 @@
 /////////////////////
 ////     BGM     ////
+imgCnt+=13;
 const homeBgm=new Howl({
     src: 'sound/home.mp3',
     volume: 0.44,
     loop: true,
     format: ['mp3'],
+    onload:()=>{
+        loadedimgCnt++;
+        redrawTitleLoading(loadedimgCnt);
+    }
 });
 const streetBgm=new Howl({
     src: 'sound/street.mp3',
     volume: 0.44,
     loop: true,
     format: ['mp3'],
+    onload:()=>{
+        loadedimgCnt++;
+        redrawTitleLoading(loadedimgCnt);
+    }
 });
 const forestFieldBgm=new Howl({
     src: 'sound/forestField.mp3',
     volume: 0.44,
     loop: true,
     format: ['mp3'],
+    onload:()=>{
+        loadedimgCnt++;
+        redrawTitleLoading(loadedimgCnt);
+    }
 });
 const caveFieldBgm=new Howl({
     src: 'sound/caveField.mp3',
     volume: 0.44,
     loop: true,
     format: ['mp3'],
+    onload:()=>{
+        loadedimgCnt++;
+        redrawTitleLoading(loadedimgCnt);
+    }
 });
 const remainsFieldBgm=new Howl({
     src: 'sound/remainsField.mp3',
     volume: 0.14,
     loop: true,
     format: ['mp3'],
+    onload:()=>{
+        loadedimgCnt++;
+        redrawTitleLoading(loadedimgCnt);
+    }
 });
 const desertFieldBgm=new Howl({
     src: 'sound/desertField.mp3',
     volume: 0.14,
     loop: true,
     format: ['mp3'],
+    onload:()=>{
+        loadedimgCnt++;
+        redrawTitleLoading(loadedimgCnt);
+    }
 });
 const normalBattleBgm=new Howl({
     src: 'sound/normalBattle.mp3',
     volume: 0.24,
     loop: true,
     format: ['mp3'],
+    onload:()=>{
+        loadedimgCnt++;
+        redrawTitleLoading(loadedimgCnt);
+    }
 });
 const rareBattleBgm=new Howl({
     src: 'sound/rareBattle.mp3',
     volume: 0.24,
     loop: true,
     format: ['mp3'],
+    onload:()=>{
+        loadedimgCnt++;
+        redrawTitleLoading(loadedimgCnt);
+    }
 });
 const dungeonBossBattle1Bgm=new Howl({//森
     src: 'sound/dungeonBossBattle1.mp3',
     volume: 0.24,
     loop: true,
-    format: ['mp3'],
+    format: ['mp3'],    
+    onload:()=>{
+        loadedimgCnt++;
+        redrawTitleLoading(loadedimgCnt);
+    }
 });
 const dungeonBossBattle2Bgm=new Howl({//洞窟
     src: 'sound/dungeonBossBattle2.mp3',
     volume: 0.24,
     loop: true,
     format: ['mp3'],
+    onload:()=>{
+        loadedimgCnt++;
+        redrawTitleLoading(loadedimgCnt);
+    }
 });
 const dungeonBossBattle3Bgm=new Howl({//遺跡
     src: 'sound/dungeonBossBattle3.mp3',
     volume: 0.24,
     loop: true,
     format: ['mp3'],
+    onload:()=>{
+        loadedimgCnt++;
+        redrawTitleLoading(loadedimgCnt);
+    }
 });
 const dungeonBossBattle4Bgm=new Howl({//砂漠
     src: 'sound/dungeonBossBattle4.mp3',
     volume: 0.24,
     loop: true,
     format: ['mp3'],
+    onload:()=>{
+        loadedimgCnt++;
+        redrawTitleLoading(loadedimgCnt);
+    }
 });
 const lastBossBattle1Bgm=new Howl({//ラスボス
     src: 'sound/lastBossBattle.mp3',
     volume: 0.24,
     loop: true,
     format: ['mp3'],
+    onload:()=>{
+        loadedimgCnt++;
+        redrawTitleLoading(loadedimgCnt);
+    }
 });
 /////////////////////
 

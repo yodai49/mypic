@@ -172,6 +172,12 @@ function procreateProcess(){ //卵の孵化処理
 }
 function clickEveDraw(x,y){ //クリックイベント/
     if (debugMode==3) console.log(x,y);
+    if(!titleClickedFlg){
+        titleClickedFlg=1;
+        playFieldBGM(-1);
+        selectTitleFlg=1;
+    }
+
     if (mode==1 && eventWindowKind==2 && eventWindowAni && eventProcreateStep==1){ //マイピクドロー中のみ反応
         if (inDrawField && drawMypicTempObj.length <15){ //ドローフィールドの中なら
             if (!drawMypicStatus){
@@ -416,7 +422,15 @@ function checkConflict(dir){
                     }
                     if (!tempitemflg){
                         eventflgs[i]=1;
-                        if(!popupMsg.length) popupMsg.push(["この場所へ行けないようだ！　またあとで来てみよう",120,0,0,-1]);
+                        let tempPopUpMsgFlg=0;
+                        for(var j = 0; j < popupMsg.length;j++){
+                            if(popupMsg[j][0].substr(0,4) == "この場所"){
+                                tempPopUpMsgFlg=1;
+                            }
+                        }
+                        if(!tempPopUpMsgFlg) {
+                            popupMsg.push(["この場所へ行けないようだ！　またあとで来てみよう",120,0,0,-1]);
+                        }
                         return 1;    
                     }
                 }

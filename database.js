@@ -87,7 +87,7 @@ const eventobj=[    //x,y,width,height,eventnum,...（下部参照）
 //              7 アイテム合成      x,y,width,height,7, icon_left,icon_top
 
 const humanObj=[ //人のオブジェクト
-    [{name: "A", dialogs:17, speed:1.5,pos:{x:720, y:111},dir:3,dis:0,img:3,ani:0,nowPos:0,nowChatting:0}],//0
+    [{name: "A", dialogs:58,dialogs2:17, speed:1.5,pos:{x:720, y:111},dir:3,dis:0,img:3,ani:0,nowPos:0,nowChatting:0}],//0
     [{name: "B", dialogs:18, speed:1,pos:{x:620, y:211},dir:1,dis:140,img:2,ani:0,nowPos:0,nowChatting:0},
      {name: "B", dialogs:30, speed:1,pos:{x:400, y:311},dir:3,dis:0,img:2,ani:0,nowPos:0,nowChatting:0},
      {name: "D", dialogs:35, speed:1,pos:{x:190, y:240},dir:2,dis:80,img:0,ani:0,nowPos:0,nowChatting:0}],//1
@@ -1115,7 +1115,11 @@ const eventMsgText=[ /////戦闘が始まる時は "*XXX"　の書式（XXXは�
     [   "マイピクは描いた絵の特徴によってステータスや攻撃力が変化するのよ！"],//54
     [   "色んなレシピを取り揃えてるよ！"],//55
     [   "貴重なマテリアルがお買い得だよ"],//56
-    [   "レアなレシピはうちにおまかせ！"]//57
+    [   "レアなレシピはうちにおまかせ！"],//57
+    [   "冒険に出発するのなら、これを持っていって",
+        "^002",
+        "マイピクの体力を回復できるわ",
+        "敵は手強いから、手持ちのマイピクはできるだけ多くするのよ"]//58
 ]
 
 

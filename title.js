@@ -16,13 +16,14 @@ function titleMain() {
     @return 
     */
 
+
    ctx2d.clearRect(0,0,width,height);
     if (fieldReDrawFlg){
         titleLoadingFlg=1;
         const fieldimg=new Image();
         fieldimg.src="./imgs/titleimg.jpg";
         fieldimg.onload=function(){
-            field2d.drawImage(fieldimg,0,0,width,height); titleLoadingFlg=0,playFieldBGM(-1);
+            field2d.drawImage(fieldimg,0,0,width,height); titleLoadingFlg=0;
         }
         fieldReDrawFlg=0;
     }
@@ -73,7 +74,7 @@ function titleMain() {
     }else if(Math.floor(globalTime/120)%4==3){
         drawMypic(0,Math.min(0,-200/1800*titleMypicAni*(titleMypicAni-120)-200),titleMypicSin+290,200,200,1,1,"rgba("+typeDataCol[4]+",1)");
     }
-    if(!titleLoadingFlg && imgCnt<=loadedimgCnt){ //ロード後
+    if(!titleLoadingFlg && imgCnt<=loadedimgCnt && titleClickedFlg){ //ロード後
         if (upkey && !selectTitleFlg && selectTitleNum==1) selectTitleNum=0,selectTitleFlg=1,crosskeySE.play();
         if(downkey && !selectTitleFlg && selectTitleNum==0) selectTitleNum=1,selectTitleFlg=1,crosskeySE.play();
         if (isFirst) selectTitleNum=0;
@@ -96,7 +97,20 @@ function titleMain() {
         ctx2d.fillRect(0,0,width,height);
         ctx2d.fillStyle="rgba(255,255,255,1)";
         ctx2d.font="26pt " + mainfontName;
-        ctx2d.fillText("Loading" + ".".repeat(Math.floor(globalTime/10)%3),width/2-ctx2d.measureText("Loading..").width/2,180);
+        if (!titleLoadingFlg && imgCnt<=loadedimgCnt){
+            ctx2d.fillText("Loaded!",width/2-ctx2d.measureText("Loaded!").width/2,180);
+            if(zkey) {
+                titleClickedFlg=1;
+                playFieldBGM(-1);
+                selectTitleFlg=1;
+            }
+            ctx2d.fillText("Zキーでスタート",width/2-ctx2d.measureText("Zキーでスタート").width/2,320);
+            ctx2d.font="16pt " + mainfontName;
+            ctx2d.fillText("以降の操作は全てキーボードで行います",width/2-ctx2d.measureText("以降の操作は全てキーボードで行います").width/2,370);
+            ctx2d.font="26pt " + mainfontName;
+        } else{
+            ctx2d.fillText("Loading" + ".".repeat(Math.floor(globalTime/10)%3),width/2-ctx2d.measureText("Loading..").width/2,180);
+        }
         ctx2d.fillText(loadedimgCnt + " / " +imgCnt,width/2-ctx2d.measureText(loadedimgCnt + " / " +imgCnt).width/2,220);
         ctx2d.fillRect(width/2-200,250,400,3);
         ctx2d.fillStyle="rgba(200,255,200,1)";

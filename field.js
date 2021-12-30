@@ -1056,7 +1056,7 @@ function fieldMain() {
                     eventMessageWindow=1;
                     eventMessageWindowMsg=itemdata[nowShopData[eventShopSelectNum][0]][0]+"を買った！";
                     menuSelectFlg=1;
-                    buyEventSE.play();
+                    paySE.play();
                 } else {
                     eventMessageWindow=1;
                     eventMessageWindowMsg="お金が足りない！";

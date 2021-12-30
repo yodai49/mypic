@@ -8,7 +8,7 @@ var befImg=[],lastEnemySkill;
 const efWidth=192;
 const efHeight=192;
 var loadedimgCnt=0,imgCnt=0;
-var fieldReDrawFlg=0;
+var fieldReDrawFlg=0,titleClickedFlg=0;
 
 function fieldCanvasCreate(){
     characanvas=document.createElement("canvas");

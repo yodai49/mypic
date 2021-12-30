@@ -10,7 +10,7 @@ const efWidth=192;
 const efHeight=192;
 var loadedimgCnt=0,imgCnt=0;
 var fieldReDrawFlg=0,titleClickedFlg=0;
-const IMG_CNT_FINAL=107;
+const IMG_CNT_FINAL=120;
 const width=960,height=540;
 const mainfontName="Stick";
 var globalTime=0;//タイム　1ループで1増える
@@ -63,18 +63,17 @@ function redrawTitleLoading(loadingCnt){
     ctx2d.fillStyle="rgba(255,255,255,1)";
     ctx2d.font="26pt " + mainfontName;
     if (!titleLoadingFlg && IMG_CNT_FINAL<=loadingCnt){
-        ctx2d.fillText("Loaded!",width/2-ctx2d.measureText("Loaded!").width/2,180);
-        if(zkey) {
-
-        }
         ctx2d.fillText("画面クリックでスタート",width/2-ctx2d.measureText("画面クリックでスタート").width/2,320);
         ctx2d.font="16pt " + mainfontName;
         ctx2d.fillText("以降の操作は全てキーボードで行います",width/2-ctx2d.measureText("以降の操作は全てキーボードで行います").width/2,370);
-        ctx2d.font="26pt " + mainfontName;
+        ctx2d.font="20pt sans-serif";
+        ctx2d.fillText("Loaded!",width/2-ctx2d.measureText("Loaded!").width/2,180);
     } else{
+        ctx2d.font="20pt sans-serif";
         ctx2d.fillText("Loading" + ".".repeat(Math.floor(globalTime/10)%3),width/2-ctx2d.measureText("Loading..").width/2,180);
     }
     ctx2d.fillText(loadingCnt + " / " +IMG_CNT_FINAL,width/2-ctx2d.measureText(loadingCnt + " / " +IMG_CNT_FINAL).width/2,220);
+    ctx2d.font="26pt " + mainfontName;
     ctx2d.fillRect(width/2-200,250,400,3);
     ctx2d.fillStyle="rgba(200,255,200,1)";
     ctx2d.fillRect(width/2-200,250,400*loadingCnt/imgCnt,3);

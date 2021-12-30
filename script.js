@@ -6,7 +6,6 @@ var messageWindow=0;//メッセージウィンドウの表示非表示
 var myPicWindow=0;//マイピク描画画面の表示非表示
 var menuWindow=0;//メニューウィンドウの表示非表示
 var shopWindow=0;//ショップウィンドウの表示非表示
-var globalTime=0;//タイム　1ループで1増える
 var titleAni=0;
 var isFirst=localStorage.getItem("xpos");//初回起動時かどうかを確認
 var isFromFirst=0;///はじめからを選択した場合1を格納
@@ -47,12 +46,7 @@ function initiate_field(){
 }
 
 //描画系　コンフィグはここ
-const width = 960, height = 540; //ウィンドウのサイズ
-const mainfontName="Stick";
 const currencyName="マイル";
-var ctx2d; //メインキャンバス
-var field2d;//フィールドキャンバスのコンテキスト
-var fieldback2d;//フィールドの背景キャンバスのコンテキスト　当たり判定なし
 var spacekey=false, leftkey=false, upkey=false, rightkey=false, downkey=false;
 var zkey=0,xkey=0,ckey=0,vkey=0, bkey=0;
 var items=[[0,39],[1,39],[2,3],[3,4],[4,2],[5,1],[6,30],[7,50],[8,5],[9,33],[10,2],[23,7],[24,7],[26,7],[27,7],[28,7],[29,2],[31,3],[32,4],[33,7],[35,7],[36,1]];
@@ -132,12 +126,6 @@ for(var i = 0;i < 50;i++){
 }
 
 function init() {
-    //2Dの処理
-    ctx2d=document.getElementById("mainCanvas").getContext("2d");
-    field2d=document.getElementById("fieldCanvas").getContext("2d");
-    fieldback2d=document.getElementById("fieldbackCanvas").getContext("2d");
-    ctx2d.width = width,ctx2d.height = height;
-    field2d.width=width,field2d.height=height;
 
     tick();
 

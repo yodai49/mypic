@@ -5,10 +5,15 @@ var nowMaterialData=[]; //[[[x,y,番号],[...]]]の形式 createFieldごとに�
 var lastFieldVisit=[]; //最後にフィールドを訪れた時間を格納
 var itemMenuImg=[],itemKeyImg,battleBackImg=[],battleGround,msgWindowImg=[],arrowImgs=[]//Imageオブジェクト系
 var befImg=[],lastEnemySkill;
+var ctx2d;
 const efWidth=192;
 const efHeight=192;
 var loadedimgCnt=0,imgCnt=0;
-var fieldReDrawFlg=0;
+var fieldReDrawFlg=0,titleClickedFlg=0;
+const IMG_CNT_FINAL=107;
+const width=960,height=540;
+const mainfontName="Stick";
+var globalTime=0;//タイム　1ループで1増える
 
 function fieldCanvasCreate(){
     characanvas=document.createElement("canvas");
@@ -35,29 +40,48 @@ function battleEffectCreate(){
         imgCnt++;
         befImg[i]=new Image();
         befImg[i].src="./imgs/skillEffects/" + i + ".png";
-        befImg[i].onload=function(){loadedimgCnt++;}
+        befImg[i].onload=function(){
+            loadedimgCnt++;
+            redrawTitleLoading(loadedimgCnt);
+        }
     }
 }
 
 imgCnt=0; //イメージの総数はここで管理
 loadedimgCnt=0;
-for(var i = 0; i < 50;i++){ //フィールド画像データの読み込み
-    fieldImgComplete[i]=0;
-    if(fielddata[i][0]!= -1){
-        imgCnt++;
-        fieldimg[i]=new Image();
-        fieldimg[i].src="./imgs/fieldobjects/fieldobj" + i + "_0.png";
-        fieldimg[i].onload=function(){loadedimgCnt++};
+
+//2Dの処理
+ctx2d=document.getElementById("mainCanvas").getContext("2d");
+field2d=document.getElementById("fieldCanvas").getContext("2d");
+fieldback2d=document.getElementById("fieldbackCanvas").getContext("2d");
+ctx2d.width = width,ctx2d.height = height;
+field2d.width=width,field2d.height=height;
+
+function redrawTitleLoading(loadingCnt){
+    ctx2d.fillStyle="rgba(0,0,0,1)";
+    ctx2d.fillRect(0,0,width,height);
+    ctx2d.fillStyle="rgba(255,255,255,1)";
+    ctx2d.font="26pt " + mainfontName;
+    if (!titleLoadingFlg && IMG_CNT_FINAL<=loadingCnt){
+        ctx2d.fillText("Loaded!",width/2-ctx2d.measureText("Loaded!").width/2,180);
+        if(zkey) {
+            titleClickedFlg=1;
+            playFieldBGM(-1);
+            selectTitleFlg=1;
+        }
+        ctx2d.fillText("Zキーでスタート",width/2-ctx2d.measureText("Zキーでスタート").width/2,320);
+        ctx2d.font="16pt " + mainfontName;
+        ctx2d.fillText("以降の操作は全てキーボードで行います",width/2-ctx2d.measureText("以降の操作は全てキーボードで行います").width/2,370);
+        ctx2d.font="26pt " + mainfontName;
+    } else{
+        ctx2d.fillText("Loading" + ".".repeat(Math.floor(globalTime/10)%3),width/2-ctx2d.measureText("Loading..").width/2,180);
     }
+    ctx2d.fillText(loadingCnt + " / " +IMG_CNT_FINAL,width/2-ctx2d.measureText(loadingCnt + " / " +IMG_CNT_FINAL).width/2,220);
+    ctx2d.fillRect(width/2-200,250,400,3);
+    ctx2d.fillStyle="rgba(200,255,200,1)";
+    ctx2d.fillRect(width/2-200,250,400*loadingCnt/imgCnt,3);
 }
-for(var i = 0; i < 6;i++){ //フィールド背景データの読み込み
-    imgCnt++;
-    fieldbackimg[i]=new Image();
-    fieldbackimg[i].src="./imgs/fieldobjects/fieldbackobj" + i + ".jpg";
-    fieldbackimg[i].onload=function(){
-        loadedimgCnt++;
-    }
-}
+
 battleEffectCreate();
 battleBackImg[0]=new Image(),battleBackImg[0].src="./imgs/battleFieldBackForest.png";//バトル背景の読み込み
 battleBackImg[1]=new Image(),battleBackImg[1].src="./imgs/battleFieldBackCave.png";

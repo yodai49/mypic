@@ -1,6 +1,8 @@
 .canvas-wrapper {
     position: relative;
     height:540px;
+    margin-bottom:30px;
+    margin-top:30px;
 }
 .canvas-wrapper canvas {
     position: absolute;
@@ -22,10 +24,27 @@ h1{
     color:white;
     margin-left:30px;
 }
+h2{
+    margin-left:-20px;
+}
+.margin-20{
+    margin-left:-20px;
+}
+.copyright{
+    position:relative;
+    margin-left:auto;
+    margin-right:auto;
+    background-color:#333333;
+    margin-top:30px;
+    margin-bottom:0;
+    padding-top:10px;
+    padding-bottom:10px;
+    text-align:center;
+}
 .bo{
-    margin-top:-30px;
-    margin-bottom:50px;
-    margin-left:60px;
+    margin-top:-20px;
+    margin-bottom:30px;
+    margin-left:80px;
 }
 .center{
     position:relative;
@@ -34,9 +53,9 @@ h1{
     margin-right:auto;
     padding:0;
     padding-bottom:30px;
-    margin-top:50px;
     margin-bottom:0;
     background-color:rgba(0,0,0,0.74);
+    padding-top:10px;
 }
 
 .kakomi-triple1 {
@@ -44,7 +63,7 @@ h1{
     border: 1px solid #ffffff; /*左枠線*/
     width: 30%;
     min-width:400px;
-    padding: 10px 5px 5px 10px;
+    padding: 5px 10px 5px 10px;
     margin-bottom:40px;
     z-index: 0;
    }

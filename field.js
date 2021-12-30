@@ -459,24 +459,11 @@ function checkConflict(dir){
     if (dir==1) checkConflictPosx= charasize+walkspeed+1,checkConflictPosy=0;
     if (dir==2) checkConflictPosx= 0,checkConflictPosy=-walkspeed-1;
     if (dir==3) checkConflictPosx= 0,checkConflictPosy=charasize+walkspeed+1;
-    for(let j = 0;j < 10;j++){ //障害物との当たり判定
+    for(let j = 0;j < charasize;j++){ //障害物との当たり判定
         if(checkObjectsConflict(checkConflictPosx,checkConflictPosy)) return 1;
-        if (dir==2 || dir == 3) checkConflictPosx+=(charasize/10);
-        if (dir==0 || dir == 1) checkConflictPosy+=(charasize/10);
-    }/*
-    checkConflictPosx=0,checkConflictPosy=0; //動いた後に移動できなければ衝突判定にする（ハマるの防止）
-    dir=1-dir; //dirを0,1　2,3のペアで入れ替え
-    if(dir==-1) dir=3;
-    if(dir==-2) dir=2;
-    if (dir==0) checkConflictPosx= -walkspeed-1,checkConflictPosy=0,checkConflictPosx+=walkspeed;
-    if (dir==1) checkConflictPosx= charasize+walkspeed+1,checkConflictPosy=0,checkConflictPosx-=walkspeed;
-    if (dir==2) checkConflictPosx= 0,checkConflictPosy=-walkspeed-1,checkConflictPosy+=walkspeed;
-    if (dir==3) checkConflictPosx= 0,checkConflictPosy=charasize+walkspeed+1,checkConflictPosy-=walkspeed;
-    for(let j = 0;j < 10;j++){ //障害物との当たり判定
-        if(checkObjectsConflict(checkConflictPosx,checkConflictPosy)) return 1;
-        if (dir==2 || dir == 3) checkConflictPosx+=(charasize/10);
-        if (dir==0 || dir == 1) checkConflictPosy+=(charasize/10);
-    }*/
+        if (dir==2 || dir == 3) checkConflictPosx+=(charasize/charasize);
+        if (dir==0 || dir == 1) checkConflictPosy+=(charasize/charasize);
+    }
     return 0;
 }
 function checkObjectsConflict(dx,dy){
@@ -486,6 +473,8 @@ function checkObjectsConflict(dx,dy){
     for(let i = 0;i < walkCol.length;i++){
         tempColision=1;
         checkimgdata=fieldcanvas.getContext("2d").getImageData(myposx+dx,myposy+dy,1,1);
+        ctx2d.fillStyle="rgba(255,0,0,1)";
+        ctx2d.fillRect(myposx+dx,myposy+dy,1,1);
         if (!checkimgdata.data[0] && !checkimgdata.data[1]  && !checkimgdata.data[2] && !checkimgdata.data[3]) tempColision=0;
         if(tempColision) return 1;
     }

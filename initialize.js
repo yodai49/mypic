@@ -14,6 +14,7 @@ const IMG_CNT_FINAL=120;
 const width=960,height=540;
 const mainfontName="Stick";
 var globalTime=0;//タイム　1ループで1増える
+var globalRand=Math.floor(Math.random()*1000);//乱数
 
 function fieldCanvasCreate(){
     characanvas=document.createElement("canvas");
@@ -67,10 +68,12 @@ function redrawTitleLoading(loadingCnt){
         ctx2d.font="16pt " + mainfontName;
         ctx2d.fillText("以降の操作は全てキーボードで行います",width/2-ctx2d.measureText("以降の操作は全てキーボードで行います").width/2,370);
         ctx2d.font="20pt sans-serif";
-        ctx2d.fillText("Loaded!",width/2-ctx2d.measureText("Loaded!").width/2,180);
+        ctx2d.fillText("Completed!",width/2-ctx2d.measureText("Completed!").width/2,180);
     } else{
         ctx2d.font="20pt sans-serif";
         ctx2d.fillText("Loading" + ".".repeat(Math.floor(globalTime/10)%3),width/2-ctx2d.measureText("Loading..").width/2,180);
+        drawMypicTempObj=titleMypicImg[globalRand%4];
+        drawMypic(0,width-100,height-100,80,80,1,1,"rgba(255,255,255,"+(Math.sin(globalTime/10)*0.4+0.6)+")");    
     }
     ctx2d.fillText(loadingCnt + " / " +IMG_CNT_FINAL,width/2-ctx2d.measureText(loadingCnt + " / " +IMG_CNT_FINAL).width/2,220);
     ctx2d.font="26pt " + mainfontName;

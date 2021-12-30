@@ -1959,7 +1959,7 @@ function fieldMain() {
             dMA6l=(width-dMA6s*k1)/2;
             dMA6t=(height-dMA6s*k2)/2;
         }
-        drawMypicTempObj=titleMypicImg[0];
+        drawMypicTempObj=titleMypicImg[3];
         drawMypic(0,dMA6l,dMA6t,dMA6s,dMA6s,1,1,"rgba(255,255,255,1)");
     }
 }

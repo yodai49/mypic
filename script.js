@@ -50,9 +50,6 @@ function initiate_field(){
 const width = 960, height = 540; //ウィンドウのサイズ
 const mainfontName="Stick";
 const currencyName="マイル";
-var ctx2d; //メインキャンバス
-var field2d;//フィールドキャンバスのコンテキスト
-var fieldback2d;//フィールドの背景キャンバスのコンテキスト　当たり判定なし
 var spacekey=false, leftkey=false, upkey=false, rightkey=false, downkey=false;
 var zkey=0,xkey=0,ckey=0,vkey=0, bkey=0;
 var items=[[0,39],[1,39],[2,3],[3,4],[4,2],[5,1],[6,30],[7,50],[8,5],[9,33],[10,2],[23,7],[24,7],[26,7],[27,7],[28,7],[29,2],[31,3],[32,4],[33,7],[35,7],[36,1]];

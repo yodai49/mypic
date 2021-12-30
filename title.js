@@ -10,13 +10,29 @@ const titleCol=[
     "rgba(150,235,150,1)",
     "rgba(150,150,235,1)",
 ]
+
+for(var i = 0; i < 50;i++){ //フィールド画像データの読み込み
+    fieldImgComplete[i]=0;
+    if(fielddata[i][0]!= -1){
+        imgCnt++;
+        fieldimg[i]=new Image();
+        fieldimg[i].src="./imgs/fieldobjects/fieldobj" + i + "_0.png";
+        fieldimg[i].onload=function(){loadedimgCnt++,redrawTitleLoading(loadedimgCnt); };
+    }
+}
+for(var i = 0; i < 6;i++){ //フィールド背景データの読み込み
+    imgCnt++;
+    fieldbackimg[i]=new Image();
+    fieldbackimg[i].src="./imgs/fieldobjects/fieldbackobj" + i + ".jpg";
+    fieldbackimg[i].onload=function(){
+        loadedimgCnt++,redrawTitleLoading(loadedimgCnt); 
+    }
+}
 function titleMain() {
     /*　タイトル画面の描画関数
     @param なし
     @return 
     */
-
-
    ctx2d.clearRect(0,0,width,height);
     if (fieldReDrawFlg){
         titleLoadingFlg=1;
@@ -93,7 +109,7 @@ function titleMain() {
             playFieldBGM(myposworld);
         }
     } else{ //ロード中
-        redrawTitleLoading();
+        redrawTitleLoading(loadedimgCnt);
     }
    titleAni++;
 }

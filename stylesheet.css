@@ -169,6 +169,17 @@ h2{
     transform:scale(-1,-1);
     position:absolute;
     right:120px;
-    bottom:170px;
+    bottom:190px;
     z-index:-1;
+}
+ul{
+    padding:0rem;
+    list-style:none;
+}
+ul li:before{
+    font-family: "Font Awesome 5 Free";
+    content:'\f3a5';
+    padding:10px;
+    font-weight:lighter;
+    color:#fff;
 }

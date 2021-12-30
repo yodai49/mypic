@@ -473,8 +473,6 @@ function checkObjectsConflict(dx,dy){
     for(let i = 0;i < walkCol.length;i++){
         tempColision=1;
         checkimgdata=fieldcanvas.getContext("2d").getImageData(myposx+dx,myposy+dy,1,1);
-        ctx2d.fillStyle="rgba(255,0,0,1)";
-        ctx2d.fillRect(myposx+dx,myposy+dy,1,1);
         if (!checkimgdata.data[0] && !checkimgdata.data[1]  && !checkimgdata.data[2] && !checkimgdata.data[3]) tempColision=0;
         if(tempColision) return 1;
     }

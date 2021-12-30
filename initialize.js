@@ -65,11 +65,9 @@ function redrawTitleLoading(loadingCnt){
     if (!titleLoadingFlg && IMG_CNT_FINAL<=loadingCnt){
         ctx2d.fillText("Loaded!",width/2-ctx2d.measureText("Loaded!").width/2,180);
         if(zkey) {
-            titleClickedFlg=1;
-            playFieldBGM(-1);
-            selectTitleFlg=1;
+
         }
-        ctx2d.fillText("Zキーでスタート",width/2-ctx2d.measureText("Zキーでスタート").width/2,320);
+        ctx2d.fillText("画面クリックでスタート",width/2-ctx2d.measureText("画面クリックでスタート").width/2,320);
         ctx2d.font="16pt " + mainfontName;
         ctx2d.fillText("以降の操作は全てキーボードで行います",width/2-ctx2d.measureText("以降の操作は全てキーボードで行います").width/2,370);
         ctx2d.font="26pt " + mainfontName;

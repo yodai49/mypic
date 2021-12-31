@@ -1582,7 +1582,7 @@ function fieldMain() {
                 ctx2d.fillText("No.",630+5,180);
                 ctx2d.fillText((menuSelectChildNum+1),690+5,180);
                 ctx2d.fillText("所持数 ",630+5,200);
-                ctx2d.fillText((countItem(menuSelectChildNum+1)),690+5,200);
+                ctx2d.fillText((countItem(menuSelectChildNum+101)),690+5,200);
                 ctx2d.fillStyle="rgba(255,255,255,"+menuWindowTransChild+")";
                 ctx2d.font="13px "+mainfontName;
                 ctx2d.fillText((Math.floor(menuSelectChildNum/15)+1)+" / 7 ページ",500,415);

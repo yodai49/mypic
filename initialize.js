@@ -73,8 +73,34 @@ function redrawTitleLoading(loadingCnt){
         ctx2d.font="20pt sans-serif";
         ctx2d.fillText("Loading" + ".".repeat(Math.floor(globalTime/10)%3),width/2-ctx2d.measureText("Loading..").width/2,180);
         drawMypicTempObj=titleMypicImg[globalRand%4];
-        drawMypic(0,width-100,height-100,80,80,1,1,"rgba(255,255,255,"+(Math.sin(globalTime/10)*0.4+0.6)+")");    
+//        drawMypic(0,width-100,height-100,80,80,1,1,"rgba(255,255,255,"+(Math.sin(globalTime/10)*0.4+0.6)+")");
+        drawMypic(0,width-130,height-100,80,80,1,1,"rgba(255,255,255,1)");
+        ctx2d.beginPath();
+        ctx2d.strokeStyle="rgba(255,255,255,1)";
+        ctx2d.lineWidth=2;
+        ctx2d.moveTo(200,height-150);
+        ctx2d.lineTo(width-200,height-150);
+        ctx2d.lineTo(width-200,height-70);
+        ctx2d.lineTo(width-150,height-50);
+        ctx2d.lineTo(width-200,height-50);
+        ctx2d.lineTo(200,height-50);
+        ctx2d.lineTo(200,height-150);
+        ctx2d.stroke();
+        const GLOB_PARAM=250;
+        var gTCl=globalTime%GLOB_PARAM;
+        if(gTCl<10){
+            ctx2d.fillStyle="rgba(255,255,255," + gTCl/10+")";
+        } else if (GLOB_PARAM-gTCl<35){
+            ctx2d.fillStyle="rgba(255,255,255," + (GLOB_PARAM-gTCl-20)/10+")";
+        } else{
+            ctx2d.fillStyle="rgba(255,255,255,1)";
+        }
+        ctx2d.font="16pt sans-serif";
+        ctx2d.fillText("あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほ".substr(0,Math.min(25,gTCl/2)),215,height-120);
+        ctx2d.fillText("あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほ".substr(25,Math.min(25,(gTCl-50)/2)),215,height-93);
+        ctx2d.fillText("あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほ".substr(50,Math.min(25,(gTCl-100)/2)),215,height-66);
     }
+    ctx2d.fillStyle="rgba(255,255,255,1)";
     ctx2d.fillText(loadingCnt + " / " +IMG_CNT_FINAL,width/2-ctx2d.measureText(loadingCnt + " / " +IMG_CNT_FINAL).width/2,220);
     ctx2d.font="26pt " + mainfontName;
     ctx2d.fillRect(width/2-200,250,400,3);

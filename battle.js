@@ -285,8 +285,8 @@ function battleMain() {
             lateEnemyAttack();}
         else if(Acount==3){//特性おやつもちの効果実行
             if(oneMoveFlg){
-                if(trait9Flg==1){changeHPMP(0,Math.min(Math.floor(mypicstock[mypic[0]][3]*4/100), 1),0,0,0);}
-                if(trait9Flg==2){changeHPMP(0,Math.min(Math.floor(baseEnemyData[3]*4/100), 1),1,0,0);}
+                if(trait9Flg==1){changeHPMP(0,Math.min(Math.floor(mypicstock[mypic[0]][3]*7/100), 1),0,0,0);}
+                if(trait9Flg==2){changeHPMP(0,Math.min(Math.floor(baseEnemyData[3]*7/100), 1),1,0,0);}
                 if(trait9Flg==3){
                     changeHPMP(0,Math.min(mypicstock[mypic[0]][3]*4/100, 1),0,0,0);
                     changeHPMP(0,Math,min(Math.floor(baseEnemyData[3]*4/100), 1),1,0,0);}

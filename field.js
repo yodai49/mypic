@@ -1986,8 +1986,9 @@ function playBattleBGM(encountEnemyNum){
     else if(encountEnemyNum == 8)dungeonBossBattle4Bgm.play();//desertboss
     else if((encountEnemyNum>=9 && encountEnemyNum <=15) || (encountEnemyNum>=19 && encountEnemyNum <=25) || (encountEnemyNum>=29 && encountEnemyNum <=35) || (encountEnemyNum>=39 && encountEnemyNum <=45)){
         normalBattleBgm.play();}//baseEnemy
-    else if((encountEnemyNum>=16 && encountEnemyNum <=18) || (encountEnemyNum>=26 && encountEnemyNum <=28) || (encountEnemyNum>=36 && encountEnemyNum <=38) || (encountEnemyNum>=46 && encountEnemyNum <=48)){
+    else if((encountEnemyNum>=16 && encountEnemyNum <=18) || (encountEnemyNum>=26 && encountEnemyNum <=28) || (encountEnemyNum>=36 && encountEnemyNum <=38) || (encountEnemyNum>=46 && encountEnemyNum <=48) || (encountEnemyNum>=49 && encountEnemyNum<=52)){
         rareBattleBgm.play();}//rareEnemy
+    
 }
 
 function stopBattleBGM(){

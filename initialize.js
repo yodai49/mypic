@@ -15,6 +15,7 @@ const width=960,height=540;
 const mainfontName="Stick";
 var globalTime=0;//タイム　1ループで1増える
 var globalRand=Math.floor(Math.random()*1000);//乱数
+var tipsRand=Math.floor(Math.random()*tips.length);
 
 function fieldCanvasCreate(){
     characanvas=document.createElement("canvas");
@@ -92,14 +93,25 @@ function redrawTitleLoading(loadingCnt){
             ctx2d.fillStyle="rgba(255,255,255," + gTCl/10+")";
         } else if (GLOB_PARAM-gTCl<35){
             ctx2d.fillStyle="rgba(255,255,255," + (GLOB_PARAM-gTCl-20)/10+")";
+            if(GLOB_PARAM-gTCl==1) tipsRand=Math.floor(Math.random()*tips.length);
         } else{
             ctx2d.fillStyle="rgba(255,255,255,1)";
         }
-        ctx2d.font="16pt sans-serif";
-        ctx2d.fillText("あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほ".substr(0,Math.min(25,gTCl/2)),215,height-120);
-        ctx2d.fillText("あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほ".substr(25,Math.min(25,(gTCl-50)/2)),215,height-93);
-        ctx2d.fillText("あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほ".substr(50,Math.min(25,(gTCl-100)/2)),215,height-66);
+        ctx2d.strokeStyle="rgba(255,255,255,1)";
+        ctx2d.lineWidth=2;
+        ctx2d.moveTo(200,height-150);
+        ctx2d.lineTo(300,height-150);
+        ctx2d.lineTo(300,height-117);
+        ctx2d.lineTo(200,height-117);
+        ctx2d.stroke();
+        ctx2d.font="14pt sans-serif";
+        ctx2d.fillText(tips[tipsRand].substr(0,Math.min(28,gTCl/2)),217,height-91);
+        ctx2d.fillText(tips[tipsRand].substr(28,Math.min(28,(gTCl-56)/2)),217,height-64);
+        ctx2d.fillStyle="rgba(255,255,255,1)";
+
+        ctx2d.fillText("TIPS!",210,height-125);
     }
+    ctx2d.font="14pt sans-serif";
     ctx2d.fillStyle="rgba(255,255,255,1)";
     ctx2d.fillText(loadingCnt + " / " +IMG_CNT_FINAL,width/2-ctx2d.measureText(loadingCnt + " / " +IMG_CNT_FINAL).width/2,220);
     ctx2d.font="26pt " + mainfontName;

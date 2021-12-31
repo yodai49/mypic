@@ -1589,7 +1589,14 @@ function fieldMain() {
                 if(upkey && !menuSelectFlg && menuSelectChildNum) menuSelectChildNum--,menuSelectFlg=1,crosskeySE.play();
                 if(downkey&&!menuSelectFlg&&menuSelectChildNum!=94)menuSelectChildNum++,menuSelectFlg=1,crosskeySE.play();
                 if(leftkey && !menuSelectFlg)menuSelectChildNum-=15,menuSelectFlg=1,crosskeySE.play();
-                if(rightkey && !menuSelectFlg)menuSelectChildNum+=15,menuSelectFlg=1,crosskeySE.play();
+                if(rightkey && !menuSelectFlg){
+                    menuSelectFlg=1,crosskeySE.play();
+                    if(menuSelectChildNum>=80 && menuSelectChildNum <= 89){
+                        menuSelectChildNum=90;
+                    } else{
+                        menuSelectChildNum+=15;
+                    }
+                }
                 if(menuSelectChildNum<0) menuSelectChildNum+=15;
                 if(menuSelectChildNum>94)menuSelectChildNum-=15;
             }

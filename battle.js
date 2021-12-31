@@ -447,7 +447,7 @@ function hitorder(){//先攻後攻決め: floor(素早さ*(乱数0.95-1.05))
     var mypicSpeed = Math.floor(mypicstock[mypic[0]][10]*(0.95+(1.05-0.95)*Math.random())) * mypicSpecial;
     var enemySpeed = Math.floor(baseEnemyData[10]*(0.95+(1.05-0.95)*Math.random())) * enemySpacial;
     if(mypicSpeed>=enemySpeed) {
-        if(encountEnemyNum>=4 && encountEnemyNum<=8) attackorder=false, unEscapeFlg=true;//ボス戦の時は逃げられない
+        if((encountEnemyNum>=4 && encountEnemyNum<=8) || (encountEnemyNum>=49 && encountEnemyNum<=56)) attackorder=false, unEscapeFlg=true;//ボス戦の時は逃げられない
         else attackorder=true, unEscapeFlg=false;}//味方の方が速い
     else attackorder=false, unEscapeFlg=false;
 }

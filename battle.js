@@ -107,7 +107,7 @@ function battleMain() {
                         battleMode=2, shortDpFlg=true, Acount=0, Acheck=true, damageMessageFlg=false;}
                     else loopmode=1;//戦う技選択
                 }
-                else if(loopselect==1)loopmode=2, loopselect=0;//アイテム選択
+                else if(loopselect==1)loopmode=2, loopselect=0, BtopItem=0;//アイテム選択
                 else if(loopselect==2)loopmode=3, loopselect=0;//マイピク選択
                 else if(loopselect==3)battleMode=5;//逃げる
                 else loopmode=loopselect+1, loopselect=0;

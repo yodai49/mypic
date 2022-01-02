@@ -991,7 +991,7 @@ function fieldMain() {
                 for(var i = 0;i < 4;i++){
                     ctx2d.fillStyle="rgba("+typeDataCol[skillData[mypicstock[mypicstock.length-1][8][i]][3]] +","+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*Math.min(1,eventEggAni/20)*Math.min(1,eventEggAni/20)+")";
                     ctx2d.fillText(skillData[mypicstock[mypicstock.length-1][8][i]][0],width/2+70,height/2+133+i*15);
-                    ctx2d.fillText("MP:"+skillData[mypicstock[mypicstock.length-1][8][i]][4],width/2+195,height/2+133+i*15);
+                    ctx2d.fillText("DP:"+skillData[mypicstock[mypicstock.length-1][8][i]][4],width/2+195,height/2+133+i*15);
                 }
                 ctx2d.font="11pt " + mainfontName;
                 ctx2d.fillStyle="rgba("+ typeDataCol[mypicstock[mypicstock.length-1][15]]+","+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)+")";
@@ -1726,7 +1726,7 @@ function fieldMain() {
                 }
                 ctx2d.fillText(mypicstock[mypic[i]][0],(width-350)/2+15,height/2-65+30+i*25);
                 ctx2d.fillText("HP: "+ mypicstock[mypic[i]][2] + "/" + mypicstock[mypic[i]][3],(width-350)/2+125,height/2-65+30+i*25);
-                ctx2d.fillText("MP: "+ mypicstock[mypic[i]][4] + "/" + mypicstock[mypic[i]][5],(width-350)/2+255,height/2-65+30+i*25);
+                ctx2d.fillText("DP: "+ mypicstock[mypic[i]][4] + "/" + mypicstock[mypic[i]][5],(width-350)/2+255,height/2-65+30+i*25);
             }
         } else if(eventMessageWindowMsg.substr(0,1) == "@"){//技を忘れさせる場合
             if (mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][14].length) {
@@ -1749,7 +1749,7 @@ function fieldMain() {
                     if (i != 4){
                         ctx2d.fillText(skillData[mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][8][i]][0],(width-350)/2+15,height/2-65+60+i*25);
                         ctx2d.fillText("威力:" + skillData[mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][8][i]][1],(width-350)/2+165,height/2-65+60+i*25);
-                        ctx2d.fillText("MP:" + skillData[mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][8][i]][4],(width-350)/2+235,height/2-65+60+i*25);
+                        ctx2d.fillText("DP:" + skillData[mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][8][i]][4],(width-350)/2+235,height/2-65+60+i*25);
                         ctx2d.fillText("命中:" + skillData[mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][8][i]][2],(width-350)/2+295,height/2-65+60+i*25);
                         if (i == eventMessageSelectNum){
                             ctx2d.fillStyle="rgba("+typeDataCol[skillData[mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][8][i]][3]]+"," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)*(Math.sin(globalTime/6)*0.3+0.7)+")";
@@ -1760,7 +1760,7 @@ function fieldMain() {
                     } else if (mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][14].length){
                         ctx2d.fillText(skillData[mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][14][0]][0],(width-350)/2+15,height/2-65+60+i*25);
                         ctx2d.fillText("威力:" + skillData[mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][14][0]][1],(width-350)/2+165,height/2-65+60+i*25);
-                        ctx2d.fillText("MP:" + skillData[mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][14][0]][4],(width-350)/2+235,height/2-65+60+i*25);
+                        ctx2d.fillText("DP:" + skillData[mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][14][0]][4],(width-350)/2+235,height/2-65+60+i*25);
                         ctx2d.fillText("命中:" + skillData[mypicstock[mypic[Number(eventMessageWindowMsg.substr(1,1))]][14][0]][2],(width-350)/2+295,height/2-65+60+i*25);
                         ctx2d.fillStyle="rgba(255,180,180," +(1- Math.abs(eventMessageWindow-menuWindowAniSpeed)/menuWindowAniSpeed)*(!(i==eventMessageSelectNum)+(i==eventMessageSelectNum)*(Math.sin(globalTime/6)*0.3+0.7))+")";
                         ctx2d.fillText("!",(width-350)/2,height/2-65+60+i*25);

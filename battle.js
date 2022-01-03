@@ -1,6 +1,7 @@
 var battleMode=0;//バトル状態の状態, 0:intro, 1;battle選択, 2:攻撃選択時の処理, 3:アイテム選択時, 4: マイピク選択時, 5: 逃げる選択時, 6:勝利した時, 7:味方が一人やられた時, 8:味方が全員やられ負ける時
 var loopmode=0;//battlelMode=1の状態遷移中　0:No選択,1:戦闘,2:アイテム,3:マイピク↓
 var loopselect=0;//loop内での現在選択値(0-3)
+var loopselectSave=0;//技場所保存用
 var lstnum=0;//Messageリスト内の扱うリストを指定
 var in_lstnum=0;//各リスト内の出力位置を管理
 var encount=false;//敵出現ポインタ
@@ -105,7 +106,7 @@ function battleMain() {
                     if(mypicstock[mypic[0]][4] < Math.min(skillData[mypicstock[mypic[0]][8][0]][4], skillData[mypicstock[mypic[0]][8][1]][4],skillData[mypicstock[mypic[0]][8][2]][4], skillData[mypicstock[mypic[0]][8][3]][4])){
                         //悪あがき使用
                         battleMode=2, shortDpFlg=true, Acount=0, Acheck=true, damageMessageFlg=false;}
-                    else loopmode=1;//戦う技選択
+                    else loopmode=1, loopselect=loopselectSave;//戦う技選択
                 }
                 else if(loopselect==1)loopmode=2, loopselect=0, BtopItem=0;//アイテム選択
                 else if(loopselect==2)loopmode=3, loopselect=0;//マイピク選択
@@ -203,11 +204,13 @@ function battleMain() {
             else if(loopmode==3){loopselect=Math.min(mypic.length-1,loopselect+1);}
             else if(loopmode==4){BwhoUse=Math.min(mypic.length-1,BwhoUse+1);}
             else{loopselect=Math.min(3,loopselect+1);}
+            if(loopmode==1) loopselectSave=loopselect;
             crosskeySE.play();
             downkey=false;}
         else if(upkey){
             if(loopmode==4)BwhoUse=Math.max(0,BwhoUse-1);
             else loopselect=Math.max(0,loopselect-1);
+            if(loopmode==1) loopselectSave=loopselect;
             if(loopmode==2 && loopselect<BtopItem)BtopItem--;
             crosskeySE.play();
             upkey=false;}

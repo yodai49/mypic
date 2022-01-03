@@ -233,14 +233,12 @@ function battleloop(){
                 break;
             case 3:
                 if(trait9Flg == 1){
-                    ctx2d.fillText(mypicstock[mypic[0]][0],width*25/100,height*75/100);
-                    ctx2d.fillText("は手持ちのおやつを食べて少し回復。",width*25/100,height*82/100);
+                    ctx2d.fillText(mypicstock[mypic[0]][0]+" は手持ちのおやつを食べて少し回復。",width*25/100,height*75/100);
                 }else if(trait9Flg==2){
-                    ctx2d.fillText(baseEnemyData[0],width*25/100,height*75/100);
-                    ctx2d.fillText("は手持ちのおやつを食べて少し回復。",width*25/100,height*82/100);
+                    ctx2d.fillText(baseEnemyData[0]+" は手持ちのおやつを食べて少し回復。",width*25/100,height*75/100);
                 }else if(trait9Flg==3){
-                    ctx2d.fillText(mypicstock[mypic[0]][0]+" は手持ちのおやつを食べた。",width*25/100,height*75/100);
-                    ctx2d.fillText(baseEnemyData[0]+" は手持ちのおやつを食べた。",width*25/100,height*82/100);
+                    ctx2d.fillText(mypicstock[mypic[0]][0]+" は手持ちのおやつを食べて少し回復。",width*25/100,height*75/100);
+                    ctx2d.fillText(baseEnemyData[0]+" は手持ちのおやつを食べて少し回復。",width*25/100,height*82/100);
                 }
                 break;
             

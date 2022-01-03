@@ -198,13 +198,13 @@ function battleMain() {
         }
     } else if(battleMode==1){//行動選択(loop)
         if(downkey) {
-            if(loopmode==1) loopselectSave=loopselect;
             if (loopmode==2){
                 loopselect=Math.min(items.length-1,loopselect+1);
                 if(loopselect-BtopItem==4)BtopItem++;}
             else if(loopmode==3){loopselect=Math.min(mypic.length-1,loopselect+1);}
             else if(loopmode==4){BwhoUse=Math.min(mypic.length-1,BwhoUse+1);}
             else{loopselect=Math.min(3,loopselect+1);}
+            if(loopmode==1) loopselectSave=loopselect;
             crosskeySE.play();
             downkey=false;}
         else if(upkey){

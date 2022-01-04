@@ -149,6 +149,7 @@ h2{
     padding-top:10px;
     padding-bottom:10px;
     position:relative;
+    z-index:10;
 }
 
 .mypicImg{
@@ -165,7 +166,7 @@ h2{
     transform:scale(-1,-1);
     position:absolute;
     right:120px;
-    bottom:175px;
+    bottom:5px;
 }
 ul{
     padding:0rem;

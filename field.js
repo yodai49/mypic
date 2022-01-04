@@ -311,6 +311,14 @@ function setMaterials(){
                         if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
                         checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX+1+material_size/2,materialY+material_size/2,1,1);
                         if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
+                        checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX+material_size/3,materialY+material_size/3,1,1);
+                        if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
+                        checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX+material_size*2/3,materialY+material_size/3,1,1);
+                        if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
+                        checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX+material_size/3,materialY+material_size*2/3,1,1);
+                        if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
+                        checkimgdata=fieldcanvas.getContext("2d").getImageData(materialX+material_size*2/3,materialY+material_size*2/3,1,1);
+                        if (checkimgdata.data[0] || checkimgdata.data[1]  || checkimgdata.data[2] || checkimgdata.data[3]) tempColision=1;
                         if(!tempColision) break; 
                     }
                     nowMaterialData[myposworld].push([materialX,materialY,fieldMaterialDataSet[fieldMaterial[myposworld]][i][0]]);
@@ -473,6 +481,8 @@ function checkObjectsConflict(dx,dy){
     for(let i = 0;i < walkCol.length;i++){
         tempColision=1;
         checkimgdata=fieldcanvas.getContext("2d").getImageData(myposx+dx,myposy+dy,1,1);
+        ctx2d.fillStyle="rgba(255,255,0,1)";
+        ctx2d.fillRect(myposx+dx,myposy+dy,1,1);
         if (!checkimgdata.data[0] && !checkimgdata.data[1]  && !checkimgdata.data[2] && !checkimgdata.data[3]) tempColision=0;
         if(tempColision) return 1;
     }
@@ -480,7 +490,7 @@ function checkObjectsConflict(dx,dy){
 }
 
 function myposmodify(){
-    /*　自分の位置がはみ出さないようにする関数
+    /*　自分の位置がはみ出さないようにする＆調整する関数
         param なし
         return なし
     */
@@ -488,6 +498,8 @@ function myposmodify(){
     if (myposx+charasize>width-10) myposx=fieldwidth-10-charasize;
     if(myposy<10) myposy=10;
     if (myposy+charasize>height-10) myposy=fieldheight-10-charasize;
+    myposx=myposx-myposx%walkspeed;
+    myposy=myposy-myposy%walkspeed;
 }
 function walkeve(){ //歩くときに発生する処理
     myposmodify();

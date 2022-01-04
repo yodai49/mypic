@@ -20,6 +20,7 @@ var encount_down=0,encount_down_cnt=0;
 var nowShopData,eventShopSelectNum=0,showmoney=0,eventShopScrollNum=0,eventRecipeData=[];
 var checkSkillConflict=[],encountEnemyNum=0,inMsgBattleFlg=0,searchablelg=0;
 var creatingFieldFlg=0, itemRedrawFlg=1;
+var nowSalableItems=[],sellSelectNum=0,sellScrollNum=0,sellChildWindowAni=0,sellNum=0;
 const charamap=[3,1,0,2];//Imageオブジェクトのマッピング
 function getFieldCharaX(chara,dir,ani){return ((chara % 5)*32*3+ani*32+2);}
 function getFieldCharaY(chara,dir,ani){return (Math.floor(chara/5)*32*4+300+32*charamap[dir]+2);}
@@ -331,6 +332,14 @@ function setMaterials(){
         field2d.drawImage(itemMenuImg[nowMaterialData[myposworld][i][2]],nowMaterialData[myposworld][i][0],nowMaterialData[myposworld][i][1],material_size,material_size);
     }
 }
+function setSalableItems(){
+    nowSalableItems=[];
+    for(var i = 0;i<items.length;i++){
+        if(itemdata[items[i][0]][itemdata[items[i][0]].length-1] > 0){//売却可能なら
+            nowSalableItems.push(items[i]);
+        }
+    }
+}
 function encount_check(){//敵との遭遇率encount=6*((200−運)/200)
     if (mypic.length==0 || (debugMode && debugMode!=5) || warpAni || eventWindowAni) return 0;
     var encountRate = (6*((200 - mypicstock[mypic[0]][9],0,100,100),0,100/200));
@@ -586,6 +595,22 @@ function trigEvent(trigEventnum,trigEventObj){
             eventMessageWindow=1;
             eventMessageWindowMsg="レシピを持っていない！";
         }
+    } else if(trigEventnum==8 && !menuSelectFlg){ //売却のお店
+        zkeySE.play(); 
+        setSalableItems(items); //売却可能なアイテムをセット
+        if(!nowSalableItems.length){
+            eventWindowAni=0;
+            eventMessageWindow=1;
+            eventMessageWindowMsg="売却できるアイテムを持っていない！";
+        } else{
+            eventWindowKind=8;
+            eventWindowAni++;    
+            sellSelectNum=0;
+            sellScrollNum=0;
+            sellNum=1;
+            sellChildWindowAni=0;
+            showmoney=money;
+        }
     }
     menuSelectFlg=1;
 }
@@ -617,11 +642,13 @@ function fieldMain() {
     for(var i = 0;i < eventobj[myposworld].length;i++){
         if(eventobj[myposworld][i][4] == 1 || eventobj[myposworld][i][4] == 2||eventobj[myposworld][i][4] == 7){//マイピク整理等
             if(eventobj[myposworld][i][5]!=undefined) ctx2d.drawImage(arrowImgs[1],eventobj[myposworld][i][5],eventobj[myposworld][i][6]+((Math.floor(globalTime/8)%8<2) && 4*Math.abs(Math.sin(Math.PI*2*globalTime/32))),22,22);
-        } else if(eventobj[myposworld][i][4] == 3){//お店
+        } else if(eventobj[myposworld][i][4] == 3 || eventobj[myposworld][i][4] == 8){//お店
             if(eventobj[myposworld][i][6]!=undefined) ctx2d.drawImage(arrowImgs[1],eventobj[myposworld][i][6],eventobj[myposworld][i][7]+((Math.floor(globalTime/8)%8<2) && 4*Math.abs(Math.sin(Math.PI*2*globalTime/32))),22,22);
         } else if(eventobj[myposworld][i][4] == 6){//メッセージ
             if(eventobj[myposworld][i][8]!=undefined && !countItem(eventobj[myposworld][i][6])) ctx2d.drawImage(arrowImgs[1],eventobj[myposworld][i][8],eventobj[myposworld][i][9]+((Math.floor(globalTime/8)%8<2) && 4*Math.abs(Math.sin(Math.PI*2*globalTime/32))),22,22);
-        }
+        }else if(eventobj[myposworld][i][4] == 7){//売却お店
+            if(eventobj[myposworld][i][6]!=undefined) ctx2d.drawImage(arrowImgs[1],eventobj[myposworld][i][6],eventobj[myposworld][i][7]+((Math.floor(globalTime/8)%8<2) && 4*Math.abs(Math.sin(Math.PI*2*globalTime/32))),22,22);
+        } 
     }
     
     //ctx2d.drawImage(characanvas,pre_charasize*Math.floor(walkanimation/15),pre_charasize*walkdir,pre_charasize,pre_charasize,myposx,myposy,charasize,charasize); //キャラクターの描画
@@ -982,7 +1009,7 @@ function fieldMain() {
             } else if(eventProcreateStep==3){ //生まれた！
                 ctx2d.font="16pt " + mainfontName;
                 ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*Math.min(1,eventEggAni/20)*Math.min(1,eventEggAni/20)*(Math.sin(globalTime/10)*0.3+0.7)+")";
-                ctx2d.fillText((drawMypicTempName + "がうまれた！　"+procreateMsg).substr(0,eventEggAni/3),width/2-225,height/2-125);
+                ctx2d.fillText((drawMypicTempName + "がうまれた！"+procreateMsg).substr(0,eventEggAni/3),width/2-225,height/2-125);
                 ctx2d.fillStyle="rgba(255,255,255,"+(1-Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*Math.min(1,eventEggAni/20)*Math.min(1,eventEggAni/20)+")";
                 ctx2d.font="11pt " + mainfontName;
                 ctx2d.fillText("さいだいHP: " + mypicstock[mypicstock.length-1][3],width/2-230,height/2+113);
@@ -1158,6 +1185,103 @@ function fieldMain() {
                 menuSelectFlg=1;
                 xkeySE.play();
             }
+        }else if(eventWindowKind==8){ //売り払う
+            ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8 + ")";
+            ctx2d.fillRect(width/2-300,height/2-155,600,300);
+            ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
+            ctx2d.font="18pt " + mainfontName;
+            ctx2d.fillText("ばいきゃく" , width/2-300+15,height/2-150+30);
+            ctx2d.font="12pt " + mainfontName;
+            for(var i = 0;i < Math.min(10,nowSalableItems.length-sellScrollNum);i++){
+                ctx2d.fillStyle="rgba(105,105,105," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
+                if(i+sellScrollNum== sellSelectNum) ctx2d.fillStyle="rgba(255,255,255," +(0.3*Math.sin(globalTime/8)+0.7*(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)) + ")";
+                ctx2d.drawImage(itemMenuImg[nowSalableItems[i+sellScrollNum][0]],width/2-300+40,height/2-90-10+i*20,15,15);
+                ctx2d.fillText(itemdata[nowSalableItems[i+sellScrollNum][0]][0] , width/2-300+60,height/2-90+i*20);
+                ctx2d.fillText("×" , width/2-300+280,height/2-90+i*20);
+                ctx2d.fillText(nowSalableItems[i+sellScrollNum][1] , width/2-300+320,height/2-90+i*20);
+                ctx2d.fillText(itemdata[nowSalableItems[i+sellScrollNum][0]][5] , width/2-300+450,height/2-90+i*20);
+                ctx2d.fillText("(" , width/2-300+400,height/2-90+i*20);
+                ctx2d.fillText(currencyName + " )" , width/2-300+500,height/2-90+i*20);
+            }
+            ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(eventWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
+            ctx2d.font="10pt " + mainfontName;
+            ctx2d.fillText(itemdata[nowSalableItems[sellSelectNum][0]][3].substr(0,26) ,width/2-300+40,height/2-90+10.5*20-5);
+            ctx2d.fillText(itemdata[nowSalableItems[sellSelectNum][0]][3].substr(26,26) ,width/2-300+40,height/2-90+11.5*20-10);
+            ctx2d.fillText("おかね",width/2+100,height/2-90+10.5*20-5);
+            ctx2d.font="12pt " + mainfontName;
+            ctx2d.fillRect(width/2+90,height/2-90+10.5*20-15,1,30);
+            ctx2d.fillText(showmoney + currencyName ,width/2+120,height/2-90+11.5*20-8);
+            if(sellChildWindowAni){ //売却ウィンドウ表示時
+                ctx2d.fillStyle="rgba(0,0,0," +(1- Math.abs(sellChildWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed)*0.8 + ")";
+                ctx2d.fillRect(width/2-150,height/2-50,300,100);
+                ctx2d.font="14pt " + mainfontName;
+                ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(sellChildWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
+                ctx2d.fillText("いくつ売る？",width/2-135,height/2-25);
+                ctx2d.font="12pt " + mainfontName;
+                ctx2d.fillText(itemdata[nowSalableItems[sellSelectNum][0]][0] ,width/2-45,height/2+5);
+                ctx2d.drawImage(itemMenuImg[nowSalableItems[sellSelectNum][0]],width/2-80,height/2-13,25,25);
+                ctx2d.fillText("所持数："+nowSalableItems[sellSelectNum][1] ,width/2+40,height/2-25);
+                ctx2d.fillText(itemdata[nowSalableItems[sellSelectNum][0]][5]*sellNum ,width/2-45,height/2+30);    
+                ctx2d.fillText(currencyName ,width/2+10,height/2+30);
+                ctx2d.font="8pt " + mainfontName;
+                ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(sellChildWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
+                if(sellNum==nowSalableItems[sellSelectNum][1]) ctx2d.fillStyle="rgba(105,105,105," +(1- Math.abs(sellChildWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")"; 
+                ctx2d.fillText("∧" ,width/2-120+5,height/2+0);
+                ctx2d.fillStyle="rgba(255,255,255," +(1- Math.abs(sellChildWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
+                if(sellNum==1) ctx2d.fillStyle="rgba(105,105,105," +(1- Math.abs(sellChildWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")"; 
+                ctx2d.fillText("∨" ,width/2-120+5,height/2+40);
+                ctx2d.font="16pt " + mainfontName;
+                ctx2d.fillStyle="rgba(255,255,255," +(0.3*Math.sin(globalTime/8)+0.7)*(1- Math.abs(sellChildWindowAni-menuWindowAniSpeed)/menuWindowAniSpeed) + ")";
+                ctx2d.fillText(sellNum ,width/2-120+10-ctx2d.measureText(sellNum).width/2,height/2+23);
+                if(upkey && !menuSelectFlg) {
+                    if(sellNum!=nowSalableItems[sellSelectNum][1]) crosskeySE.play();
+                    sellNum=Math.min(nowSalableItems[sellSelectNum][1],sellNum+1),menuSelectFlg=1;
+                }
+                if(downkey && !menuSelectFlg) {
+                    if(sellNum!=1) crosskeySE.play();
+                    sellNum=Math.max(1,sellNum-1),menuSelectFlg=1;
+                }
+                if(zkey && !menuSelectFlg){
+                    //売却処理
+                    let sellSelectNumFlg=0;
+                    if(sellNum==nowSalableItems[sellSelectNum][1]) sellSelectNumFlg=1;
+                    paySE.play();
+                    money+=itemdata[nowSalableItems[sellSelectNum][0]][5]*sellNum;
+                    let sellItemNum=0;
+                    for(var i = 0;i < items.length;i++){
+                        if(items[i][0] == nowSalableItems[sellSelectNum][0]) sellItemNum=i;
+                    }
+                    for(var i = 0;i < sellNum;i++) consumeItem(sellItemNum);
+                    setSalableItems();
+                    sellChildWindowAni++;
+                    menuSelectFlg=1;
+                    if(!nowSalableItems.length) {
+                        eventMessageWindow=1;
+                        eventMessageWindowMsg="売却できるアイテムを持っていない！";
+                        eventWindowAni=0;
+                    }
+                    if(sellSelectNumFlg)sellSelectNum=Math.max(sellSelectNum-1,0),sellChildWindowAni=0;
+                }
+                if(xkey && !menuSelectFlg) sellChildWindowAni++,menuSelectFlg=1,xkeySE.play();
+            } else{ //売却ウィンドウ非表示時
+                if(upkey && !menuSelectFlg) sellSelectNum=Math.max(0,sellSelectNum-1),menuSelectFlg=1,crosskeySE.play();
+                if(downkey && !menuSelectFlg) sellSelectNum=Math.min(nowSalableItems.length-1,sellSelectNum+1),menuSelectFlg=1,crosskeySE.play();
+                if(zkey && !menuSelectFlg){ //アイテムの決定
+                    sellChildWindowAni++;
+                    sellNum=1;
+                    menuSelectFlg=1;
+                    zkeySE.play();
+                }
+                if(sellSelectNum>=sellScrollNum+10) sellScrollNum=sellSelectNum-9;
+                if(sellSelectNum<sellScrollNum) sellScrollNum=sellSelectNum;
+                if(xkey && !(eventWindowAni-menuWindowAniSpeed)&& !menuSelectFlg && !eventMessageWindow) eventWindowAni++,menuSelectFlg=1,xkeySE.play();
+            }                
+            if(sellChildWindowAni && (sellChildWindowAni-menuWindowAniSpeed)) sellChildWindowAni++;
+            if(sellChildWindowAni>=menuWindowAniSpeed*2) sellChildWindowAni=0;
+            if(money < showmoney) showmoney-=10;
+            if (money > showmoney) showmoney+=10;
+            if (Math.abs(showmoney-money)<10) showmoney=money;
+            if(spacekey) menuSelectFlg=0;
         }
         if (!upkey && !downkey && !zkey && !leftkey && !rightkey && !xkey && !zkey && !vkey) menuSelectFlg=0;
         if (eventWindowAni && (eventWindowAni-menuWindowAniSpeed)) eventWindowAni++;

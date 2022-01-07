@@ -337,6 +337,7 @@ function battleloop(){
         ctx2d.fillStyle=white;
         ctx2d.font="26px "+mainfontName;
         ctx2d.fillText(winMessage[in_lstnum], width*25/100,height*75/100);
+        if(levelUpFlg && in_lstnum == 2) ctx2d.fillText(mypicstock[mypic[0]][0]+"はLv "+mypicstock[mypic[0]][12]+"に上がった!", width*25/100,height*82/100);
     }
 
     else if(battleMode==7){//戦闘不能後の次のマイピク選択

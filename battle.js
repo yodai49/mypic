@@ -40,6 +40,8 @@ var shortDpFlg=false;//Dp枯渇フラグ
 var DEBUGcount_oneMove=0,DEBUGcount_fieldDraw=0,battleZkeyFlg=0;
 var myskillNum=0;
 var battleEffectCanvas,drawBattleEffects=[],befctx,battleEffectCanvas;//エフェクト系
+var beforeLEVEL;
+var levelUpFlg=false;
 function getbefX(efNum,aniNum){return (efNum%4)*efWidth*5+efWidth*(aniNum%5)};
 function getbefY(efNum,aniNum){return Math.floor(aniNum/5)*efHeight+efHeight*7*Math.floor(efNum/4)};
 
@@ -397,16 +399,18 @@ function battleMain() {
     } else if(battleMode==6){//勝利
         if(oneMoveFlg) {
             getCurrencyAmount=getCurrency(baseEnemyData[12]);
-            getExperienceAmount=getEx(baseEnemyData[12]);}
+            beforeLEVEL = mypicstock[mypic[0]][12];
+            getExperienceAmount=getEx(baseEnemyData[12]);
+            changeEXP(getExperienceAmount, 0);
+            if(mypicstock[mypic[0]][12] != beforeLEVEL) levelUpFlg =true}//獲得経験値を戦闘マイピクに追加
         else {//onemoveflgでwinmessageが読み込まれるのを待ってから実行
             if(in_lstnum == winMessage.length){ //勝利後、フィールドに戻る時の処理はここに追加
-                nextMode=1, modeAnimation=1, battleMode=0, loopmode=0, loopselect=0, lstnum=0,in_lstnum=0;
+                nextMode=1, modeAnimation=1, battleMode=0, loopmode=0, loopselect=0, lstnum=0,in_lstnum=0, levelUpFlg=false;
                 stopBattleBGM();//bgm停止
                 money+=getCurrencyAmount;//獲得金額を追加
                 mypicstock[mypic[0]][6]=bMemory[0];
                 mypicstock[mypic[0]][7]=bMemory[1];
                 mypicstock[mypic[0]][3]=bMemory[2];
-                changeEXP(getExperienceAmount, 0);//獲得経験値を戦闘マイピクに追加
                 battleGetItem();
                 createField();
                 playFieldBGM(myposworld);}}

@@ -51,6 +51,21 @@ function battleEffectRedraw(mySkills,enemySkills){
     }
 }
 
+function procHardMode(){ //HP0のマイピクを削除する関数
+    for(var i = 0;i < mypic.length;i++){
+        if (mypicstock[mypic[i]][2]==0){
+            let deleteNum=mypic[i];
+            mypicstock.splice(mypic[i],1);
+            mypic.splice(i,1);
+            for(var j = 0;j < mypic.length;j++){
+                if(mypic[j] > deleteNum) {
+                    mypic[j]--;
+                }
+            }
+        }
+    }
+}
+
 function battleMain() {
     //character
     if(debugMode==5 && globalTime%6==0) zkey=true;
@@ -409,7 +424,10 @@ function battleMain() {
                 changeEXP(getExperienceAmount, 0);//獲得経験値を戦闘マイピクに追加
                 battleGetItem();
                 createField();
-                playFieldBGM(myposworld);}}
+                playFieldBGM(myposworld);
+                if(hardMode) procHardMode();//ハードモードの処理
+            }
+        }
     } else if(battleMode==7){//戦闘不能
         if(downkey && chgCount==1)loopselect=Math.min(mypic.length-1,loopselect+1), crosskeySE.play(), downkey=false;
         else if(upkey && chgCount==1)loopselect=Math.max(0,loopselect-1), crosskeySE.play(), upkey=false;

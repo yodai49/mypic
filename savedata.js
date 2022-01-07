@@ -5,6 +5,7 @@ function saveData(){
     localStorage.setItem("myposworld",myposworld);
     localStorage.setItem("money",money);
     localStorage.setItem("nextEventNum",nextEventNum);
+    localStorage.setItem("hardMode",hardMode);
     let jsonOb;
     jsonOb=JSON.stringify(items,undefined,1);
     localStorage.setItem("items",jsonOb);
@@ -29,6 +30,7 @@ function loadData(){
     warpAni=11;
     money=Number(localStorage.getItem("money"));
     nextEventNum=Number(localStorage.getItem("nextEventNum"));
+    hardMode=Number(localStorage.getItem("hardMode"));
     items=JSON.parse(localStorage.getItem("items"));
     mypic=JSON.parse(localStorage.getItem("mypic"));
     mypicstock=JSON.parse(localStorage.getItem("mypicstock"));

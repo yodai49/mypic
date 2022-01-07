@@ -16,6 +16,7 @@ const mainfontName="Stick";
 var globalTime=0;//タイム　1ループで1増える
 var globalRand=Math.floor(Math.random()*1000);//乱数
 var tipsRand=Math.floor(Math.random()*tips.length);
+var hardMode=0; //ハードモード
 
 function fieldCanvasCreate(){
     characanvas=document.createElement("canvas");

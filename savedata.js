@@ -31,6 +31,7 @@ function loadData(){
     money=Number(localStorage.getItem("money"));
     nextEventNum=Number(localStorage.getItem("nextEventNum"));
     hardMode=Number(localStorage.getItem("hardMode"));
+    if(hardMode==undefined) hardMode=0;
     items=JSON.parse(localStorage.getItem("items"));
     mypic=JSON.parse(localStorage.getItem("mypic"));
     mypicstock=JSON.parse(localStorage.getItem("mypicstock"));

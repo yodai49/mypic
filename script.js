@@ -130,6 +130,7 @@ function init() {
     tick();
 
     function tick() { //メイン関数
+        setTimeout(function() {
         //2次元のリセット処理
 //        console.log("2:"+oneMoveFlg, globalTime)
         ctx2d.clearRect(0,0,width,height);
@@ -157,5 +158,6 @@ function init() {
 
         globalTime++;
         requestAnimationFrame(tick); //次のフレーム呼び出し（再帰）
+    }, 1000/80);
     }
 }
